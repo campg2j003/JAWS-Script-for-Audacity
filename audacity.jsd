@@ -1,0 +1,11 @@
+:function GetPositionField
+:Returns string Value of field
+:Synopsis Get the value of one of the selection fields
+:Param handle/hWnd Handle of position control
+
+:script SaySelectionStart
+:Synopsis Says the value of the Selection Start control
+
+:script SaySelectionEnd
+:Synopsis Say the end position or length of the selection
+
