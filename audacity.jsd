@@ -5,7 +5,12 @@
 
 :script SaySelectionStart
 :Synopsis Says the value of the Selection Start control
+:Description Says the value of the Selection Start control.  If pressed twice quickly, moves focus to it.
 
 :script SaySelectionEnd
 :Synopsis Say the end position or length of the selection
+:Description Say the end position or length of the selection.  Also says whether End or Length is selected.  If pressed twice quickly, moves focus to it.
 
+:Script SayActiveCursor
+:Synopsis Says the Audio Position value
+:Description If the PC cursor is active, says the value of the Audio Position control.  If the PC cursor is not active or it is pressed twice quickly, says the cursor position.
