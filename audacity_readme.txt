@@ -8,12 +8,12 @@ ScriptFileName
 HotkeyHelp 
 WindowKeysHelp 
 
-This script provides the following:
+This package provides the following:
 Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
 Keystrokes to move the focus to selection start and selection end/length.
 Displays JAWS and Audacity hotkey help.
 
-The script was developed with Audacity 2.0.0 and JAWS 10.0.1178u.  It should probably work with any JAWS after 5.0, but if you aren't using JAWS 10.0.1178u you should recompile the scripts with the script manager, or run "<JAWSProgDir\scompile.exe audacity.jss".
+The script was developed with Audacity 2.0.0 and JAWS 10.0.1178u.  It should probably work with any JAWS 5.0 or later, but if you aren't using JAWS 10.0.1178u you should recompile the scripts with the script manager, or run "<JAWSProgDir\scompile.exe audacity.jss".
 There is no specific Braille support at this time.
 
 To install: 
