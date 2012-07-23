@@ -1,3 +1,8 @@
 [Common Keys]
 Control+[=SaySelectionStart
 Control+]=SaySelectionEnd
+Shift+Alt+DownArrow=ReduceGain
+Shift+Alt+RightArrow=PanRight
+Shift+Alt+LeftArrow=PanLeft
+Shift+Alt+UpArrow=IncreaseGain
+Shift+JAWSKey+S=MuteSynthesizer

@@ -1,12 +1,16 @@
 ; JAWS script for Audacity multitrack sound editor V2.0.0 (http://audacity.sourceforge.net).
 
 ; Modifications:
+;7/2/2012):
+; Added function handle custom windows. This just a test function, and needed improvement
+;wrote four scripts: IncreaseGain, ReduceGain, PanLeft, PanRight.
+;7/11/2012 added new hotkeys to the script hotkey help.
 ; 5/16/12 Converted to work with Audacity 2.0.0 and JAWS 10.0.1178u.
-; Added JAWS and Audacity hotkey help.  When pressed twice quickly these run the default JAWS commands.
+; Added JAWS and Audacity hotkey help.
 ; SayActiveCursor now says the value of the Audio Position field when in the main window and the PC cursor is active, press twice quickly for cursor position.
 ; Added ScriptFileName.
 ; Put messages and string constants in audacity.jsm.
-; Added script version string which appears in JAWS hot key help, version is 1.0 5/16/12.
+; Added script version string which appears in JAWS hot key help.
 ; 5/12/07 Broke code to get value of a selection position field into a separate function GetPositionField().  Added script SaySelectionEnd().
 
 Include "hjconst.jsh"
@@ -22,6 +26,19 @@ Const
 	;ID_AUDIO_POSITION = -232, ; value changes, it is the 2nd window after _END.
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703
+
+Int Function HandleCustomWindows ()
+If GetControlID (GetCurrentWindow ())==ID_END_RADIO
+||GetControlID (GetCurrentWindow ())==ID_LENGTH_RADIO then
+SayString ("Selection bar")
+ElIf GetWindowClass (GetAppMainWindow (GetCurrentWindow ()))=="wxWindowClassNR"
+&&GetControlID (GetAppMainWindow (GetCurrentWindow ())) <=11
+&&GetWord ()=="pause" then
+SayString ("Tool bars")
+ElIf GetWindowName (GetFocus ())==WN_TRACKPANEL
+SayString ("Track panel")
+EndIf
+EndFunction
 
 Int Function IsMainWindow()
 Var
@@ -161,4 +178,41 @@ Else
 EndIf
 EndScript
 
+
+
+;These script replace the default Jaws' script, such as mouse up, mouse down etc
+Script IncreaseGain ()
+;this script works in the main window
+If IsMainWindow () then
+TypeCurrentScriptKey ()
+;otherwise, perform the default Jaws script
+Else
+PerformScript MouseUp()
+EndIf
+EndScript
+
+;the scripts below have the same conditions
+Script ReduceGain ()
+If IsMainWindow () then
+TypeCurrentScriptKey ()
+Else
+PerformScript MouseDown()
+EndIf
+EndScript
+
+Script PanLeft ()
+If IsMainWindow () then
+TypeCurrentScriptKey ()
+Else
+PerformScript MouseLeft()
+EndIf
+EndScript
+
+Script PanRight ()
+If IsMainWindow () then
+TypeCurrentScriptKey ()
+Else
+PerformScript MouseRight()
+EndIf
+EndScript
 

@@ -14,11 +14,15 @@ Audacity
 @msgHotKeyHelp
 JAWS keystrokes for script version %1, for Audacity 2.0.0:
 
-To say the selection start position, press %keyfor(SaySelectionStart).
+To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
+To increase gane of focus track, press %keyfor (IncreaseGain).
+To reduce gane of focus track, press %keyfor (ReduceGain).
+To adjust pan left, press %keyfor (PanLeft).
+To adjust pan right, press %keyfor (PanRight).
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 

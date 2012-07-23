@@ -1,3 +1,6 @@
+:function IsMainWindow
+:Returns int No Return Description
+
 :function GetPositionField
 :Returns string Value of field
 :Synopsis Get the value of one of the selection fields
@@ -11,6 +14,27 @@
 :Synopsis Say the end position or length of the selection
 :Description Say the end position or length of the selection.  Also says whether End or Length is selected.  If pressed twice quickly, moves focus to it.
 
-:Script SayActiveCursor
+:script SayActiveCursor
 :Synopsis Says the Audio Position value
 :Description If the PC cursor is active, says the value of the Audio Position control.  If the PC cursor is not active or it is pressed twice quickly, says the cursor position.
+
+:script ScriptFileName
+
+:script HotkeyHelp
+
+:script WindowKeysHelp
+
+:script IncreaseGain
+:Synopsis Increases the gain of focus track
+
+:script ReduceGain
+:Synopsis Reduces the gain of focus track
+
+:script PanLeft
+:Synopsis change the pan of the focused track to the left
+
+:script PanRight
+:Synopsis change the pan of the focused track to the right
+
+:function HandleCustomWindows
+
