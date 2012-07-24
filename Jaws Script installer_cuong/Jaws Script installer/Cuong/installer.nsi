@@ -16,7 +16,12 @@ Limitations:
 . User cannot select more than one version to install.
 . This installer created for English version only.
 Date created: Wednesday, July 11, 2012
-Last updated: Thursday, July 12, 2012
+Last updated: Monday, July 23, 2012
+
+Modifications:
+7/23/2012 by Gary Campbell <campg2003@gmail.com>:
+In DisplayJawsList now only counts registry keys whose names start with a digit.  This rejects keys like "Common" and "Registration".  Added !include strfunc.h.
+Added comments.
 */
 
 ;Begin of code
@@ -42,6 +47,10 @@ OutFile "${ScriptName}.exe"
 InstallDir "$programfiles\${scriptName}" 
 BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 !include "JFW.nsh" ;Header file to store all macros
+
+!include "strfunc.nsh" ; used in DisplayJawsList to check for a digit
+; Declare used functions.
+${StrLoc}
 
 ;Modern UI configurations
 !Include "MUI.nsh"
@@ -84,30 +93,40 @@ Function .OnInstSuccess
 FunctionEnd
 
 Function DisplayJawsList 
-strCpy $0 0
+strCpy $0 0 ; registry entry index
+strcpy $1 0 ; number of JAWS versions found
 loop:
 EnumRegkey $2 hklm "software\Freedom Scientific\Jaws" $0 ;Enumerate the existing version of Jaws
 strcmp $2 "" done
 IntOp $0 $0 + 1 ;increase the successfully counter by one unit
-;Get the Detected Jaws version if exists
+; Is this registry key a version number?  I have seen "Common" Victor checks for "Registration", and I don't know of any version that doesn't start with a digit.
+strcpy $3 $2 1 ; copy first character
+${StrLoc} $4 "0123456789" $3 ">"
+strcmp $4 "" loop
+; character is in "0" through "9"
+; Starts with a digit, is a version.
+intop $1 $1 + 1 ; increment versions count
+;Get the the Jaws versions we have already found if any
   !InsertMacro MUI_INSTALLOPTIONS_READ $3 "Install.ini" "Field 2" "ListItems"
-;Then combine it with the new one
+;Then combine them with the new one
     !InsertMacro MUI_INSTALLOPTIONS_WRITE "Install.ini" "Field 2" "ListItems" "$3Jaws $2|" 
     !InsertMacro MUI_INSTALLOPTIONS_WRITE "Install.ini" "Field 2" "State" "Jaws $2" ;Always select one of the existing version of Jaws
 goto loop ;continue checking
 done:
 ;Get the counter number of Jaws install on system
-${If} $0 >= 2 ;there are two or more version of Jaws install
+${If} $1 >= 2 ;there are two or more version of Jaws installed
 !insertmacro mui_installoptions_display install.ini ;Display the Select Jaws Version Page
 ${Else}
 ;If only one version installed, don't display Select Jaws Version Page
   !InsertMacro MUI_INSTALLOPTIONS_READ $3 "Install.ini" "Field 2" "ListItems"
-StrCpy $3 $3 -1
+StrCpy $3 $3 -1 ; remove last separator
     !InsertMacro MUI_INSTALLOPTIONS_WRITE "Install.ini" "Field 2" "State" $3 ;select current Jaws version automatically
 Call CheckJaws
 ${EndIf}
 FunctionEnd
 
+;Store the script and compiler locations in the temp file, also set SetShellVarContext.
+;Overwrites $4, $5.
 Function CheckJaws
 readIniStr $4 "$Pluginsdir\install.ini" "Field 2" State ;Check the selected Jaws version
 StrCpy $4 $4 "" 5 ;get the version number next to word "Jaws" (stored in the install options file) 
