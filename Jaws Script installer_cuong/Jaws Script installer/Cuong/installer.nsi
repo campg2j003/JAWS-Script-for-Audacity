@@ -19,6 +19,7 @@ Date created: Wednesday, July 11, 2012
 Last updated: Monday, July 23, 2012
 
 Modifications:
+7/24/2012 Previous saved to HG rev 6.
 7/23/2012 by Gary Campbell <campg2003@gmail.com>:
 In DisplayJawsList now only counts registry keys whose names start with a digit.  This rejects keys like "Common" and "Registration".  Added !include strfunc.h.
 Added comments.
