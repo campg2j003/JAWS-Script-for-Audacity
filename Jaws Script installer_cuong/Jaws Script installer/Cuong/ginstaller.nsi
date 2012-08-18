@@ -1,5 +1,4 @@
 /*
-debug version to test allocation of structs.
 Audacity Jaws script installer
 Written by Dang Manh Cuong <dangmanhcuong@gmail.com>
 This installer required NSIS Script from http://nsis.sourceforge.net
@@ -17,9 +16,43 @@ Limitations:
 . User cannot select more than one version to install.
 . This installer created for English version only.
 Date created: Wednesday, July 11, 2012
-Last updated: Tuesday, August 7, 2012
+Last updated: Saturday, August 18, 2012
 
 Modifications:
+
+8/18/12 Remembers JAWS selected versions if you come back to the versions page.
+Installation summary page now shows the $INSTDIR for full installations and installer source folder if selected.
+Issues: The output of makensis shows warnings generated for code in function __JAWSInstallScriptItemsDefault when ${ScriptItemsBegin} is used.
+The uninstaller has shown a message saying that $INSTDIR can't be removed when it is actually removed.
+Even if the warning about not being able to remove $INSTDIR is displayed and $UNINSTDIR is in fact not removed, the finish message says the uninstall is successful.
+8/17/12 This compiles and runs, but does not check list view items.  Values placed in the LVItem structure are correct and SendMessage ${LVM_SETITEMSTATE} returns 1 indicating success, but ${GETITEMSTATE} immediately following returns state unchecked.  Have tried it before setfocus, before show.
+8/16/12 Added function MarkSelectedVersions to check the list view items of selected versions.  Wrote LVCheckItem.
+Changed code in JawsPage to set $SELECTEDJAWSVERSIONs when only one JAWS version is found.
+8/15/12 Added open/close uninstlog in -uninstaller section.
+8/15/12 Changed macro __FileDatedNF to test for dest file existence before logging it.
+Full install works, log is generated correctly, uninstall works, but it doesn't delete uninst.exe and $INSTDIR.
+Changed to use the ${WriteUninstaller} uninstlog macro.
+8/15/12 Changed JAWSScriptItemsBegin to use a function.
+8/14/12 Changed uninstall section to delete using uninstlog and not use rmdir /r to remove $INSTDIR.
+Made ${JAWSScriptItemsBegin/End and default version
+Made most of code in install JAWS scripts section into a macro.  Moved version uninstall macros ahead of install scripts section.
+8/14/12 If Install Source is not selected install type is 2 when Custom is selected.
+8/13/12 Added function ComponentsPageLeave to select SecUninstaller if type JUSTSCRIPTS is not selected, this covers type Custom.
+ADDED CODE TO SET THE PAGE TITLE ON THE CONFIRMATION PAGE.
+8/13/12 Added ${NSD_CreateTextMultiline}.
+Added function GetSecIDs and variables to store section indexes needed for InstConfirmPre, called from .OnInit.  The issue is that the defines for section indexes aren't defined until after the sections are defined, yet they are needed in the dir and confirmInst page pre functions.  All of the functions could be moved after the sections, but that would make it harder to package the pages, sections, and functions into a header file.
+8/12/12 Added DirPagePre to skip directory page if not full install.
+Added Confirm Install page.
+Added insttype /NOCUSTOM.
+Made JAWS section silent.
+8/9/12 Added start of section Installer Source.
+Added section Install JAWS scripts.
+Added Welcome and Components pages.
+Converted for MUI2.
+Issue: need a way for the user to choose between installing scripts in All Users or current user.  One may wish to make that choice even if the installer can write All Users and the installer is set to install to All Users-- i.e. into Program Files.
+Issue: need a way to choose to install scripts into the program files folder, e.g. to view them if there is no JAWS.
+8/8/12 Changed GetJawsScriptDir and GetJawsProgDir to return on TOS instead of $2.
+8/7/12 Previous saved to HG rev 7.
 8/7/12 Now sends LVM_SetListViewExtendedStyle message after creating list box, works.
 Commented out code to insert a column.
 Fixed problems in LVIsItemChecked.
@@ -41,6 +74,7 @@ Added comments.
 */
 
 ;Begin of code
+;!define JAWSDEBUG ; debug
 ;User defined constants
 ;Name of script (displayed on screens, install folder, etc.) here
 !Define ScriptName "Jaws Script for Audacity"
@@ -51,17 +85,20 @@ Added comments.
 !Define InstallFile $instdir\Install.ini ; file that stores information for the uninstaller
 !Define tempFile $temp\Install.ini
 !Define UnInstaller "Uninst.exe"
-!Define JawsDir "$appdata\Freedom Scientific\Jaws" ;the folder where app data for Jaws 6.0 or above is located
+!Define JawsDir "$appdata\Freedom Scientific\Jaws" ;the folder where app data for Jaws 6.0 and above is located
 !Define Scriptdir "Settings\Enu" ;folder in $JawsDir to put the script
 !Define JawsApp "JFW.EXE" ;Use to check if Jaws installed
 !Define Compiler "Scompile.exe" ;Use to recompile script after installation
+
+; Name of folder relative to $INSTDIR in which to install the installer source files.
+!define JAWSINSTALLERSRC "Installer Source"
 
 ShowInstDetails Show ; debug
 AutoCloseWindow False ; debug
 SetCompressor /solid lzma ;create the smallest file
 SetOverwrite on ;always overwrite files
-
-;Name in file
+!define SetOverwriteDefault "on"
+;Name shown to user, also name of installer file
 Name "${ScriptName}"
 ;The executable file to write
 OutFile "${ScriptName}.exe"
@@ -70,13 +107,15 @@ InstallDir "$programfiles\${scriptName}"
 BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 !include "JFW.nsh" ;Header file to store all macros
 
+!include "uninstlog.nsh"
 !include "strfunc.nsh" ; used in DisplayJawsList to check for a digit, and other things
 ; Declare used functions from strfunc.nsh.
 ${StrLoc}
 
 !include "nsDialogs.nsh"
 ;Modern UI configurations
-!Include "MUI.nsh"
+;!Include "MUI.nsh"
+!Include "MUI2.nsh"
   !define MUI_ABORTWARNING
   !define MUI_UNABORTWARNING
 !define MUI_FINISHPAGE_SHOWREADME "$instdir\audacity_readme.txt"
@@ -85,17 +124,186 @@ ${StrLoc}
   !define MUI_FINISHPAGE_LINK "Go to author's project"
   !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
+
+;-----
+; The following goes in the .nsh file.
+; Macros to bracket instructions used to install the scripts in a JAWS version.
+; Usage:
+;${JAWSScriptItemsBegin}
+;Instructions to install script files into a JAWS version.  $OUTDIR will be set to the directory where the scripts should be installed.
+;${JAWSScriptItemsEnd}
+;If not defined, a default is used.
+
+!macro __JAWSScriptItemsBegin
+function __JAWSInstallScriptItems
+!macroend
+
+!macro __JAWSScriptItemsEnd
+functionend
+!define __JAWSInstallScriptItemsDefined
+!macroend
+
+!macro __JAWSInstallScriptItems
+!ifdef __JAWSInstallScriptItemsDefined
+call __JAWSInstallScriptItems
+!else
+call __JAWSInstallScriptItemsDefault
+!EndIf
+!macroend
+
+!define JAWSScriptItemsBegin "!insertmacro __JAWSScriptItemsBegin"
+!define JAWSScriptItemsEnd "!insertmacro __JAWSScriptItemsEnd"
+
+!macro __FileDatedNF path item
+!define __FileDatedNFUID ${__LINE__}
+File /nonfatal "${path}${item}"
+IfFileExists "$OUTDIR\${item}" 0 end${__FileDatedNFUID}
+${AddItemDated} "$OUTDIR\${item}"
+end${__FileDatedNFUID}:
+!undef __FileDatedNFUID
+!macroend
+!define FileDatedNF "!insertmacro __FileDatedNF"
+
+; If not defined, we use this default function.  It copies the jss file, then tries to copy every other kind of script file if it exists.
+function __JAWSInstallScriptItemsDefault
+${FileDated} "script\" "${ScriptApp}.jss"
+${FileDatedNF} "script\" "${ScriptApp}.jbs"
+${FileDatedNF} "script\" "${ScriptApp}.jcf"
+${FileDatedNF} "script\" "${ScriptApp}.jdf"
+${FileDatedNF} "script\" "${ScriptApp}.jgf"
+${FileDatedNF} "script\" "${ScriptApp}.jkm"
+${FileDatedNF} "script\" "${ScriptApp}.jsd"
+${FileDatedNF} "script\" "${ScriptApp}.jsh"
+${FileDatedNF} "script\" "${ScriptApp}.jsm"
+functionend ; __JAWSInstallScriqtItemsDefault
+
+
+;/*
+; The following would appear in the user's file after including the header.
+${JAWSScriptItemsBegin}
+${FileDated} "script\" "audacity.jss"
+${FileDated} "script\" "audacity.jsd"
+${FileDated} "script\" "audacity.jkm"
+${FileDated} "script\" "audacity.jsm"
+${JAWSScriptItemsEnd}
+;*/
+
+;-----
+; These are section indexes of sections whose state we need to know to write the installation summary.
+var JAWSSecInstSrc
+var JAWSSecUninstaller
+
+;-----
+Var INSTALLEDJAWSVERSIONS ;separated by |
+var INSTALLEDJAWSVERSIONCOUNT
+var SELECTEDJAWSVERSIONS
+var SELECTEDJAWSVERSIONCOUNT
+
+;-----
+
+; Multiline edit box
+!define __NSD_TextMultiline_CLASS EDIT
+!define __NSD_TextMultiline_STYLE ${DEFAULT_STYLES}|${WS_TABSTOP}|${ES_MULTILINE}
+!define __NSD_TextMultiline_EXSTYLE ${WS_EX_WINDOWEDGE}|${WS_EX_CLIENTEDGE}
+!insertmacro __NSD_DefineControl TextMultiline
+
+
 ;-----
 ;Pages
-;!Insertmacro Mui_Page_Welcome
-;!insertmacro mui_page_Components
+!define MUI_WELCOMEPAGE_TITLE "setup for ${ScriptName}, ${VERSION}"
+!define MUI_WELCOMEPAGE_TEXT "Welcome to the installation for ${ScriptName}.$\n\
+This wizard will guide you through the installation of ${ScriptName}.$\n"
+; ${LegalCopyright}$\n\ EOL
+!Insertmacro Mui_Page_Welcome
+;The order of the insstype commands is important.
+insttype "Full"
+insttype "JustScripts"
+;insttype /NOCUSTOM
+insttype /COMPONENTSONLYONCUSTOM
+!define INST_FULL 1
+!define INST_JUSTSCRIPTS 2
+!define INST_CUSTOM 33
+
+; Displays 1 lines of aab 98 chars.
+!define MUI_COMPONENTSPAGE_TEXT_TOP "Full allows you to uninstall using Add/Remove Programs.  $\n\
+Just Scripts installs scripts and README, can't be uninstalled from Add/Remove Programs."
+;!define MUI_COMPONENTSPAGE_TEXT_COMPLIST text
+;!define MUI_COMPONENTSPAGE_TEXT_INSTTYPE text
+;!define MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_TITLE text
+;!define MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_INFO text ;Text to display inside the description box when no section is selected.
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE ComponentsPageLeave
+!insertmacro mui_page_Components
+
+function ComponentsPageLeave
+getcurinsttype $0
+intop $0 $0 + 1
+;messagebox MB_OK "ComponentsPageLeave: insttype = $0, justscripts = ${INST_JUSTSCRIPTS}" ; debug
+;sectiongetflags $JAWSSecInstSrc $1 ; debug
+;messagebox MB_OK "ComponentsPageLeave: SecInstSrc flags = $1" ; debug
+intcmp $0 ${INST_JUSTSCRIPTS} end +1 +1
+;sectiongetflags $JAWSSecUninstaller $1 ; debug
+;messagebox MB_OK "ComponentsPageLeave: before selecting insttype = $0, section flags = $1" ; debug
+
+!insertmacro SelectSection $JAWSSecUninstaller
+;sectiongetflags $JAWSSecUninstaller $1 ; debug
+;messagebox MB_OK "ComponentsPageLeave: after selecting section flags = $1" ; debug
+end:
+functionend
+
 ;Page custom DisplayJawsList checkJaws ;Select Jaws version page
-page custom JawsPage JawsPageLeave
+page custom JawsPage JawsPageLeave ;Select Jaws version page
+
 PageEx Directory
-DirText "Choose the folder in which to store ${ScriptName}'s installation, such as uninstaller, help or other files. $\n\
-Setup will store ${ScriptName}'s installation in the following folder. To install in a different folder, click Browse and select another folder. Click Install to start the installation."
+PageCallbacks DirPagePre
+DirText "Choose the folder in which to store ${ScriptName}'s installation files, such as uninstaller, help or other files. $\n\
+Setup will store ${ScriptName}'s installation in the following folder. To install in a different folder, click Browse and select another folder."
 PageExEnd
+
+function DirPagePre
+${Unless} ${SectionIsSelected} $JAWSSecUninstaller
+Abort ; skip page if it is not full installation.
+${EndUnless}
+functionend
+
+page custom PageInstConfirmPre
+
+!ifndef StrRepIncluded
+${StrRep}
+!EndIf
+
+function PageInstConfirmPre
+!define MUI_PAGE_HEADER_TEXT "Confirm Installation Settings"
+!define MUI_PAGE_HEADER_SUBTEXT ""
+${StrRep} $1 "$SELECTEDJAWSVERSIONS" "|" ", "
+strcpy $0 "The scripts will be installed in the following JAWS versions: $1.$\r$\n"
+getcurinsttype $2 ; debug
+;messagebox MB_OK "JAWSPageConfirmPRE: inst type $2" ; debug
+${If} ${SectionIsSelected} $JAWSSecUninstaller
+strcpy $0 "$0Installation folder: $INSTDIR.$\r$\nThis installation should be uninstalled via Add/Remove Programs.$\r$\n"
+${If} ${SectionIsSelected} $JAWSSecInstSrc ; SecInstSrc
+strcpy $0 "$0The installer source will be installed in $INSTDIR\${JAWSINSTALLERSRC}."
+${EndIf} ; installer source
+${Else}
+strcpy $0 "$0This instaallation cannot be uninstalled viaa Add/Remove Programs."
+${EndIf}
+/*
+${If} ${SectionIsSelected} $JAWSSecInstSrc ; SecInstSrc
+strcpy $0 "$0The installer source will be installed."
+${EndIf} ; installer source
+*/
+nsDialogs::create 1018
+pop $2
+
+${NSD_CreateTextMultiline} 0u 0u 100% 100% "$0"
+pop $3
+${NSD_AddStyle} $3 ${ES_READONLY}
+
+${NSD_SetFocus} $3
+nsDialogs::show
+functionend
+
 !insertmacro mui_page_instfiles
+
 !insertmacro mui_page_Finish
 
 ;Uninstall pages
@@ -104,18 +312,21 @@ PageExEnd
   !insertmacro MUI_LANGUAGE "English"
 
 Function .OnInit
+call GetSecIDs ; Initializes variables with some section indexes.
 strCpy $0 0
 EnumRegkey $1 hklm "software\Freedom Scientific\Jaws" $0
 ${If} $1 == ""
-MessageBox MB_ICONINFORMATION|MB_OK "Setup cannot start because the Jaws programme is not installed on your system."
+MessageBox MB_ICONINFORMATION|MB_OK "Setup cannot start because the Jaws program is not installed on your system."
 quit
 ${Else}
-!insertmacro mui_Installoptions_extract Install.ini
+; Not needed with MUI2?
+;!insertmacro mui_Installoptions_extract Install.ini
 ${EndIf}
 FunctionEnd
 
 Function .OnInstSuccess
-!Insertmacro RemoveTempFile
+; Hopefully no longer needed.
+;!Insertmacro RemoveTempFile
 FunctionEnd
 
 
@@ -123,18 +334,13 @@ FunctionEnd
 ${StrTok}
 !endif
 
-Var INSTALLEDJAWSVERSIONS ;separated by |
-var INSTALLEDJAWSVERSIONCOUNT
-var SELECTEDJAWSVERSIONS
-var SELECTEDJAWSVERSIONCOUNT
-
 
 !macro tstenumjawsversions var root key index
 ; Resembles enumregkey to test GetJAWSVersions.
 strcpy ${var} ""
 ; compare with number of items in strtok.
 intcmp ${index} 6 tstenumskip 0 tstenumskip
-${strtok} ${var} "5.0|6.0|9.0|10.2|11.0|12.0" "|" ${index} 0
+${strtok} ${var} "5.0|6.0|9.0|10.0|11.0|12.0" "|" ${index} 0
 ;intcmp ${index} 3 tstenumskip 0 tstenumskip
 ;${strtok} ${var} "9.0|10.2|11.0" "|" ${index} 0
 tstenumskip:
@@ -181,11 +387,13 @@ loop:
 strcmp $2 "" done ; exit loop if after last JAWS version
 IntOp $R0 $R0 + 1 ;increase the registry key index by one unit
 ; Is this registry key a version number?  I have seen "Common" Victor checks for "Registration", and I don't know of any version that doesn't start with a digit.
+; We search for the first character of the entry in a string of digits.  If we find it, we know it staarts with a digit.  If not, we can skip this entry.
 strcpy $3 $2 1 ; copy first character
 ${StrLoc} $4 "0123456789" $3 ">"
-strcmp $4 "" loop
+strcmp $4 "" loop ; if "", the character was not found
 ; character is in "0" through "9"
 ; Starts with a digit, is a version.
+
 ;Is it within min and max version limits?
 ${If} "${JAWSMINVERSION}" == ""
 ${OrIf} $2 >= "${JAWSMINVERSION}"
@@ -200,10 +408,11 @@ ${EndIf} ; meets max version conditions
 ${EndIf} ; meets min version condition
 ;${chkst} 3
 goto loop ;continue checking
-done:
+
+done: ; done with loop
 ;${chkst} 4
-strcmp $0 "" +2
-strcpy $0 $0 -1 ;remove trailing |
+strcmp $0 "" +2 ; Did we find any JAWS versions?
+strcpy $0 $0 -1 ;yes, remove trailing |
 detailprint "GetJAWSVersions: got $1 versions: $0" ; debug
 ;messagebox MB_OK "GetJAWSVersions: got $1 versions: $0" ; debug
 ;${chkst} 8 ; debug
@@ -214,13 +423,12 @@ pop $2
 pop $R0
 ; Put the return values on the stack and restore their registers.
 exch $1
-;messagebox MB_OK "After exch $$1, $$1 = $1, expecting S1" ; debug
 exch
-;messagebox MB_OK "after exchanging top 2 stack elements" ; debug
 exch $0
 ; stack: versions, version count
 functionend
 
+/*
 ; Cuong's code similar to JawsPage, partially converted.
 Function DisplayJawsList 
 call GetJAWSVersions
@@ -258,28 +466,110 @@ ${EndIf}
 ReadRegStr $5 HKLM "SOFTWARE\Freedom Scientific\Jaws\$4" "Target" ;Find the installation path of Jaws
 WriteIniStr ${TempFile} Install Compiler $5${Compiler}
 FunctionEnd
+*/
 
 
-Section Install
+; Probably won't do anything.
+Section -Install
 ;Exstract script to enu folder
 ;this will have to change to use install file logging.
-!Insertmacro ExtractScript "script\*.*"
+;!Insertmacro ExtractScript "script\*.*"
 ;Recompile scripts
 ;Needs to change to support multiple versions.
-!insertmacro RecompileSingle audacity
+;!insertmacro RecompileSingle ${ScriptApp}
 SectionEnd
 
-Section -Uninstaller
-; Set up for uninstallation.  Also copies .txt files to $InstDir.
-CopyFiles /silent ${TempFile} ${InstallFile} ;copy the install.ini to the instal directory
+Section -Uninstaller SecUninstaller
+sectionIn ${INST_FULL}
+!insertmacro UNINSTLOG_OPENINSTALL
+; Set up for uninstallation.  Also copies .txt files to $InstDir, but that will probably change.
+;CopyFiles /silent ${TempFile} ${InstallFile} ;copy the install.ini to the instal directory
 SetOutPath $Instdir
-File *.txt
-;Write the installer and add it to the registry
-WriteUninstaller "$Instdir\${UnInstaller}"
+;File *.txt
+;Write the uninstaller and add it to the registry
+${WriteUninstaller} "$Instdir\${UnInstaller}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ScriptName}" "DisplayName" "${ScriptName} (remove only)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ScriptName}" "UninstallString" '"$INSTDIR\${UnInstaller}"'
+!insertmacro UNINSTLOG_CLOSEINSTALL
 sectionEnd
 
+;---
+; Install JAWS Scripts section
+!macro _ForJawsVersions
+; Place before the code that installs scripts to a version.
+; Follow the code with _ForJawsVersions.  These macros can be used more than once but they cannot be nested.
+!ifndef _ForJawsVersionsCounter
+!define _ForJawsVersionsCounter 0
+!else
+!define /math _ForJawsVersionsCounterTemp ${_ForJawsVersionsCounter} + 1
+!undef _ForJawsVersionsCounter
+!define _ForJawsVersionsCounter ${_ForJawsVersionsCounterTemp}
+!undef _ForJawsVersionsCounterTemp
+!endif
+push $0
+push $R0
+strcpy $R0 0
+_ForJawsVersionsLoop${_ForJawsVersionsCounter}:
+${StrTok} $0 "$SELECTEDJAWSVERSIONS" "|" $R0 0
+!macroend ; _ForJawsVersions
+!define ForJawsVersions "!insertmacro _ForJawsVersions"
+
+!macro _ForJawsversionsEnd
+; Place after the code that installs scripts to a version.
+intop $R0 $R0 + 1
+intcmp $R0 $SELECTEDJAWSVERSIONCOUNT 0 _ForJawsVersionsLoop${_ForJawsVersionsCounter} 0
+pop $R0
+pop $0
+!macroend
+!define ForJawsVersionsEnd "!insertmacro _ForJawsVersionsEnd"
+
+; Insert this inside the section that installs the scripts.
+; Assumes setOverWrite is set.
+; Must be inserted before function JawsInstallVersion.
+!macro JAWSInstallScriptsSectionCode
+GetCurInstType $0
+IntOp $0 $0 + 1 ;make it the same as for SectionIn
+IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging
+!insertmacro UNINSTLOG_OPENINSTALL
+NoLogging:
+${ForJawsVersions}
+; $0 contains the version string.
+call JawsInstallVersion
+${ForJawsVersionsEnd}
+GetCurInstType $0
+IntOp $0 $0 + 1 ;make it the same as for SectionIn
+IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging2
+!insertmacro UNINSTLOG_CLOSEINSTALL
+NoLogging2:
+!macroend
+
+; Adapted from ccousins.nsi
+Section "-Install JAWS Scripts" SecJAWS
+SectionIn ${INST_FULL} ${INST_JUSTSCRIPTS}
+;StrCmp "$JAWSSCRIPTDEST" "" End
+SetOverwrite on ;Always overwrite
+!insertmacro JAWSInstallScriptsSectionCode
+SetOverwrite ${SetOverwriteDefault}
+SectionEnd ;Install JAWS scripts
+
+section "Installer Source" SecInstSrc
+;SectionIn ${INST_FULL}
+!insertmacro UNINSTLOG_OPENINSTALL
+${CreateDirectory} "$INSTDIR\${JAWSINSTALLERSRC}"
+SetOutPath  "$INSTDIR\Installer Source"
+${File} "" "uninstlog.nsh"
+SetOutPath $INSTDIR
+!insertmacro UNINSTLOG_CLOSEINSTALL
+SectionEnd
+
+function GetSecIDs
+; Places the section index of the Get Installer Source and the SecUninstaller sections in variables.  This is because SecInstSrc is not defined before the code for PageInstConfirmPre that references them.
+strcpy $JAWSSecInstSrc ${SecInstSrc}
+strcpy $JAWSSecUninstaller ${SecUninstaller}
+;messagebox MB_OK "GetSecIDs:$$JAWSSecUninstaller = $JAWSSecUninstaller, $$JAWSSecInstSrc = $JAWSSecInstSrc" ; debug 
+functionend
+
+;-----
 ;Uninstaller function and Section
 Function un.onInit
     MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
@@ -287,18 +577,33 @@ Function un.onInit
 FunctionEnd
 
 Function un.OnUninstSuccess
-!Insertmacro RemoveTempFile
-HideWindow
+  ;!Insertmacro RemoveTempFile
+  HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "${ScriptName}  has been successfully removed from your computer."
 FunctionEnd
 
 Section Un.RemoveScript
-!insertmacro un.DeleteScript "audacity*.*"
+;!insertmacro un.DeleteScript "${ScriptApp}*.*"
+;SetShellVarContext all
+!insertmacro UNINSTLOG_UNINSTALL
+SetOutPath "$INSTDIR"
+
+
+Delete "${UninstLog}"
+
 SectionEnd
 
 Section un.Uninstaller
 DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ScriptName}"
-RmDir /r $instdir
+; Set outpath to somewhere else, ProgramFiles for now, should be maybe parent of $INSTDIR.
+SetOutPath "$PROGRAMFILES"
+DetailPrint "Attempting to remove $INSTDIR$\r$\n"
+;RmDir /r $instdir
+; We don't use rmdir /r in case user chose c:\Program Files as install dir.
+Rmdir "$INSTDIR" 
+IfFileExists "$INSTDIR" +1 instdirgone
+MessageBox MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files."
+instdirgone:
 SetAutoclose true
 SectionEnd
 
@@ -307,9 +612,12 @@ SectionEnd
 var JAWSDLG ; handle of JAWS page dialog
 var JAWSLV ; handle of JAWS versions list view
 
-; I think from Gary's code, probably not  used yet-- 8/4/12.
-var JAWSSCRIPTDEST ; fully qualified path to which scripts are installed, does not handle multiple versions.
-var JAWSPROGDIR ; directory containing JAWS executables
+; I think from Gary's code, probably not used yet-- 8/4/12.
+;var JAWSSCRIPTDEST ; fully qualified path to which scripts are installed, does not handle multiple versions.
+;var JAWSPROGDIR ; directory containing JAWS executables
+
+;-----
+; List view control
 
 ;Messages, styles, and structs for handling a list view.
 ;!define LVM_FIRST           0x1000
@@ -317,8 +625,10 @@ var JAWSPROGDIR ; directory containing JAWS executables
 !define /math LVM_GETITEMTEXTW ${LVM_FIRST} + 115
 !define LVM_GETUNICODEFORMAT 0x2006
 !define /math LVM_GETITEMSTATE ${LVM_FIRST} + 44
+!define /math LVM_SETITEMSTATE ${LVM_FIRST} + 43
 !define /math LVM_GETITEMA ${LVM_FIRST} + 5
 !define /math LVM_GETITEMW ${LVM_FIRST} + 75
+!define /math LVM_SETITEMA ${LVM_FIRST} + 6
 !define /math LVM_INSERTITEMA ${LVM_FIRST} + 7
 !define /math LVM_INSERTITEMW ${LVM_FIRST} + 77
 !define /math LVM_INSERTCOLUMNA ${LVM_FIRST} + 27
@@ -344,18 +654,6 @@ var JAWSPROGDIR ; directory containing JAWS executables
 ;!define __NSD_ListView_EXSTYLE ${LVS_EX_CHECKBOXES} ; debug
 ; This is an "internal" macro from nsdialogs.nsh.
 !insertmacro __NSD_DefineControl ListView
-/*
-; This was an attempt to use LVM_SetExtendedListViewStyle to set the list view extended style that was abandoned when it was verified that nsdialogs::createcontrol uses CreateWindowEx which the MSDN list view examples also use.  This probably won't work as is because I don't think SendMessage will execute the | on the styles param; maybe make another define /math ${__NSD_ListView_EXSTYLE} or use math plugin to or them.
-!macro _NSD_CreateListView
-push $0
-nsDialogs::CreateControl ${__NSD_ListView_CLASS} ${__NSD_ListView_STYLE} ${__NSD_ListView_EXSTYLE}
-pop $0
-;SendMessage $0 ${LVM_SetExtendedListViewStyle} 0 ${__NSD_ListView_EXSTYLE}
-exch $0 ; put result on stack and restore $0
-!macroend
-!define NSD_CreateListView "!insertmacro _NSD_CreateListView"
-*/
-
 ; values for LVITEM struct mask field
 !define LVIF_TEXT 0x00000001
 !define LVIF_STATE 0x00000008
@@ -365,7 +663,7 @@ $tagLVITEM = "uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;
 		"int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup"
 */
 
-; You can't use /* */ in the definition because the params for system::cal is a NSIS string, but this is a good reference.
+; You can't use /* */ in the definition because the params for system::call is a NSIS string, but this is a good reference.
 ;!define tagLVITEM "u /*Mask*/, i /*Item*/, i /*SubItem*/, u /*State*/, u /*StateMask*/, t /*Text*/, i /*TextMax*/, i /*Image*/, i /*Param*/, i /*Indent*/, i /*GroupID*/, u /*Columns*/, i /*pColumns*/, i /*piColFmt*/, i /*iGroup*/"
 !define LVIS_IMAGESTATEMASK 0xf000
 !define LVIS_IMAGESTATECHECKED 0x2000 ; item is checked
@@ -381,6 +679,7 @@ $tagLVITEM = "uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;
 
 !define tagLVCOLUMN "i, i, i, t, i, i, i, i, i, i, i"
 
+; debug function
 function DisplayLVItem
 ; Display the LVITEM struct for item $0 in $JAWSLV.  For debugging.
 system::store "p1p2p3p4p5p6p7P0P1P2"
@@ -444,18 +743,10 @@ intop $R0 $R0 + 1 ; for terminating null in case we need it.
 intop $R0 $R0 * 2 ; unicode?
 ;u doesn't seem to allocate memory, changed to i.
 system::call "*(i ${LVIF_TEXT}, i r0, i 0, i, i, t r1, i R0, i, i, i, i, i, i, i, i) i .R1"
-/*
-system::call "*$R1(i, i r0, i 0, i, i, i .r9, i R0, i, i, i, i, i, i, i, i)" ; debug
-system::alloc 10 ; debug
-system::copy 8 $R6 $R9
-system::call "*$R6(*i .R8)" ; debug
-IntFmt $R7 "%x" $R8 ; debug
-messagebox MB_OK "first word of text: $R7" ; debug
-*/
 SendMessage $JAWSLV ${LVM_INSERTITEMA} 0 $R1 $R2
 intcmp $R2 -1 0 +2 +2
 ; error
-messagebox MB_OK "LVInsertItem: LVM_INSERTITEMW failed for item $0" ; debug
+messagebox MB_OK "LVInsertItem: LVM_INSERTITEMA failed for item $0" ; debug
 system::free $R1
 ;messagebox MB_OK "added item $R2" ; debug
 pop $R2
@@ -487,7 +778,7 @@ push $R0
 ;system::call "*(u ${LVIF_STATE}, i $0, i 0, u, u 0xffff, t, i, i, i, i, i, u, i, i,i) i .R0"
 SendMessage $JAWSLV ${LVM_GETITEMSTATE} $0 ${LVIS_IMAGESTATEMASK} $1
 ;push $R0 ; debug
-intfmt $R0 "%x" $1
+;intfmt $R0 "%x" $1 ; debug
 ;messagebox MB_OK "LVIsItemChecked: item state = 0x$R0" ; debug
 ;pop $R0 ; debug
 intop $1 $1 & ${LVIS_IMAGESTATECHECKED}
@@ -496,12 +787,37 @@ pop $R0
 ;messagebox MB_OK "LVIsItemChecked: returning $1" ; debug
 functionend
 
-;-----
-;Install JAWS scripts.
-!define JAWSPROGROOT "$PROGRAMFILES\Freedom Scientific\JAWS"
-!define JAWSSCRIPTROOT "$APPDATA\Freedom Scientific\JAWS" ; for v6.0 and later
+function LVCheckItem
+; $0 - item index
+; $1 - 0 = unchecked, else checked.
+push $2
+push $R0
+strcpy $2 ${LVIS_IMAGESTATECHECKED}
+intcmp $1 0 +1 +2 +2
+strcpy $2 ${LVIS_IMAGESTATEUNCHECKED} ; unchecked
+; We probably don't need to set LVIF_STATE or item.
+system::call "*(i ${LVIF_STATE}, i r0, i 0, i r2, i ${LVIS_IMAGESTATEMASK}, t, i, i, i, i, i, i, i, i, i) i .R0"
+;messagebox MB_OK "LVCheckItem: setting item $0 to $2 in $JAWSLV" ; debug
+SendMessage $JAWSLV ${LVM_SETITEMSTATE} $0 $R0 $R3
+system::free $R0
+;SendMessage $JAWSLV ${LVM_GETITEMSTATE} $0 ${LVIS_IMAGESTATEMASK} $R4 ; debug
+;intfmt $R4 "%x" $R4 ; debug
+;messagebox MB_OK "GetItemState returned 0x$R4, SetItemState returned $R3" ; debug
+pop $R0
+pop $2
+functionend
 
-;Create installed JAWS versions page.
+!macro _LVCheckItem item checked
+push $0
+push $1
+strcpy $0 ${item}
+strcpy $1 ${checked}
+call LVCheckItem
+pop $1
+pop $0
+!macroend
+!define LVCheckItem "!insertmacro _LVCheckItem"
+
 ; Adapted from NSDialogs ${NSD_LB_GetSelection, has not been used.
 !macro __NSD_LV_GetSelection CONTROL VAR
 
@@ -513,6 +829,46 @@ functionend
 
 !define NSD_LV_GetSelection `!insertmacro __NSD_LV_GetSelection`
 
+;-----
+
+;Install JAWS scripts.
+; I don't think these two are used, maybe they should be.
+!define JAWSPROGROOT "$PROGRAMFILES\Freedom Scientific\JAWS"
+!define JAWSSCRIPTROOT "$APPDATA\Freedom Scientific\JAWS" ; for v6.0 and later
+
+function MarkSelectedVersions
+; Causes the list view items for the JAWS versions that have been previously selected to be checked.  This is to restore the selections if the user comes back to the JAWS versions page.
+intcmp $SELECTEDJAWSVERSIONCOUNT 0 0 +2 +2
+return ; return if no selected versions
+;messagebox MB_OK "Enter MarkSelectedVersions" ; debug
+push $0 ; index in $INSTALLEDJAWSVERSIONS
+push $1 ; index in $SELECTEDJAWSVERSIONS
+push $2 ; value we're looking for
+push $3 ; value we're examining
+strcpy $0 0
+strcpy $1 0
+${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0 ; first checked version
+strcpy $3 ""
+loop:
+intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
+intcmp $1 $SELECTEDJAWSVERSIONCOUNT done 0 done
+${StrTok} $3 "$INSTALLEDJAWSVERSIONS" "|" $0 0
+;messagebox MB_OK "MarkSelectedVersions: checking item $0 $3 against $1 $2" ; debug
+${If} $2 == $3
+${LVCheckItem} $0 1
+intop $1 $1 + 1
+${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0
+${EndIf}
+intop $0 $0 + 1
+goto loop
+done:
+pop $3
+pop $2
+pop $1
+pop $0
+functionend ; MarkSelectedVersions
+
+;Create installed JAWS versions page.
 Function JawsPage
 ;!InsertMacro SectionFlagIsSet ${SecJAWS} ${SF_SELECTED} DoJawsPage ""
 goto DoJawsPage ; debug, uncomment section selected test above.
@@ -528,7 +884,7 @@ call GetJAWSVersions
 pop $INSTALLEDJAWSVERSIONS
 pop $INSTALLEDJAWSVERSIONCOUNT
 DetailPrint "JawsPage: found  $INSTALLEDJAWSVERSIONCOUNT versions: $INSTALLEDJAWSVERSIONS" ; debug
-messagebox MB_OK "JawsPage: Found $INSTALLEDJAWSVERSIONCOUNT installed JAWS versions compatible with this application: $INSTALLEDJAWSVERSIONS" ; debug
+;messagebox MB_OK "JawsPage: Found $INSTALLEDJAWSVERSIONCOUNT installed JAWS versions compatible with this application: $INSTALLEDJAWSVERSIONS" ; debug
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 0
 DetailPrint "JawsPage: JAWS is not installed, skipping JAWS versions page" ; debug
 messagebox MB_OK "JawsPage: JAWS is not installed, skipping JAWS versions page" ; debug
@@ -536,8 +892,10 @@ abort ; no JAWS
 ${EndIf}
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
 DetailPrint "JawsPage: 1 JAWS version, skipping JAWS versions page" ; debug
-MessageBox MB_OK "JawsPage: 1 JAWS version, skipping JAWS versions page" ; debug
-quit ; debug
+MessageBox MB_OK "JawsPage: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" ; debug
+strcpy $SELECTEDJAWSVERSIONS $INSTALLEDJAWSVERSIONS
+strcpy $SELECTEDJAWSVERSIONCOUNT $INSTALLEDJAWSVERSIONCOUNT
+;quit ; debug
 abort ; only 1 JAWS version
 ${EndIf}
 
@@ -559,7 +917,8 @@ ${LVSetFont} ${DEFAULT_GUI_FONT}
 
 ; Set column header
 /*
-; Doesn't work, don't know why.push $R0
+; Doesn't work, don't know why.
+push $R0
 push $R1
 system::call "*(${tagLVCOLUMN}) (${LVCF_TEXT}, , , t "Version", 7) i .$R0"
 SendMessage $JAWSLV ${LVM_INSERTCOLUMNA} 0 $R0 $R1
@@ -570,21 +929,22 @@ ${EndIf}
 pop $R1
 pop $R0
 */ ; column header
-;call FindJawsVersions
 push $0
 push $1
 strcpy $0 0
 loop:
-intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
-${strtok} $1 $INSTALLEDJAWSVERSIONS "|" $0 0
+  intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
+  ${strtok} $1 $INSTALLEDJAWSVERSIONS "|" $0 0
 ${LVAddItem} "$1"
-intop $0 $0 + 1
+  intop $0 $0 + 1
 goto loop
 done:
 ;messagebox MB_OK "JawsPage: added $0 of $INSTALLEDJAWSVERSIONCOUNT items" ; debug
 pop $1
 pop $0
+; In case we come back to this page check the previously selected versions.
 ${NSD_SETFOCUS} $JAWSLV
+call MarkSelectedVersions
 nsDialogs::Show
 FunctionEnd
 
@@ -593,6 +953,7 @@ Function JawsPageLeave
 push $0
 push $1
 push $3
+/*
 ${NSD_GetStyle} $JAWSLV ; debug
 pop $0 ; debug
 IntFmt $1 "%x" $0 ; debug
@@ -600,6 +961,9 @@ IntFmt $1 "%x" $0 ; debug
 pop $0 ; debug
 IntFmt $3 "%x" $0 ; debug
 messagebox MB_OK "Enter JawsPageLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed$\r$\nList view style = 0x$1, extended style = 0x$3." ; debug
+*/
+
+; Get the selected JAWS versions.
 strcpy $SELECTEDJAWSVERSIONS ""
 strcpy $SELECTEDJAWSVERSIONCOUNT 0
 strcpy $0 0
@@ -622,16 +986,17 @@ intop $SELECTEDJAWSVERSIONCOUNT $SELECTEDJAWSVERSIONCOUNT + 1
 skip:
 intop $0 $0 + 1
 goto loop
-done:
+
+done: ; we have finished searching for selected JAWS versions.
 ; If any versions were checked, remove final separator.
 strcmp $SELECTEDJAWSVERSIONS "" +2
 strcpy $SELECTEDJAWSVERSIONS $SELECTEDJAWSVERSIONS -1 ; remove trailing |
 DetailPrint "JawsPageLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
-messagebox MB_OK "JawsPageLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
+;messagebox MB_OK "JawsPageLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
 pop $3
 pop $1
 pop $0
-quit ; debug
+;quit ; debug
 functionend
 
 function CheckScriptExists
@@ -642,6 +1007,7 @@ push $2
 strcpy $1 0 ; return value
 ;Entry: $0 = version string like "6.0".
 call GetJAWSScriptDir
+pop $2
 ; $2 = full script destination path.
 ;StrCpy $2 "${JAWSSCRIPTROOT}\$0\${ScriptDir}"
 ;StrCpy $JAWSPROGDIR "${JAWSPROGROOT}\$0"
@@ -651,13 +1017,17 @@ MessageBox MB_YESNO "There are scripts for ${ScriptName} in $2.  Do you want to 
 strcpy $1 1 ; yes
 End:
 pop $2
+!ifdef JAWSDEBUG ; debug
+strcpy $1 1 ; debug
+!endif ; debug
 FunctionEnd
 
 function GetJawsScriptDir
 ; Get the JAWS script directory based on its version.
 ; $0 - string containing JAWS version number.
-; $2 - (exit) script directory.
+; Returns script directory on stack.
 ; Does logicLib support the >= test for strings? yes!
+push $2
 ${If} $0 >= "6.0" ;Current selected version is 6.0 or later
 strcpy $2 "${JawsDir}\$0\${ScriptDir}" ;get the script location from current user
 ${Else}
@@ -665,25 +1035,65 @@ ${Else}
 ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
 strcpy $2 "$2\${ScriptDir}"
 ${EndIf}
+exch $2 ; return value
 functionend
 
 function GetJawsProgDir
 ; Get the JAWS program directory based on its version.
 ; $0 - string containing JAWS version number.
-; $2 - (exit) program directory.
+; Returns JAWS program directory on stack.
+push $2
 ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
+exch $2 ; return to TOS, $2 same as before call
 functionend
 
-;Find the JAWS versions installed on this system.
-;This function searches for versions by using file folders.
-Function FindJawsVersions
-;${Locate} "${JAWSPROGROOT}" "/L=D /G=0" FindJawsVerCallback
-FunctionEnd
 
+function JawsInstallVersion
+; Installs scripts to a JAWS version.
+; $0 - string containing JAWS version.
+; Assumes overwrite is set to on.
+; On exit $outDir set to script directory for the version.
+; Should we return an error indication if the script did not compile?
+push $1
+push $R0
+push $R1
+call GetJawsScriptDir
+pop $R1 ; script dir
+${SetOutPath} "$R1"
+!ifndef JAWSDEBUG
+StrCpy $UninstLogAlwaysLog 1
+DetailPrint "JAWSInstallVersion: invoking macro __JAWSInstallScriptItems for version $0" ; debug
+!insertmacro __JAWSInstallScriptItems
+StrCpy $UninstLogAlwaysLog ""
+!EndIf
+call GetJawsProgDir
+pop $R0
+; $R0 has backslash at end of path.
+StrCpy $R0 "$R0${Compiler}"
+StrCpy $R1 "$R1\${ScriptApp}"
+!ifndef JAWSDEBUG ; debug
+IfFileExists "$R0" +1 NoCompile
+!endif ; debug
+!ifdef JAWSDEBUG
+MessageBox MB_OK `Pretending to run ExecWait '"$R0" "$R1.jss"' $$1`
+!Else ; not JAWSJEBUG
+ExecWait '"$R0" "$R1.jss"' $1
+IntCmp $1 0 GoodCompile +1 +1
+MessageBox MB_OK "Could not compile $R1, SCompile returned $1"
+GoTo End
+GoodCompile:
+;Add .jsb file to log
+strCpy $R0 "$UninstLogAlwaysLog"
+StrCpy $UninstLogAlwaysLog "1"
+${AddItemDated} "$R1.jsb"
+StrCpy $UninstLogAlwaysLog "$R0"
+!EndIf ; else not JAWSDEBUG
+GoTo End
+NoCompile:
+MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
+End:
+pop $R1
+pop $R0
+pop $1
+functionend ; JawsInstallVersion
 
-;Callback for ${locate}.
-;$JAWSLV contains handle of list view.
-Function FindJawsVerCallback
-${LVAddItem} $R7
-Push $1 ; return value
-FunctionEnd
