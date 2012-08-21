@@ -1,3 +1,43 @@
+:function AnnounceOn
+:Returns int No Return Description
+:Synopsis Varify that user choose to announce message of some default Audacity's hotkeys
+
+:function WrongFocus
+:Returns int No Return Description
+:Description Varify the focus stand at the Selection Bar or tool bar window. This function prevent Jaws to speaks unwanted message while using Audacity
+
+:function SaySelectionPosition
+:Description Says the selection start or end position
+:Category Positioning
+:Param handle/hPosition The ID of the start or end selection position
+:Param string/sKey The default hotkey
+:Param string/sMessage Spoken message
+
+:function MarkerMovement
+:Param string/sScript The script in wich you want to perform. This must be define at a string variable
+:Param string/sAlert The alert message depend on your marker script
+
+:function MouseMovement
+:Param string/sScript The script in wich you want to perform. This must be define at a string variable
+
+:function AnnounceMessage
+:Description Speaks an anounce message while pressing default hotkey in Audacity
+:Param string/Message The message you want the script to speaks
+:Param string/Key The default Audacity's hotkey
+
+:function SayNoProject
+:Description Speacks a message when no project open. for example, pressing the [ key will speak this message, and the script will exit.
+:Category Say
+
+:function NoProject
+:Returns int True if no project open
+:Description This function verify that no project has been created.
+
+:function AutoStartEvent
+
+:function HandleCustomWindows
+:Returns int No Return Description
+
 :function IsMainWindow
 :Returns int No Return Description
 
@@ -24,17 +64,80 @@
 
 :script WindowKeysHelp
 
-:script IncreaseGain
-:Synopsis Increases the gain of focus track
+:script MouseUp
+:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
 
-:script ReduceGain
-:Synopsis Reduces the gain of focus track
+:script MouseDown
+:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts This keystroke is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
 
-:script PanLeft
-:Synopsis change the pan of the focused track to the left
+:script MouseLeft
+:Description The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
 
-:script PanRight
-:Synopsis change the pan of the focused track to the right
+:script MouseRight
+:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
 
-:function HandleCustomWindows
+:script SelectionStart
+
+:script SelectionEnd
+:Synopsis Says the selection end position
+:Description When user press the ] key, reads the end selection position.
+:Category Positioning
+
+:script FinishMarkerRight
+:Synopsis Move the end of the selection to the right by a small amount
+
+:script FinishMarkerLeft
+:Synopsis Move the end of the selection to the left by a small amount
+
+:script StartMarkerRight
+:Synopsis Move the start of the selection to the right by a small amount
+
+:script StartMarkerLeft
+:Synopsis Move the start of the selection to the left by a small amount
+
+:script JawsHome
+
+:script JawsEnd
+
+:script MoveToStartOfSelectedTracks
+:Synopsis Move cursor to start of selected tracks
+
+:script MoveToEndOfSelectedTracks
+:Synopsis Move cursor to end of selected tracks
+
+:script SelectToBeginning
+:Synopsis Selection start at start of audio in selected tracks
+
+:script SelectToEnd
+:Synopsis Selection end at end of audio in selected tracks
+
+:script SelectFromStartOfLine
+
+:script SelectToEndOfLine
+
+:script DeleteSelectedAudio
+:Synopsis Delete the selected audio.
+
+:script JawsDelete
+
+:script JawsBackspace
+
+:script Copy
+:Synopsis Copy selected sound to clipboard
+:Description Copy selected sound to clipboard if focus at the main window. otherwise, perform default script.
+
+:script CutToClipboard
+:Synopsis Cut selected sound to clipboard
+
+:script DeselectAll
+:Synopsis Deselect all audio in current open project
+
+:script CloseFocusTrack
+:Synopsis Cloes the track currently have focus
+
+:script AudacitySayFrame
+:Description Use to say text on some unfriendly dialog in Audacity
+
+:script AnnounceOnOff
+:Synopsis Toggle on or off the announce message
 

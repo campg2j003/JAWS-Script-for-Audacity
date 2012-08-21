@@ -1,6 +1,6 @@
 ; English messages for Audacity 2.0.0 script by Gary Campbell last updated 5/16/2012.
 
-; These are window names used to identify windows.  (Should they be translated?)
+; These are window names used to identify windows. (Should they be translated?)
 Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Track Panel" ; window name of track table
@@ -11,22 +11,28 @@ Audacity
 @@
 
 ; %1 - string containing script version and date.
+@MSGScript_Ver
+JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
+
+@@
 @msgHotKeyHelp
-JAWS keystrokes for script version %1, for Audacity 2.0.0:
 
 To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
-To increase gane of focus track, press %keyfor (IncreaseGain).
-To reduce gane of focus track, press %keyfor (ReduceGain).
-To adjust pan left, press %keyfor (PanLeft).
-To adjust pan right, press %keyfor (PanRight).
+To increase gain of focus track, press %keyfor (MouseUp).
+To reduce gain of focus track, press %keyfor (MouseDown).
+To adjust pan left, press %keyfor (MouseLeft).
+To adjust pan right, press %keyfor (MouseRight).
+The hotkeys of 4 scripts above replaced the default Jaws mouse movement scripts. If you want to activate the original functionality, please turn on Jaws cursor while focus in the main window.
+To toggle speech on or off, press %keyfor(MuteSynthesizer).
+To toggle alert message on or off, press %keyfor (AnnounceOnOff)). See the what new.txt for mor info.
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
-To close this message, press ESC.
+To close this message, press %keyfor (UpALevel)
 @@
 
 @msgAudacityHotKeyHelp
@@ -130,5 +136,42 @@ Number of channels dialog  Shift + N
 To close this message, press ESC.
 @@
 
-EndMessages
+@msg_App_Start
+Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of hot key that can be use within Jaws.
+@@
 
+@msgMoveSelection
+Move Selection %1 to %2
+@@
+
+@MsgNoProject_l
+There is no project open.
+@@
+
+@msgNoProject_s
+No project
+@@
+@MSGMoveTo
+Move to %1 of %2
+@@
+
+@MSGSelectedTo
+Selected to %1
+@@
+
+@MsgStartOfFile
+Select from start of file.
+@@
+
+@MSgEndOfFile
+Select to end of file.
+@@
+
+@MSGDelete_l
+Delete selected audio
+@@
+
+@MSGDelete_s
+Deleted
+@@
+EndMessages
