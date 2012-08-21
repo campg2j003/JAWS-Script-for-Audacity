@@ -2,6 +2,8 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ; Modifications:
+; 8/21/12 by Gary Campbell: In function AnnounceMessage changed variable Key to sKey because of error compiling on JAWS 10.0.1178u.
+8/21/12 Previous saved to HG rev 9.
 ;Cuong's modifications:
 ;8/10/2012 wrote function and script to turn off announce messages.
 ;8/2/2012 remove function NoProjectOpen. (This exits my script when working with unsave project, so I remove it at this time. It still exists in this source code)
@@ -142,7 +144,7 @@ Else
 EndIf
 EndFunction
 
-Void Function AnnounceMessage (string Message, string Key)
+Void Function AnnounceMessage (string Message, string sKey)
 ;This just speaks an alert message when user press some default Audacity's hotkey, such as j or Shift J
 ;If IsMainWindow () &&!NoProject ()&&! UserBufferIsActive ()&&!WrongFocus () then
 If IsMainWindow () &&! UserBufferIsActive ()&&!WrongFocus () then
@@ -151,7 +153,7 @@ SayUsingVoice (VCTX_Message, Message, OT_status) ;the alert message declare here
 EndIf
 TypeCurrentScriptKey ()
 Else
-TypeString (Key)
+TypeString (sKey)
 EndIf
 EndFunction
 /*
