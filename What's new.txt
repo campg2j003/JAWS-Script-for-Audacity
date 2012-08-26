@@ -1,0 +1,28 @@
+New in Jaws scripts for Audacity version 1.1 (8/10/2012):
+
+. added alert message for the folowing default Audacity's hotkeys:
++ Close (Delete) focused track  (Shift + C)
++ Deselect all the tracks (and any time-range)  (Ctrl + Shift + A)
++ Move to start of tracks (time zero)  (Home)
++ Move to end of all audio  (End)
++ Move to start, and  end of audio in selected tracks ( J, K)
++ Selection start at start of tracks (Shift + Home)
+ Selection end at end of all the audio  Shift + End
++ Selection start and end at playback position ([ and ])
++ Move the end of the selection to the right by a small amount  (Shift + Right Arrow)
++ Move the end of the selection to the left by a small amount  (Ctrl + Shift + Left Arrow)
++ Move the start of the selection to the right by a small amount  (Ctrl + Shift + Right Arrow)
++ Move the start of the selection to the left by a small amount  (Shift + Left Arrow)
++ Delete selected audio (Delete, Ctrl+k, Backspace)
++ Cut, copy selected audio (Ctrl+x, Ctrl+c)
+(the info below Modified from The Audacity 2.0 Guide, by David Bailes)
+You can easily toggle these alert on or off by pressing Ctrl+`
+. Jaws now speaks the radio button in the warning dialog of importing uncompressed audio file.
+. Added scripts for adjusting gane and pan. This script replaced mouse movement script, but you can use these original function by turning on Jaws cursor first. This feature suggested by Gary Campbell - the original other of Audacity's script.
+. Added hotkey to toggle mude Jaws synthersiser (Insert+shift+s) in some cases.
+Added function autoStartEvent (just a little tips to make sure the script active).
+Created dictionary file for some mispronounces words.
+The Audacity hotkey help (Jaws keys+h) now display hotkey at a link
+Created installer package (using Nullsoft scriptable install system).
+Fixed error in installer by Gary Campbell:
+In DisplayJawsList now only counts registry keys whose names start with a digit.  This rejects leys like "Common"
