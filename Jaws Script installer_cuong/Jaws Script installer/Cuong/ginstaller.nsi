@@ -16,10 +16,15 @@ Limitations:
 . User cannot select more than one version to install.
 . This installer created for English version only.
 Date created: Wednesday, July 11, 2012
-Last updated: Saturday, August 18, 2012
+Last updated: Sunday, August 26, 2012
 
 Modifications:
 
+8/26/2012 Commented out $INSTDIR removed message in section un.uninstaller.
+8/19/12 Added function DirPageLeave to check for existence of $INSTDIR.
+8/18/12 Removed Cuong's DisplayJawsList and CheckJaws.  Renamed JawsPage and JawsPageLeave to DisplayJawsList and DisplayJawsListLeave.
+Moved message that $INsTDIR was not removed to un.OnInstSuccess from section un.uninstaller.
+8/18/12 Previous saved to HG rev 8.
 8/18/12 Remembers JAWS selected versions if you come back to the versions page.
 Installation summary page now shows the $INSTDIR for full installations and installer source folder if selected.
 Issues: The output of makensis shows warnings generated for code in function __JAWSInstallScriptItemsDefault when ${ScriptItemsBegin} is used.
@@ -251,10 +256,10 @@ end:
 functionend
 
 ;Page custom DisplayJawsList checkJaws ;Select Jaws version page
-page custom JawsPage JawsPageLeave ;Select Jaws version page
+page custom DisplayJawsList DisplayJawsListLeave ;Select Jaws version page
 
 PageEx Directory
-PageCallbacks DirPagePre
+PageCallbacks DirPagePre "" DirPageLeave
 DirText "Choose the folder in which to store ${ScriptName}'s installation files, such as uninstaller, help or other files. $\n\
 Setup will store ${ScriptName}'s installation in the following folder. To install in a different folder, click Browse and select another folder."
 PageExEnd
@@ -265,6 +270,17 @@ Abort ; skip page if it is not full installation.
 ${EndUnless}
 functionend
 
+function DirPageLeave
+IfFileExists $INSTDIR +1 next
+${GetFileAttributes} $INSTDIR DIRECTORY $0
+intcmp $0 1 +1 +3
+MessageBox MB_YESNO "The specified folder exists, which most likely means that ${ScriptName} is already installed.  If you want to install over the current installation choose Yes." IDYES next
+abort
+MessageBox MB_OK "$INSTDIR exists and it is not a folder!"
+abort
+next:
+FunctionEnd
+
 page custom PageInstConfirmPre
 
 !ifndef StrRepIncluded
@@ -272,11 +288,11 @@ ${StrRep}
 !EndIf
 
 function PageInstConfirmPre
-!define MUI_PAGE_HEADER_TEXT "Confirm Installation Settings"
-!define MUI_PAGE_HEADER_SUBTEXT ""
+!insertmacro MUI_HEADER_TEXT "Confirm Installation Settings" ""
+;!define MUI_PAGE_HEADER_SUBTEXT " "
 ${StrRep} $1 "$SELECTEDJAWSVERSIONS" "|" ", "
 strcpy $0 "The scripts will be installed in the following JAWS versions: $1.$\r$\n"
-getcurinsttype $2 ; debug
+;getcurinsttype $2 ; debug
 ;messagebox MB_OK "JAWSPageConfirmPRE: inst type $2" ; debug
 ${If} ${SectionIsSelected} $JAWSSecUninstaller
 strcpy $0 "$0Installation folder: $INSTDIR.$\r$\nThis installation should be uninstalled via Add/Remove Programs.$\r$\n"
@@ -286,11 +302,6 @@ ${EndIf} ; installer source
 ${Else}
 strcpy $0 "$0This instaallation cannot be uninstalled viaa Add/Remove Programs."
 ${EndIf}
-/*
-${If} ${SectionIsSelected} $JAWSSecInstSrc ; SecInstSrc
-strcpy $0 "$0The installer source will be installed."
-${EndIf} ; installer source
-*/
 nsDialogs::create 1018
 pop $2
 
@@ -345,26 +356,6 @@ ${strtok} ${var} "5.0|6.0|9.0|10.0|11.0|12.0" "|" ${index} 0
 ;${strtok} ${var} "9.0|10.2|11.0" "|" ${index} 0
 tstenumskip:
 !macroend
-
-; set some registers to known valuse for debugging.
-!macro setregs
-  StrCpy $0 S0
-  StrCpy $1 S1
-  StrCpy $2 S2
-  StrCpy $3 S3
-  StrCpy $4 S4
-  strcpy $R0 SR0
-!macroend
-
-;Check the value at top of stack to verify that it has not changed, written for debugging but not used.
-; Set $R9 to original value of TOS before starting test.
-!macro __chkst n
-exch $R8
-strcmp $R9 $R8 +2
-messagebox MB_OK "chkst: #${n}, TOS $R8 != original $R9, $$R0 = $R0"
-exch $R8
-!macroend
-!define chkst '!insertmacro __chkst'
 
 function GetJAWSVersions
 ; Makes a list of installed JAWS versions.  If $JAWSMINVERSION or $JAWSMAXVERSION are defined, versions outside of their limits are excluded.
@@ -427,47 +418,6 @@ exch
 exch $0
 ; stack: versions, version count
 functionend
-
-/*
-; Cuong's code similar to JawsPage, partially converted.
-Function DisplayJawsList 
-call GetJAWSVersions
-pop $INSTALLEDJAWSVERSIONS
-pop $INSTALLEDJAWSVERSIONCOUNT
-;Get the counter number of Jaws install on system
-${If} $INSTALLEDJAWSVERSIONCOUNT >= 2 ;there are two or more versions of Jaws installed
-!insertmacro mui_installoptions_display install.ini ;Display the Select Jaws Version Page
-${Else}
-;If only one version installed, don't display Select Jaws Version Page
-  !InsertMacro MUI_INSTALLOPTIONS_READ $3 "Install.ini" "Field 2" "ListItems"
-StrCpy $3 $3 -1 ; remove last separator
-    !InsertMacro MUI_INSTALLOPTIONS_WRITE "Install.ini" "Field 2" "State" $3 ;select current Jaws version automatically
-Call CheckJaws
-${EndIf}
-FunctionEnd
-
-;Store the script and compiler locations in the temp file, also set SetShellVarContext.
-;Overwrites $4, $5.
-Function CheckJaws
-readIniStr $4 "$Pluginsdir\install.ini" "Field 2" State ;Check the selected Jaws version
-StrCpy $4 $4 "" 5 ;get the version number next to word "Jaws" (stored in the install options file) 
-${If} $4 >= "6.0" ;Current selected version is 6.0 or later
-;Add the installation path to ${tempFile}
-WriteIniStr ${TempFile} Install ScriptDir "${JawsDir}\$4\${ScriptDir}" ;get the script location from current user
-SetShellVarContext all
-WriteIniStr ${TempFile} Install AllUser "${JawsDir}\$4\${ScriptDir}" ;get the script location from all user
-${Else}
-;Jaws 5.0 or erlier, the path of enu folder stored in its installation location. So we'll find the path by reading from registry
-ReadRegStr $5 HKLM "SOFTWARE\Freedom Scientific\Jaws\$4" "Target"
-WriteIniStr ${TempFile} Install ScriptDir "$5\${ScriptDir}"
-${EndIf}
-;Get the path of the SCompile.exe for recompiling script after installation
-;It locate under the Jaws' installation path
-ReadRegStr $5 HKLM "SOFTWARE\Freedom Scientific\Jaws\$4" "Target" ;Find the installation path of Jaws
-WriteIniStr ${TempFile} Install Compiler $5${Compiler}
-FunctionEnd
-*/
-
 
 ; Probably won't do anything.
 Section -Install
@@ -546,7 +496,6 @@ NoLogging2:
 ; Adapted from ccousins.nsi
 Section "-Install JAWS Scripts" SecJAWS
 SectionIn ${INST_FULL} ${INST_JUSTSCRIPTS}
-;StrCmp "$JAWSSCRIPTDEST" "" End
 SetOverwrite on ;Always overwrite
 !insertmacro JAWSInstallScriptsSectionCode
 SetOverwrite ${SetOverwriteDefault}
@@ -579,6 +528,10 @@ FunctionEnd
 Function un.OnUninstSuccess
   ;!Insertmacro RemoveTempFile
   HideWindow
+  IfFileExists "$INSTDIR" +1 instdirgone
+    MessageBox MB_ICONEXCLAMATION|MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files."
+    return
+  instdirgone:
   MessageBox MB_ICONINFORMATION|MB_OK "${ScriptName}  has been successfully removed from your computer."
 FunctionEnd
 
@@ -601,9 +554,9 @@ DetailPrint "Attempting to remove $INSTDIR$\r$\n"
 ;RmDir /r $instdir
 ; We don't use rmdir /r in case user chose c:\Program Files as install dir.
 Rmdir "$INSTDIR" 
-IfFileExists "$INSTDIR" +1 instdirgone
-MessageBox MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files."
-instdirgone:
+;IfFileExists "$INSTDIR" +1 instdirgone
+;MessageBox MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files."
+;instdirgone:
 SetAutoclose true
 SectionEnd
 
@@ -869,30 +822,27 @@ pop $0
 functionend ; MarkSelectedVersions
 
 ;Create installed JAWS versions page.
-Function JawsPage
+Function DisplayJawsList
 ;!InsertMacro SectionFlagIsSet ${SecJAWS} ${SF_SELECTED} DoJawsPage ""
 goto DoJawsPage ; debug, uncomment section selected test above.
-DetailPrint "JawsPage: install JAWS section not selected" ; debug
+DetailPrint "DisplayJawsList: install JAWS section not selected" ; debug
 abort ; JAWS script install section not selected
 DoJawsPage:
 ; .oninit has determined that there is at least 1 JAWS version installed, but we'll check here so maybe we can eliminate checking in .oninit.
 ; I use ${If} here so that I can include a debug message which can later be commented out without rewriting the code.
-;!insertmacro setregs ; debug
-; GetJawsVersions pushes $4 last.  Used with chkst.
-;strcpy $R9 $4 ; debug
 call GetJAWSVersions
 pop $INSTALLEDJAWSVERSIONS
 pop $INSTALLEDJAWSVERSIONCOUNT
-DetailPrint "JawsPage: found  $INSTALLEDJAWSVERSIONCOUNT versions: $INSTALLEDJAWSVERSIONS" ; debug
-;messagebox MB_OK "JawsPage: Found $INSTALLEDJAWSVERSIONCOUNT installed JAWS versions compatible with this application: $INSTALLEDJAWSVERSIONS" ; debug
+DetailPrint "DisplayJawsList: found  $INSTALLEDJAWSVERSIONCOUNT versions: $INSTALLEDJAWSVERSIONS" ; debug
+;messagebox MB_OK "DisplayJawsList: Found $INSTALLEDJAWSVERSIONCOUNT installed JAWS versions compatible with this application: $INSTALLEDJAWSVERSIONS" ; debug
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 0
-DetailPrint "JawsPage: JAWS is not installed, skipping JAWS versions page" ; debug
-messagebox MB_OK "JawsPage: JAWS is not installed, skipping JAWS versions page" ; debug
+DetailPrint "DisplayJawsList: JAWS is not installed, skipping JAWS versions page" ; debug
+messagebox MB_OK "DisplayJawsList: JAWS is not installed, skipping JAWS versions page" ; debug
 abort ; no JAWS
 ${EndIf}
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
-DetailPrint "JawsPage: 1 JAWS version, skipping JAWS versions page" ; debug
-MessageBox MB_OK "JawsPage: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" ; debug
+DetailPrint "DisplayJawsList: 1 JAWS version, skipping JAWS versions page" ; debug
+MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" ; debug
 strcpy $SELECTEDJAWSVERSIONS $INSTALLEDJAWSVERSIONS
 strcpy $SELECTEDJAWSVERSIONCOUNT $INSTALLEDJAWSVERSIONCOUNT
 ;quit ; debug
@@ -924,7 +874,7 @@ system::call "*(${tagLVCOLUMN}) (${LVCF_TEXT}, , , t "Version", 7) i .$R0"
 SendMessage $JAWSLV ${LVM_INSERTCOLUMNA} 0 $R0 $R1
 system::free $R0
 ${If} $R1 = -1
-messagebox MB_OK "JawsPage: unable to insert column, returned $R1"
+messagebox MB_OK "DisplayJawsList: unable to insert column, returned $R1"
 ${EndIf}
 pop $R1
 pop $R0
@@ -939,7 +889,7 @@ ${LVAddItem} "$1"
   intop $0 $0 + 1
 goto loop
 done:
-;messagebox MB_OK "JawsPage: added $0 of $INSTALLEDJAWSVERSIONCOUNT items" ; debug
+;messagebox MB_OK "DisplayJawsList: added $0 of $INSTALLEDJAWSVERSIONCOUNT items" ; debug
 pop $1
 pop $0
 ; In case we come back to this page check the previously selected versions.
@@ -948,7 +898,7 @@ call MarkSelectedVersions
 nsDialogs::Show
 FunctionEnd
 
-Function JawsPageLeave
+Function DisplayJawsListLeave
 ; On exit, var $SELECTEDJAWSVERSIONS contains the list of selected versions separated by | and $SELECTEDJAWSVERSIONCOUNT contains the number of versions selected.
 push $0
 push $1
@@ -960,7 +910,7 @@ IntFmt $1 "%x" $0 ; debug
 !insertmacro LVGetExStyle ; debug
 pop $0 ; debug
 IntFmt $3 "%x" $0 ; debug
-messagebox MB_OK "Enter JawsPageLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed$\r$\nList view style = 0x$1, extended style = 0x$3." ; debug
+messagebox MB_OK "Enter DisplayJawsListLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed$\r$\nList view style = 0x$1, extended style = 0x$3." ; debug
 */
 
 ; Get the selected JAWS versions.
@@ -991,8 +941,8 @@ done: ; we have finished searching for selected JAWS versions.
 ; If any versions were checked, remove final separator.
 strcmp $SELECTEDJAWSVERSIONS "" +2
 strcpy $SELECTEDJAWSVERSIONS $SELECTEDJAWSVERSIONS -1 ; remove trailing |
-DetailPrint "JawsPageLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
-;messagebox MB_OK "JawsPageLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
+DetailPrint "DisplayJawsListLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
+;messagebox MB_OK "DisplayJawsListLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
 pop $3
 pop $1
 pop $0
