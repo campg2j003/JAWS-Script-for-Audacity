@@ -1,14 +1,15 @@
+(This file last updated 8/25/2012)
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 
-. added alert message for the folowing default Audacity's hotkeys:
+. added alert message for the following default Audacity hotkeys:
 + Close (Delete) focused track  (Shift + C)
 + Deselect all the tracks (and any time-range)  (Ctrl + Shift + A)
 + Move to start of tracks (time zero)  (Home)
 + Move to end of all audio  (End)
-+ Move to start, and  end of audio in selected tracks ( J, K)
++ Move to start or end of audio in selected tracks ( J or K)
 + Selection start at start of tracks (Shift + Home)
- Selection end at end of all the audio  Shift + End
-+ Selection start and end at playback position ([ and ])
++ Selection end at end of all the audio  Shift + End
++ Selection start or end at playback position ([ or ])
 + Move the end of the selection to the right by a small amount  (Shift + Right Arrow)
 + Move the end of the selection to the left by a small amount  (Ctrl + Shift + Left Arrow)
 + Move the start of the selection to the right by a small amount  (Ctrl + Shift + Right Arrow)
@@ -17,12 +18,12 @@ New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 + Cut, copy selected audio (Ctrl+x, Ctrl+c)
 (the info below Modified from The Audacity 2.0 Guide, by David Bailes)
 You can easily toggle these alert on or off by pressing Ctrl+`
-. Jaws now speaks the radio button in the warning dialog of importing uncompressed audio file.
-. Added scripts for adjusting gane and pan. This script replaced mouse movement script, but you can use these original function by turning on Jaws cursor first. This feature suggested by Gary Campbell - the original other of Audacity's script.
-. Added hotkey to toggle mude Jaws synthersiser (Insert+shift+s) in some cases.
-Added function autoStartEvent (just a little tips to make sure the script active).
-Created dictionary file for some mispronounces words.
-The Audacity hotkey help (Jaws keys+h) now display hotkey at a link
+. Jaws now speaks the radio buttons in the warning dialog that appears when importing uncompressed audio files.
+. Added scripts for adjusting gain and pan. These scripts replace mouse movement scripts (MouseUp, MouseLeft, etc.), but you can use the original functions by activating theJaws cursor. This feature suggested by Gary Campbell - the original author ofthe script.
+. Added hotkey to toggle mute Jaws synthersiser (Insert+shift+s).
+Added function autoStartEvent (just a little tip to indicate that the script is active).
+Created dictionary file for some mispronounced words.
+The Audacity hotkey help (JAWSkey+h) now displays hotkeys as a links.
 Created installer package (using Nullsoft scriptable install system).
-Fixed error in installer by Gary Campbell:
-In DisplayJawsList now only counts registry keys whose names start with a digit.  This rejects leys like "Common"
+Fixed error in installer (fix by Gary Campbell):
+In DisplayJawsList now only counts JAWS version registry keys whose names start with a digit.  This rejects keys like "Common".

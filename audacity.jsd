@@ -1,42 +1,56 @@
 :function AnnounceOn
-:Returns int No Return Description
-:Synopsis Varify that user choose to announce message of some default Audacity's hotkeys
+:Returns int True if messages should be spoken
+:Synopsis Indicate whether messages related to certain Audacity operations should be spoken
 
 :function WrongFocus
-:Returns int No Return Description
-:Description Varify the focus stand at the Selection Bar or tool bar window. This function prevent Jaws to speaks unwanted message while using Audacity
+:Returns int True if focus is not in the track panel
+:Description Indicates if the focus is not in the track panel.
 
 :function SaySelectionPosition
 :Description Says the selection start or end position
 :Category Positioning
-:Param handle/hPosition The ID of the start or end selection position
+:Param int/iPosition The ID of the start or end selection position
 :Param string/sKey The default hotkey
 :Param string/sMessage Spoken message
 
 :function MarkerMovement
-:Param string/sScript The script in wich you want to perform. This must be define at a string variable
-:Param string/sAlert The alert message depend on your marker script
+:Param string/sScript The script to be performed. This must be define as a string variable
+:Param string/sAlert The alert message to be spoken
 
 :function MouseMovement
-:Param string/sScript The script in wich you want to perform. This must be define at a string variable
+:Param string/sScript The script to perform. This must be define as a string variable
 
 :function AnnounceMessage
-:Description Speaks an anounce message while pressing default hotkey in Audacity
-:Param string/Message The message you want the script to speaks
-:Param string/Key The default Audacity's hotkey
+:Description Speaks a message for an Audacity hotkey  if appropriate and sends the to Audacity.
+:Param string/Message The message to speak
+:Param string/Key The key to send to Audacity if the  Audacity hotkey is not active in this context
 
 :function SayNoProject
-:Description Speacks a message when no project open. for example, pressing the [ key will speak this message, and the script will exit.
+:Description Speaks a message when no project is open. For example, pressing the [ key will speak this message, and the script will exit.
 :Category Say
 
 :function NoProject
-:Returns int True if no project open
-:Description This function verify that no project has been created.
+:Returns int True if no project is open
+:Description This function indicates that no project has been created.
 
 :function AutoStartEvent
 
 :function HandleCustomWindows
 :Returns int No Return Description
+:Synopsis Announce when focus changes to a different area of the main window.
+
+:function HandleCustomWindows
+:Returns int No Return Description
+:Synopsis Announce when focus changes to a different area of the main window.
+
+:function IsToolbar
+:Returns int True if window hWnd is a toolbar, False otherwise
+:Synopsis Return True if hWnd is one of the toolbars.
+:Description Return True if hWnd is one of the toolbars.
+The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock.
+Assumes focus is in the main window.
+
+:Param handle/hWnd No Description
 
 :function IsMainWindow
 :Returns int No Return Description
@@ -65,7 +79,7 @@
 :script WindowKeysHelp
 
 :script MouseUp
-:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
+:Description Increase the track gain if appropriate.  Otherwise, The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
 
 :script MouseDown
 :Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts This keystroke is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
@@ -80,7 +94,7 @@
 
 :script SelectionEnd
 :Synopsis Says the selection end position
-:Description When user press the ] key, reads the end selection position.
+:Description When the ] key is pressed, says the selection end position.
 :Category Positioning
 
 :script FinishMarkerRight
@@ -100,16 +114,16 @@
 :script JawsEnd
 
 :script MoveToStartOfSelectedTracks
-:Synopsis Move cursor to start of selected tracks
+:Synopsis Move cursor to start of audio in selected tracks
 
 :script MoveToEndOfSelectedTracks
-:Synopsis Move cursor to end of selected tracks
+:Synopsis Move cursor to end of audio in selected tracks
 
 :script SelectToBeginning
-:Synopsis Selection start at start of audio in selected tracks
+:Synopsis Move the selection start to the start of the audio in the selected tracks
 
 :script SelectToEnd
-:Synopsis Selection end at end of audio in selected tracks
+:Synopsis Move the selection end to the end of the audio in the selected tracks
 
 :script SelectFromStartOfLine
 
@@ -123,20 +137,20 @@
 :script JawsBackspace
 
 :script Copy
-:Synopsis Copy selected sound to clipboard
-:Description Copy selected sound to clipboard if focus at the main window. otherwise, perform default script.
+:Synopsis Copy selected audio to clipboard
+:Description Copy the selected audio to the clipboard if focus is in the main window.  Otherwise, perform the default script.
 
 :script CutToClipboard
-:Synopsis Cut selected sound to clipboard
+:Synopsis Cut selected audio to clipboard
 
 :script DeselectAll
 :Synopsis Deselect all audio in current open project
 
 :script CloseFocusTrack
-:Synopsis Cloes the track currently have focus
+:Synopsis Close the currently focused track
 
 :script AudacitySayFrame
-:Description Use to say text on some unfriendly dialog in Audacity
+:Description Used to say text on some unfriendly dialogs in Audacity
 
 :script AnnounceOnOff
 :Synopsis Toggle on or off the announce message

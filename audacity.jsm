@@ -1,9 +1,16 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 5/16/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 8/24/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
-	WN_TRACKPANEL = "Track Panel" ; window name of track table
+	WN_TRACKPANEL = "Track Panel", ; window name of track table
+	WN_SELECTION = "Selection" ;window name of selection bar
+
+Const
+	; These are used to announce different areas of the main window.  They should be translated.
+	StrToolbars="Toolbars",
+	StrSelectionBar="Selection bar",
+	StrTrackPanel="Track panel"
 
 Messages
 @msgProgName
@@ -26,9 +33,9 @@ To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
-The hotkeys of 4 scripts above replaced the default Jaws mouse movement scripts. If you want to activate the original functionality, please turn on Jaws cursor while focus in the main window.
+The last 4 keys replace the default Jaws mouse movement scripts while focus is in the main window. If you want to activate the original functionality while in the main window, turn on the Jaws cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
-To toggle alert message on or off, press %keyfor (AnnounceOnOff)). See the what new.txt for mor info.
+To toggle alert messages on or off, press %keyfor (AnnounceOnOff)). See the what's new.txt for mor info.
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
@@ -133,13 +140,31 @@ Audio Host dialog  Shift + H
 Input Device dialog  Shift + I
 Number of channels dialog  Shift + N
 
-To close this message, press ESC.
+To close this message, press %keyfor (UpALevel).
 @@
 
 @msg_App_Start
-Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of hot key that can be use within Jaws.
+Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of JAWS hot keys for Audacity.
 @@
 
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages?
+@msgStart
+start
+@@
+
+@msgEnd
+end
+@@
+
+@msgLeft
+left
+@@
+
+@msgRight
+right
+@@
+
+; %1 = "start" or "end" of selection, %2 = direction ("left" or "right").
 @msgMoveSelection
 Move Selection %1 to %2
 @@
@@ -151,10 +176,29 @@ There is no project open.
 @msgNoProject_s
 No project
 @@
+
+@msgSelection
+selection
+@@
+
+@msgTrack
+track
+@@
+
+@msgAllAudio
+all audio
+@@
+
+@msgSelectedTracks
+selected tracks
+@@
+
+; %1 is where we move, like start or end, %2 is of what, e.g. track or selection.
 @MSGMoveTo
 Move to %1 of %2
 @@
 
+; %1 = where we are selectiog to, like start or end.
 @MSGSelectedTo
 Selected to %1
 @@
@@ -173,5 +217,20 @@ Delete selected audio
 
 @MSGDelete_s
 Deleted
+@@
+
+@msgDeselectAll
+deselect all
+@@
+@msgCloseFocusedTrack
+close focused track
+@@
+
+@msgAnnounceOff
+Announce messages off
+@@
+
+@msgAnnounceOn
+Announce messages on
 @@
 EndMessages
