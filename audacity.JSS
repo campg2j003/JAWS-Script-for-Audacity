@@ -70,7 +70,7 @@ Include "common.jsm"
 Include "audacity.jsm"
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
-Const CS_SCRIPT_VERSION = "1.1 8/28/12"
+Const CS_SCRIPT_VERSION = "1.1 8/30/12"
 
 Const
 	ID_SELECTION_START = 2705,
