@@ -46,11 +46,18 @@
 :function IsToolbar
 :Returns int True if window hWnd is a toolbar, False otherwise
 :Synopsis Return True if hWnd is one of the toolbars.
-:Description Return True if hWnd is one of the toolbars.
-The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock.
-Assumes focus is in the main window.
+:Description Return True if hWnd is one of the toolbars.
 
-:Param handle/hWnd No Description
+The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock.
+
+Assumes focus is in the main window.
+
+
+:Param handle/hWnd handle of toolbar
+
+:function GetToolbar
+:Synopsis When focus is on a toolbar control returns the handle of the toolbar containing the control
+:Returns handle toolbar containing the current control
 
 :function IsMainWindow
 :Returns int No Return Description
@@ -155,3 +162,12 @@ Assumes focus is in the main window.
 :script AnnounceOnOff
 :Synopsis Toggle on or off the announce message
 
+
+:script SayAudacityState
+:Synopsis Say the current program state-- play, record, pause
+
+:function GetObjectState
+:Returns Int object state.  Use CTRL constants from hjconst.jsh to intrepret, not state constants from msaaconst.jsh
+:Synopsis Returns the object state of the object jn the window
+:Description Works for windows whose object name is the same as the window name
+:Param Handle/hWnd window to inspect

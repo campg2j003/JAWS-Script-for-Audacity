@@ -1,10 +1,11 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 8/24/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 8/29/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
-	WN_SELECTION = "Selection" ;window name of selection bar
+	WN_SELECTION = "Selection", ;window name of selection bar
+	WN_TRANSPORT_TOOLBAR = "Transport" ; window name of Transport toolbar
 
 Const
 	; These are used to announce different areas of the main window.  They should be translated.
@@ -36,6 +37,9 @@ To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default Jaws mouse movement scripts while focus is in the main window. If you want to activate the original functionality while in the main window, turn on the Jaws cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)). See the what's new.txt for mor info.
+In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
+In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
+To speak the program's status (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 

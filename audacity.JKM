@@ -1,4 +1,5 @@
 [Common Keys]
+JAWSKey+delete=SayAudacityState
 shift+control+rightarrow=StartMarkerRight
 control+]=SaySelectionEnd
 control+k=DeleteSelectedAudio

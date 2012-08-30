@@ -2,8 +2,14 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;8/29/2012 Now speaks state of program-- play, record, stop, play pause, record pause.  Currently bound to JAWSKey+delete.
+;8/28/12 NextDocumentWindow now skips grabber and statics at start of toolbar.
+;8/27/2012 Modified HandleCustomWindows to speak the toolbar name when focus moves to a new toolbar.
+;Made function GetToolbar to get the toolbar containing the focused control.  Modified JSD.
+;Added scripts Next/PreviousDocumentWindow to move focus to the next/previous toolbar when focus is in the toolbars.
+;8/26/2012 Previous saved to HG rev 13.
 ;8/26/2012 by Gary Campbell: Scripts JawsHome andJawsEnd now do not speak the key name if they speak an Audacity message.  They do speak the key name if not in the track table or if Audacity announce messages are off.
-; Copy and Cut are modified to work in toolbars and selection bar, but still do not speak because AnnounceMessage tests for !WrongFocus.
+;Copy and Cut are modified to work in toolbars and selection bar, but still do not speak because AnnounceMessage tests for !WrongFocus.
 ;8/25/2012 Rewrote HandleCustomWindows to announce change of focus between main window areas.
 ;8/25/2012 by Gary Campbell: Moved strings to announce Toolbar, Selection Bar, and Track Panel to audacity.jsm.
 ;Made message strings in jsm file for many messages.  Did not do copy or cut.
@@ -62,11 +68,9 @@ Include "hjconst.jsh"
 Include "hjglobal.jsh"
 Include "common.jsm"
 Include "audacity.jsm"
-;;The next line makes the script compile on Jaws 13.0 to be compatible on earlier versions.
-;Does this make it behave in JAWS 13.0 the same as it did in previous versions??
-;The next line makes the script compiled on Jaws 13.0 to be compatible with earlier versions??.
+;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
-Const CS_SCRIPT_VERSION = "1.1 8/26/12"
+Const CS_SCRIPT_VERSION = "1.1 8/28/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -74,6 +78,7 @@ Const
 	;ID_AUDIO_POSITION = -232, ; value changes, it is the 2nd window after _END.
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
+	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	IniFile="Audacity.Ini"
 
 Globals
@@ -226,13 +231,17 @@ EndIf
 EndFunction
 */
 
-Globals handle ghAudacityLastArea
+Globals handle ghAudacityLastArea,
+	Handle ghAudacityLastToolbar
+
 
 Int Function HandleCustomWindows ()
 ;Announce when focus changes to a different area of the main window.
 Var handle hParent,
 	Handle hFocus,
-	Handle hOld
+	Handle hOld,
+	Handle hToolbar
+
 If !IsMainWindow() Then
 	Return False ; not main window, continue with normal processing
 EndIf
@@ -257,6 +266,15 @@ Else
 Say (StrToolBars, OT_position)
 EndIf ; else toolbar
 EndIf ; new area
+
+If IsToolbar(GetToolbar ()) Then
+Let hToolbar = GetToolbar()
+If hToolbar != ghAudacityLastToolbar Then
+Let ghAudacityLastToolbar = hToolbar
+Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
+EndIf ; new toolbar
+EndIf ; If IsToolbar
+Return False
 EndFunction ; HandleCustomWindows
 
 Int Function IsToolbar (handle hWnd)
@@ -273,7 +291,12 @@ If GetWindowName(hParent) == WN_TOOLDOCK && GetWindowHierarchyX(hParent) == 2 Th
 Return True
 EndIf
 Return False
-EndFunction
+EndFunction ; IsToolbar
+
+Handle Function GetToolbar()
+; When focus is on a toolbar control returns the handle of the toolbar containing the control.
+Return GetParent(GetFocus())
+EndFunction ; GetToolbar
 
 Int Function IsMainWindow()
 Var
@@ -482,7 +505,7 @@ Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
 ;If IsMainWindow () &&IsPCCursor () &&!WrongFocus () &&!NoProject () &&!UserBufferIsActive () then
 If IsMainWindow () &&IsPCCursor () &&!WrongFocus () &&!UserBufferIsActive ()&&AnnounceOn () then
-JawsHome () ; do Home without speaking key laabel
+JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
 PerformScript JAWSHome()
@@ -493,7 +516,7 @@ Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 ;If IsMainWindow () &&IsPCCursor ()&&!WrongFocus ()&&!NoProject ()&&!UserBufferIsActive () then
 If IsMainWindow () &&IsPCCursor () &&!WrongFocus () &&!UserBufferIsActive ()&&AnnounceOn () then
-JawsHome () ; do Home without speaking key laabel
+JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
 PerformScript JAWSEnd()
@@ -671,3 +694,100 @@ IniWriteInteger ("Settings", "Announce", 1, IniFile)
 EndIf
 Say (sMessage, ot_Status)
 EndScript
+
+Script NextDocumentWindow ()
+Var
+	Handle hToolbar,
+	Handle hNext,
+	Handle hWnd
+
+If !IsToolbar (GetToolbar ()) Then
+PerformScript NextDocumentWindow ()
+Else
+; Is a toolbar.
+Let hToolbar = GetToolbar ()
+Let hNext = GetNextWindow (hToolbar)
+If !hNext Then
+Let hNext = GetFirstWindow (hToolbar)
+EndIf ; last window
+Let hWnd = GetFirstChild (hNext)
+; Toolbars start with a grabber control, and some of them have static controls following the grabber.  We skip these to get to the first control.
+While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) || (GetWindowSubtypeCode (hWnd) == WT_STATIC))
+;SayString("class=" + GetWindowClass(hWnd) + ", subtype = " + IntToString(GetWindowSubtypeCode(hWnd))) ; debug
+Let hWnd = GetNextWindow(hWnd)
+EndWhile
+SetFocus (hWnd)
+EndIf ; else is toolbar
+EndScript ; NextDocumentWindow
+
+Script PreviousDocumentWindow ()
+Var
+	Handle hToolbar,
+	Handle hPrior,
+	Handle hWnd
+
+If !IsToolbar (GetToolbar ()) Then
+PerformScript PreviousDocumentWindow ()
+Else
+; Is a toolbar.
+Let hToolbar = GetToolbar ()
+Let hPrior = GetPriorWindow (hToolbar)
+If !hPrior Then
+Let hPrior = GetLastWindow (hToolbar)
+EndIf ; first window
+Let hWnd = GetLastWindow(GetFirstChild (hPrior))
+SetFocus (hWnd)
+EndIf ; else is toolbar
+EndScript ; PreviousDocumentWindow
+
+Script SayAudacityState ()
+Var
+	Int iPauseState,
+	Int iPlayState,
+	Int iStopState,
+	Int iRecordState,
+	Handle hTemp,
+	String sMsg
+
+Let hTemp = GetFirstChild(GetAppMainWindow(GetFocus()))
+Let hTemp = GetNextWindow(hTemp) ; parent of toolbars
+Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
+If !hTemp Then
+Say("Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.", OT_JAWS_MESSAGE)
+Return
+EndIf ; if no transport toolbar
+Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
+Let iPauseState = GetObjectState(hTemp)
+Let hTemp = GetNextWindow(hTemp)
+Let iPlayState = GetObjectState(hTemp)
+Let hTemp = GetNextWindow(hTemp)
+Let iStopState = GetObjectState(hTemp)
+Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
+Let iRecordState = GetObjectState(hTemp)
+;SayString("Object states: pause = " + DecToHex(iPauseState) + ", play = " + DecToHex(iPLayState) + ", stop = " + DecToHex(iStopState) + ", record = " + DecToHex(iRecordState)) ; debug
+If iPlayState & CTRL_PRESSED Then
+Let sMsg = "play"
+ElIf iRecordState & CTRL_PRESSED Then
+Let sMsg = "record"
+Else
+Let sMsg = "stop"
+EndIf
+If iPauseState & CTRL_PRESSED Then
+let sMsg = sMsg + " pause"
+EndIf
+Say(sMsg, OT_JAWS_MESSAGE)
+EndScript ; SayAudacityState
+
+Int Function GetObjectState(Handle hWnd)
+;This gets the object state from an object in a window.  Assumes the object has the same name as the window name (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
+;The returned state uses control attribute values from hjconst.jsh, not MSAASTATE values from msaaconst.jsh.
+Var
+	Int iState,
+	Int iSubtype,
+	String sName
+
+Let sName = GetWindowName(hWnd)
+GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+Return iState
+EndFunction ; GetObjectState
+
