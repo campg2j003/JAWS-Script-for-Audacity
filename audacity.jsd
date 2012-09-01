@@ -2,9 +2,13 @@
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
 
-:function WrongFocus
+:function AnnounceToolbarsOn
+:Returns int True if messages should be spoken
+:Synopsis Indicate whether messages related to changing toolbars should be spoken
+
+:function FocusInTrackPanel
 :Returns int True if focus is not in the track panel
-:Description Indicates if the focus is not in the track panel.
+:Description Indicates if the focus is in the track panel.
 
 :function SaySelectionPosition
 :Description Says the selection start or end position
@@ -59,7 +63,7 @@ Assumes focus is in the main window.
 :Synopsis When focus is on a toolbar control returns the handle of the toolbar containing the control
 :Returns handle toolbar containing the current control
 
-:function IsMainWindow
+:function FocusInMainWindow
 :Returns int No Return Description
 
 :function GetPositionField
@@ -171,3 +175,18 @@ Assumes focus is in the main window.
 :Synopsis Returns the object state of the object jn the window
 :Description Works for windows whose object name is the same as the window name
 :Param Handle/hWnd window to inspect
+
+:Function UOAnnounceMessages
+:Returns String
+:Param int
+
+:function UOAnnounceMessagesHlp
+:Returns String
+
+:Function UOAnnounceToolbars
+:Returns String
+:Param int
+
+:function UOAnnounceToolbarsHlp
+:Returns String
+

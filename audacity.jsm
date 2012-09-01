@@ -13,6 +13,12 @@ Const
 	StrSelectionBar="Selection bar",
 	StrTrackPanel="Track panel"
 
+;For user options.  The text after the : should be translated, the text before must not be translated.
+Const
+	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages",
+	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars"
+
+
 Messages
 @msgProgName
 Audacity
@@ -236,5 +242,16 @@ Announce messages off
 
 @msgAnnounceOn
 Announce messages on
+@@
+
+; For user options.
+@msgUO_AudacityOptionsHlp
+Audacity-specific options
+@@
+@msgUO_AnnounceMessagesHlp
+Speaks messages for Audacity audio operations.
+@@
+@msgUO_AnnounceToolbarsHlp
+If on, speaks the toolbar name when focus moves from one toolbar to another.
 @@
 EndMessages
