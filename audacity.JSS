@@ -2,6 +2,9 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/1/2012 Placed the last revision, say stop state via ObjStateChangedEvent, on branch br_objstatechanged,  because it doesn't work.
+; Previous saved to HG rev 18.
+
 ;9/1/2012 Added script AdjustJawsVerbosity so that options will be available in versions prior to JAWS 10, not tested.  The Audacity options will appear at the top of the list but will not indicate that they are for Audacity.
 ;8/31/2012 Turning messages and toolbar alerts on/off now work.
 ;HandleCustomWindows now calls HandleCustomWindows so that other functions such as in default.jsb can process the window.
