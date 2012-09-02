@@ -18,3 +18,4 @@ shift+control+a=DeselectAll
 shift+c=CloseFocusTrack
 control+[=SaySelectionStart
 Control+`=AnnounceOnOff
+JAWSKey+V=AdjustJAWSOptions
