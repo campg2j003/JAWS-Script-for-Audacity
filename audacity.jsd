@@ -47,21 +47,17 @@
 :Returns int No Return Description
 :Synopsis Announce when focus changes to a different area of the main window.
 
+:function SayFocusedObject
+
 :function IsToolbar
 :Returns int True if window hWnd is a toolbar, False otherwise
 :Synopsis Return True if hWnd is one of the toolbars.
-:Description Return True if hWnd is one of the toolbars.
-
-The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock.
-
-Assumes focus is in the main window.
-
-
+:Description Return True if hWnd is one of the toolbars. The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock. Assumes focus is in the main window.
 :Param handle/hWnd handle of toolbar
 
 :function GetToolbar
-:Synopsis When focus is on a toolbar control returns the handle of the toolbar containing the control
 :Returns handle toolbar containing the current control
+:Synopsis When focus is on a toolbar control returns the handle of the toolbar containing the control
 
 :function FocusInMainWindow
 :Returns int No Return Description
@@ -166,27 +162,41 @@ Assumes focus is in the main window.
 :script AnnounceOnOff
 :Synopsis Toggle on or off the announce message
 
+:script NextDocumentWindow
+
+:script PreviousDocumentWindow
 
 :script SayAudacityState
 :Synopsis Say the current program state-- play, record, pause
 
 :function GetObjectState
-:Returns Int object state.  Use CTRL constants from hjconst.jsh to intrepret, not state constants from msaaconst.jsh
+:Returns int object state.  Use CTRL constants from hjconst.jsh to intrepret, not state constants from msaaconst.jsh
 :Synopsis Returns the object state of the object jn the window
 :Description Works for windows whose object name is the same as the window name
-:Param Handle/hWnd window to inspect
+:Param handle/hWnd window to inspect
 
-:Function UOAnnounceMessages
-:Returns String
-:Param int
+:script AdjustJawsVerbosity
+
+:script AdjustJAWSOptions
+
+:function NodeHlp
+:Returns string No Return Description
+:Param string/sNodeName No Description
+
+:function UOAnnounceMessages
+:Returns string No Return Description
+:Param int No Description
 
 :function UOAnnounceMessagesHlp
-:Returns String
+:Returns string No Return Description
 
-:Function UOAnnounceToolbars
-:Returns String
-:Param int
+:function UOAnnounceToolbars
+:Returns string No Return Description
+:Param int No Description
 
 :function UOAnnounceToolbarsHlp
-:Returns String
+:Returns string No Return Description
+
+:function WriteDefaultValue
+:Description Added default settings value to Audacity.JSI File
 

@@ -2,9 +2,12 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/2/12 by Dang Manh Cuong
+;Modify the AdjustJawsOptions script to make it work with Jaws 9.0 or later.
+;Added function WriteDefaultValue to store default Audacity settings for the first time. This called on AutoStartEvent function
+;9/1/12 Previous saved to HG rev 20.
 ;9/1/2012 Placed the last revision, say stop state via ObjStateChangedEvent, on branch br_objstatechanged,  because it doesn't work.
 ; Previous saved to HG rev 18.
-
 ;9/1/2012 Added script AdjustJawsVerbosity so that options will be available in versions prior to JAWS 10, not tested.  The Audacity options will appear at the top of the list but will not indicate that they are for Audacity.
 ;8/31/2012 Turning messages and toolbar alerts on/off now work.
 ;HandleCustomWindows now calls HandleCustomWindows so that other functions such as in default.jsb can process the window.
@@ -18,6 +21,8 @@
 ;Changed IsMainWindow to FocusInMainWindow.  Changed WrongFocus to FocusInTrackPanel, reversed the sense of its calls.
 ;Added UserBufferIsActive to SayActiveCursor.
 ;8/30/2012 Previous saved to HG rev 17.
+;8/29/2012 by Dang manh Cuong: Edidted script Jaws home and Jaws End to test the new feature of SayFormattedMessage funtions.
+;Removed function HandleCustomWindow created by me.
 ;8/29/2012 Now speaks state of program-- play, record, stop, play pause, record pause.  Currently bound to JAWSKey+delete.
 ;8/28/2012 NextDocumentWindow now skips grabber and statics at start of toolbar.
 ;8/27/2012 Modified HandleCustomWindows to speak the toolbar name when focus moves to a new toolbar.
@@ -248,23 +253,8 @@ If !App_FirstTime then
 Let App_FirstTime=1
 SayFormattedMessage (OT_No_Disable, MSG_App_Start)
 EndIf ; if first time
+WriteDefaultValue ()
 EndFunction
-
-/*
-Int Function HandleCustomWindows ()
-/:*
-If NoProject () then
-SayNoProject ()
-ElIf  GetControlID (GetCurrentWindow ())==ID_END_RADIO
-*:/
-If  GetControlID (GetCurrentWindow ())==ID_END_RADIO
-||GetControlID (GetCurrentWindow ())==ID_LENGTH_RADIO then ;Focus at the selection bar
-Say (StrSelectionBar, OT_position)
-ElIf GetWindowName (GetCurrentWindow ())==WN_TRACKPANEL then ;Focus at the track panel
-Say (StrTrackPanel, OT_Position)
-EndIf
-EndFunction
-*/
 
 Globals handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
@@ -551,7 +541,12 @@ Script JawsHome ()
 ;If FocusInMainWindow () &&IsPCCursor () &&FocusInTrackPanel () &&!NoProject () &&!UserBufferIsActive () then
 If FocusInMainWindow () &&IsPCCursor () &&FocusInTrackPanel () &&!UserBufferIsActive ()&&AnnounceOn () then
 JawsHome () ; do Home without speaking key label
+If GetJFWVersion ()>=1300000 then
+;Synce Jaws 12 update 1, the say formatted message function including message using place folder. So I'd like to try it.
+SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGStart, MSGTrack)
+Else
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
+EndIf
 Else
 PerformScript JAWSHome()
 EndIf
@@ -561,8 +556,12 @@ Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 ;If FocusInMainWindow () &&IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
 If FocusInMainWindow () &&IsPCCursor () &&FocusInTrackPanel () &&!UserBufferIsActive ()&&AnnounceOn () then
-JawsHome () ; do Home without speaking key label
+JAWSEnd () ; do End without speaking key label
+If GetJFWVersion ()>=1300000 then
+SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGEnd, MSGAllAudio)
+Else
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
+EndIf
 Else
 PerformScript JAWSEnd()
 EndIf
@@ -864,9 +863,8 @@ if InHJDialog () then
 	return
 endIf
 Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
-If GetJFWVersion () >= 1000000 Then
-	; Don't think this is available prior to JAWS 10.
-	OptionsTreeCore (strListOfOptions)
+If GetJFWVersion () >= 900000 Then
+	OptionsTreeCore (strListOfOptions) ;the OptionsTreeCore available in Jaws 9.0 or later
 EndIf ; JAWS 10 or >
 EndScript
 
@@ -932,3 +930,11 @@ String Function UOAnnounceToolbarsHlp ()
 Return msgUO_AnnounceToolbarsHlp
 EndFunction ; UOAnnounceToolbarsHlp
 
+Void Function WriteDefaultValue ()
+;Added default settings value to Audacity.JSI File
+;FileExist required to use this function
+If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
+IniWriteInteger ("Settings", "Announce", 1, IniFile, true)
+IniWriteInteger ("Settings", "AnnounceToolbars", 1, IniFile, true)
+EndIf
+EndFunction
