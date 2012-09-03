@@ -2,11 +2,17 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/3/12 by Dang Manh Cuong
+;Modified function SaySelection Position to make sure the selection toolbar must be turned on.
+;rewrote funtion AddDefaultConfig. This function now be able to use to reset script's settings to default.
+;Wrote script of resetting script config to default, added its hotkey to the script hotkey help.
+; modified the function AutoStartEvent to write default settings if does not exists the config file.
 ;9/2/12 by Dang Manh Cuong
 ;Modify the AdjustJawsOptions script to make it work with Jaws 9.0 or later.
-;Added function WriteDefaultValue to store default Audacity settings for the first time. This called on AutoStartEvent function
-;Remove unused code in FocusInTrackPanel function
-;Rewrote NoProject function
+;Added function "AddDefaultConfig" to store default Audacity settings for the first time. This called on AutoStartEvent function.
+;Remove unused code in FocusInTrackPanel function.
+;Rewrote NoProject function.
+;Added condition to varify that the selection toolbar is turned on or not
 ;9/1/12 Previous saved to HG rev 20.
 ;9/1/2012 Placed the last revision, say stop state via ObjStateChangedEvent, on branch br_objstatechanged,  because it doesn't work.
 ; Previous saved to HG rev 18.
@@ -67,7 +73,7 @@
 ;Modified the JawsDelete script to announce when user deletes the selected audio.
 ;Created some spoken messages.
 ;7/15/2012: wrote functions to check if no project is open.
-;Created dictionary file for some mispronounced words.
+;Created dictionary file for some mispronounced words (usually appear in Prefernces dialogs synce Audacity 2.2.1).
 ;Modified the hotkey help script. The hotkey now displays as a link.
 ;7/13/2012: created spoken message when user moves the start or end of the selection to the left or right by a small amount.
 ;7/12/2012: added announce message for start and end selection.
@@ -95,7 +101,7 @@ Include "audacity.jsm"
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
 
-Const CS_SCRIPT_VERSION = "1.1 9/2/12"
+Const CS_SCRIPT_VERSION = "1.1 9/3/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -128,7 +134,7 @@ Int Function AnnounceToolbarsOn ()
 ;Indicate whether messages related to changing toolbars should be spoken.  Return True if messages should be spoken.
 Var
 Int iAnnounce
-Let iAnnounce=IniReadInteger ("Settings", "Announcetoolbars", 0, IniFile)
+Let iAnnounce=IniReadInteger ("Settings", "AnnounceToolbars", 0, IniFile)
 If iAnnounce==1 then
 Return true
 EndIf
@@ -154,10 +160,15 @@ Pause () ;Wait for any dialog to appear, does not say anything
 If !DialogActive () then
 Pause ()
 let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
+;If user turn on the announce options, speak the selection posision
 If AnnounceOn () Then
 Let sValue=GetPositionField (wnd) ;get value of desired control
+If !sValue then ;the selection toolbar is turn off
+Say (MSGNoSelection, OT_Error)
+Else
 SayFormattedMessage (OT_Position, sMessage, sMessage)
 SayFormattedMessage (OT_Position, sValue, sValue)
+EndIf ;say selection position
 EndIf ; AnnounceOn
 Else ;  DialogActive
 ;So you press [ while stopped, it sends [ to Audacity, and a dialog opens.  Why do we want to send a key??
@@ -221,7 +232,7 @@ Int Function NoProject ()
 ;This is a feature from GoldWave scripts.
 ;This just a testing perfect function
 If FocusInMainWindow () then
-If GetObjectSubTypeCode (true, 0)==WT_Table then
+If GetObjectSubTypeCode (true, 0)==WT_Table then ;we have no project open
 return true
 Else
 Return False
@@ -234,7 +245,10 @@ If !App_FirstTime then
 Let App_FirstTime=1
 SayFormattedMessage (OT_No_Disable, MSG_App_Start)
 EndIf ; if first time
-WriteDefaultValue ()
+;write default settings of Audacity script if not exists.
+If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
+AddDefaultConfig ()
+EndIf
 EndFunction
 
 Globals handle ghAudacityLastArea,
@@ -364,7 +378,7 @@ Var
 	String sValue
 ;I modified this script to make it work on open project only.
 If NoProject () then
-Return
+Return ;exit this script when no project open
 SayNoProject ()
 Else
 Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
@@ -374,8 +388,11 @@ If (IsSameScript()) Then
 EndIf ;if IsSameScript
 EndIf ; Else not NoProject()
 Let sValue = GetPositionField(hWnd)
+If! sValue then ;some time user turn off the selection toolbar, so this condition varify the selection boolbar is turned on or not
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-
+EndIf
 EndScript
 
 
@@ -412,7 +429,11 @@ EndIf
 Let sName = GetWindowName (hRadio)
 
 Let sValue = GetPositionField(hEnd)
+If !sValue then
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sName + sValue, sValue)
+EndIf
 EndIf ; else project open
 EndScript
 
@@ -429,8 +450,11 @@ EndIf
 Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Let hWnd = GetNextWindow(GetNextWindow(hWnd))
 Let sValue = GetPositionField(hWnd)
+If !sValue then
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-
+EndIf
 EndScript
 
 Script  ScriptFileName()
@@ -596,8 +620,7 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
-EndIf
-If FocusInMainWindow () &&FocusInTrackPanel ()then
+ElIf FocusInMainWindow () &&FocusInTrackPanel ()then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
@@ -697,6 +720,7 @@ EndScript
 Script AudacitySayFrame ()
 ;When import uncompressed audio file, if a warning dialog appears, Jaws does not read its options clearly. However, we can read it using Jaws or invisible cursor.
 ;I created a frame on each option in this dialog, and write this script for Jaws to read it.
+;This script need improvement to work better.
 SaveCursor ()
 InvisibleCursor ()
 RouteInvisibleToPc ()
@@ -903,15 +927,14 @@ String Function UOAnnounceToolbarsHlp ()
 Return msgUO_AnnounceToolbarsHlp
 EndFunction ; UOAnnounceToolbarsHlp
 
-Void Function WriteDefaultValue ()
-;Added default settings value to Audacity.JSI File
-;FileExist required to use this function
-If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
+Void Function AddDefaultConfig ()
+;Added default settings value to Audacity.JSI File.
 IniWriteInteger ("Settings", "Announce", 1, IniFile, true)
 IniWriteInteger ("Settings", "AnnounceToolbars", 1, IniFile, true)
-EndIf
 EndFunction
 
-
-
-
+Script ResetConfig ()
+;Reset all audacity Jaws script' config to default.
+AddDefaultConfig ()
+Say ("Reset all config to default", ot_message)
+EndScript

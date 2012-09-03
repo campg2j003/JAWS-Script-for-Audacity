@@ -193,6 +193,9 @@
 :function UOAnnounceToolbarsHlp
 :Returns string No Return Description
 
-:function WriteDefaultValue
+:function AddDefaultConfig
 :Description Added default settings value to Audacity.JSI File
+
+:script ResetConfig
+:Synopsis Reset all audacity Jaws script' config to default.
 

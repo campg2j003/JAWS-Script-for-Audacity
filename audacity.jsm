@@ -46,6 +46,7 @@ To toggle alert messages on or off, press %keyfor (AnnounceOnOff)). See the what
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's status (play/pause/record/stop) press %KeyFor(SayAudacityState)
+To reset all script configuration to default, press %keyfor (ResetConfig)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
@@ -253,5 +254,8 @@ Speaks messages for Audacity audio operations.
 @@
 @msgUO_AnnounceToolbarsHlp
 If on, speaks the toolbar name when focus moves from one toolbar to another.
+@@
+@msgNoSelection
+To use this feature you must enable the selection toolbar
 @@
 EndMessages
