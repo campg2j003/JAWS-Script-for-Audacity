@@ -2,6 +2,20 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+; 9/3/12 by Gary Campbell:
+;Merged in changes from audacity_cuong rev 22:3eb23898db16.
+;9/3/12 by Dang Manh Cuong
+;Modified function SaySelection Position to make sure the selection toolbar must be turned on.
+;rewrote funtion AddDefaultConfig. This function now be able to use to reset script's settings to default.
+;Wrote script of resetting script config to default, added its hotkey to the script hotkey help.
+; modified the function AutoStartEvent to write default settings if does not exists the config file.
+;9/2/12 by Dang Manh Cuong
+;Modify the AdjustJawsOptions script to make it work with Jaws 9.0 or later.
+;Added function "AddDefaultConfig" to store default Audacity settings for the first time. This called on AutoStartEvent function.
+;Remove unused code in FocusInTrackPanel function.
+;Rewrote NoProject function.
+;Added condition to varify that the selection toolbar is turned on or not
+; Previous saved to HG rev 21.
 ;9/2/2012 In SaySelectionPosition changed OT_POSITION to OT_USER_REQUESTED_INFORMATION as specified in sayActiveCursor in JAWS 10 default.jss.
 ;9/1/2012 In audacity.jsm updated hotkey help to document JAWS script options.
 ;Added message constants for program states.
@@ -22,6 +36,8 @@
 ;Changed IsMainWindow to FocusInMainWindow.  Changed WrongFocus to FocusInTrackPanel, reversed the sense of its calls.
 ;Added UserBufferIsActive to SayActiveCursor.
 ;8/30/2012 Previous saved to HG rev 17.
+;8/29/2012 by Dang manh Cuong: Edidted script Jaws home and Jaws End to test the new feature of SayFormattedMessage funtions.
+;Removed function HandleCustomWindow created by me.
 ;8/29/2012 Now speaks state of program-- play, record, stop, play pause, record pause.  Currently bound to JAWSKey+delete.
 ;8/28/2012 NextDocumentWindow now skips grabber and statics at start of toolbar.
 ;8/27/2012 Modified HandleCustomWindows to speak the toolbar name when focus moves to a new toolbar.
@@ -64,7 +80,7 @@
 ;Modified the JawsDelete script to announce when user deletes the selected audio.
 ;Created some spoken messages.
 ;7/15/2012: wrote functions to check if no project is open.
-;Created dictionary file for some mispronounced words.
+;Created dictionary file for some mispronounced words (usually appear in Prefernces dialogs synce Audacity 2.2.1).
 ;Modified the hotkey help script. The hotkey now displays as a link.
 ;7/13/2012: created spoken message when user moves the start or end of the selection to the left or right by a small amount.
 ;7/12/2012: added announce message for start and end selection.
@@ -92,7 +108,7 @@ Include "audacity.jsm"
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
 
-Const CS_SCRIPT_VERSION = "1.1 9/1/2012"
+Const CS_SCRIPT_VERSION = "1.1 9/3/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -125,27 +141,14 @@ Int Function AnnounceToolbarsOn ()
 ;Indicate whether messages related to changing toolbars should be spoken.  Return True if messages should be spoken.
 Var
 Int iAnnounce
-Let iAnnounce=IniReadInteger ("Settings", "Announcetoolbars", 0, IniFile)
+Let iAnnounce=IniReadInteger ("Settings", "AnnounceToolbars", 0, IniFile)
 If iAnnounce==1 then
 Return true
 EndIf
 EndFunction ; AnnounceToolbarsOn
 
 Int Function FocusInTrackPanel ()
-;This function indicates that user focus is at the selection bar or toolbar window to prevent Jaws from speaking some unwanted messages, such as move to start of track etc. I named it "WrongFocus"
-/*
-;I use style bit to varify that
-Var
-Int Style, String sFrame
-Let Style=GetWindowStyleBits (GetFocus ())
-Let sFrame=GetFrameNameAtCursor ()
-If Style==0x52010000
-||Style==0x50030004
-||Style==0x50000380
-||Style==0x50010222 then
-Return true
-EndIf
-*/
+;This function indicates that user focus is at the selection bar or toolbar window to prevent Jaws from speaking some unwanted messages, such as move to start of track etc./*
 Return (FocusInMainWindow () && GetWindowName(GetFocus()) == WN_TRACKPANEL )
 EndFunction ; FocusInTrackPanel
 
@@ -154,23 +157,25 @@ Void Function SaySelectionPosition (Int iPosition, string sKey, string sMessage)
 Var
 Handle wnd, ;the window containing the selection bar
 String sValue ;the selection field value 
-
-/*
 If NoProject () then
 Return
 SayNoProject ()
 ElIf FocusInMainWindow () then
-*/
 TypeCurrentScriptKey ()
-If FocusInMainWindow () then
+;If FocusInMainWindow () then
 Pause () ;Wait for any dialog to appear, does not say anything
 If !DialogActive () then
 Pause ()
 let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
+;If user turn on the announce options, speak the selection posision
 If AnnounceOn () Then
 Let sValue=GetPositionField (wnd) ;get value of desired control
+If !sValue then ;the selection toolbar is turn off
+Say (MSGNoSelection, OT_Error)
+Else
 SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
 SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
+EndIf ;say selection position
 EndIf ; AnnounceOn
 Else ;  DialogActive
 ;So you press [ while stopped, it sends [ to Audacity, and a dialog opens.  Why do we want to send a key??
@@ -181,13 +186,11 @@ EndFunction ; SaySelectionPosition
 
 Void Function MarkerMovement (string sScript, string sAlert)
 ;Used for marker scripts, such as move start of selection to the left by a small amount
-/*
 ;First, check to make sure we have a project open
 If NoProject () then
 Return
 SayNoProject ()
-*/
-If !UserBufferIsActive ()&&FocusInTrackPanel () then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert depends on each script
@@ -214,8 +217,8 @@ Void Function AnnounceMessage (string Message, string sKey)
 ;This speaks an alert message when the user presses some Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
 ; sKey - key to be executed when not performing the Audacity function.
-;If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel () then
-If !UserBufferIsActive ()&&FocusInTrackPanel () then
+If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel () then
+;If ! UserBufferIsActive ()&&FocusInTrackPanel () then
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;the alert message declare here
 EndIf ; if AnnounceOn
@@ -226,9 +229,8 @@ TypeString (sKey)
 EndIf ; else not main window, etc.
 EndFunction
 
-/*
 Void Function SayNoProject ()
-;If no project is open, speak an alert.
+;If no project is open, speak an alert message.
 SayFormattedMessage (OT_error, msgNoProject_l, msgNoProject_s)
 EndFunction
 
@@ -236,39 +238,25 @@ Int Function NoProject ()
 ;return true if no project is open.
 ;This is a feature from GoldWave scripts.
 ;This just a testing perfect function
-;This has a very big problem when working with an unsaved project, so I remove it until I find a fix.
 If FocusInMainWindow () then
-If GetWindowName (GetRealWindow (GetFocus ()))== msgProgName 
-&& GetColorText ()==000000000 
+If GetObjectSubTypeCode (true, 0)==WT_Table then ;we have no project open
 return true
 Else
 Return False
 EndIf
+EndIf
 EndFunction
-*/
 
 Function AutoStartEvent ()
 If !App_FirstTime then
 Let App_FirstTime=1
 SayFormattedMessage (OT_No_Disable, MSG_App_Start)
 EndIf ; if first time
-EndFunction
-
-/*
-Int Function HandleCustomWindows ()
-/:*
-If NoProject () then
-SayNoProject ()
-ElIf  GetControlID (GetCurrentWindow ())==ID_END_RADIO
-*:/
-If  GetControlID (GetCurrentWindow ())==ID_END_RADIO
-||GetControlID (GetCurrentWindow ())==ID_LENGTH_RADIO then ;Focus at the selection bar
-Say (StrSelectionBar, OT_position)
-ElIf GetWindowName (GetCurrentWindow ())==WN_TRACKPANEL then ;Focus at the track panel
-Say (StrTrackPanel, OT_Position)
+;write default settings of Audacity script if not exists.
+If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
+AddDefaultConfig ()
 EndIf
 EndFunction
-*/
 
 Globals handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
@@ -314,6 +302,10 @@ Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
 EndIf
 EndIf ; new toolbar
 EndIf ; If IsToolbar
+;Speaks an alert when no project open
+If NoProject () &&AnnounceOn () then
+SayNoProject ()
+EndIf
 Return HandleCustomWindows () ; allow others to process
 EndFunction ; HandleCustomWindows
 
@@ -391,22 +383,23 @@ Var
 	Handle hWnd,
 	String sName,
 	String sValue
-/*
 ;I modified this script to make it work on open project only.
 If NoProject () then
-Return
+Return ;exit this script when no project open
 SayNoProject ()
 Else
-*/
 Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 If (IsSameScript()) Then
 	SetFocus(hWnd)
 	Return
 EndIf ;if IsSameScript
-;EndIf ; Else not NoProject()
+EndIf ; Else not NoProject()
 Let sValue = GetPositionField(hWnd)
+If! sValue then ;some time user turn off the selection toolbar, so this condition varify the selection boolbar is turned on or not
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-
+EndIf
 EndScript
 
 
@@ -418,12 +411,10 @@ Var
 	String sName,
 	String sValue,
 	Int bIsSelected
-/*
 If NoProject () then
 Return
 SayNoProject ()
 Else ; project open
-*/
 Let hEnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 If (IsSameScript()) Then
 	SetFocus(hEnd)
@@ -445,8 +436,12 @@ EndIf
 Let sName = GetWindowName (hRadio)
 
 Let sValue = GetPositionField(hEnd)
+If !sValue then
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sName + sValue, sValue)
-;EndIf ; else project open
+EndIf
+EndIf ; else project open
 EndScript
 
 Script SayActiveCursor()
@@ -455,7 +450,7 @@ Var
 	Handle hWnd,
 	String sValue
 ;If (Not FocusInMainWindow() || IsSameScript() || Not IsPCCursor())||NoProject () Then
-If (Not FocusInMainWindow() || IsSameScript() || Not IsPCCursor() || UserBufferIsActive ()) Then
+If (Not FocusInMainWindow() || IsSameScript() || Not IsPCCursor() || UserBufferIsActive ())||NoProject () Then
 	PerformScript SayActiveCursor()
 	Return
 EndIf
@@ -463,8 +458,11 @@ Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Let hWnd = GetNextWindow(GetNextWindow(hWnd))
 ;hWnd is Audio Position field.
 Let sValue = GetPositionField(hWnd)
+If !sValue then
+Say (msgNoSelection, ot_error)
+Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-
+EndIf
 EndScript
 
 Script  ScriptFileName()
@@ -555,9 +553,17 @@ EndScript
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
 ;If FocusInMainWindow () &&IsPCCursor () &&FocusInTrackPanel () &&!NoProject () &&!UserBufferIsActive () then
-If IsPCCursor () &&FocusInTrackPanel () &&!UserBufferIsActive ()&&AnnounceOn () then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JawsHome () ; do Home without speaking key label
+/*
+;Does not compile on JAWS 10.
+If GetJFWVersion ()>=1300000 then
+;Synce Jaws 12 update 1, the say formatted message function including message using place folder. So I'd like to try it.
+SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGStart, MSGTrack)
+Else
+*/
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
+;EndIf ; if < JAWS 13
 Else
 PerformScript JAWSHome()
 EndIf
@@ -566,9 +572,16 @@ EndScript
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 ;If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
-If IsPCCursor () &&FocusInTrackPanel () &&!UserBufferIsActive ()&&AnnounceOn () then
-JawsHome () ; do Home without speaking key label
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
+JAWSEnd () ; do End without speaking key label
+/*
+; Does not compile on JAWS 10.
+If GetJFWVersion ()>=1300000 then
+SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGEnd, MSGAllAudio)
+Else
+*/
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
+;EndIf ; else < JAWS 13
 Else
 PerformScript JAWSEnd()
 EndIf
@@ -595,7 +608,7 @@ EndScript
 Script SelectFromStartOfLine ()
 ;Select from current position to the start of file by pressing shift+ home
 ;If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
-If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive () then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
 SelectFromStartOfLine ()
 If AnnounceOn () then ;User can to turn off this message
 SayFormattedMessage (OT_No_Disable, msgStartOfFile) ;alerts when user activates this script at the main window, and a project is open
@@ -608,9 +621,8 @@ EndScript
 
 Script SelectToEndOfLine ()
 ;Select from current position to the end of file
-;
 ;If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
-If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive () then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () then
 SelectToEndOfLine ()
 If AnnounceOn () then
 SayFormattedMessage (OT_No_Disable, msgEndOfFile)
@@ -622,13 +634,10 @@ EndScript
 
 Script DeleteSelectedAudio ()
 ;Alerts when user deletes selected sound
-/*
 If NoProject () then
 SayNoProject ()
 Return
-EndIf
-*/
-If FocusInTrackPanel () then
+ElIf FocusInTrackPanel ()then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
@@ -642,7 +651,7 @@ EndScript
 Script JawsDelete ()
 ;If focus is in the main window, a project exists, and audio is selected, the del key will delete it. In this case we perform the script DeleteSelectedAudio.
 ;If !NoProject ()&&FocusInTrackPanel () then
-If FocusInTrackPanel () then
+If FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
 Else
 PerformScript JAWSDelete()
@@ -652,7 +661,7 @@ EndScript
 Script JawsBackspace ()
 ;This script is similar to the JawsDelete script.
 ;If !NoProject () &&FocusInTrackPanel () then
-If FocusInTrackPanel () then
+If FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
 Else
 PerformScript JAWSBackspace()
@@ -661,15 +670,14 @@ EndScript
 
 Script Copy ()
 ;Copy selected sound to clipboard if exists
-/*
 If NoProject () then
 SayNoProject ()
 return
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
-*/
-If FocusInMainWindow ()
-&&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
+
+;If FocusInMainWindow ()
+;&&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, "Copy selected audio to clipboard", OT_status) ;the alert message declare here
@@ -681,15 +689,13 @@ EndIf
 EndScript
 
 Script CutToClipboard ()
-/*
 If NoProject () then
 return
 SayNoProject ()
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
-*/
-If FocusInMainWindow ()
-&&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
+;If FocusInMainWindow ()
+;&&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, "cut selected audio to clipboard", OT_status) ;the alert message declare here
@@ -702,25 +708,21 @@ EndScript
 
 Script DeselectAll ()
 ;Unselect all audio
-/*
 If NoProject () then
 Return
 SayNoProject ()
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;this second condition makes the default script active in virtual viewer
-*/
-If !UserBufferIsActive ()&&FocusInTrackPanel () then ;this second condition makes the default script active in virtual viewer
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
+;If !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
 AnnounceMessage (msgDeselectAll, "Control+Shift+a")
 EndIf
 EndScript
 
 Script CloseFocusTrack ()
-/*
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;this second condition makes the default script active in virtual viewer
-*/
-If !UserBufferIsActive ()&&FocusInTrackPanel () then ;this second condition makes the default script active in virtual viewer
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
+;If !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
 AnnounceMessage (msgCloseFocusedTrack, "Shift+C")
 Else
 ;TypeString ("C")
@@ -731,6 +733,7 @@ EndScript
 Script AudacitySayFrame ()
 ;When import uncompressed audio file, if a warning dialog appears, Jaws does not read its options clearly. However, we can read it using Jaws or invisible cursor.
 ;I created a frame on each option in this dialog, and write this script for Jaws to read it.
+;This script need improvement to work better.
 SaveCursor ()
 InvisibleCursor ()
 RouteInvisibleToPc ()
@@ -868,10 +871,11 @@ if InHJDialog () then
 	return
 endIf
 Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
-If GetJFWVersion () >= 1000000 Then
-	; Don't think this is available prior to JAWS 10.
-	OptionsTreeCore (strListOfOptions)
-EndIf ; JAWS 10 or >
+If GetJFWVersion () >= 900000 Then
+	OptionsTreeCore (strListOfOptions) ;the OptionsTreeCore available in Jaws 9.0 or later
+Else
+JawsVerbosityCore (strListOfOptions) ;The default AdjustJawsVerbosity available in prior Jaws 9.0. Not tested
+EndIf ; JAWS 9 or >
 EndScript
 
 String Function NodeHlp (string sNodeName)
@@ -936,3 +940,14 @@ String Function UOAnnounceToolbarsHlp ()
 Return msgUO_AnnounceToolbarsHlp
 EndFunction ; UOAnnounceToolbarsHlp
 
+Void Function AddDefaultConfig ()
+;Added default settings value to Audacity.JSI File.
+IniWriteInteger ("Settings", "Announce", 1, IniFile, true)
+IniWriteInteger ("Settings", "AnnounceToolbars", 1, IniFile, true)
+EndFunction
+
+Script ResetConfig ()
+;Reset all audacity Jaws script' config to default.
+AddDefaultConfig ()
+Say ("Reset all config to default", ot_message)
+EndScript
