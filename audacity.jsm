@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 8/29/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/1/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
@@ -24,6 +24,7 @@ Messages
 Audacity
 @@
 
+; Begins the hotkey help.
 ; %1 - string containing script version and date.
 @MSGScript_Ver
 JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
@@ -42,12 +43,15 @@ To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default Jaws mouse movement scripts while focus is in the main window. If you want to activate the original functionality while in the main window, turn on the Jaws cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
-To toggle alert messages on or off, press %keyfor (AnnounceOnOff)). See the what's new.txt for mor info.
+To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Toolbars option in Adjust JAWS settings.
+See the what's new.txt for mor info.
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's status (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+
+To change settings for the Audacity script press KeyFor (AdjustJawsOptions).
 
 To close this message, press %keyfor (UpALevel)
 @@
@@ -157,7 +161,7 @@ To close this message, press %keyfor (UpALevel).
 Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of JAWS hot keys for Audacity.
 @@
 
-;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages?
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
 @msgStart
 start
 @@
@@ -226,12 +230,27 @@ Delete selected audio
 @@
 
 @MSGDelete_s
-Deleted
+Delete
+@@
+
+;Messages for program states.
+@msgPause
+pause
+@@
+@msgPlay
+play
+@@
+@msgstop
+stop
+@@
+@msgRecord
+record
 @@
 
 @msgDeselectAll
 deselect all
 @@
+
 @msgCloseFocusedTrack
 close focused track
 @@
@@ -249,7 +268,7 @@ Announce messages on
 Audacity-specific options
 @@
 @msgUO_AnnounceMessagesHlp
-Speaks messages for Audacity audio operations.
+If on, speaks messages for Audacity audio operations.
 @@
 @msgUO_AnnounceToolbarsHlp
 If on, speaks the toolbar name when focus moves from one toolbar to another.
