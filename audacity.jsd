@@ -176,6 +176,11 @@ Assumes focus is in the main window.
 :Description Works for windows whose object name is the same as the window name
 :Param Handle/hWnd window to inspect
 
+:function IsStopped
+:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
+:Synopsis Determines if Audacity is currently stopped
+:Description Determines if Audacity is currently stopped.  Returns TRUE if stopped or the Transport toolbar cannot be found.  This is used to keep cursor position from being spoken unless Audacity is stopped.
+
 :Function UOAnnounceMessages
 :Returns String
 :Param int
