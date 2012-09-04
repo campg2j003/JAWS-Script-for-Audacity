@@ -2,6 +2,8 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/3/12 Added SayPrior/NextCharacter to speak cursor position if stopped and messages are on.
+;9/3/12 Previous saved to HG rev 25.
 ; 9/3/12 by Gary Campbell:
 ;Merged in changes from audacity_cuong rev 22:3eb23898db16.
 ;9/3/12 by Dang Manh Cuong
@@ -17,6 +19,7 @@
 ;Added condition to varify that the selection toolbar is turned on or not
 ; Previous saved to HG rev 21.
 ;9/2/2012 In SaySelectionPosition changed OT_POSITION to OT_USER_REQUESTED_INFORMATION as specified in sayActiveCursor in JAWS 10 default.jss.
+;Added function IsStopped, also to jsd.
 ;9/1/2012 In audacity.jsm updated hotkey help to document JAWS script options.
 ;Added message constants for program states.
 ;Removed FocusInMainWindow where FocusInTrackPanel is also used.
@@ -668,6 +671,35 @@ PerformScript JAWSBackspace()
 EndIf
 EndScript
 
+Script SayPriorCharacter ()
+var
+	Handle hWnd
+
+If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+TypeCurrentScriptKey ()
+Pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+Else
+PerformScript SayPriorCharacter ()
+EndIf
+EndScript ; SayPriorCharacter
+
+Script SayNextCharacter ()
+var
+	Handle hWnd
+
+If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+TypeCurrentScriptKey ()
+Pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+Else
+PerformScript SayNextCharacter ()
+EndIf
+EndScript ; SayNextCharacter
+
+
 Script Copy ()
 ;Copy selected sound to clipboard if exists
 If NoProject () then
@@ -852,6 +884,25 @@ Let sName = GetWindowName(hWnd)
 GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
 Return iState
 EndFunction ; GetObjectState
+
+Int Function IsStopped ()
+;Returns nonzero if currently playing. Returns FALSE if not playing or the Transport toolbar cannot be found.
+;We don't cache the play button handle becaause the Transport toolbar may have been deselected since last invocation.  We might could detect the toolbar being destroyed with WindowDestroyedEvent.  We return FALSE in this situation so that operation is not interrupted.
+var
+	Handle hTemp
+Let hTemp = GetFirstChild(GetAppMainWindow(GetFocus()))
+Let hTemp = GetNextWindow(hTemp) ; parent of toolbars
+Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
+If !hTemp Then
+;Say("Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.", OT_JAWS_MESSAGE)
+Return False
+EndIf ; if no transport toolbar
+Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
+Let hTemp = GetNextWindow(hTemp)
+Let hTemp = GetNextWindow(hTemp)
+Return GetObjectState(hTemp) & CTRL_DISABLED
+EndFunction ; IsStopped
+
 
 ; *** Adapted from ie.jss
 Script AdjustJawsVerbosity ()
