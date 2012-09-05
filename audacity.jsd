@@ -80,20 +80,29 @@
 :script HotkeyHelp
 
 :script WindowKeysHelp
+:Synopsis Puts Audacity shortcut keys in the virtual viewer
+:Description Press twice quickly to display Windows shortcut keys
 
 :script MouseUp
-:Description Increase the track gain if appropriate.  Otherwise, The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
+:Synopsis Increase track gain or move the mouse pointer or JAWS cursor up
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
 
 :script MouseDown
-:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts This keystroke is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
+:Synopsis Decrease track gain or move the mouse pointer or JAWS cursor down
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
 
 :script MouseLeft
-:Description The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
+:Synopsis Pan left or move the mouse pointer or JAWS cursor to the left
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
 
 :script MouseRight
-:Description The number of pixels for mouse movement is determined by the mouse movement variable. The value of the mouse movement variable is set in default JCF. It can be modified by using home row utility scripts  This is useful for accurately positioning the mouse pointer. In Audacity, user must activate Jaws cursor before using the default script
+:Synopsis Pan right or move the mouse pointer or JAWS cursor to the right
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
 
 :script SelectionStart
+:Synopsis Says the selection start position
+:Description When the [ key is pressed, says the selection start position.
+:Category Positioning
 
 :script SelectionEnd
 :Synopsis Says the selection end position
@@ -101,53 +110,53 @@
 :Category Positioning
 
 :script FinishMarkerRight
-:Synopsis Move the end of the selection to the right by a small amount
+:Synopsis Moves the end of the selection to the right by a small amount
 
 :script FinishMarkerLeft
-:Synopsis Move the end of the selection to the left by a small amount
+:Synopsis Moves the end of the selection to the left by a small amount
 
 :script StartMarkerRight
-:Synopsis Move the start of the selection to the right by a small amount
+:Synopsis Moves the start of the selection to the right by a small amount
 
 :script StartMarkerLeft
-:Synopsis Move the start of the selection to the left by a small amount
+:Synopsis Moves the start of the selection to the left by a small amount
 
 :script JawsHome
 
 :script JawsEnd
 
 :script MoveToStartOfSelectedTracks
-:Synopsis Move cursor to start of audio in selected tracks
+:Synopsis Moves cursor to start of audio in selected tracks
 
 :script MoveToEndOfSelectedTracks
-:Synopsis Move cursor to end of audio in selected tracks
+:Synopsis Moves cursor to end of audio in selected tracks
 
 :script SelectToBeginning
-:Synopsis Move the selection start to the start of the audio in the selected tracks
+:Synopsis Moves the selection start to the start of the audio in the selected tracks
 
 :script SelectToEnd
-:Synopsis Move the selection end to the end of the audio in the selected tracks
+:Synopsis Moves the selection end to the end of the audio in the selected tracks
 
 :script SelectFromStartOfLine
 
 :script SelectToEndOfLine
 
 :script DeleteSelectedAudio
-:Synopsis Delete the selected audio.
+:Synopsis Deletes the selected audio.
 
 :script JawsDelete
 
 :script JawsBackspace
 
 :script Copy
-:Synopsis Copy selected audio to clipboard
+:Synopsis Copies selected audio to clipboard
 :Description Copy the selected audio to the clipboard if focus is in the main window.  Otherwise, perform the default script.
 
 :script CutToClipboard
-:Synopsis Cut selected audio to clipboard
+:Synopsis Cuts selected audio to clipboard
 
 :script DeselectAll
-:Synopsis Deselect all audio in current open project
+:Synopsis Deselects all audio in current open project
 
 :script CloseFocusTrack
 :Synopsis Close the currently focused track
@@ -163,7 +172,7 @@
 :script PreviousDocumentWindow
 
 :script SayAudacityState
-:Synopsis Say the current program state-- play, record, pause
+:Synopsis Says the current program state-- play, record, pause
 
 :function GetObjectState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh

@@ -1,14 +1,18 @@
-(This file last updated 9/1/2012)
+(This file last updated 9/4/2012)
 New in Jaws scripts for Audacity version 1.1 (8/30/2012):
 
-. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CUNTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when foacus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
-. Thae extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.
+. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CUNTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
+. The extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.
 . JAWS no longer says "track table" when moving between tracks.
-. HandleCustomWindows now calls HandleCustomWindows so that this function in scripts used by this script will be executed.
-. Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between areas.
+. Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
 . Speaks the toolbar name when focus moves from one toolbar to another.
 . When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB moves to the first control on the next toolbar or the last control on the previous toolbar.
 . JAWSKey+Delete speaks the current program state: stop, play, play pause, record, or record pause.
+. Speaks cursor position when left/right arrows are pressed and Audacity is stopped.
+. Functions that use values from the selection bar now speak a message or silently omit the action requiring the value if the selection bar is enabled.
+. Now indicates when no project is open (no tracks in track panel) for many operations.
+. Track gain and pan controls now only function when the PC cursor is active.  Otherwise they execute their default mouse movement functions.
+. HandleCustomWindows now calls HandleCustomWindows so that this function in scripts used by this script will be executed.
 
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 
