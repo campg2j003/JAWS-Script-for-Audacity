@@ -18,6 +18,6 @@ shift+control+a=DeselectAll
 shift+c=CloseFocusTrack
 control+[=SaySelectionStart
 Control+`=AnnounceOnOff
-;JAWSKey+V=AdjustJAWSOptions
+JAWSKey+V=AdjustJAWSOptions
 ;[Laptop Keys]
 Shift+Control+`=ResetConfig

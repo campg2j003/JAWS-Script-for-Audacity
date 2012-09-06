@@ -2,6 +2,11 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/6/2012 by Gary Campbell:
+;In GetPositionField now removes zeros and point if no fractional digits.  Replaces 00 before decimal with 1 0.  Does not do this for formats without a decimal point, like 00h00m00s+frames.
+;9/5/12 by Gary Campbell:
+;Changed  GetPositionField so that it says all three digits following the decimal if there is a nonzero digit.
+;9/5/12 Previous saved to HG rev 28.
 ;9/5/12 by Gary Campbell:
 ;Updated jsd file.  Corrected syntax in hotkey help.
 ;Made SayPrev/NextCharacter say "no project" in track panel.
@@ -125,7 +130,7 @@ Include "audacity.jsm"
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
 
-Const CS_SCRIPT_VERSION = "1.1 9/4/12"
+Const CS_SCRIPT_VERSION = "1.1 9/6/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -367,26 +372,60 @@ Var
 	String s,
 	String s1,
 	String s2,
-	String sValue,
+	String s3,
+	String s4,
 	Int i,
-Int j
+	Int j
 
 Let s = GetWindowText(hWnd, 0)
+
+;Remove "uninteresting" stuff from the position, like leading neros and ".000"
 ; A position can be in several formats, such as "0 0  h 0 0  m 0 0 .0 0 0  s " or "0 0 0 ,0 0 0  seconds ".
-Let s2 = s
-If (StringContains(s2, ",")) Then
-	Let s1 = "0 0 0 ,0 0"
+;These strings may need to be localized because H, M, ., and comma may be different.
+Let s2 = StringStripAllBlanks(s)
+If StringContains(s2, csGroupSep) Then
+	;SayString("no point") ; debug
+	Let s1 = csPositionGroupFmt ;does not include final 0.
 Else
-	Let s1 = "0 0  h 0 0  m 0 0 .0 0" ; we strip as much of this as matches off the front, we don't match the last 0 so it will say something.
-EndIf
+	;Let s1 = "0 0  h 0 0  m 0 0 .0 0" ; we strip as much of this as matches off the front, we don't match the last 0 so it will say something.
+	;SayString("decimal") ; debug
+	Let s1 = ""
+	If StringContains (s2, csDays) Then
+		Let s1 = "00" + csDays
+	EndIf
+	Let s1 = s1 + csPositionHHMMFmt ; we strip as much of this as matches off the front up to the decimal point.
+	;SayString("s1 = " + s1) ; debug
+	;S1 contains what needs to be ssripped from the staart of s2.
+EndIf ; else contains decimal
 ; Return is in s1 and s2, passed by reference!!!
-StringTrimCommon(s1, s2, 1)
+StringTrimCommon(s1, s2, 1) ; 1=trim from start
+Let i = StringContains (s2, csDecimal)
+If i > 0 Then
+	;Check all digits immediately following the decimal point for nonzero digits.
+	Let s3 = StringRight (s2, StringLength (s2) - i)
+	; We want to know if there are nonzero digits between the point and the next nondigit.  We change all zeros to blanks and strip the leading blanks.  The difference in length is the number of leading digits.
+	Let s4 = StringTrimLeadingBlanks(StringReplaceChars(s3, "0", " "))
+	If !StringContainsChars(Substring(s4, 1, 1), "123456789") Then
+		;No nonzeros, find the number of zeros.
+		Let j = StringLength(s3) - StringLength(s4)
+		;SayString("no nonzeros, j = " + IntToString(j)) ; debug
+		If i == 1 Then
+			Let s2 = "0" + s2
+			Let i = i + 1
+		EndIf ; if decimal is first char
+		Let s3 = StringReplaceSubstrings(substring(s2, 1, i - 1), "00", "0")
+		Let s2 = s3 + Substring (s2, i + 1 + j, StringLength(s2) - j)
+	Else
+		; nonzeros after decimal
+	Let s3 = StringReplaceSubstrings(substring(s2, 1, i - 1), "00", "0")
+		Let s2 = s3 + Substring (s2, i, StringLength(s2) - i + 1)
+	EndIf ; if no nonzeros after decimal
+EndIf ; if decimal
 ; What we want is in s2.
-Let sValue = s2
 ; Don't say leading parts if they are 0.
 
-Return sValue
-EndFunction
+Return s2
+EndFunction ; GetPositionField
 
 Script SaySelectionStart ()
 

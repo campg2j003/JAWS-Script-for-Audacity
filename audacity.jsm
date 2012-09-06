@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/4/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/6/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
@@ -17,6 +17,17 @@ Const
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages",
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars"
+
+;These are used to strip leading neros from audio positions.
+Const
+	;The format of a position with value 0 containing thousands separators, not including the last 0, like the seconds format, with blanks removed
+	csPositionGroupFmt = "000,00",
+	;The word following the days in a position.
+	csDays = "days",
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	csPositionHHMMFmt = "00h00m00",
+	csGroupSep = ",", ; thousands separator character
+	csDecimal = "." ; decimal point
 
 
 Messages
