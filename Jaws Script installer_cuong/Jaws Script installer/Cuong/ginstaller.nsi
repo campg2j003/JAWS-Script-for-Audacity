@@ -18,6 +18,9 @@ Last updated: Thursday, September 12, 2012
 
 Modifications:
 
+9/12/12 Added macros JAWSLOG_* so that the installer can coexist in another installer using uninstlog.
+Wrapped the rest of the installer in macro JAWSScriptInstaller and moved it into the header.
+9/12/12 Previous saved to HG rev 32.
 9/12/12 Moved SetCompressor before the header section.  This is so that uninstlog.nsh could be used in code to install scripts in each version.
 Moved SetOverwrite before the header.  This is so that the SetOverwriteDefault define is not in code that would be used to add to another installer.
 Changed the method of specifying what to do to install scripts in a JAWS version.  Now, you define the macro JAWSInstallScriptItems before including the header.  If not defined, a default version is used.
@@ -224,6 +227,44 @@ var JAWSLV ; handle of JAWS versions list view
 var JAWSGB
 var JAWSRB1
 var JAWSRB2
+
+;JAWS uninstall log macros.
+!define JAWSLOGFILENAME "jawsuninstlog.txt"
+!macro JAWSLOG_OPENINSTALL
+push $UninstLog
+!ifdef UninstLog
+!define __JAWSLOGTemp ${UninstLog}
+undef Uninstlog
+!EndIf
+!define UninstLog ${JAWSLOGFILENAME}
+!insertmacro UNINSTLOG_OPENINSTALL
+!macroend ;JAWSLOG_OPENINSTALL
+
+!macro JAWSLOG_CLOSEINSTALL
+!insertmacro UNINSTLOG_CLOSEINSTALL
+pop $UninstLog
+!undef UninstLog
+!ifdef __JAWSLOGTemp
+!define UninstLog ${__JAWSLOGTemp}
+!undef __JAWSLOGTemp
+!EndIf
+!macroend ;JAWSLOG_CLOSEINSTALL
+
+!macro JAWSLOG_UNINSTALL
+push $UninstLog
+!ifdef UninstLog
+!define __JAWSLOGTemp ${UninstLog}
+undef Uninstlog
+!EndIf
+!define UninstLog ${JAWSLOGFILENAME}
+!insertmacro UNINSTLOG_UNINSTALL
+pop $UninstLog
+!undef UninstLog
+!ifdef __JAWSLOGTemp
+!define UninstLog ${__JAWSLOGTemp}
+!undef __JAWSLOGTemp
+!EndIf
+!macroend ;JAWSLOG_UNINSTALL
 
 ;-----
 ; The following goes in the .nsh file.
@@ -930,7 +971,7 @@ functionend
 GetCurInstType $0
 IntOp $0 $0 + 1 ;make it the same as for SectionIn
 IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging
-  !insertmacro UNINSTLOG_OPENINSTALL
+  !insertmacro JAWSLOG_OPENINSTALL
 NoLogging:
 ${ForJawsVersions}
   ; $0 contains the version string.
@@ -939,7 +980,7 @@ ${ForJawsVersionsEnd}
 GetCurInstType $0
 IntOp $0 $0 + 1 ;make it the same as for SectionIn
 IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging2
-  !insertmacro UNINSTLOG_CLOSEINSTALL
+  !insertmacro JAWSLOG_CLOSEINSTALL
 NoLogging2:
 !macroend
 
@@ -1021,6 +1062,25 @@ ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
 exch $2 ; return to TOS, $2 same as before call
 functionend
 
+
+/*
+; for debugging
+!ifndef StrTok_INCLUDED
+${StrTok}
+!endif
+
+
+!macro tstenumjawsversions var root key index
+; Resembles enumregkey to test GetJAWSVersions.
+strcpy ${var} ""
+; compare with number of items in strtok.
+intcmp ${index} 6 tstenumskip 0 tstenumskip
+${strtok} ${var} "5.0|6.0|9.0|10.0|11.0|12.0" "|" ${index} 0
+;intcmp ${index} 3 tstenumskip 0 tstenumskip
+;${strtok} ${var} "9.0|10.2|11.0" "|" ${index} 0
+tstenumskip:
+!macroend
+*/
 
 function GetJAWSVersions
 ; Makes a list of installed JAWS versions.  If $JAWSMINVERSION or $JAWSMAXVERSION are defined, versions outside of their limits are excluded.
@@ -1155,7 +1215,7 @@ functionend ; un.RestoreInstallInfo
 Section Un.RemoveScript
 ;!insertmacro un.DeleteScript "${ScriptApp}*.*"
 ;SetShellVarContext all
-!insertmacro UNINSTLOG_UNINSTALL
+!insertmacro JAWSLOG_UNINSTALL
 SetOutPath "$INSTDIR"
 
 
@@ -1164,10 +1224,7 @@ Delete "${UninstLog}"
 SectionEnd
 !macroend ;JAWSSectionRemoveScript
 
-!EndIf ;__JAWSSCRIPTSINCLUDED
-
-;--- end header
-
+!macro JAWSscriptInstaller
 !insertmacro JAWSWelcomePage ; ::nsi
 
 !insertmacro JAWSInstTypePage ;::nsi
@@ -1214,22 +1271,6 @@ call JAWSOnInstSuccess
 functionend ;JAWSOnInstSuccess
 
 
-!ifndef StrTok_INCLUDED
-${StrTok}
-!endif
-
-
-!macro tstenumjawsversions var root key index
-; Resembles enumregkey to test GetJAWSVersions.
-strcpy ${var} ""
-; compare with number of items in strtok.
-intcmp ${index} 6 tstenumskip 0 tstenumskip
-${strtok} ${var} "5.0|6.0|9.0|10.0|11.0|12.0" "|" ${index} 0
-;intcmp ${index} 3 tstenumskip 0 tstenumskip
-;${strtok} ${var} "9.0|10.2|11.0" "|" ${index} 0
-tstenumskip:
-!macroend
-
 ; Probably won't do anything.
 Section -Install
 SectionEnd
@@ -1237,7 +1278,7 @@ SectionEnd
 Section -Uninstaller SecUninstaller
 ;Writes the uninstaller and supporting info.
 sectionIn ${INST_FULL}
-!insertmacro UNINSTLOG_OPENINSTALL
+!insertmacro JAWSLOG_OPENINSTALL
 ;Set up for uninstallation.
 call SaveInstallInfo ; saves to ${TempFile}
 ${AddItem} ${InstallFile} ; won't log it if after copy
@@ -1247,7 +1288,7 @@ ${WriteUninstaller} "$Instdir\${UnInstaller}"
 ;Add the app to Add or Remove programs.
 WriteRegStr HKLM "${UNINSTALLKEY}\${ScriptName}" "DisplayName" "${ScriptName} (remove only)"
 WriteRegStr HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString" '"$INSTDIR\${UnInstaller}"'
-!insertmacro UNINSTLOG_CLOSEINSTALL
+!insertmacro JAWSLOG_CLOSEINSTALL
 sectionEnd
 
 ;---
@@ -1261,12 +1302,12 @@ SectionEnd ;Install JAWS scripts
 
 section "Installer Source" SecInstSrc
 ;SectionIn ${INST_FULL}
-!insertmacro UNINSTLOG_OPENINSTALL
+!insertmacro JAWSLOG_OPENINSTALL
 ${CreateDirectory} "$INSTDIR\${JAWSINSTALLERSRC}"
 SetOutPath  "$INSTDIR\Installer Source"
 ${File} "" "uninstlog.nsh"
 SetOutPath $INSTDIR
-!insertmacro UNINSTLOG_CLOSEINSTALL
+!insertmacro JAWSLOG_CLOSEINSTALL
 SectionEnd
 
 !insertmacro JAWSAfterInstallSections ;::nsi
@@ -1306,6 +1347,14 @@ DetailPrint "Attempting to remove $INSTDIR$\r$\n"
 Rmdir "$INSTDIR" 
 SetAutoclose true
 SectionEnd
+!macroend ;JAWSScriptInstaller
+
+!EndIf ;__JAWSSCRIPTSINCLUDED
+
+!insertmacro JAWSScriptInstaller
+
+;--- end header
+
 
 
 ;-----
