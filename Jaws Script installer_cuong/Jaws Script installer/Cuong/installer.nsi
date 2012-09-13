@@ -18,6 +18,8 @@ Last updated: Wednesday, September 12, 2012
 
 Modifications:
 
+9/13/12 Added macro JAWSInstallFullItems to install the README file.
+9/12/12 Previous saved to HG rev 34.
 9/12/2012 Moved header code to jfw.nsh.
 9/12/12 Previous saved to HG rev 33.
 9/12/12 Added macros JAWSLOG_* so that the installer can coexist in another installer using uninstlog.
@@ -157,6 +159,14 @@ ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
 !macroend ;JAWSInstallScriptItems
+
+;/*
+;Items to be placed in the installation folder in a full install.
+!macro JAWSInstallFullItems
+${File} "${JAWSSrcDir}" "${ScriptApp}_README.txt"
+${File} "${JAWSSrcDir}" "What's new.txt"
+!macroend ;JAWSInstallFullItems
+;*/
 
 ;*/
 
