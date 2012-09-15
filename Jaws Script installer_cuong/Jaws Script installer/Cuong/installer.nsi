@@ -14,10 +14,12 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Wednesday, September 12, 2012
+Last updated: Thursday, September 13, 2012
 
 Modifications:
 
+9/13/12 Moved defines for the Finish page link to the nsi file.
+9/13/12 Previous saved to HG rev 36.
 9/13/12 Added macro JAWSInstallFullItems to install the README file.
 9/12/12 Previous saved to HG rev 34.
 9/12/2012 Moved header code to jfw.nsh.
@@ -137,6 +139,12 @@ Added comments.
 !define JAWSALLOWALLUSERS ; comment this line if you don't want to allow installation for all users.
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
+
+;Optional installer finish page features
+;Assigns default if not defined.
+;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+!define MUI_FINISHPAGE_LINK "Go to author's project page"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
 ;SetCompressor is outside the header because including uninstlog.nsh produces code.  setOverWriteDefault should not be in code used to add JAWS to another installer, although we probably want it in the default installer macro.
 SetCompressor /solid lzma ;create the smallest file

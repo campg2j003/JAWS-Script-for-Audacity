@@ -14,10 +14,19 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Thursday, September 13, 2012
+Last updated: Friday, September 14, 2012
 
 Modifications:
 
+9/14/12 Previous saved to HG rev 37.
+9/14/12 Moved more defines to JAWSscriptInstaller
+9/13/12 Changed ExecWait to nsexec when running uninstaller.
+Added adapted versions of some of Cuong's JFW macros:
+CompileSingle, AdvanceCompileSingle, AddHotkey, CopyScript, ModifyScript, AdvanceModifyScript, and Un.RemoveHotkey, not tested.
+Changed Save/RestoreInstallInfo to JAWSSave/RestoreInstallInfo.
+Added ifndef so that README file can be defined in the nsi file.
+Moved defines for the Finish page link to the nsi file.
+9/13/12 Previous saved to HG rev 36.
 9/13/12 Changed README file define to use ${ScriptApp}.
 Added support for macro JAWSInstallFullItems which generates a section to install items in the install folder like README, etc.
 Added a JAWSSec define and variable for the instdir files section and code in ComponentsPageLeave to select it when type is not Just Scripts.
@@ -44,32 +53,6 @@ Added source files to the installer source section so that it now provides sourc
 ; Name of folder relative to $INSTDIR in which to install the installer source files.
 !define JAWSINSTALLERSRC "Installer Source"
 
-;defines for product info and paths
-!searchparse /ignorecase /file "${JAWSSrcDir}${ScriptApp}.jss" `const CS_SCRIPT_VERSION = "` VERSION `"`
-;Get script version.
-!ifndef VERSION
-!warn "VERSION not gotten from source file, defining it here."
-;!define VERSION "0.8.0.00"
-!define VERSION ""
-!endif
-!echo "VERSION=${VERSION}"
-
-;The registry key in HKLM where the uninstall information is stored.
-!define UNINSTALLKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
-
-ShowInstDetails Show ; debug
-AutoCloseWindow False ; debug
-;Name shown to user, also name of installer file
-Name "${ScriptName}"
-;The executable file to write
-OutFile "${ScriptName}.exe"
-;installation directory
-InstallDir "$programfiles\${scriptName}" 
-;In case it is already installed.
-installdirregkey HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"
-BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
-;!include "JFW.nsh" ;Header file containing all JAWS-related macros
-
 !include "uninstlog.nsh"
 !include "strfunc.nsh" ; used in DisplayJawsList to check for a digit, and other things
 ; Declare used functions from strfunc.nsh.
@@ -78,13 +61,6 @@ ${StrLoc}
 !include "nsDialogs.nsh"
 ;Modern UI configurations
 !Include "MUI2.nsh"
-  !define MUI_ABORTWARNING
-  !define MUI_UNABORTWARNING
-!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "View README file"
-  !define MUI_FINISHPAGE_TEXT_LARGE
-  !define MUI_FINISHPAGE_LINK "Go to author's project page"
-  !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
 
 ;Global variables
@@ -94,6 +70,141 @@ var JAWSLV ; handle of JAWS versions list view
 var JAWSGB
 var JAWSRB1
 var JAWSRB2
+
+;Additional scripts from Cuong's cjfw.nsh
+!Macro CompileSingle JAWSVer Source
+;Assumes $OUTDIR points to folder where source file is and compiled file will be placed.
+;JAWSVer - JAWS version, i.e. "10.0"
+;Source - name of script to compile without .jss extension
+;return: writes error message on failure, returns exit code of scompile (0 if successful).
+;Recommend for scripts wich have only one source (*.JSS) file, or doesn't make any modification to any original files
+;Using this macro to save time of the installer because it doesn't store and delete any temporary files
+push $0
+push $R0
+push $R1
+strcpy $0 ${JAWSVer}
+call GetJawsProgDir
+pop $R0
+; $R0 has backslash at end of path.
+StrCpy $R0 "$R0${Compiler}"
+StrCpy $R1 "$OUTDIR\${Source}"
+!ifndef JAWSDEBUG ; debug
+IfFileExists "$R0" +1 csNoCompile
+!endif ; debug
+!ifdef JAWSDEBUG
+  MessageBox MB_OK `Pretending to run nsexec::Exec '"$R0" "$R1.jss"'`
+!Else ; not JAWSJEBUG
+  nsexec::Exec '"$R0" "$R1.jss"'
+  pop $1
+  IntCmp $1 0 csGoodCompile +1 +1
+    MessageBox MB_OK "Could not compile $R1.jss, SCompile returned $1"
+    GoTo csEnd
+  csGoodCompile:
+!EndIf ; else not JAWSDEBUG
+GoTo csEnd
+csNoCompile:
+MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
+strcpy $1 1 ; return error
+csEnd:
+pop $R1
+pop $R0
+pop $0
+!MacroEnd
+
+!Macro AdvanceCompileSingle JAWSVer Path Source
+;Assumes $OUTDIR points to folder where source file is and compiled file will be placed.
+;JAWSVer - JAWS version, i.e. "10.0"
+;Path - desired context, either "current" or "all".
+;Source - name of script to compile without .jss extension
+;return: writes error message on failure, returns exit code of scompile (0 if successful).
+SetShellVarContext ${path}
+!insertmacro CompileSingle ${JAWSVer} ${Source}
+SetShellVarContext $JAWSShellContext
+/*
+ReadIniStr $0 ${TempFile} Install ${Path}
+ReadIniStr $1 ${TempFile} Install Compiler
+;Exec the sCompile.exe hiddently
+;The extention of script source has been added
+nsExec::Exec '"$1" "$0\${Source}.jss"'
+*/
+!MacroEnd
+
+!Macro AddHotkey JAWSVer JKM Key Script
+;Add hotkeys to *.jkm file
+;Usually use for advance user
+push $0
+strcpy $j ${JAWSVer}
+call GetJAWSVer
+WriteIniStr "$0\${JKM}.jkm" "Common Keys" ${Key} ${Script}
+pop $0
+!MacroEnd
+
+!Macro CopyScript JAWSVer Name
+;Use to copy any script source from share folder
+push $0
+push $1
+SetShellVarContext "current"
+strcpy $0 ${JAWSVer}
+call GetJawsScriptDir
+pop $0
+IfFileExists $0\${Name} end
+SetShellVarContext "all"
+push $0
+strcpy $0 ${JAWSVer}
+call GetJAWSScriptDir
+pop $1
+pop $0
+CopyFiles /silent "$1\${Name}" "$0\${Name}"
+end:
+SetShellVarContext $JAWSShellContext
+pop $1
+pop $0
+!Macroend
+
+!macro ModifyScript JAWSVer File Code
+;Use to add some code to the existing script
+;Like adding: use "skypewatch.jsb"" to default.jss
+push $0
+push $1
+strcpy $0 $JAWSVer
+call GetJAWSScriptDir
+pop $0
+FileOpen $1 "$0\${File}"
+;Go to the botum of file
+FileSeek $1 0 end
+;Add a blank line to safely modify
+FileWrite $1 `$\r$\n${Code}$\r$\n`
+FileClose $1
+pop $1
+pop $0
+!Macroend
+
+!macro AdvanceModifyScript JAWSVer Path File Code
+;Use to add some code to the existing script
+;Like adding: use "skypewatch.jsb"" to default.jss
+SetShellVarContext ${Path}
+!insertmacro ModifyScript "${JAWSVer}" "${File}" "${Code}"
+SetShellVarContext $JAWSShellContext
+/*
+ReadIniStr $0 ${TempFile} Install ${Path}
+FileOpen $1 $0\${File} a
+;Go to the bottom of file
+FileSeek $1 0 end
+;Add a blank lines to safely modify
+FileWrite $1 "$\r$\n"
+FileWrite $1 `${Code}`
+FileClose $1
+*/
+!Macroend
+
+!Macro Un.RemoveHotkey JAWSVer JKM Key
+push $0
+strcpy $0 ${JAWSVer}
+call GetJAWSScriptDir
+pop $1
+DeleteIniStr "$1\${jkm}.jkm" "Common Keys" ${Key}"
+pop $1
+!macroend
 
 ;JAWS uninstall log macros.
 !define JAWSLOGFILENAME "jawsuninstlog.txt"
@@ -1024,35 +1135,31 @@ pop $R1 ; script dir
 ${SetOutPath} "$R1"
 !ifndef JAWSDEBUG
 StrCpy $UninstLogAlwaysLog 1
-DetailPrint "JAWSInstallVersion: invoking macro __JAWSInstallScriptItems for version $0" ; debug
+DetailPrint "JAWSInstallVersion: invoking macro JAWSInstallScriptItems for version $0" ; debug
+push $0 ; save version
 !insertmacro JAWSInstallScriptItems
+pop $0 ; restore version
 StrCpy $UninstLogAlwaysLog ""
 !EndIf
-call GetJawsProgDir
-pop $R0
-; $R0 has backslash at end of path.
-StrCpy $R0 "$R0${Compiler}"
-StrCpy $R1 "$R1\${ScriptApp}"
-!ifndef JAWSDEBUG ; debug
-IfFileExists "$R0" +1 NoCompile
-!endif ; debug
+!insertmacro CompileSingle $0 "${ScriptApp}"
 !ifdef JAWSDEBUG
-MessageBox MB_OK `Pretending to run ExecWait '"$R0" "$R1.jss"' $$1`
+  ;MessageBox MB_OK `Pretending to run ExecWait '"$R0" "$R1.jss"' $$1`
 !Else ; not JAWSJEBUG
-ExecWait '"$R0" "$R1.jss"' $1
-IntCmp $1 0 GoodCompile +1 +1
-MessageBox MB_OK "Could not compile $R1, SCompile returned $1"
-GoTo End
-GoodCompile:
-;Add .jsb file to log
-strCpy $R0 "$UninstLogAlwaysLog"
-StrCpy $UninstLogAlwaysLog "1"
-${AddItemDated} "$R1.jsb"
-StrCpy $UninstLogAlwaysLog "$R0"
+  IntCmp $1 0 GoodCompile +1 +1
+    ;MessageBox MB_OK "Could not compile $R1, SCompile returned $1"
+    GoTo End
+  GoodCompile:
+  ;Add .jsb file to log
+  strCpy $R0 "$UninstLogAlwaysLog"
+  StrCpy $UninstLogAlwaysLog "1"
+  ${AddItemDated} "$R1.jsb"
+  StrCpy $UninstLogAlwaysLog "$R0"
 !EndIf ; else not JAWSDEBUG
 GoTo End
+/*
 NoCompile:
 MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
+*/
 End:
 pop $R1
 pop $R0
@@ -1062,7 +1169,7 @@ functionend ; JawsInstallVersion
 ;-----
 ;Save/restore uninstaller information
 
-function SaveInstallInfo
+function JAWSSaveInstallInfo
 ;Store information needed by the uninstaller.  Only JAWSShellContext is needed right now but we store versions and version count for future use.
 ;Writes to ${TempFile}.
 writeinistr "${TempFile}" "Install" JAWSVersions $SELECTEDJAWSVERSIONS
@@ -1070,9 +1177,9 @@ writeinistr "${TempFile}" "Install" JAWSVersionCount $SELECTEDJAWSVERSIONCOUNT
 !ifdef JAWSALLOWALLUSERS
   writeinistr "${TempFile}" "Install" JAWSShellContext $JAWSSHELLCONTEXT
 !EndIf
-functionend ; saveInstallInfo
+functionend ; JAWSSaveInstallInfo
 
-function un.RestoreInstallInfo
+function un.JAWSRestoreInstallInfo
 ;Restore installation info from ini file.  All we need right now is JAWSShELLCONTEXT but we'll get the other stuff anyway.
 ;Reads from ${InstallFile}.
 readinistr $SELECTEDJAWSVERSIONS "${InstallFile}" "Install" JAWSVersions
@@ -1080,7 +1187,7 @@ readinistr $SELECTEDJAWSVERSIONCOUNT "${InstallFile}" "Install" JAWSVersionCount
 !ifdef JAWSALLOWALLUSERS
   readinistr $JAWSSHELLCONTEXT "${InstallFile}" "Install" JAWSShellContext
 !EndIf
-functionend ; un.RestoreInstallInfo
+functionend ; un.JAWSRestoreInstallInfo
 
 !macro JAWSSectionRemoveScript
 Section Un.RemoveScript
@@ -1096,6 +1203,40 @@ SectionEnd
 !macroend ;JAWSSectionRemoveScript
 
 !macro JAWSscriptInstaller
+;defines for product info and paths
+!searchparse /ignorecase /file "${JAWSSrcDir}${ScriptApp}.jss" `const CS_SCRIPT_VERSION = "` VERSION `"`
+;Get script version.
+!ifndef VERSION
+!warn "VERSION not gotten from source file, defining it here."
+;!define VERSION "0.8.0.00"
+!define VERSION ""
+!endif
+!echo "VERSION=${VERSION}"
+
+;The registry key in HKLM where the uninstall information is stored.
+!define UNINSTALLKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
+
+ShowInstDetails Show ; debug
+AutoCloseWindow False ; debug
+;Name shown to user, also name of installer file
+Name "${ScriptName}"
+;The executable file to write
+OutFile "${ScriptName}.exe"
+;installation directory
+InstallDir "$programfiles\${scriptName}" 
+;In case it is already installed.
+installdirregkey HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"
+BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
+
+  !define MUI_ABORTWARNING
+  !define MUI_UNABORTWARNING
+!ifndef MUI_FINISHPAGE_SHOWREADME
+!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+!EndIf
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "View README file"
+!define MUI_FINISHPAGE_TEXT_LARGE
+
+
 !insertmacro JAWSWelcomePage ; ::nsi
 
 !insertmacro JAWSComponentsPage
@@ -1124,7 +1265,8 @@ iferrors notinstalled
   DetailPrint "Uninstalling $0"
   CopyFiles /silent $INSTDIR\${uninstaller} $TEMP
   ;messagebox MB_OK "Executing $\"$TEMP\${uninstaller}$\" /S _?=$INSTDIR" ; debug
-  ExecWait '"$TEMP\${uninstaller}" /S _?=$INSTDIR' $1
+  nsexec::Exec '"$TEMP\${uninstaller}" /S _?=$INSTDIR'
+  pop $1
   DetailPrint "Uninstall returned exit code $1"
   intcmp $1 0 +3
     messagebox MB_OKCANCEL|MB_DEFBUTTON2 "The uninstall was unsuccessful, exit code $1.  Choose OK to install anyway, Cancel to quit." IDOK +2
@@ -1161,7 +1303,7 @@ Section -Uninstaller SecUninstaller
 sectionIn ${INST_FULL}
 !insertmacro JAWSLOG_OPENINSTALL
 ;Set up for uninstallation.
-call SaveInstallInfo ; saves to ${TempFile}
+call JAWSSaveInstallInfo ; saves to ${TempFile}
 ${AddItem} ${InstallFile} ; won't log it if after copy
 CopyFiles /silent ${TempFile} ${InstallFile} ;copy the install.ini to the instal directory
 ;Write the uninstaller and add it to the uninstall log.
@@ -1200,7 +1342,7 @@ SectionEnd
 Function un.onInit
 MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" /SD IDYES IDYES +2
   Abort
-call un.RestoreInstallInfo
+call un.JAWSRestoreInstallInfo
 ${If} $JAWSSHELLCONTEXT == "all"
   ;messagebox MB_OK "Setting all users context" ; debug
   SetShellVarContext all
