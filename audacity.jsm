@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/6/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/14/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
@@ -199,8 +199,11 @@ Selection end
 @@
 
 ; %1 = "start" or "end" of selection, %2 = direction ("left" or "right").
-@msgMoveSelection
+@msgMoveSelection_L
 Move Selection %1 to %2
+@@
+@msgMoveSelection
+%1 %2
 @@
 
 @MsgNoProject_l

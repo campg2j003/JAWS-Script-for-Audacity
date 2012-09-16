@@ -25,9 +25,8 @@
 :Param string/sScript The script to perform. This must be define as a string variable
 
 :function AnnounceMessage
-:Description Speaks a message for an Audacity hotkey  if appropriate and sends the to Audacity.
+:Description Speaks a message for an Audacity hotkey if appropriate and sends the to Audacity.
 :Param string/Message The message to speak
-:Param string/Key The key to send to Audacity if the  Audacity hotkey is not active in this context
 
 :function SayNoProject
 :Description Speaks a message when no project is open. For example, pressing the [ key will speak this message, and the script will exit.

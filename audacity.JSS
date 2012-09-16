@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/14/2012 by Gary Campbell:
+;Changed function announce message to use SayCurrentScriptKeyLabel and TypeCurrentScriptKey.  Removed the sKey parameter, changed calls, and removed param from jsd.  Now speaks keys assigned to Audacity scripts when not performing Audacity functions.
+;Shortened message spoken when ends of selection are moved and added position announcement.
+;9/6/12 Previous saved to HG rev 29.
 ;9/6/2012 by Gary Campbell:
 ;In GetPositionField now removes zeros and point if no fractional digits.  Replaces 00 before decimal with 1 0.  Does not do this for formats without a decimal point, like 00h00m00s+frames.
 ;9/5/12 by Gary Campbell:
@@ -130,7 +134,8 @@ Include "audacity.jsm"
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
 
-Const CS_SCRIPT_VERSION = "1.1 9/6/12"
+; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
+Const CS_SCRIPT_VERSION = "1.1 9/14/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -231,7 +236,7 @@ formatStringWithEmbeddedFunctions("<$" +sScript +">")
 EndIf ; else perform default script
 EndFunction ; MouseMovement
 
-Void Function AnnounceMessage (string Message, string sKey)
+Void Function AnnounceMessage (string Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
 ; sKey - key to be executed when not performing the Audacity function.
@@ -242,7 +247,8 @@ EndIf ; if AnnounceOn
 TypeCurrentScriptKey ()
 Else
 ;not main window, etc.
-TypeString (sKey)
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
 EndIf ; else not main window, etc.
 EndFunction ; AnnounceMessage
 
@@ -575,28 +581,56 @@ EndScript
 
 Script FinishMarkerRight ()
 ;move the end of the selection to the right by a small amount.
+Var
+	Handle hWnd
+
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+EndIf
 EndScript
 
 Script FinishMarkerLeft ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+EndIf
 EndScript
 
 Script StartMarkerRight ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+EndIf
 EndScript
 
 Script StartMarkerLeft ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+EndIf
 EndScript
 
 Script JawsHome ()
@@ -635,21 +669,21 @@ EndIf
 EndScript
 
 Script MoveToStartOfSelectedTracks ()
-AnnounceMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks), "j")
+AnnounceMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
 EndScript
 
 Script MoveToEndOfSelectedTracks ()
-AnnounceMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks), "k")
+AnnounceMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
 EndScript
 
 Script SelectToBeginning ()
 ;Select to start of tracks.
-AnnounceMessage (FormatString (MSGSelectedTo, msgStart), "J")
+AnnounceMessage (FormatString (MSGSelectedTo, msgStart))
 EndScript
 
 Script SelectToEnd ()
 ;Select to end of tracks.
-AnnounceMessage (FormatString (MSGSelectedTo, msgEnd), "K")
+AnnounceMessage (FormatString (MSGSelectedTo, msgEnd))
 EndScript
 
 Script SelectFromStartOfLine ()
@@ -791,7 +825,7 @@ If NoProject () then
 SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
-AnnounceMessage (msgDeselectAll, "Control+Shift+a")
+AnnounceMessage (msgDeselectAll)
 EndIf
 EndScript
 
@@ -800,7 +834,7 @@ If NoProject () then
 SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
-AnnounceMessage (msgCloseFocusedTrack, "Shift+C")
+AnnounceMessage (msgCloseFocusedTrack)
 Else
 TypeCurrentScriptKey ()
 EndIf
