@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 8/29/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/6/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
@@ -18,12 +18,24 @@ Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages",
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars"
 
+;These are used to strip leading neros from audio positions.
+Const
+	;The format of a position with value 0 containing thousands separators, not including the last 0, like the seconds format, with blanks removed
+	csPositionGroupFmt = "000,00",
+	;The word following the days in a position.
+	csDays = "days",
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	csPositionHHMMFmt = "00h00m00",
+	csGroupSep = ",", ; thousands separator character
+	csDecimal = "." ; decimal point
+
 
 Messages
 @msgProgName
 Audacity
 @@
 
+; Begins the hotkey help.
 ; %1 - string containing script version and date.
 @MSGScript_Ver
 JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
@@ -42,13 +54,19 @@ To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default Jaws mouse movement scripts while focus is in the main window. If you want to activate the original functionality while in the main window, turn on the Jaws cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
-To toggle alert messages on or off, press %keyfor (AnnounceOnOff)). See the what's new.txt for mor info.
+To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
+See the what's new.txt for mor info.
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
-To speak the program's status (play/pause/record/stop) press %KeyFor(SayAudacityState)
-To reset all script configuration to default, press %keyfor (ResetConfig)
+To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
+To reset all script options to default values, press %keyfor (ResetConfig)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
+In some common VST plugins, such as L1V:
+ press %keyfor (VSTPreset) to set focus to the preset option.
+Press  %keyfor (VSTLoadPreset) to load the existing preset.
+Press  %keyfor (VSTSavePreset) to save current settings at a preset.
 
 To close this message, press %keyfor (UpALevel)
 @@
@@ -158,7 +176,7 @@ To close this message, press %keyfor (UpALevel).
 Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of JAWS hot keys for Audacity.
 @@
 
-;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages?
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
 @msgStart
 start
 @@
@@ -173,6 +191,14 @@ left
 
 @msgRight
 right
+@@
+
+@msgSelectionStart
+Selection Start
+@@
+
+@msgSelectionEnd
+Selection end
 @@
 
 ; %1 = "start" or "end" of selection, %2 = direction ("left" or "right").
@@ -227,14 +253,41 @@ Delete selected audio
 @@
 
 @MSGDelete_s
-Deleted
+Delete
+@@
+
+;Messages for program states.
+@msgPause
+pause
+@@
+@msgPlay
+play
+@@
+@msgstop
+stop
+@@
+@msgRecord
+record
 @@
 
 @msgDeselectAll
 deselect all
 @@
+
 @msgCloseFocusedTrack
 close focused track
+@@
+
+@msgNoTransportToolbar
+Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.
+@@
+
+@msgCopyAudio
+Copy selected audio to clipboard
+@@
+
+@msgCutAudio
+cut selected audio to clipboard
 @@
 
 @msgAnnounceOff
@@ -245,12 +298,16 @@ Announce messages off
 Announce messages on
 @@
 
+@msgResetScriptOptions
+Script options reset to default values
+@@
+
 ; For user options.
 @msgUO_AudacityOptionsHlp
 Audacity-specific options
 @@
 @msgUO_AnnounceMessagesHlp
-Speaks messages for Audacity audio operations.
+If on, speaks messages for Audacity audio operations.
 @@
 @msgUO_AnnounceToolbarsHlp
 If on, speaks the toolbar name when focus moves from one toolbar to another.
