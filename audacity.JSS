@@ -2,6 +2,13 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+
+;9/17/2012 by Dang Manh Cuong:
+;Added function to set focus to some common controls in VST plugins, such as preset, load preset, and save preset.
+;Added script to swich to the controls above using the new function, also add its hotkeys to the script hotkey help..
+;Issue: when focus move to the buttons control, it always say the button's name, and I've not find the way to correct yet.
+;9/15/2012 by Dang Manh Cuong
+;Update the dicionary file to correct mispronounced word in the Compress Dynamic 1.2.6 dialog
 ;9/14/2012 by Gary Campbell:
 ;Changed function announce message to use SayCurrentScriptKeyLabel and TypeCurrentScriptKey.  Removed the sKey parameter, changed calls, and removed param from jsd.  Now speaks keys assigned to Audacity scripts when not performing Audacity functions.
 ;Shortened message spoken when ends of selection are moved and added position announcement.
@@ -135,7 +142,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/14/12"
+Const CS_SCRIPT_VERSION = "1.1 9/17/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -145,6 +152,9 @@ Const
 	ID_LENGTH_RADIO = 2703,
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	IniFile="Audacity.jsi",
+ID_Load_Preset=11001 ,
+ID_Save_Preset=11002,
+ID_Preset=1001,
 	;For user options.
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
@@ -1072,3 +1082,26 @@ Script ResetConfig ()
 AddDefaultConfig ()
 Say (msgResetScriptOptions, ot_message)
 EndScript ; resetConfig
+
+Void Function ProcessVST (int iControlID)
+;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
+If DialogActive () then ;make sure user stand at a dialog
+SetFocus (FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID))
+Pause ()
+If GetWindowClass (GetCurrentWindow ())=="button" then
+EnterKey () ;presses the enter key to activate the button have focus
+EndIf; get window class
+EndIf ;Dialog active
+EndFunction
+
+Script VSTPreset ()
+ProcessVST (ID_Preset)
+EndScript
+
+Script VSTLoadPreset ()
+ProcessVST (ID_Load_Preset)
+EndScript
+
+Script VSTSavePreset ()
+ProcessVST (ID_Save_Preset)
+EndScript
