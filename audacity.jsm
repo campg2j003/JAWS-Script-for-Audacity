@@ -320,4 +320,7 @@ If on, speaks the toolbar name when focus moves from one toolbar to another.
 @msgNoSelection
 To use this feature you must enable the selection toolbar
 @@
+@msg_Script_Version
+Jaws script version %1, for Audacity 2.0.0 or later.
+@@
 EndMessages
