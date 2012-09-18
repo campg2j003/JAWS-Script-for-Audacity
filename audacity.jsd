@@ -38,6 +38,8 @@
 
 :function AutoStartEvent
 
+:function KeyPressedEvent
+
 :function HandleCustomWindows
 :Returns int No Return Description
 :Synopsis Announce when focus changes to a different area of the main window.
@@ -177,6 +179,8 @@
 :script SayAudacityState
 :Synopsis Says the current program state-- play, record, pause
 
+:script Enter
+
 :function GetObjectState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
 :Synopsis Returns the object state of the object in the window
@@ -229,4 +233,6 @@
 
 :script VSTSavePreset
 :Synopsis quickly activate the save preset button
+
+:script SayAppVersion
 

@@ -2,14 +2,28 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/18/12 by Dang Manh Cuong:
+;Modified script SayAppVersion. The script now says current script version after saying Audacity version.
+;Added message for the script above into Audacity.jsm file.
+;updated comment to scripts has used ProcessVST function
+
+; 9/17/12 Merged in Cuong's changes from default branch, rev 40.
+;9/17/12 Previous saved to HG rev 42.
+;9/15/2012 Added script ENTER.  If not stopped, it sends key for pause.  Had to add key binding for it to audacity.jkm.  A side effect of doing this is that if JAWS is not set to treate extended keys separately, both numpad ENTER and typing keys ENTER will appear as the typing keys ENTER.  (I tried a separate NumPadEnter script but it still appeared as typing enter, even though GetScriptKeyName() returns NumPadEnter, and even if you use TypeKey(GetCurrentScriptKeyName())).  It is possible to run separate scripts.  It does not seem to be possible for a script to send NumPadEnter to the application.
+;9/17/12 Previous saved to HG rev 41.
+;9/15/2012 Script DeleteSelectedAudio now works only if stopped.
+;9/16/12 Previous saved to HG rev 38.
+;-- merge
 ;9/17/2012 by Dang Manh Cuong:
 ;Added function to set focus to some common controls in VST plugins, such as preset, load preset, and save preset.
-;Added script to swich to the controls above using the new function, also add its hotkeys to the script hotkey help..
+;Added script to swich to the controls above using the new function, also add its hotkeys to the script hotkey help.
 ;Issue: when focus move to the buttons control, it always say the button's name, and I've not find the way to correct yet.
 ;9/15/2012 by Dang Manh Cuong
 ;Update the dicionary file to correct mispronounced word in the Compress Dynamic 1.2.6 dialog
+;-- end merge
 ;9/14/2012 by Gary Campbell:
 ;Changed function announce message to use SayCurrentScriptKeyLabel and TypeCurrentScriptKey.  Removed the sKey parameter, changed calls, and removed param from jsd.  Now speaks keys assigned to Audacity scripts when not performing Audacity functions.
+;Shortened message spoken when ends of selection are moved and added position announcement.
 ;9/6/12 Previous saved to HG rev 29.
 ;9/6/2012 by Gary Campbell:
 ;In GetPositionField now removes zeros and point if no fractional digits.  Replaces 00 before decimal with 1 0.  Does not do this for formats without a decimal point, like 00h00m00s+frames.
@@ -140,7 +154,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/17/12"
+Const CS_SCRIPT_VERSION = "1.1 9/18/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -150,6 +164,7 @@ Const
 	ID_LENGTH_RADIO = 2703,
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	IniFile="Audacity.jsi",
+;For VST plugins
 ID_Load_Preset=11001 ,
 ID_Save_Preset=11002,
 ID_Preset=1001,
@@ -169,7 +184,7 @@ Int iAnnounce
 Let iAnnounce=IniReadInteger ("Settings", "Announce", 0, IniFile)
 If iAnnounce==1 then
 Return true
-EndIf
+endIf
 EndFunction
 
 Int Function AnnounceToolbarsOn ()
@@ -179,7 +194,7 @@ Int iAnnounce
 Let iAnnounce=IniReadInteger ("Settings", "AnnounceToolbars", 0, IniFile)
 If iAnnounce==1 then
 Return true
-EndIf
+endIf
 EndFunction ; AnnounceToolbarsOn
 
 Int Function FocusInTrackPanel ()
@@ -209,10 +224,10 @@ Say (MSGNoSelection, OT_Error)
 Else
 SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
 SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
-EndIf ;say selection position
-EndIf ; AnnounceOn
-EndIf ; if !DialogActive
-EndIf ; If FocusInMainWindow
+endIf ;say selection position
+endIf ; AnnounceOn
+endIf ; if !DialogActive
+endIf ; If FocusInMainWindow
 EndFunction ; SaySelectionPosition
 
 Void Function MarkerMovement (string sScript, string sAlert)
@@ -225,11 +240,11 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
-EndIf ; if AnnounceOn
+endIf ; if AnnounceOn
 Else
 ;Not main window, perform the specified script, passed as a parameter. This method suggested by Dug Lee
 formatStringWithEmbeddedFunctions("<$" +sScript +">") ;instead of PerformScript method. 
-EndIf ; else not main window
+endIf ; else not main window
 EndFunction ; MarkerMovement
 
 Void Function MouseMovement (string sScript)
@@ -241,7 +256,7 @@ TypeCurrentScriptKey () ;Audacity hotkey for adjusting gain
 Else
 ;otherwise, perform the default Jaws script
 formatStringWithEmbeddedFunctions("<$" +sScript +">")
-EndIf ; else perform default script
+endIf ; else perform default script
 EndFunction ; MouseMovement
 
 Void Function AnnounceMessage (string Message)
@@ -251,13 +266,13 @@ Void Function AnnounceMessage (string Message)
 If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel () then
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
-EndIf ; if AnnounceOn
+endIf ; if AnnounceOn
 TypeCurrentScriptKey ()
 Else
 ;not main window, etc.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
-EndIf ; else not main window, etc.
+endIf ; else not main window, etc.
 EndFunction ; AnnounceMessage
 
 Void Function SayNoProject ()
@@ -271,8 +286,8 @@ Int Function NoProject ()
 If FocusInMainWindow () then
 If GetObjectSubTypeCode (true, 0)==WT_Table then ;no tracks in track panel.
 return true
-EndIf ; if tracks
-EndIf ; if in main window
+endIf ; if tracks
+endIf ; if in main window
 Return False
 EndFunction ; NoProject
 
@@ -280,15 +295,23 @@ Function AutoStartEvent ()
 If !App_FirstTime then
 Let App_FirstTime=1
 SayFormattedMessage (OT_No_Disable, MSG_App_Start)
-EndIf ; if first time
+endIf ; if first time
 ;write default settings of Audacity script if settings file doesn't exist.
 If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
 AddDefaultConfig ()
-EndIf
+endIf
 EndFunction
 
 Globals handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
+
+/*
+Function KeyPressedEvent (int nKey, string strKeyName, int nIsBrailleKey, int nIsScriptKey)
+DebugInteger(nKey) ; debug
+DebugString(strKeyName) ; debug
+KeyPressedEvent (nKey, strKeyName, nIsBrailleKey, nIsScriptKey)
+EndFunction
+*/
 
 Int Function HandleCustomWindows ()
 ;Announce when focus changes to a different area of the main window.
@@ -299,12 +322,12 @@ Var handle hParent,
 
 If !FocusInMainWindow() Then
 	Return HandleCustomWindows () ; not main window, continue with normal processing
-EndIf
+endIf
 Let hFocus = GetFocus ()
 Let hParent = GetParent(hFocus)
 If GetWindowName(hFocus) != WN_TRACKPANEL Then
 Let hParent = GetParent(hParent)
-EndIf ; if not track panel
+endIf ; if not track panel
 ; If hFocus is the track panel, hParent is its parent.  Otherwise it is the grandparent of hFocus.
 Let hOld = ghAudacityLastArea
 If hParent != hOld Then
@@ -313,14 +336,14 @@ Let ghAudacityLastArea = hParent ; new area.
 If GetWindowName(hFocus) == WN_TRACKPANEL Then
 Say (StrTrackPanel, OT_Position)
 Return HandleCustomWindows ()
-EndIf ; if track panel
+endIf ; if track panel
 ; We could also identify the selection by testing for WindowHierarchyX = 3.
 If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
 Say (StrSelectionBar, OT_position)
 Else
 Say (StrToolBars, OT_position)
-EndIf ; else toolbar
-EndIf ; new area
+endIf ; else toolbar
+endIf ; new area
 
 If IsToolbar(GetToolbar ()) Then
 Let hToolbar = GetToolbar()
@@ -328,13 +351,13 @@ If hToolbar != ghAudacityLastToolbar Then
 Let ghAudacityLastToolbar = hToolbar
 If AnnounceToolbarsOn () Then
 Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
-EndIf
-EndIf ; new toolbar
-EndIf ; If IsToolbar
+endIf
+endIf ; new toolbar
+endIf ; If IsToolbar
 ;Speaks an alert when no project open
 If NoProject () &&AnnounceOn () then
 SayNoProject ()
-EndIf
+endIf
 Return HandleCustomWindows () ; allow others to process
 EndFunction ; HandleCustomWindows
 
@@ -344,7 +367,7 @@ If FocusInTrackPanel () Then
 SayObjectActiveItem ()
 Else
 SayFocusedObject ()
-EndIf
+endIf
 EndFunction ; SayFocusedObject
 
 Int Function IsToolbar (handle hWnd)
@@ -356,10 +379,10 @@ Let hParent = GetParent(hWnd)
 If hParent == 0 Then
 ;Make sure we have a window handle, just to be safe.
 Let hParent = hWnd
-EndIf ; no parent
+endIf ; no parent
 If GetWindowName(hParent) == WN_TOOLDOCK && GetWindowHierarchyX(hParent) == 2 Then
 Return True
-EndIf
+endIf
 Return False
 EndFunction ; IsToolbar
 
@@ -376,7 +399,7 @@ Var
 Let hFocus = GetFocus()
 If (GetWindowName(hFocus) == WN_TRACKPANEL || GetWindowName(GetParent(GetParent(hFocus))) == WN_TOOLDOCK) then
 	Return True
-EndIf
+endIf
 Return False
 EndFunction
 
@@ -406,11 +429,11 @@ Else
 	Let s1 = ""
 	If StringContains (s2, csDays) Then
 		Let s1 = "00" + csDays
-	EndIf
+	endIf
 	Let s1 = s1 + csPositionHHMMFmt ; we strip as much of this as matches off the front up to the decimal point.
 	;SayString("s1 = " + s1) ; debug
 	;S1 contains what needs to be ssripped from the staart of s2.
-EndIf ; else contains decimal
+endIf ; else contains decimal
 ; Return is in s1 and s2, passed by reference!!!
 StringTrimCommon(s1, s2, 1) ; 1=trim from start
 Let i = StringContains (s2, csDecimal)
@@ -426,15 +449,15 @@ If i > 0 Then
 		If i == 1 Then
 			Let s2 = "0" + s2
 			Let i = i + 1
-		EndIf ; if decimal is first char
+		endIf ; if decimal is first char
 		Let s3 = StringReplaceSubstrings(substring(s2, 1, i - 1), "00", "0")
 		Let s2 = s3 + Substring (s2, i + 1 + j, StringLength(s2) - j)
 	Else
 		; nonzeros after decimal
 	Let s3 = StringReplaceSubstrings(substring(s2, 1, i - 1), "00", "0")
 		Let s2 = s3 + Substring (s2, i, StringLength(s2) - i + 1)
-	EndIf ; if no nonzeros after decimal
-EndIf ; if decimal
+	endIf ; if no nonzeros after decimal
+endIf ; if decimal
 ; What we want is in s2.
 ; Don't say leading parts if they are 0.
 
@@ -456,14 +479,14 @@ Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START
 If (IsSameScript()) Then
 	SetFocus(hWnd)
 	Return
-EndIf ;if IsSameScript
-EndIf ; Else not NoProject()
+endIf ;if IsSameScript
+endIf ; Else not NoProject()
 Let sValue = GetPositionField(hWnd)
 If !sValue then ;some time user turn off the selection toolbar, so this condition varify the selection boolbar is turned on or not
 Say (msgNoSelection, ot_error)
 Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-EndIf
+endIf
 EndScript
 
 
@@ -483,7 +506,7 @@ Let hEnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 If (IsSameScript()) Then
 	SetFocus(hEnd)
 	Return
-EndIf ; if IsSameScriqt
+endIf ; if IsSameScriqt
 
 Let hRadio = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_END_RADIO)
 SaveCursor()
@@ -495,7 +518,7 @@ RestoreCursor()
 
 If (Not bIsSelected) Then
 	Let hRadio = GetNextWindow (hRadio)
-EndIf
+endIf
 
 Let sName = GetWindowName (hRadio)
 
@@ -504,8 +527,8 @@ If !sValue then
 Say (msgNoSelection, ot_error)
 Else
 SayMessage (OT_NO_DISABLE, sName + sValue, sValue)
-EndIf
-EndIf ; else project open
+endIf
+endIf ; else project open
 EndScript
 
 Script SayActiveCursor()
@@ -516,7 +539,7 @@ Var
 If (Not FocusInMainWindow() || IsSameScript() || Not IsPCCursor() || UserBufferIsActive ())||NoProject () Then
 	PerformScript SayActiveCursor()
 	Return
-EndIf
+endIf
 Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Let hWnd = GetNextWindow(GetNextWindow(hWnd))
 ;hWnd is Audio Position field.
@@ -525,7 +548,7 @@ If !sValue then
 Say (msgNoSelection, ot_error)
 Else
 SayMessage (OT_NO_DISABLE, sValue, sValue)
-EndIf
+endIf
 EndScript
 
 Script  ScriptFileName()
@@ -535,14 +558,14 @@ EndScript
 Script HotkeyHelp ()
 If UserBufferIsActive () then
 UserBufferDeactivate ()
-EndIf
+endIf
 If (!IsSameScript() && FocusInMainWindow()) Then
 Let sMessage=FormatString (MSGScript_Ver, CS_SCRIPT_VERSION)
 SayFormattedMessage (OT_User_buffer, sMessage)
 SayFormattedMessage (OT_User_Buffer, MSGHotkeyHelp)
 Else
 	PerformScript HotKeyHelp()
-EndIf
+endIf
 EndScript
 
 Script WindowKeysHelp ()
@@ -552,7 +575,7 @@ Then
 	SayFormattedMessage(OT_USER_BUFFER, msgAudacityHotKeyHelp)
 Else
 	PerformScript WindowKeysHelp()
-EndIf
+endIf
 EndScript
 
 ;These scripts allow access to Audacity keys assigned to the same keys as Jaws scripts such as mouse up, mouse down etc..  The user can still perform the JAWS functions by turning on Jaws cursor.
@@ -589,28 +612,56 @@ EndScript
 
 Script FinishMarkerRight ()
 ;move the end of the selection to the right by a small amount.
+Var
+	Handle hWnd
+
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+endIf
 EndScript
 
 Script FinishMarkerLeft ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+endIf
 EndScript
 
 Script StartMarkerRight ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+endIf
 EndScript
 
 Script StartMarkerLeft ()
+Var
+	Handle hWnd
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
+If AnnounceOn () Then
+pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+endIf
 EndScript
 
 Script JawsHome ()
@@ -625,10 +676,10 @@ SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGStart, MSGTrack)
 Else
 */
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
-;EndIf ; if < JAWS 13
+;endIf ; if < JAWS 13
 Else
 PerformScript JAWSHome()
-EndIf
+endIf
 EndScript
 
 Script JawsEnd ()
@@ -642,10 +693,10 @@ SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGEnd, MSGAllAudio)
 Else
 */
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
-;EndIf ; else < JAWS 13
+;endIf ; else < JAWS 13
 Else
 PerformScript JAWSEnd()
-EndIf
+endIf
 EndScript
 
 Script MoveToStartOfSelectedTracks ()
@@ -672,11 +723,11 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () th
 SelectFromStartOfLine ()
 If AnnounceOn () then ;User can to turn off this message
 SayFormattedMessage (OT_No_Disable, msgStartOfFile) ;alerts when user activates this script at the main window, and a project is open
-EndIf
+endIf
 ;Otherwise, perform default script
 Else
 PerformScript SelectFromStartOfLine()
-EndIf
+endIf
 EndScript
 
 Script SelectToEndOfLine ()
@@ -685,10 +736,10 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () th
 SelectToEndOfLine ()
 If AnnounceOn () then
 SayFormattedMessage (OT_No_Disable, msgEndOfFile)
-EndIf
+endIf
 Else
 PerformScript SelectToEndOfLine()
-EndIf
+endIf
 EndScript
 
 Script DeleteSelectedAudio ()
@@ -696,15 +747,15 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf FocusInTrackPanel ()then
+ElIf FocusInTrackPanel ()&& IsStopped () then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
-EndIf ; if AnnounceOn
+endIf ; if AnnounceOn
 Else ; not main window, etc.
 ; Just in case it is used somewhere else.  Actually, we could do it at the top of the script and eliminate this else.
 TypeCurrentScriptKey ()
-EndIf ; else not main window, etc.
+endIf ; else not main window, etc.
 EndScript
 
 Script JawsDelete ()
@@ -713,7 +764,7 @@ If FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
 Else
 PerformScript JAWSDelete()
-EndIf
+endIf
 EndScript
 
 Script JawsBackspace ()
@@ -722,7 +773,7 @@ If FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
 Else
 PerformScript JAWSBackspace()
-EndIf
+endIf
 EndScript
 
 Script SayPriorCharacter ()
@@ -733,14 +784,14 @@ If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel
 If NoProject () Then
 SayNoProject ()
 Return
-EndIf ; if no project
+endIf ; if no project
 TypeCurrentScriptKey ()
 Pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 Else
 PerformScript SayPriorCharacter ()
-EndIf
+endIf
 EndScript ; SayPriorCharacter
 
 Script SayNextCharacter ()
@@ -751,14 +802,14 @@ If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel
 If NoProject () Then
 SayNoProject ()
 Return
-EndIf ; if no project
+endIf ; if no project
 TypeCurrentScriptKey ()
 Pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 Else
 PerformScript SayNextCharacter ()
-EndIf
+endIf
 EndScript ; SayNextCharacter
 
 
@@ -770,15 +821,15 @@ If FocusInMainWindow ()
 If NoProject () then
 SayNoProject ()
 return
-EndIf ; no project
+endIf ; no project
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, msgCopyAudio, OT_status) ;the alert message declare here
-EndIf ; if AnnounceOn
+endIf ; if AnnounceOn
 Else
 ;If no project open, or focus in other windows, perform the default script
 PerformScript CopySelectedTextToClipboard()
-EndIf
+endIf
 EndScript
 
 Script CutToClipboard ()
@@ -787,16 +838,16 @@ If FocusInMainWindow ()
 If NoProject () then
 SayNoProject ()
 return
-EndIf ; no project
+endIf ; no project
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, msgCutAudio, OT_status) ;speak alert message
-EndIf ; if AnnounceOn
+endIf ; if AnnounceOn
 ; We've already sent the key.
 ;AnnounceMessage ("cut selected audio to clipboard", CksCut)
 Else
 PerformScript CutToClipboard()
-EndIf
+endIf
 EndScript
 
 Script DeselectAll ()
@@ -806,7 +857,7 @@ SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
 AnnounceMessage (msgDeselectAll)
-EndIf
+endIf
 EndScript
 
 Script CloseFocusTrack ()
@@ -817,7 +868,7 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () m
 AnnounceMessage (msgCloseFocusedTrack)
 Else
 TypeCurrentScriptKey ()
-EndIf
+endIf
 EndScript ; CloseFocusTrack
 
 Script AudacitySayFrame ()
@@ -852,7 +903,7 @@ Let hToolbar = GetToolbar ()
 Let hNext = GetNextWindow (hToolbar)
 If !hNext Then
 Let hNext = GetFirstWindow (hToolbar)
-EndIf ; last window
+endIf ; last window
 Let hWnd = GetFirstChild (hNext)
 ; Toolbars start with a grabber control, and some of them have static controls following the grabber.  We skip these to get to the first control.
 While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) || (GetWindowSubtypeCode (hWnd) == WT_STATIC))
@@ -860,7 +911,7 @@ While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) || 
 Let hWnd = GetNextWindow(hWnd)
 EndWhile
 SetFocus (hWnd)
-EndIf ; else is toolbar
+endIf ; else is toolbar
 EndScript ; NextDocumentWindow
 
 Script PreviousDocumentWindow ()
@@ -877,10 +928,10 @@ Let hToolbar = GetToolbar ()
 Let hPrior = GetPriorWindow (hToolbar)
 If !hPrior Then
 Let hPrior = GetLastWindow (hToolbar)
-EndIf ; first window
+endIf ; first window
 Let hWnd = GetLastWindow(GetFirstChild (hPrior))
 SetFocus (hWnd)
-EndIf ; else is toolbar
+endIf ; else is toolbar
 EndScript ; PreviousDocumentWindow
 
 Script SayAudacityState ()
@@ -899,7 +950,7 @@ Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
 If !hTemp Then
 Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
 Return
-EndIf ; if no transport toolbar
+endIf ; if no transport toolbar
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let iPauseState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(hTemp)
@@ -915,13 +966,24 @@ ElIf iRecordState & CTRL_PRESSED Then
 Let sMsg = msgRecord
 Else
 Let sMsg = msgStop
-EndIf
+endIf
 If iPauseState & CTRL_PRESSED Then
 let sMsg = sMsg + " " + msgPause
-EndIf
+endIf
 Say(sMsg, OT_JAWS_MESSAGE)
 EndScript ; SayAudacityState
-
+/*
+Script Enter ()
+;SayString(GetCurrentScriptKeyName())
+If FocusInMainWindow() && !IsStopped () Then
+TypeKey("p")
+Else
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+;PerformScript Enter ()
+endIf
+EndScript
+*/
 Int Function GetObjectState(Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
 ;The returned state uses control attribute values from hjconst.jsh, not MSAASTATE values from msaaconst.jsh.
@@ -946,7 +1008,7 @@ Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
 If !hTemp Then
 ;Say("Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.", OT_JAWS_MESSAGE)
 Return False
-EndIf ; if no transport toolbar
+endIf ; if no transport toolbar
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let hTemp = GetNextWindow(hTemp)
 Let hTemp = GetNextWindow(hTemp)
@@ -976,7 +1038,7 @@ If GetJFWVersion () >= 900000 Then
 	OptionsTreeCore (strListOfOptions) ;the OptionsTreeCore available in Jaws 9.0 or later
 Else
 JawsVerbosityCore (strListOfOptions) ;The AdjustJawsVerbosity available prior to Jaws 9.0. Not tested
-EndIf ; JAWS 9 or >
+endIf ; JAWS 9 or >
 EndScript ; adjustJawsOptions
 
 String Function NodeHlp (string sNodeName)
@@ -988,7 +1050,7 @@ If StringContains (sNodeName, GetActiveConfiguration ()) then
 	Return msgUO_AudacityOptionsHlp
 Else
 	Return NodeHlp (sNodeName);Default for all default and Virtual Cursor groups.
-EndIf
+endIf
 EndFunction ; NodeHlp
 
 string Function UOAnnounceMessages(int iRetCurVal)
@@ -1001,16 +1063,16 @@ if !iRetCurVal then
 	else
 		; This paves the way for multiple values.
 		let iVal = iVal + 1
-	EndIf
+	endIf
 	IniWriteInteger ("Settings", "Announce", iVal, IniFile)
-EndIf ; if !iRetCurVal
+endIf ; if !iRetCurVal
 if iVal == CI_MESSAGES_OFF then
 	Return cmsg_Off
 ;ElIf giHTMLFrameUpdateNotification == FrameUpdateNotification_Indicate then
 	;Return msgFrameUpdateNotificationSpeakFrameName
 ElIf iVal == CI_MESSAGES_FULL Then
 	Return cmsg_On
-EndIf
+endIf
 EndFunction ; UOAnnounceMessages
 
 String Function UOAnnounceMessagesHlp ()
@@ -1027,14 +1089,14 @@ if !iRetCurVal then
 	else
 		; This paves the way for multiple values.
 		let iVal = iVal + 1
-	EndIf
+	endIf
 	IniWriteInteger ("Settings", "Announcetoolbars", iVal, IniFile)
-EndIf ; if !iRetCurVal
+endIf ; if !iRetCurVal
 if iVal == CI_TOOLBARS_OFF then
 	Return cmsg_Off
 ElIf iVal == CI_TOOLBARS_ON Then
 	Return cmsg_On
-EndIf
+endIf
 EndFunction ; UOAnnounceToolbars
 
 String Function UOAnnounceToolbarsHlp ()
@@ -1060,18 +1122,59 @@ SetFocus (FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID))
 Pause ()
 If GetWindowClass (GetCurrentWindow ())=="button" then
 EnterKey () ;presses the enter key to activate the button have focus
-EndIf; get window class
-EndIf ;Dialog active
+endIf; get window class
+endIf ;Dialog active
 EndFunction
 
+;The scripts below used ProcessVST Function
 Script VSTPreset ()
+;Set focus to the preset control
 ProcessVST (ID_Preset)
 EndScript
 
 Script VSTLoadPreset ()
+;Activates the load preset button
 ProcessVST (ID_Load_Preset)
 EndScript
 
 Script VSTSavePreset ()
+;Save current VST settings as a preset
 ProcessVST (ID_Save_Preset)
+EndScript
+
+Script SayAppVersion ()
+;The original code got from default.jss
+;This modification make jaws be able to says current script version
+;Note: the sMessage variable from the original script has been changed to sMessage2 because of Duplicating variables
+var
+	string sProduct,
+	string sVersion,
+	string sMessage2,
+	string sNavModule
+
+	let sProduct = GetVersionInfoString (GetAppFilePath (), cmsg282_L)
+	let sVersion = GetVersionInfoString (GetAppFilePath (), cmsg283_L)
+	let sMessage2 = FormatString (cmsg239_L, sProduct, sVersion)
+Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version declare here
+	let sNavModule = GetNavModuleVersionInfo(GetCurrentWindow())
+
+	; May need to work on some translation here.  Presently,
+	; the string is passed back by the actual NavModule and is
+	; not subject to translation.
+	if (sNavModule != "") then
+		let sMessage2 = sMessage2 + "\n"
+		let sMessage2 = sMessage2 + GetNavModuleVersionInfo ((GetCurrentWindow()))
+	endIf
+;Display program and script version in the vertual buffer
+	if (IsSameScript()) then
+		if (UserBufferIsActive()) then
+			UserBufferDeactivate()
+		endIf
+		SayFormattedMessage(OT_USER_BUFFER, sMessage2)
+		SayFormattedMessage(OT_USER_BUFFER, sMessage) ;display current script version in vertual buffer
+	else
+;Says the info above
+		SayFormattedMessage(ot_help, sMessage2)
+		SayFormattedMessage(ot_help, sMessage) ;says current script version
+	endIf
 EndScript
