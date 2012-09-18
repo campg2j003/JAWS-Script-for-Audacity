@@ -2,6 +2,9 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+
+;9/15/2012 Script DeleteSelectedAudio now works only if stopped.
+;9/16/12 Previous saved to HG rev 38.
 ;9/14/2012 by Gary Campbell:
 ;Changed function announce message to use SayCurrentScriptKeyLabel and TypeCurrentScriptKey.  Removed the sKey parameter, changed calls, and removed param from jsd.  Now speaks keys assigned to Audacity scripts when not performing Audacity functions.
 ;Shortened message spoken when ends of selection are moved and added position announcement.
@@ -281,6 +284,14 @@ EndFunction
 
 Globals handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
+
+/*
+Function KeyPressedEvent (int nKey, string strKeyName, int nIsBrailleKey, int nIsScriptKey)
+DebugInteger(nKey) ; debug
+DebugString(strKeyName) ; debug
+KeyPressedEvent (nKey, strKeyName, nIsBrailleKey, nIsScriptKey)
+EndFunction
+*/
 
 Int Function HandleCustomWindows ()
 ;Announce when focus changes to a different area of the main window.
@@ -716,7 +727,7 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf FocusInTrackPanel ()then
+ElIf FocusInTrackPanel ()&& IsStopped () then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
