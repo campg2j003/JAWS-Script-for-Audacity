@@ -62,6 +62,11 @@ To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityS
 To reset all script options to default values, press %keyfor (ResetConfig)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
+In some common VST plugins, such as L1V:
+ press %keyfor (VSTPreset) to set focus to the preset option.
+Press  %keyfor (VSTLoadPreset) to load the existing preset.
+Press  %keyfor (VSTSavePreset) to save current settings at a preset.
 
 To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
 

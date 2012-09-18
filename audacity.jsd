@@ -147,6 +147,10 @@
 
 :script JawsBackspace
 
+:script SayPriorCharacter
+
+:script SayNextCharacter
+
 :script Copy
 :Synopsis Copies selected audio to clipboard
 :Description Copy the selected audio to the clipboard if focus is in the main window.  Otherwise, perform the default script.
@@ -211,4 +215,18 @@
 
 :script ResetConfig
 :Synopsis Reset all audacity Jaws script' config to default.
+
+:function ProcessVST
+:Description Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
+:Param int/iControlID The control ID of the control you wich to move to.
+
+:script VSTPreset
+:Synopsis Set focus to the preset options in VST dialog.
+:Description Set focus to the preset options in VST dialog by using hotkey.
+
+:script VSTLoadPreset
+:Synopsis Quickly activates the load button in some vst dialog
+
+:script VSTSavePreset
+:Synopsis quickly activate the save preset button
 

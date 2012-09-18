@@ -21,5 +21,8 @@ Control+`=AnnounceOnOff
 JAWSKey+V=AdjustJAWSOptions
 ENTER=Enter
 NumPadEnter=Enter
-;[Laptop Keys]
+;  [Laptop Keys]
 Shift+Control+`=ResetConfig
+Alt+P=VSTPreset
+Alt+L=VSTLoadPreset
+Alt+S=VSTSavePreset
