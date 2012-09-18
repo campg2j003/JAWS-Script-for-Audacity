@@ -3,6 +3,8 @@
 ;Modified: Dang Manh Cuong
 ;Modifications:
 
+;9/15/2012 Added script ENTER.  If not stopped, it sends key for pause.  Had to add key binding for it to audacity.jkm.  A side effect of doing this is that if JAWS is not set to treate extended keys separately, both numpad ENTER and typing keys ENTER will appear as the typing keys ENTER.  (I tried a separate NumPadEnter script but it still appeared as typing enter, even though GetScriptKeyName() returns NumPadEnter, and even if you use TypeKey(GetCurrentScriptKeyName())).  It is possible to run separate scripts.  It does not seem to be possible for a script to send NumPadEnter to the application.
+;9/17/12 Previous saved to HG rev 41.
 ;9/15/2012 Script DeleteSelectedAudio now works only if stopped.
 ;9/16/12 Previous saved to HG rev 38.
 ;9/14/2012 by Gary Campbell:
@@ -952,6 +954,17 @@ let sMsg = sMsg + " " + msgPause
 EndIf
 Say(sMsg, OT_JAWS_MESSAGE)
 EndScript ; SayAudacityState
+
+Script Enter ()
+;SayString(GetCurrentScriptKeyName())
+If FocusInMainWindow() && !IsStopped () Then
+TypeKey("p")
+Else
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+;PerformScript Enter ()
+EndIf
+EndScript
 
 Int Function GetObjectState(Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
