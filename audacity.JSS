@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/19/12 by Dang Manh Cuong:
+;Modified ProcessVST function. Corrected the issue: "when focus move to the buttons control, it always say the button's name..."
+;User can now use the same hotkeys as VST script at the main window.
+;Updated comments.
 ;9/18/12 by Dang Manh Cuong:
 ;Modified script SayAppVersion. The script now says current script version after saying Audacity version.
 ;Added message for the script above into Audacity.jsm file.
@@ -154,7 +158,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/18/12"
+Const CS_SCRIPT_VERSION = "1.1 9/19/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -242,7 +246,7 @@ If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
 endIf ; if AnnounceOn
 Else
-;Not main window, perform the specified script, passed as a parameter. This method suggested by Dug Lee
+;Not main window, perform the specified script, passed as a parameter. This method suggested by Doug Lee
 formatStringWithEmbeddedFunctions("<$" +sScript +">") ;instead of PerformScript method. 
 endIf ; else not main window
 EndFunction ; MarkerMovement
@@ -1115,33 +1119,6 @@ AddDefaultConfig ()
 Say (msgResetScriptOptions, ot_message)
 EndScript ; resetConfig
 
-Void Function ProcessVST (int iControlID)
-;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
-If DialogActive () then ;make sure user stand at a dialog
-SetFocus (FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID))
-Pause ()
-If GetWindowClass (GetCurrentWindow ())=="button" then
-EnterKey () ;presses the enter key to activate the button have focus
-endIf; get window class
-endIf ;Dialog active
-EndFunction
-
-;The scripts below used ProcessVST Function
-Script VSTPreset ()
-;Set focus to the preset control
-ProcessVST (ID_Preset)
-EndScript
-
-Script VSTLoadPreset ()
-;Activates the load preset button
-ProcessVST (ID_Load_Preset)
-EndScript
-
-Script VSTSavePreset ()
-;Save current VST settings as a preset
-ProcessVST (ID_Save_Preset)
-EndScript
-
 Script SayAppVersion ()
 ;The original code got from default.jss
 ;This modification make jaws be able to says current script version
@@ -1170,11 +1147,52 @@ Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current scrip
 		if (UserBufferIsActive()) then
 			UserBufferDeactivate()
 		endIf
-		SayFormattedMessage(OT_USER_BUFFER, sMessage2)
+		SayFormattedMessage(OT_USER_BUFFER, sMessage2) ;display program version in vertual buffer
 		SayFormattedMessage(OT_USER_BUFFER, sMessage) ;display current script version in vertual buffer
 	else
-;Says the info above
-		SayFormattedMessage(ot_help, sMessage2)
-		SayFormattedMessage(ot_help, sMessage) ;says current script version
+;speaks the info above
+		SayFormattedMessage(ot_help, sMessage2) ;program version
+		SayFormattedMessage(ot_help, sMessage) ;current script version
 	endIf
+EndScript
+
+;For VST plugins
+Void Function ProcessVST (int iControlID)
+;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
+Var
+Handle hWnd
+Let hwnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID) ;The control ID of the focus should be moved to
+If DialogActive () then ;make sure user stand at a dialog. This mean you can activate other feature had the same hotkey wile focus at the main window
+SaveCursor () ;Save the active cursor because I'll use MoveToWindow function, this will turn on JawsCursor
+MoveToWindow (hWnd)
+If GetWindowClass (hWnd)=="button" then
+SpeechOff () ;prevent Jaws to speaks wile focus move to a button
+SetFocus (hWnd) ;move focus to the button
+EnterKey () ;presses the enter key to activate the button have focus
+SpeechOn ()
+Else
+;while focus at the preset control, just set focus to this.
+SetFocus (hWnd)
+endIf; get window class
+RestoreCursor ()
+Else
+;process normal functionalities wile focus stands at main window. This mean user can add the same hotkeys of vst for any options they prefer.
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+endIf ;Dialog active
+EndFunction
+
+Script VSTPreset ()
+;Set focus to the preset control if present
+ProcessVST (ID_Preset)
+EndScript
+
+Script VSTLoadPreset ()
+;Activates the load preset button
+ProcessVST (ID_Load_Preset)
+EndScript
+
+Script VSTSavePreset ()
+;Save current VST settings as a preset
+ProcessVST (ID_Save_Preset)
 EndScript
