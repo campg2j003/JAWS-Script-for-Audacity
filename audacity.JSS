@@ -2,13 +2,17 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
-;9/18/12 Merged to default from br_sep17, but commented out script Enter and keys for ENTER and NumPadEnter.
-;9/18/12 Merged in Cuong's changes from audacity_cuong 24:6398dd266452, but did not keep change in case of EndIf and did not comment out script Enter.
+;9/19/12 by Gary Campbell:
+;Added Cuong's ProcessVST from his 9/19 distribution, added condition that hWnd is nonzero to the DialogActive test.
+;Changed ID_PRESET from 1001 to 11000.  1001 is the edit control that is the child of many combo boxes, like Sample Rate in the selection bar, and setting focus to the parent combobox class works.
+;9/18/12 by Gary Campbell:
+;Added default processing for ProcessVST.  
+;In scripts bound to [CTRL+]Shift+Left/RightArrow if not stopped sends the key to the app.  In play these keys do long jumps or nothing and in recording they don't select.
 ;9/18/12 by Dang Manh Cuong:
 ;Modified script SayAppVersion. The script now says current script version after saying Audacity version.
 ;Added message for the script above into Audacity.jsm file.
 ;updated comment to scripts has used ProcessVST function
-;9/18/12 Previous saved to HG rev 43.
+
 ; 9/17/12 Merged in Cuong's changes from default branch, rev 40.
 ;9/17/12 Previous saved to HG rev 42.
 ;9/15/2012 Added script ENTER.  If not stopped, it sends key for pause.  Had to add key binding for it to audacity.jkm.  A side effect of doing this is that if JAWS is not set to treate extended keys separately, both numpad ENTER and typing keys ENTER will appear as the typing keys ENTER.  (I tried a separate NumPadEnter script but it still appeared as typing enter, even though GetScriptKeyName() returns NumPadEnter, and even if you use TypeKey(GetCurrentScriptKeyName())).  It is possible to run separate scripts.  It does not seem to be possible for a script to send NumPadEnter to the application.
@@ -169,7 +173,8 @@ Const
 ;For VST plugins
 ID_Load_Preset=11001 ,
 ID_Save_Preset=11002,
-ID_Preset=1001,
+;ID_Preset=1001,
+ID_Preset=11000,
 	;For user options.
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
@@ -238,7 +243,7 @@ Void Function MarkerMovement (string sScript, string sAlert)
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
@@ -617,6 +622,12 @@ Script FinishMarkerRight ()
 Var
 	Handle hWnd
 
+If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
+	;When playing this does long jump right, in recording I don't think it does anything, and it certainly doesn't select.
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
@@ -624,12 +635,19 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-EndIf
+endIf
 EndScript
 
 Script FinishMarkerLeft ()
 Var
 	Handle hWnd
+
+If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
+	;If we aren't stopped we don't change the selection, so send the key on silently.
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
@@ -637,12 +655,19 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-EndIf
+endIf
 EndScript
 
 Script StartMarkerRight ()
 Var
 	Handle hWnd
+
+If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
+	;If we aren't stopped we don't change the selection, so send the key on silently.
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
@@ -650,12 +675,19 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-EndIf
+endIf
 EndScript
 
 Script StartMarkerLeft ()
 Var
 	Handle hWnd
+
+If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
+	;When playing this does long jump left, in recording I don't think it does anything, and it certainly doesn't select.
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
@@ -663,7 +695,7 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-EndIf
+endIf
 EndScript
 
 Script JawsHome ()
@@ -976,17 +1008,20 @@ Say(sMsg, OT_JAWS_MESSAGE)
 EndScript ; SayAudacityState
 
 /*
+;This script causes ENTER to do pause if not stopped, otherwise does normal ENTER.
+;If you comment this out you should also comment out entries for keys ENTrR and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys serarately, not commenting out these entries will cause Audacity to see both keys as standa"rd ENTER.
 Script Enter ()
 ;SayString(GetCurrentScriptKeyName())
 If FocusInMainWindow() && !IsStopped () Then
-TypeKey("p")
+	TypeKey("p")
 Else
-SayCurrentScriptKeyLabel ()
-TypeCurrentScriptKey ()
-;PerformScript Enter ()
-EndIf
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	;PerformScript Enter ()
+endIf
 EndScript
 */
+
 Int Function GetObjectState(Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
 ;The returned state uses control attribute values from hjconst.jsh, not MSAASTATE values from msaaconst.jsh.
@@ -1118,6 +1153,7 @@ AddDefaultConfig ()
 Say (msgResetScriptOptions, ot_message)
 EndScript ; resetConfig
 
+/*
 Void Function ProcessVST (int iControlID)
 ;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
 If DialogActive () then ;make sure user stand at a dialog
@@ -1128,8 +1164,70 @@ EnterKey () ;presses the enter key to activate the button have focus
 endIf; get window class
 endIf ;Dialog active
 EndFunction
+*/
 
-;The scripts below used ProcessVST Function
+/*
+;Gary's
+Void Function ProcessVST (int iControlID)
+;Performs some VST plugin options quickly by hotkeys. The options include: preset, load preset, save preset.
+var
+	Handle hTemp,
+	Int iTemp
+
+;SayString("Enter ProcessVST") ; debug
+If DialogActive () then ;make sure user is at a dialog
+Let hTemp = FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID)
+If hTemp Then
+;SayString("found control type" + IntToString(GetWindowSubtypeCode(hTemp))) ; debug
+;If GetWindowClass (GetCurrentWindow ())=="button" then
+If GetWindowSubtypeCode (hTemp)==WT_BUTTON then
+
+Let iTemp = IsSpeechOff()
+SpeechOff()
+SetFocus (hTemp)
+EnterKey () ;presses the enter key to activate the button have focus
+Pause ()
+If !iTemp Then
+SpeechOn()
+EndIf
+Return
+EndIf; get window type
+EndIf ;if hTemp
+EndIf ;Dialog active
+;Nothing special, send it on
+SayString("default case") ; debug
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+EndFunction
+*/
+
+;/*
+; Cuong's with modification
+Void Function ProcessVST (int iControlID)
+;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
+Var
+Handle hWnd
+Let hwnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID) ;The control ID of the focus should be moved to
+If DialogActive () && hWnd then ;make sure user stand at a dialog. This mean you can activate other feature had the same hotkey wile focus at the main window
+If GetWindowClass (hWnd)=="button" then
+SpeechOff () ;prevent Jaws to speaks wile focus move to a button
+SetFocus (hWnd) ;move focus to the button
+EnterKey () ;presses the enter key to activate the button have focus
+SpeechOn ()
+Else
+;while focus at the preset control, just set focus to this.
+SetFocus (hWnd)
+endIf; get window class
+Else
+;process normal functionalities wile focus stands at main window. This mean user can add the same hotkeys of vst for any options they prefer.
+SayString("vst") ; debug
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+endIf ;Dialog active
+EndFunction
+;*/
+
+;The scripts below use Function ProcessVST
 Script VSTPreset ()
 ;Set focus to the preset control
 ProcessVST (ID_Preset)
@@ -1146,8 +1244,8 @@ ProcessVST (ID_Save_Preset)
 EndScript
 
 Script SayAppVersion ()
-;The original code got from default.jss
-;This modification make jaws be able to says current script version
+;Original code from default.jss
+;This modification makes JAWS speak the current script version after the progham version.
 ;Note: the sMessage variable from the original script has been changed to sMessage2 because of Duplicating variables
 var
 	string sProduct,
@@ -1158,7 +1256,7 @@ var
 	let sProduct = GetVersionInfoString (GetAppFilePath (), cmsg282_L)
 	let sVersion = GetVersionInfoString (GetAppFilePath (), cmsg283_L)
 	let sMessage2 = FormatString (cmsg239_L, sProduct, sVersion)
-Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version declare here
+	Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
 	let sNavModule = GetNavModuleVersionInfo(GetCurrentWindow())
 
 	; May need to work on some translation here.  Presently,
