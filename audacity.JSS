@@ -2,6 +2,11 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/19/12 Merged in Cuong's changes from audacity_cuong rev 25:ee441e30dd05.
+;9/19/12 by Dang Manh Cuong:
+;Modified ProcessVST function. Corrected the issue: "when focus move to the buttons control, it always say the button's name..."
+;User can now use the same hotkeys as VST script at the main window.
+;Updated comments.
 ;9/19/12 by Gary Campbell:
 ;Added Cuong's ProcessVST from his 9/19 distribution, added condition that hWnd is nonzero to the DialogActive test.
 ;Changed ID_PRESET from 1001 to 11000.  1001 is the edit control that is the child of many combo boxes, like Sample Rate in the selection bar, and setting focus to the parent combobox class works.
@@ -160,7 +165,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/18/12"
+Const CS_SCRIPT_VERSION = "1.1 9/19/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -249,7 +254,7 @@ If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
 endIf ; if AnnounceOn
 Else
-;Not main window, perform the specified script, passed as a parameter. This method suggested by Dug Lee
+;Not main window, perform the specified script, passed as a parameter. This method suggested by Doug Lee
 formatStringWithEmbeddedFunctions("<$" +sScript +">") ;instead of PerformScript method. 
 endIf ; else not main window
 EndFunction ; MarkerMovement
@@ -1153,18 +1158,42 @@ AddDefaultConfig ()
 Say (msgResetScriptOptions, ot_message)
 EndScript ; resetConfig
 
-/*
-Void Function ProcessVST (int iControlID)
-;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
-If DialogActive () then ;make sure user stand at a dialog
-SetFocus (FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID))
-Pause ()
-If GetWindowClass (GetCurrentWindow ())=="button" then
-EnterKey () ;presses the enter key to activate the button have focus
-endIf; get window class
-endIf ;Dialog active
-EndFunction
-*/
+Script SayAppVersion ()
+;Original code from default.jss
+;This modification makes JAWS speak the current script version after the progham version.
+;Note: the sMessage variable from the original script has been changed to sMessage2 because of Duplicating variables
+var
+	string sProduct,
+	string sVersion,
+	string sMessage2,
+	string sNavModule
+
+	let sProduct = GetVersionInfoString (GetAppFilePath (), cmsg282_L)
+	let sVersion = GetVersionInfoString (GetAppFilePath (), cmsg283_L)
+	let sMessage2 = FormatString (cmsg239_L, sProduct, sVersion)
+	Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
+	let sNavModule = GetNavModuleVersionInfo(GetCurrentWindow())
+
+	; May need to work on some translation here.  Presently,
+	; the string is passed back by the actual NavModule and is
+	; not subject to translation.
+	if (sNavModule != "") then
+		let sMessage2 = sMessage2 + "\n"
+		let sMessage2 = sMessage2 + GetNavModuleVersionInfo ((GetCurrentWindow()))
+	endIf
+;Display program and script version in the vertual buffer
+	if (IsSameScript()) then
+		if (UserBufferIsActive()) then
+			UserBufferDeactivate()
+		endIf
+		SayFormattedMessage(OT_USER_BUFFER, sMessage2) ;display program version in vertual buffer
+		SayFormattedMessage(OT_USER_BUFFER, sMessage) ;display current script version in vertual buffer
+	else
+;speaks the info above
+		SayFormattedMessage(ot_help, sMessage2) ;program version
+		SayFormattedMessage(ot_help, sMessage) ;current script version
+	endIf
+EndScript
 
 /*
 ;Gary's
@@ -1227,9 +1256,8 @@ endIf ;Dialog active
 EndFunction
 ;*/
 
-;The scripts below use Function ProcessVST
 Script VSTPreset ()
-;Set focus to the preset control
+;Set focus to the preset control if present
 ProcessVST (ID_Preset)
 EndScript
 
@@ -1241,41 +1269,4 @@ EndScript
 Script VSTSavePreset ()
 ;Save current VST settings as a preset
 ProcessVST (ID_Save_Preset)
-EndScript
-
-Script SayAppVersion ()
-;Original code from default.jss
-;This modification makes JAWS speak the current script version after the progham version.
-;Note: the sMessage variable from the original script has been changed to sMessage2 because of Duplicating variables
-var
-	string sProduct,
-	string sVersion,
-	string sMessage2,
-	string sNavModule
-
-	let sProduct = GetVersionInfoString (GetAppFilePath (), cmsg282_L)
-	let sVersion = GetVersionInfoString (GetAppFilePath (), cmsg283_L)
-	let sMessage2 = FormatString (cmsg239_L, sProduct, sVersion)
-	Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
-	let sNavModule = GetNavModuleVersionInfo(GetCurrentWindow())
-
-	; May need to work on some translation here.  Presently,
-	; the string is passed back by the actual NavModule and is
-	; not subject to translation.
-	if (sNavModule != "") then
-		let sMessage2 = sMessage2 + "\n"
-		let sMessage2 = sMessage2 + GetNavModuleVersionInfo ((GetCurrentWindow()))
-	endIf
-;Display program and script version in the vertual buffer
-	if (IsSameScript()) then
-		if (UserBufferIsActive()) then
-			UserBufferDeactivate()
-		endIf
-		SayFormattedMessage(OT_USER_BUFFER, sMessage2)
-		SayFormattedMessage(OT_USER_BUFFER, sMessage) ;display current script version in vertual buffer
-	else
-;Says the info above
-		SayFormattedMessage(ot_help, sMessage2)
-		SayFormattedMessage(ot_help, sMessage) ;says current script version
-	endIf
 EndScript

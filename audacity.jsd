@@ -220,9 +220,11 @@
 :script ResetConfig
 :Synopsis Reset all audacity Jaws script' config to default.
 
+:script SayAppVersion
+
 :function ProcessVST
 :Description Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
-:Param int/iControlID The control ID of the control you wich to move to.
+:Param int/iControlID No Description
 
 :script VSTPreset
 :Synopsis Set focus to the preset options in VST dialog.
@@ -233,6 +235,4 @@
 
 :script VSTSavePreset
 :Synopsis quickly activate the save preset button
-
-:script SayAppVersion
 
