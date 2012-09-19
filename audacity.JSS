@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/19/12 by Gary Campbell:
+; ProcessVST now tests that we found the desired control so that it won't process in other dialogs.
+;Now speaks control names in many plug-in dialogs.
+;9/19/12 Previous saved to HG rev 50.
 ;9/19/12 Merged in Cuong's changes from audacity_cuong rev 25:ee441e30dd05.
 ;9/19/12 by Dang Manh Cuong:
 ;Modified ProcessVST function. Corrected the issue: "when focus move to the buttons control, it always say the button's name..."
@@ -330,11 +334,26 @@ Int Function HandleCustomWindows ()
 Var handle hParent,
 	Handle hFocus,
 	Handle hOld,
-	Handle hToolbar
+	Handle hToolbar,
+	String sName,
+	Int iMSAA_JCFOpt
 
 If !FocusInMainWindow() Then
+	If DialogActive () && GetWindowName(GetFocus()) == cscNULL Then
+		let iMSAA_JCFOpt = GetJCFOption (opt_MSAA_mode)
+		SetJCFOption (opt_MSAA_mode, 2)
+		Let sName = GetObjectName()
+		SetJCFOption (opt_MSAA_mode, iMSAA_JCFOpt)
+		SayControlEx(GetFocus (), 
+		sName, "",   ; control name, type
+		"",   ; control state
+		"", "",   ; Container name, type
+		"", "",   ; value, position
+		"")   ; dialog text
+		Return True
+			EndIf ; no window name
 	Return HandleCustomWindows () ; not main window, continue with normal processing
-endIf
+endIf ; if ! focus in main window
 Let hFocus = GetFocus ()
 Let hParent = GetParent(hFocus)
 If GetWindowName(hFocus) != WN_TRACKPANEL Then
@@ -1195,49 +1214,13 @@ var
 	endIf
 EndScript
 
-/*
-;Gary's
-Void Function ProcessVST (int iControlID)
-;Performs some VST plugin options quickly by hotkeys. The options include: preset, load preset, save preset.
-var
-	Handle hTemp,
-	Int iTemp
-
-;SayString("Enter ProcessVST") ; debug
-If DialogActive () then ;make sure user is at a dialog
-Let hTemp = FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID)
-If hTemp Then
-;SayString("found control type" + IntToString(GetWindowSubtypeCode(hTemp))) ; debug
-;If GetWindowClass (GetCurrentWindow ())=="button" then
-If GetWindowSubtypeCode (hTemp)==WT_BUTTON then
-
-Let iTemp = IsSpeechOff()
-SpeechOff()
-SetFocus (hTemp)
-EnterKey () ;presses the enter key to activate the button have focus
-Pause ()
-If !iTemp Then
-SpeechOn()
-EndIf
-Return
-EndIf; get window type
-EndIf ;if hTemp
-EndIf ;Dialog active
-;Nothing special, send it on
-SayString("default case") ; debug
-SayCurrentScriptKeyLabel ()
-TypeCurrentScriptKey ()
-EndFunction
-*/
-
-;/*
 ; Cuong's with modification
 Void Function ProcessVST (int iControlID)
 ;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
 Var
 Handle hWnd
 Let hwnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID) ;The control ID of the focus should be moved to
-If DialogActive () && hWnd then ;make sure user stand at a dialog. This mean you can activate other feature had the same hotkey wile focus at the main window
+If DialogActive () && hWnd then ;make sure user is in a dialog and we found the desired control.
 If GetWindowClass (hWnd)=="button" then
 SpeechOff () ;prevent Jaws to speaks wile focus move to a button
 SetFocus (hWnd) ;move focus to the button
@@ -1249,12 +1232,11 @@ SetFocus (hWnd)
 endIf; get window class
 Else
 ;process normal functionalities wile focus stands at main window. This mean user can add the same hotkeys of vst for any options they prefer.
-SayString("vst") ; debug
+;SayString("vst") ; debug
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf ;Dialog active
 EndFunction
-;*/
 
 Script VSTPreset ()
 ;Set focus to the preset control if present
