@@ -1,4 +1,19 @@
-(This file last updated 8/25/2012)
+(This file last updated 9/4/2012)
+New in Jaws scripts for Audacity version 1.1 (8/30/2012):
+
+. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CUNTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
+. The extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.
+. JAWS no longer says "track table" when moving between tracks.
+. Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
+. Speaks the toolbar name when focus moves from one toolbar to another.
+. When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB moves to the first control on the next toolbar or the last control on the previous toolbar.
+. JAWSKey+Delete speaks the current program state: stop, play, play pause, record, or record pause.
+. Speaks cursor position when left/right arrows are pressed and Audacity is stopped.
+. Functions that use values from the selection bar now speak a message or silently omit the action requiring the value if the selection bar is enabled.
+. Now indicates when no project is open (no tracks in track panel) for many operations.
+. Track gain and pan controls now only function when the PC cursor is active.  Otherwise they execute their default mouse movement functions.
+. HandleCustomWindows now calls HandleCustomWindows so that this function in scripts used by this script will be executed.
+
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 
 . added alert message for the following default Audacity hotkeys:
@@ -16,14 +31,13 @@ New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 + Move the start of the selection to the left by a small amount  (Shift + Left Arrow)
 + Delete selected audio (Delete, Ctrl+k, Backspace)
 + Cut, copy selected audio (Ctrl+x, Ctrl+c)
-(the info below Modified from The Audacity 2.0 Guide, by David Bailes)
-You can easily toggle these alert on or off by pressing Ctrl+`
+You can toggle these alerts on or off by pressing Ctrl+`
 . Jaws now speaks the radio buttons in the warning dialog that appears when importing uncompressed audio files.
 . Added scripts for adjusting gain and pan. These scripts replace mouse movement scripts (MouseUp, MouseLeft, etc.), but you can use the original functions by activating theJaws cursor. This feature suggested by Gary Campbell - the original author ofthe script.
 . Added hotkey to toggle mute Jaws synthersiser (Insert+shift+s).
 Added function autoStartEvent (just a little tip to indicate that the script is active).
 Created dictionary file for some mispronounced words.
-The Audacity hotkey help (JAWSkey+h) now displays hotkeys as a links.
+The Audacity hotkey help (JAWSkey+h) now displays hotkeys as links.
 Created installer package (using Nullsoft scriptable install system).
 Fixed error in installer (fix by Gary Campbell):
 In DisplayJawsList now only counts JAWS version registry keys whose names start with a digit.  This rejects keys like "Common".

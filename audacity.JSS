@@ -2,11 +2,13 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/18/12 Merged to default from br_sep17, but commented out script Enter and keys for ENTER and NumPadEnter.
+;9/18/12 Merged in Cuong's changes from audacity_cuong 24:6398dd266452, but did not keep change in case of EndIf and did not comment out script Enter.
 ;9/18/12 by Dang Manh Cuong:
 ;Modified script SayAppVersion. The script now says current script version after saying Audacity version.
 ;Added message for the script above into Audacity.jsm file.
 ;updated comment to scripts has used ProcessVST function
-
+;9/18/12 Previous saved to HG rev 43.
 ; 9/17/12 Merged in Cuong's changes from default branch, rev 40.
 ;9/17/12 Previous saved to HG rev 42.
 ;9/15/2012 Added script ENTER.  If not stopped, it sends key for pause.  Had to add key binding for it to audacity.jkm.  A side effect of doing this is that if JAWS is not set to treate extended keys separately, both numpad ENTER and typing keys ENTER will appear as the typing keys ENTER.  (I tried a separate NumPadEnter script but it still appeared as typing enter, even though GetScriptKeyName() returns NumPadEnter, and even if you use TypeKey(GetCurrentScriptKeyName())).  It is possible to run separate scripts.  It does not seem to be possible for a script to send NumPadEnter to the application.
@@ -622,7 +624,7 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-endIf
+EndIf
 EndScript
 
 Script FinishMarkerLeft ()
@@ -635,7 +637,7 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-endIf
+EndIf
 EndScript
 
 Script StartMarkerRight ()
@@ -648,7 +650,7 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-endIf
+EndIf
 EndScript
 
 Script StartMarkerLeft ()
@@ -661,7 +663,7 @@ If AnnounceOn () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-endIf
+EndIf
 EndScript
 
 Script JawsHome ()
@@ -972,6 +974,7 @@ let sMsg = sMsg + " " + msgPause
 endIf
 Say(sMsg, OT_JAWS_MESSAGE)
 EndScript ; SayAudacityState
+
 /*
 Script Enter ()
 ;SayString(GetCurrentScriptKeyName())
@@ -981,7 +984,7 @@ Else
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ;PerformScript Enter ()
-endIf
+EndIf
 EndScript
 */
 Int Function GetObjectState(Handle hWnd)

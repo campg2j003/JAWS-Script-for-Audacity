@@ -68,6 +68,8 @@ In some common VST plugins, such as L1V:
 Press  %keyfor (VSTLoadPreset) to load the existing preset.
 Press  %keyfor (VSTSavePreset) to save current settings at a preset.
 
+To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
+
 To close this message, press %keyfor (UpALevel)
 @@
 

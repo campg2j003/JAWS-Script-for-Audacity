@@ -19,6 +19,8 @@ shift+c=CloseFocusTrack
 control+[=SaySelectionStart
 Control+`=AnnounceOnOff
 JAWSKey+V=AdjustJAWSOptions
+;ENTER=Enter
+;NumPadEnter=Enter
 ;  [Laptop Keys]
 Shift+Control+`=ResetConfig
 Alt+P=VSTPreset
