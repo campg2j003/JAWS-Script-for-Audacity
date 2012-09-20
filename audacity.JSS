@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/19/12 Updated hot key help message.
+;Added script SayJump and key assignments that bind it to ,, ., shift+,, and Shift+..
+;removed commented-out code.
+;9/19/12 Previous saved to HG rev 51.
 ;9/19/12 by Gary Campbell:
 ; ProcessVST now tests that we found the desired control so that it won't process in other dialogs.
 ;Now speaks control names in many plug-in dialogs.
@@ -300,7 +304,7 @@ Int Function NoProject ()
 ;return true if no project is open  (no tracks in track panel).
 ;This is a feature from GoldWave scripts.
 If FocusInMainWindow () then
-If GetObjectSubTypeCode (true, 0)==WT_Table then ;no tracks in track panel.
+If GetObjectSubTypeCode (true, 0)==WT_Table then ;no tracks in track panel, True=always use MSAA.
 return true
 endIf ; if tracks
 endIf ; if in main window
@@ -726,13 +730,6 @@ Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JawsHome () ; do Home without speaking key label
-/*
-;Does not compile on JAWS 10.  Might compile if we put new definition of SayFormattedMessage in jsd file.  Would probably be compatible with previous versions if extra parameters were optional.
-If GetJFWVersion ()>=1300000 then
-;Since Jaws 12 update 1, the say formatted message function includes message using place folders. So I'd like to try it.
-SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGStart, MSGTrack)
-Else
-*/
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 ;endIf ; if < JAWS 13
 Else
@@ -744,12 +741,6 @@ Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JAWSEnd () ; do End without speaking key label
-/*
-; Does not compile on JAWS 10.
-If GetJFWVersion ()>=1300000 then
-SayFormattedMessage (OT_Position, MSGMoveTo, MSGMoveTo, MSGEnd, MSGAllAudio)
-Else
-*/
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 ;endIf ; else < JAWS 13
 Else
@@ -1252,3 +1243,24 @@ Script VSTSavePreset ()
 ;Save current VST settings as a preset
 ProcessVST (ID_Save_Preset)
 EndScript
+
+Script SayJump ()
+;For use by short/long jumps (,, ., etc.).  sends the key, if in track panel and AnnounceOn speaks start position, otherwise speaks the key label.
+;If you want a separate script for each key, turn this into a function and call it from the scripts.
+var
+	Handle hWnd
+
+TypeCurrentScriptKey ()
+If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () then
+SayNoProject ()
+Return
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&AnnounceOn () && IsStopped () then
+Pause ()
+let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+Else
+SayCurrentScriptKeyLabel ()
+EndIf
+
+EndScript
+

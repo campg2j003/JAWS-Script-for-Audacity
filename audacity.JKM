@@ -26,3 +26,7 @@ Shift+Control+`=ResetConfig
 Alt+P=VSTPreset
 Alt+L=VSTLoadPreset
 Alt+S=VSTSavePreset
+,=SayJump
+Shift+,=SayJump
+.=SayJump
+Shift+.=SayJump

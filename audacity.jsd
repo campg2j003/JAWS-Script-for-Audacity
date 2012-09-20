@@ -227,12 +227,15 @@
 :Param int/iControlID No Description
 
 :script VSTPreset
-:Synopsis Set focus to the preset options in VST dialog.
-:Description Set focus to the preset options in VST dialog by using hotkey.
+:Synopsis Set focus to the preset control in VST dialogs.
+:Description Adds support for an access key to set focus to the preset control in VST dialogs.
 
 :script VSTLoadPreset
-:Synopsis Quickly activates the load button in some vst dialog
+:Synopsis Quickly activates the Load button to load a preset in some vst dialogs
 
 :script VSTSavePreset
-:Synopsis quickly activate the save preset button
+:Synopsis Quickly activates the Save button to save a preset in some vst dialogs
+
+:script SayJump
+:Synopsis Speaks the position after executing a short/long jump key
 
