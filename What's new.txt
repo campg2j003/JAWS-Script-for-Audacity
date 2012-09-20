@@ -1,7 +1,9 @@
-(This file last updated 9/4/2012)
-New in Jaws scripts for Audacity version 1.1 (8/30/2012):
+(This file last updated 9/19/2012)
+New in Jaws scripts for Audacity version 1.2 (9/20/2012):
 
-. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CUNTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
+. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CONTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
+. Added JAWSKey+v to jkm file so that options will appear  on JAWS 13, which apparently has a new options facility.
+. Fixed speaking of position fields.  Previously, .012s was spoken as 12s.  Now speaks time fields containing two zeros as one 0, so 01h00m00.015s is spoken as 1h0m0.015s.  This is not yet done for formats such as ##h##m##s+##frames.  The "days"" format is now supported.  The code for this function has been rewritten to use more message constants, so it hopefully will be localizable.
 . The extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.
 . JAWS no longer says "track table" when moving between tracks.
 . Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
@@ -9,10 +11,16 @@ New in Jaws scripts for Audacity version 1.1 (8/30/2012):
 . When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB moves to the first control on the next toolbar or the last control on the previous toolbar.
 . JAWSKey+Delete speaks the current program state: stop, play, play pause, record, or record pause.
 . Speaks cursor position when left/right arrows are pressed and Audacity is stopped.
-. Functions that use values from the selection bar now speak a message or silently omit the action requiring the value if the selection bar is enabled.
+. Functions that use values from the selection bar now speak a message or silently omit the action requiring the value if the selection bar is not enabled.
 . Now indicates when no project is open (no tracks in track panel) for many operations.
 . Track gain and pan controls now only function when the PC cursor is active.  Otherwise they execute their default mouse movement functions.
 . HandleCustomWindows now calls HandleCustomWindows so that this function in scripts used by this script will be executed.
+. Keystrokes that extend or contract the selection speak the new position.
+. Left/rightArrow now speak the position when stopped.
+. In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
+. In many plug-in dialogs control names and values are now spoken.  Use JAWSKey+TAB to repeat the current control name/value.
+. By uncommenting a couple of key assignments and a script it is possible to use the ENTER key to pause play/record.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  It is commented out because it disables Select/Unselect Track on Cuong's machine.  (It is supposed to send ENTER when stopped, aod it does for me.)  To activate it, remove the semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and remove (or add semicolon to the start of) the lines containing /* and */ before and after script Enter in audacity.jss.  Try it out and let us know if it works for you and if you like it.
+
 
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 

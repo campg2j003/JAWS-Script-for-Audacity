@@ -2,6 +2,9 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/20/12 Previous saved to HG rev 54.
+;9/20/12 Updated script version number.
+;9/20/12 Previous saved to HG rev 53.
 ;9/20/12 Changed the conditions for not executing the default script in Start/FinishMarkerLeft/Right and made them perform their default scripts instead of silently sending the key through.
 ;In MarkerMovement changed so that it doesn't say "no project" in the virtual buffer.  I think something else prevented this, but the logic looked wrong.
 ;Movement and selection keys no longer say the position when no project is open.
@@ -177,7 +180,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/20/12"
+Const CS_SCRIPT_VERSION = "1.2 9/20/12"
 
 Const
 	ID_SELECTION_START = 2705,
