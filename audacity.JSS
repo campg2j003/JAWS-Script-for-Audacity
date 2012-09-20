@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/20/12 Changed the conditions for not executing the default script in Start/FinishMarkerLeft/Right and made them perform their default scripts instead of silently sending the key through.
+;In MarkerMovement changed so that it doesn't say "no project" in the virtual buffer.  I think something else prevented this, but the logic looked wrong.
+;Movement and selection keys no longer say the position when no project is open.
+;9/20/12 Previous saved to HG rev 52.
 ;9/19/12 Updated hot key help message.
 ;Added script SayJump and key assignments that bind it to ,, ., shift+,, and Shift+..
 ;removed commented-out code.
@@ -173,7 +177,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.1 9/19/12"
+Const CS_SCRIPT_VERSION = "1.1 9/20/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -253,10 +257,11 @@ EndFunction ; SaySelectionPosition
 Void Function MarkerMovement (string sScript, string sAlert)
 ;Used for marker scripts, such as move start of selection to the left by a small amount
 ;First, check to make sure we have a project open.
+If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () then
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () then
+EndIf
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
@@ -650,16 +655,21 @@ Script FinishMarkerRight ()
 Var
 	Handle hWnd
 
-If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
-	;When playing this does long jump right, in recording I don't think it does anything, and it certainly doesn't select.
-	TypeCurrentScriptKey ()
+If !IsPCCursor () || UserBufferIsActive () Then
+	PerformScript SelectNextCharacter ()
 	Return
 EndIf
+
+If !IsStopped () Then
+	;When playing this does long jump right, in recording I don't think it does anything, and it certainly doesn't select.
+TypeCurrentScriptKey ()
+Return
+EndIf ; playing/recording
 
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () Then
+If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -670,16 +680,15 @@ Script FinishMarkerLeft ()
 Var
 	Handle hWnd
 
-If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
-	;If we aren't stopped we don't change the selection, so send the key on silently.
-	TypeCurrentScriptKey ()
+If !IsPCCursor () || UserBufferIsActive () || !IsStopped () Then
+	PerformScript SelectPriorWord ()
 	Return
 EndIf
 
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () Then
+If AnnounceOn () && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -690,16 +699,15 @@ Script StartMarkerRight ()
 Var
 	Handle hWnd
 
-If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
-	;If we aren't stopped we don't change the selection, so send the key on silently.
-	TypeCurrentScriptKey ()
+If !IsPCCursor () || UserBufferIsActive () || !IsStopped () Then
+	PerformScript SelectNextWord ()
 	Return
 EndIf
 
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () Then
+If AnnounceOn () && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -710,16 +718,21 @@ Script StartMarkerLeft ()
 Var
 	Handle hWnd
 
-If IsPCCursor () && !UserBufferIsActive () && !IsStopped () Then
-	;When playing this does long jump left, in recording I don't think it does anything, and it certainly doesn't select.
-	TypeCurrentScriptKey ()
+If !IsPCCursor () || UserBufferIsActive () Then
+	PerformScript SelectPriorCharacter ()
 	Return
 EndIf
+
+If !IsStopped () Then
+	;When playing this does long jump right, in recording I don't think it does anything, and it certainly doesn't select.
+TypeCurrentScriptKey ()
+Return
+EndIf ; playing/recording
 
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () Then
+If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -731,7 +744,6 @@ Script JawsHome ()
 If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
-;endIf ; if < JAWS 13
 Else
 PerformScript JAWSHome()
 endIf
@@ -742,7 +754,6 @@ Script JawsEnd ()
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
-;endIf ; else < JAWS 13
 Else
 PerformScript JAWSEnd()
 endIf
