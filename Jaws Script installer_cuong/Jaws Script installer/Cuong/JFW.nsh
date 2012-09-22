@@ -18,6 +18,8 @@ Last updated: Friday, September 14, 2012
 
 Modifications:
 
+9/21/12 Added a JAWSREADME variable that is referenced by the default MUI_FINISHPAGE_SHOWREADME define to tell the Finish page where the README file is.  This allows it to be installed in different places based on the iostall type.
+Added a JAWSNoReadme define which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.
 9/14/12 Previous saved to HG rev 37.
 9/14/12 Moved more defines to JAWSscriptInstaller
 9/13/12 Changed ExecWait to nsexec when running uninstaller.
@@ -70,6 +72,7 @@ var JAWSLV ; handle of JAWS versions list view
 var JAWSGB
 var JAWSRB1
 var JAWSRB2
+var JAWSREADME ;loaation of the README file for the Finish page
 
 ;Additional scripts from Cuong's cjfw.nsh
 !Macro CompileSingle JAWSVer Source
@@ -1230,10 +1233,13 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 
   !define MUI_ABORTWARNING
   !define MUI_UNABORTWARNING
+!ifndef JAWSNoReadme
 !ifndef MUI_FINISHPAGE_SHOWREADME
-!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+!define MUI_FINISHPAGE_SHOWREADME "$JAWSREADME"
 !EndIf
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "View README file"
+!EndIf ;ifndef JAWSNoReadme
 !define MUI_FINISHPAGE_TEXT_LARGE
 
 
@@ -1284,8 +1290,16 @@ call JAWSOnInstSuccess
 functionend ;JAWSOnInstSuccess
 
 
-; Probably won't do anything.
 Section -Install
+/*
+;This won't work here because the install will set it!
+!ifdef MUI_FINISHPAGE_SHOWREADME
+${If} $JAWSREADME == ""
+;No location has been defined for the README file.  We'll try to give it a default since we can't tell the Finish page there isn't one, and there might be one if the define doesn't reference $JAWSREADME.  If it doesn't use $JAWSREADME, no harm is done.
+StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
+${EndIf}
+!EndIf ; ifdef MUI_FINISHPAGE_SHOWREADME
+*/
 SectionEnd
 
 !ifmacrodef JAWSInstallFullItems

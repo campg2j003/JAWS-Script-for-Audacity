@@ -14,10 +14,14 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Thursday, September 13, 2012
+Last updated: Friday, September 21, 2012
 
 Modifications:
 
+9/21/12 Added code to install the text files to the script folder for Just Scripts installs.  Uses the $JAWSREADME variable to tell the Finish page where the README file is.  For a full install, it also sets this variable.
+Added commented out define of JAWSNoReadme which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.
+Now gets the README and Whats new from the folder containing the scripts.
+9/14/12 Previous saved to HG rev 37.
 9/13/12 Moved defines for the Finish page link to the nsi file.
 9/13/12 Previous saved to HG rev 36.
 9/13/12 Added macro JAWSInstallFullItems to install the README file.
@@ -143,6 +147,7 @@ Added comments.
 ;Optional installer finish page features
 ;Assigns default if not defined.
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "Go to author's project page"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
@@ -166,12 +171,28 @@ ${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
+;If it is a Just Scripts installation, install text files into the script folder.
+push $0
+GetCurInstType $0
+IntOp $0 $0 + 1 ;make it like SectionIn
+${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
+  ;We're not logging.
+  File "${JAWSSrcDir}${ScriptApp}_README.txt"
+  ${If} $JAWSREADME == ""
+    ;no README location for the Finish page, set it to the first version we install.
+    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_README.txt"
+  ${EndIf} ;$JAWSREADME not yet set
+  File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
+${EndIf} ;if just scripts
+pop $0
 !macroend ;JAWSInstallScriptItems
 
 ;/*
 ;Items to be placed in the installation folder in a full install.
 !macro JAWSInstallFullItems
 ${File} "${JAWSSrcDir}" "${ScriptApp}_README.txt"
+;Set the location of the README file for the Finish page.
+StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
 ${File} "${JAWSSrcDir}" "What's new.txt"
 !macroend ;JAWSInstallFullItems
 ;*/
