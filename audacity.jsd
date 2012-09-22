@@ -176,6 +176,10 @@
 
 :script PreviousDocumentWindow
 
+:function SayAudacityState
+:Synopsis returns the current program state-- play, record, pause
+:Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
+
 :script SayAudacityState
 :Synopsis Says the current program state-- play, record, pause
 

@@ -2,6 +2,7 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/21/12 Made function GetAudacityState and changed SayAudacityState to use it.  This is motivated by debugging, but it's a good change anyway.
 ;9/20/12 Previous saved to HG rev 54.
 ;9/20/12 Updated script version number.
 ;9/20/12 Previous saved to HG rev 53.
@@ -180,7 +181,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 9/20/12"
+Const CS_SCRIPT_VERSION = "1.2 9/21/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -997,23 +998,29 @@ SetFocus (hWnd)
 endIf ; else is toolbar
 EndScript ; PreviousDocumentWindow
 
-Script SayAudacityState ()
-;Announces whether Audacity is stopped, playing, paused1 or recording.
+Const
+	ST_NOTOOLBAR = 0,
+	ST_PAUSE = 1,
+	ST_PLAY = 2,
+	ST_RECORD = 4,
+	ST_STOPPED = 8
+	
+Int Function GetAudacityState ()
 Var
 	Int iPauseState,
 	Int iPlayState,
 	Int iStopState,
 	Int iRecordState,
 	Handle hTemp,
-	String sMsg
+	Int iState
 
 Let hTemp = GetFirstChild(GetAppMainWindow(GetFocus()))
 Let hTemp = GetNextWindow(hTemp) ; parent of toolbars
 Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
 If !hTemp Then
-Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
-Return
+Return ST_NOTOOLBAR
 endIf ; if no transport toolbar
+
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let iPauseState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(hTemp)
@@ -1024,13 +1031,42 @@ Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and 
 Let iRecordState = GetObjectState(hTemp)
 ;SayString("Object states: pause = " + DecToHex(iPauseState) + ", play = " + DecToHex(iPLayState) + ", stop = " + DecToHex(iStopState) + ", record = " + DecToHex(iRecordState)) ; debug
 If iPlayState & CTRL_PRESSED Then
-Let sMsg = msgPlay
+Let iState = ST_PLAY
 ElIf iRecordState & CTRL_PRESSED Then
+Let iState = ST_RECORD
+Else
+Let iState = ST_STOPPED
+endIf
+If iPauseState & CTRL_PRESSED Then
+let iState = iState | ST_PAUSE
+endIf
+Return iState
+EndFunction ; GetAudacityState
+
+Script SayAudacityState ()
+;Announces whether Audacity is stopped, playing, paused, or recording.
+Var
+	Int iPauseState,
+	Int iPlayState,
+	Int iStopState,
+	Int iRecordState,
+	Handle hTemp,
+	Int iState,
+	String sMsg
+
+Let iState = GetAudacityState ()
+If iState == ST_NOTOOLBAR Then
+	Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
+	Return
+EndIf ; no toolbar
+If iState & ST_PLAY Then
+Let sMsg = msgPlay
+ElIf iState & ST_RECORD Then
 Let sMsg = msgRecord
 Else
 Let sMsg = msgStop
 endIf
-If iPauseState & CTRL_PRESSED Then
+If iState & ST_PAUSE Then
 let sMsg = sMsg + " " + msgPause
 endIf
 Say(sMsg, OT_JAWS_MESSAGE)
