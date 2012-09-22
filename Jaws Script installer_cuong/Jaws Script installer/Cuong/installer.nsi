@@ -14,10 +14,12 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Friday, September 21, 2012
+Last updated: Saturday, September 22, 2012
 
 Modifications:
 
+9/22/12 Added the JAWSLicenseFile and LegalCopyright defines.
+9/22/12 Previous saved to HG rev 56.
 9/21/12 Added code to install the text files to the script folder for Just Scripts installs.  Uses the $JAWSREADME variable to tell the Finish page where the README file is.  For a full install, it also sets this variable.
 Added commented out define of JAWSNoReadme which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.
 Now gets the README and Whats new from the folder containing the scripts.
@@ -144,6 +146,12 @@ Added comments.
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
+
+;Will be omitted if not defined.
+!define LegalCopyright "Copyright 2012 Gary Campbell and Dang Manh Cuong.  All rights reserved.  This is free software distributed under the terms of the GNU General Public License."
+;The file name of the license file in ${JAWSSrcDir}.  If not defined, no license page will be included.
+!define JAWSLicenseFile "COPYING.TXT"
+
 ;Optional installer finish page features
 ;Assigns default if not defined.
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
@@ -194,6 +202,9 @@ ${File} "${JAWSSrcDir}" "${ScriptApp}_README.txt"
 ;Set the location of the README file for the Finish page.
 StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
 ${File} "${JAWSSrcDir}" "What's new.txt"
+!ifdef JAWSLicenseFile
+${File} "${JAWSSrcDir}" "${JAWSLicenseFile}"
+!EndIf ; if JAWSLicenseFile
 !macroend ;JAWSInstallFullItems
 ;*/
 

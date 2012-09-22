@@ -14,11 +14,13 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Friday, September 14, 2012
+Last updated: Saturday, September 22, 2012
 
 Modifications:
 
-9/21/12 Added a JAWSREADME variable that is referenced by the default MUI_FINISHPAGE_SHOWREADME define to tell the Finish page where the README file is.  This allows it to be installed in different places based on the iostall type.
+9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
+9/22/12 Previous saved to HG rev 56.
+9/21/12 Added a JAWSREADME variable that is referenced by the default MUI_FINISHPAGE_SHOWREADME define to tell the Finish page where the README file is.  This allows it to be installed in different places based on the install type.
 Added a JAWSNoReadme define which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.
 9/14/12 Previous saved to HG rev 37.
 9/14/12 Moved more defines to JAWSscriptInstaller
@@ -366,10 +368,15 @@ pop $0
 !define _VERSIONMSG ""
 !endif
 
+!ifdef LegalCopyright
+!define MUI_WELCOMEPAGE_TEXT "Welcome to the installation for ${ScriptName}${_VERSIONMSG}.$\n\
+This wizard will guide you through the installation of ${ScriptName}.$\n\
+${LegalCopyright}$\n"
+!else
 !define MUI_WELCOMEPAGE_TEXT "Welcome to the installation for ${ScriptName}${_VERSIONMSG}.$\n\
 This wizard will guide you through the installation of ${ScriptName}.$\n"
+!EndIf
 !undef _VERSIONMSG
-; ${LegalCopyright}$\n\ EOL
 !Insertmacro Mui_Page_Welcome
 !macroend ; JAWSWelcomePage
 
@@ -1244,6 +1251,11 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 
 
 !insertmacro JAWSWelcomePage ; ::nsi
+
+!ifdef JAWSLicenseFile
+;JAWSSrcDir is empty or contains a trailing backslash.
+!insertmacro MUI_PAGE_LICENSE "${JAWSSrcDir}${JAWSLicenseFile}"
+!EndIf
 
 !insertmacro JAWSComponentsPage
 
