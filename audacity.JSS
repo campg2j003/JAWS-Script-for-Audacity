@@ -2,6 +2,14 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/27/12 by Dang Manh Cuong:
+;SelectFromStartOfLine and SelectToEndOfLine scripts now warn when no project is open.
+;9/29/12 By Gary Campbell:
+;Added and commented out code in GetObjectState to get object state with invisible cursor.  This works on Cuong's machine, but it is very slow, so commented out.
+;9/24/12 Changed IsStopped to use GetAudacityState.  This is because on Cuong's machine the Stop button does not return CTRL_DISABLED.
+;Added Cuong's SelectAll script, but changed FocusInTrackPanel to FocusInMainWindow because it works in selection bar and toolbars as well.
+;Removed duplicate line for AdjustJawsOptions in hotkey help.
+;9/21/12 Previous saved to HG rev 55.
 ;9/21/12 Made function GetAudacityState and changed SayAudacityState to use it.  This is motivated by debugging, but it's a good change anyway.
 ;9/20/12 Previous saved to HG rev 54.
 ;9/20/12 Updated script version number.
@@ -181,7 +189,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 9/21/12"
+Const CS_SCRIPT_VERSION = "1.2 9/29/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -783,9 +791,13 @@ EndScript
 
 Script SelectFromStartOfLine ()
 ;Select from current position to the start of file by pressing shift+ home
+If NoProject () then
+SayNoProject ()
+Return
+EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
 SelectFromStartOfLine ()
-If AnnounceOn () then ;User can to turn off this message
+If AnnounceOn () then ;User can turn off this message
 SayFormattedMessage (OT_No_Disable, msgStartOfFile) ;alerts when user activates this script at the main window, and a project is open
 endIf
 ;Otherwise, perform default script
@@ -796,6 +808,10 @@ EndScript
 
 Script SelectToEndOfLine ()
 ;Select from current position to the end of file
+If NoProject () then
+SayNoProject ()
+Return
+EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () then
 SelectToEndOfLine ()
 If AnnounceOn () then
@@ -1097,9 +1113,24 @@ Var
 
 Let sName = GetWindowName(hWnd)
 GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+/*
+;This works on Cuong's machine, but it is very slow!!!  Need to declare var iRtn.
+iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+If !iRtn Then
+	DebugString("Before") ; debug
+	SaveCursor ()
+	InvisibleCursor ()
+	MoveToWindow(hWnd)
+	Pause ()
+	Let iState = GetControlAttributes ()
+	RestoreCursor ()
+	DebugString("after") ; debug
+EndIf
+*/
 Return iState
 EndFunction ; GetObjectState
 
+/*
 Int Function IsStopped ()
 ;Returns nonzero if currently stopped or the Transport toolbar cannot be found. Returns FALSE otherwise.
 ;We don't cache the stop button handle becaause the Transport toolbar may have been deselected since last invocation.  We might could detect the toolbar being destroyed with WindowDestroyedEvent.  We return FALSE in this situation so that operation is not interrupted.
@@ -1117,7 +1148,11 @@ Let hTemp = GetNextWindow(hTemp)
 Let hTemp = GetNextWindow(hTemp)
 Return GetObjectState(hTemp) & CTRL_DISABLED
 EndFunction ; IsStopped
+*/
 
+Int Function IsStopped ()
+Return GetAudacityState () & ST_STOPPED
+EndFunction ; IsStopped
 
 ; *** Adapted from ie.jss
 Script AdjustJawsVerbosity ()
@@ -1253,6 +1288,17 @@ var
 		SayFormattedMessage(ot_help, sMessage2) ;program version
 		SayFormattedMessage(ot_help, sMessage) ;current script version
 	endIf
+EndScript
+
+Script SelectAll ()
+;announce a message when user selects all tracks in current project, or no project open.
+PerformScript SelectAll()
+If NoProject () then
+SayNoProject ()
+Return
+ElIf FocusInMainWindow() && ! NoProject () && AnnounceOn () then
+SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
+EndIf
 EndScript
 
 ; Cuong's with modification

@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/19/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/24/2012.
 
 ; These are window names used to identify windows. (Should they be translated?)
 Const
@@ -62,7 +62,6 @@ To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityS
 To reset all script options to default values, press %keyfor (ResetConfig)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
-To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -278,6 +277,10 @@ record
 
 @msgDeselectAll
 deselect all
+@@
+
+@MSGSelectAll
+All tracks selected
 @@
 
 @msgCloseFocusedTrack
