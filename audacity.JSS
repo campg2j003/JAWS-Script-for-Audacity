@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;9/30/12 Added FocusInTrackPanel test to condition for speaking position in FinishMarkerLeft and StartMarkerRight.
+;Added no project message in JAWSHome and JAWSEnd.
+;9/29/12 In GetAudacityState added tests of the toolbar button graphic name.  If the first call to GetObjectState fails, uses the graphics to identify the state of the remaining controls.  Added CS_IMG constants for the pressed state of the Play, Pause, and Record buttons.
+;9/29/12 Previous saved to HG rev 58.
 ;9/27/12 by Dang Manh Cuong:
 ;SelectFromStartOfLine and SelectToEndOfLine scripts now warn when no project is open.
 ;9/29/12 By Gary Campbell:
@@ -208,7 +212,13 @@ ID_Preset=11000,
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
 	CI_TOOLBARS_OFF = 0,
-	CI_TOOLBARS_ON = 1 ; announce all toolbars
+	CI_TOOLBARS_ON = 1, ; announce all toolbars
+
+	;Names of toolbar button images for use when GetObjectInfoByName doesn't work.
+	;Each ends with a trailing space.
+	CS_IMGRECORDPRESSED = "graphic 405 ",
+	CS_IMGPLAYPRESSED = "graphic 28 ",
+	CS_IMGPAUSEPRESSED = "graphic 161 "
 
 Globals
 Int App_FirstTime, String sMessage, String sScriptName
@@ -700,7 +710,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () Then
+If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -719,7 +729,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () Then
+If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -753,6 +763,10 @@ EndScript
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
+If NoProject () && FocusInTrackPanel () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
@@ -763,6 +777,10 @@ EndScript
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
+If NoProject () && FocusInTrackPanel () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
@@ -1039,12 +1057,31 @@ endIf ; if no transport toolbar
 
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let iPauseState = GetObjectState(hTemp)
+If iPauseState == -1 Then
+;We can't get the state from the object, so we'll use the name of the toolbar button image.
+;SayString("pause = " + GetWindowText(hTemp, 0)) ; debug
+If StringCompare(GetWindowText(hTemp, 0), CS_IMGPAUSEPRESSED) == 0 Then
+Let iPauseState = CTRL_PRESSED
+EndIf
+Let hTemp = GetNextWindow(hTemp)
+;SayString("play = " + GetWindowText(hTemp, 0)) ; debug
+If StringCompare(GetWindowText(hTemp, 0), CS_IMGPLAYPRESSED) == 0 Then
+Let iPlayState = CTRL_PRESSED
+EndIf
+Let hTemp = GetNextWindow(hTemp)
+;Let iStopState = GetObjectState(hTemp)
+Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
+If StringCompare(GetWindowText(hTemp, 0), CS_IMGRECORDPRESSED) == 0 Then
+Let iRECORDState = CTRL_PRESSED
+EndIf
+Else
 Let hTemp = GetNextWindow(hTemp)
 Let iPlayState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(hTemp)
 Let iStopState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
 Let iRecordState = GetObjectState(hTemp)
+EndIf ; else got object state
 ;SayString("Object states: pause = " + DecToHex(iPauseState) + ", play = " + DecToHex(iPLayState) + ", stop = " + DecToHex(iStopState) + ", record = " + DecToHex(iRecordState)) ; debug
 If iPlayState & CTRL_PRESSED Then
 Let iState = ST_PLAY
@@ -1106,15 +1143,20 @@ EndScript
 Int Function GetObjectState(Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
 ;The returned state uses control attribute values from hjconst.jsh, not MSAASTATE values from msaaconst.jsh.
+;Returns -1 if unable to get the object state.
 Var
 	Int iState,
 	Int iSubtype,
-	String sName
+	String sName,
+	Int iRtn
 
 Let sName = GetWindowName(hWnd)
-GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+Let iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+If !iRtn Then
+	Return -1 ; error
+EndIf
 /*
-;This works on Cuong's machine, but it is very slow!!!  Need to declare var iRtn.
+;This works on Cuong's machine, but it is very slow!!!
 iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
 If !iRtn Then
 	DebugString("Before") ; debug
