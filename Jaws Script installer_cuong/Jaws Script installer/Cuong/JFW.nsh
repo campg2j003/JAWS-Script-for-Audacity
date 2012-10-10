@@ -18,7 +18,9 @@ Last updated: Saturday, September 22, 2012
 
 Modifications:
 
+9/22/12 Previous saved to HG rev 57.
 9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
+Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
 9/22/12 Previous saved to HG rev 56.
 9/21/12 Added a JAWSREADME variable that is referenced by the default MUI_FINISHPAGE_SHOWREADME define to tell the Finish page where the README file is.  This allows it to be installed in different places based on the install type.
 Added a JAWSNoReadme define which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.

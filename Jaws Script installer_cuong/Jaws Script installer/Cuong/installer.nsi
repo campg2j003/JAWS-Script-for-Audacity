@@ -18,6 +18,7 @@ Last updated: Saturday, September 22, 2012
 
 Modifications:
 
+9/22/12 Previous saved to HG rev 57.
 9/22/12 Added the JAWSLicenseFile and LegalCopyright defines.
 9/22/12 Previous saved to HG rev 56.
 9/21/12 Added code to install the text files to the script folder for Just Scripts installs.  Uses the $JAWSREADME variable to tell the Finish page where the README file is.  For a full install, it also sets this variable.
