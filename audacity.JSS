@@ -3,6 +3,12 @@
 ;Modified: Dang Manh Cuong
 ;Modifications:
 ;10/9/12 by Gary Campbell:
+;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
+;10/5/2012 by Dang Manh Cuong:
+;Modified mouse movement function. User can now perform the default Jaws mouse movement scripts when no project open
+;Modified script DeleteSelectedAudio to make it works on my PC.
+; Script CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd now stop speaking alert message when playing audio.
+;10/9/12 by Gary Campbell:
 ;Merged in Cuong's changes from repo audacity_cuong change set 26:8e4fe6bd4ee9.
 ;10/3/2012 by Dang Manh Cuong:
 ;Modified script SayAppVersion. This script now just performs default script, and then speaks a message that tells the current script version.
@@ -199,7 +205,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/3/12"
+Const CS_SCRIPT_VERSION = "1.2 10/9/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -304,7 +310,7 @@ Void Function MouseMovement (string sScript)
 ;Used to bypass scripts such as mouse left, mouse right etc. that are assigned to Audacity keys while in the main window.
 ; Script - name of JAWS script to be executed when not in the Audacity main window.
 If FocusInMainWindow () 
-&& IsPCCursor () then ;focus at the main window, and the Jaws cursor is not active
+&& IsPCCursor () && !NoProject () then ;focus at the main window, there's a project open, and the Jaws cursor is not active
 TypeCurrentScriptKey () ;Audacity hotkey for adjusting gain
 Else
 ;otherwise, perform the default Jaws script
@@ -315,7 +321,6 @@ EndFunction ; MouseMovement
 Void Function AnnounceMessage (string Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
-; sKey - key to be executed when not performing the Audacity function.
 If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel () then
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
@@ -785,7 +790,7 @@ If NoProject () && FocusInTrackPanel () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped ()==true  then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -799,7 +804,7 @@ If NoProject () && FocusInTrackPanel () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped () ==true then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
@@ -863,7 +868,7 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf FocusInTrackPanel ()&& IsStopped () then
+ElIf FocusInTrackPanel ()&& IsStopped () ==true then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
@@ -980,7 +985,7 @@ Script CloseFocusTrack ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
 AnnounceMessage (msgCloseFocusedTrack)
 Else
 TypeCurrentScriptKey ()
@@ -1143,7 +1148,7 @@ endIf
 Say(sMsg, OT_JAWS_MESSAGE)
 EndScript ; SayAudacityState
 
-/*
+;/*
 ;This script causes ENTER to do pause if not stopped, otherwise does normal ENTER.
 ;If you comment this out you should also comment out entries for keys ENTrR and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys serarately, not commenting out these entries will cause Audacity to see both keys as standa"rd ENTER.
 Script Enter ()
@@ -1156,7 +1161,7 @@ Else
 	;PerformScript Enter ()
 endIf
 EndScript
-*/
+;*/
 
 Int Function GetObjectState(Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
@@ -1388,4 +1393,3 @@ Else
 SayCurrentScriptKeyLabel ()
 EndIf
 EndScript
-
