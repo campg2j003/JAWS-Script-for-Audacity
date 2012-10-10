@@ -2,6 +2,12 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/9/12 by Gary Campbell:
+;Merged in Cuong's changes from repo audacity_cuong change set 26:8e4fe6bd4ee9.
+;10/3/2012 by Dang Manh Cuong:
+;Modified script SayAppVersion. This script now just performs default script, and then speaks a message that tells the current script version.
+;Modified function SayNoProject. This function now works well at any area at the main window. Code given by Garry Campbell
+;9/30/12 Previous saved to HG rev 59.
 ;9/30/12 Added FocusInTrackPanel test to condition for speaking position in FinishMarkerLeft and StartMarkerRight.
 ;Added no project message in JAWSHome and JAWSEnd.
 ;9/29/12 In GetAudacityState added tests of the toolbar button graphic name.  If the first call to GetObjectState fails, uses the graphics to identify the state of the remaining controls.  Added CS_IMG constants for the pressed state of the Play, Pause, and Record buttons.
@@ -193,7 +199,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 9/29/12"
+Const CS_SCRIPT_VERSION = "1.2 10/3/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -330,10 +336,22 @@ EndFunction ; sayNoProject
 Int Function NoProject ()
 ;return true if no project is open  (no tracks in track panel).
 ;This is a feature from GoldWave scripts.
+Var
+Int iSubtype,
+Handle hTemp,
+Object obj
 If FocusInMainWindow () then
-If GetObjectSubTypeCode (true, 0)==WT_Table then ;no tracks in track panel, True=always use MSAA.
+Let hTemp = GetRealWindow(GetFocus())
+Let hTemp = FindWindow (hTemp, "", WN_TRACKPANEL)
+SaveCursor ()
+InvisibleCursor()
+MoveToWindow(hTemp)
+Pause ()
+Let obj = GetCurrentObject(0)
+RestoreCursor ()
+If obj.AccChildCount == 0 Then
 return true
-endIf ; if tracks
+endIf ; if no tracks
 endIf ; if in main window
 Return False
 EndFunction ; NoProject
@@ -710,7 +728,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
+If AnnounceOn () && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -729,7 +747,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
+If AnnounceOn () && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -1296,40 +1314,10 @@ Say (msgResetScriptOptions, ot_message)
 EndScript ; resetConfig
 
 Script SayAppVersion ()
-;Original code from default.jss
-;This modification makes JAWS speak the current script version after the progham version.
-;Note: the sMessage variable from the original script has been changed to sMessage2 because of Duplicating variables
-var
-	string sProduct,
-	string sVersion,
-	string sMessage2,
-	string sNavModule
-
-	let sProduct = GetVersionInfoString (GetAppFilePath (), cmsg282_L)
-	let sVersion = GetVersionInfoString (GetAppFilePath (), cmsg283_L)
-	let sMessage2 = FormatString (cmsg239_L, sProduct, sVersion)
+;Says current program and script version
+PerformScript SayAppVersion() ;Says current program version
 	Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
-	let sNavModule = GetNavModuleVersionInfo(GetCurrentWindow())
-
-	; May need to work on some translation here.  Presently,
-	; the string is passed back by the actual NavModule and is
-	; not subject to translation.
-	if (sNavModule != "") then
-		let sMessage2 = sMessage2 + "\n"
-		let sMessage2 = sMessage2 + GetNavModuleVersionInfo ((GetCurrentWindow()))
-	endIf
-;Display program and script version in the vertual buffer
-	if (IsSameScript()) then
-		if (UserBufferIsActive()) then
-			UserBufferDeactivate()
-		endIf
-		SayFormattedMessage(OT_USER_BUFFER, sMessage2) ;display program version in vertual buffer
-		SayFormattedMessage(OT_USER_BUFFER, sMessage) ;display current script version in vertual buffer
-	else
-;speaks the info above
-		SayFormattedMessage(ot_help, sMessage2) ;program version
-		SayFormattedMessage(ot_help, sMessage) ;current script version
-	endIf
+Say (sMessage, OT_No_Disable) ;says current script version
 EndScript
 
 Script SelectAll ()
@@ -1399,6 +1387,5 @@ Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 Else
 SayCurrentScriptKeyLabel ()
 EndIf
-
 EndScript
 
