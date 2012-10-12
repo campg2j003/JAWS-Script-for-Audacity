@@ -2,13 +2,32 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/12/12 by Dang Manh Cuong:
+;Added condition to check if no project open into function IsTrackSelected.
+; Function SayNoTrackSelected now returns when no project open.
+; Function AnnounceMessage now return in any opening dialogs.
+;Modified script MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd: cause function sayNoTrackSelected return when focus in a dialog box.
+;10/11/12 by Dang Manh Cuong
+; Script SayAudacityState now warns with no project open.
+;Added function IsTrackSelected and function SayNoTrackSelected. These alert when perform a script require current track must be selected, but user didn't select before.
+;Added these new funtionalities to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, cut.
+;Modified function saySelectionPosition. Added condition to allow users to give [ ] to their file name if needed.
+;Script sayAppVersion now displays script version in vertual buffer if press JawsKey+v twice.
+;10/9/12 Previous saved to HG rev 64.
+;10/9/12 by Gary Campbell:
+;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
 ;10/5/2012 by Dang Manh Cuong:
 ;Modified mouse movement function. User can now perform the default Jaws mouse movement scripts when no project open
 ;Modified script DeleteSelectedAudio to make it works on my PC.
 ; Script CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd now stop speaking alert message when playing audio.
-;;10/3/2012 by Dang Manh Cuong:
-;Modified script SayAppVersion. This script now just performs default script, and then speaks a message that tell current script version.
-;Modified function SayNoProject. This function now works well at any area at the main window. Code given by Garry Campbell.
+;10/9/12 by Gary Campbell:
+;Merged in Cuong's changes from repo audacity_cuong change set 26:8e4fe6bd4ee9.
+;10/3/2012 by Dang Manh Cuong:
+;Modified script SayAppVersion. This script now just performs default script, and then speaks a message that tells the current script version.
+;Modified function NoProject. This function now works well at any area at the main window. Code given by Garry Campbell
+;9/30/12 Previous saved to HG rev 59.
+;9/30/12 Added FocusInTrackPanel test to condition for speaking position in FinishMarkerLeft and StartMarkerRight.
+;Added no project message in JAWSHome and JAWSEnd.
 ;9/29/12 In GetAudacityState added tests of the toolbar button graphic name.  If the first call to GetObjectState fails, uses the graphics to identify the state of the remaining controls.  Added CS_IMG constants for the pressed state of the Play, Pause, and Record buttons.
 ;9/29/12 Previous saved to HG rev 58.
 ;9/27/12 by Dang Manh Cuong:
@@ -169,7 +188,7 @@
 ;Modified the JawsDelete script to announce when user deletes the selected audio.
 ;Created some spoken messages.
 ;7/15/2012: wrote functions to check if no project is open.
-;Created dictionary file for some mispronounced words (usually appear in Prefernces dialogs synce Audacity 2.2.1).
+;Created dictionary file for some mispronounced words (usually appear in Preferences dialogs synce Audacity 2.2.1).
 ;Modified the hotkey help script. The hotkey now displays as a link.
 ;7/13/2012: created spoken message when user moves the start or end of the selection to the left or right by a small amount.
 ;7/12/2012: added announce message for start and end selection.
@@ -198,7 +217,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/5/12"
+Const CS_SCRIPT_VERSION = "1.2 10/12/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -261,6 +280,9 @@ String sValue ;the selection field value
 If NoProject () then
 SayNoProject ()
 Return
+ElIf DialogActive () then
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
 ElIf FocusInMainWindow () then
 TypeCurrentScriptKey ()
 Pause () ;Wait for possible appearance of Boundary Position dialog.
@@ -314,7 +336,7 @@ EndFunction ; MouseMovement
 Void Function AnnounceMessage (string Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
-If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel () then
+If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel ()   then
 If AnnounceOn () then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 endIf ; if AnnounceOn
@@ -567,7 +589,6 @@ SayMessage (OT_NO_DISABLE, sValue, sValue)
 endIf
 EndScript
 
-
 Script SaySelectionEnd ()
 
 Var
@@ -779,7 +800,11 @@ EndScript
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ()&&IsStopped ()==true  then
+If NoProject () && FocusInTrackPanel () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped ()==true  then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -789,6 +814,10 @@ EndScript
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
+If NoProject () && FocusInTrackPanel () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped () ==true then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
@@ -797,22 +826,56 @@ PerformScript JAWSEnd()
 endIf
 EndScript
 
+
 Script MoveToStartOfSelectedTracks ()
+If DialogActive () then
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+;The condition below past current hotkey to application if any dialog open
+ElIf !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+Else
 AnnounceMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
+EndIf
 EndScript
 
 Script MoveToEndOfSelectedTracks ()
+If DialogActive () then
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+ElIf !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+else
 AnnounceMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
+EndIf
 EndScript
 
 Script SelectToBeginning ()
 ;Select to start of tracks.
+If DialogActive () then
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+ElIf !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+Else
 AnnounceMessage (FormatString (MSGSelectedTo, msgStart))
+EndIf
 EndScript
 
 Script SelectToEnd ()
 ;Select to end of tracks.
+If DialogActive () then
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+ElIf !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+Else
 AnnounceMessage (FormatString (MSGSelectedTo, msgEnd))
+EndIf
 EndScript
 
 Script SelectFromStartOfLine ()
@@ -853,6 +916,9 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
+ElIf !IsTrackSelected () then
+SayNoTrackSelected ()
+return
 ElIf FocusInTrackPanel ()&& IsStopped () ==true then
 TypeCurrentScriptKey ()
 If AnnounceOn () then
@@ -866,7 +932,10 @@ EndScript
 
 Script JawsDelete ()
 ;If focus is in the main window, a project exists, and audio is selected, the del key will delete it. In this case we perform the script DeleteSelectedAudio.
-If FocusInTrackPanel ()&&!NoProject () then
+If ! IsTrackSelected () &&!NoProject () then
+SayNoTrackSelected ()
+Return
+ElIf FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
 Else
 PerformScript JAWSDelete()
@@ -921,7 +990,10 @@ EndScript ; SayNextCharacter
 
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
-If FocusInMainWindow ()
+If !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 
 If NoProject () then
@@ -939,7 +1011,11 @@ endIf
 EndScript
 
 Script CutToClipboard ()
-If FocusInMainWindow ()
+If !IsTrackSelected () then
+SayNoTrackSelected ()
+Return
+
+ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 If NoProject () then
 SayNoProject ()
@@ -1119,6 +1195,9 @@ Let iState = GetAudacityState ()
 If iState == ST_NOTOOLBAR Then
 	Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
 	Return
+ElIf NoProject () then
+SayNoProject ()
+Return ;No project
 EndIf ; no toolbar
 If iState & ST_PLAY Then
 Let sMsg = msgPlay
@@ -1308,6 +1387,9 @@ Script SayAppVersion ()
 PerformScript SayAppVersion() ;Says current program version
 	Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
 Say (sMessage, OT_No_Disable) ;says current script version
+If IsSameScript () then
+UserBufferAddText (sMessage)
+EndIf
 EndScript
 
 Script SelectAll ()
@@ -1378,3 +1460,33 @@ Else
 SayCurrentScriptKeyLabel ()
 EndIf
 EndScript
+
+Int Function IsTrackSelected ()
+;indicates current track is selected
+If NoProject () then
+SayNoProject ()
+Return
+Else
+SaveCursor ()
+PCCursor ()
+If FocusInTrackPanel () then
+Let sMessage=GetObjectName () ;get the name of track currently have focus
+;if this track has selected, then its object name contain the phrase "Select On", so now I varify that
+Let sMessage=StringSegment (sMessage, " ", -2) +" " ;extract the word "Select" in track name
++ StringSegment (sMessage, " ", -1) ;extract the word "on" in track name
+If sMessage=="Select On" then ;the track is currently selected
+Return true
+EndIf ;sMessage
+EndIf ;FocusInTrackPanel
+RestoreCursor ()
+EndIf ;No project
+EndFunction
+
+Void Function SayNoTrackSelected ()
+;Just announce that current track has not selected
+If !NoProject () then ;this just announce when a project exists
+Say (msgNoTrackSelected, ot_error)
+EndIf ;No project
+EndFunction
+
+
