@@ -2,6 +2,8 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/13/12 by Dang Manh Cuong
+; Scripts Jaws home and Jaws end now do not warn about no project in vertual buffer.
 ;10/12/12 by Dang Manh Cuong:
 ;Added condition to check if no project open into function IsTrackSelected.
 ; Function SayNoTrackSelected now returns when no project open.
@@ -217,7 +219,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/12/12"
+Const CS_SCRIPT_VERSION = "1.2 10/13/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -800,7 +802,7 @@ EndScript
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () Then
+If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -814,7 +816,7 @@ EndScript
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () Then
+If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
