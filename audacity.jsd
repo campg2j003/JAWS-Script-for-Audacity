@@ -166,9 +166,6 @@
 :script CloseFocusTrack
 :Synopsis Close the currently focused track
 
-:script AudacitySayFrame
-:Description Used to say text on some unfriendly dialogs in Audacity
-
 :script AnnounceOnOff
 :Synopsis Toggle on or off the announce message
 
@@ -255,4 +252,15 @@
 
 :function SayNoTrackSelected
 :Description Warn when user performs a script that required current track must be selected.
+
+:function SayUnavailable
+:Returns int No Return Description
+:Description Alert when user performs a script in the wrong environment, such as no project, no track selected
+:Param int/iMessage Enter the constain (1 for no project, 2 for no track selected)
+
+:function IsWarningDialog
+:Returns int
+:Description Varify that focus at the warning dialog of importing uncompress audio.
+
+:script SayLine
 

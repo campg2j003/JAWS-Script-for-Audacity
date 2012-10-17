@@ -328,6 +328,19 @@ To use this feature you must enable the selection toolbar
 Jaws script version %1, for Audacity 2.0.0 or later.
 @@
 @MsgNoTrackSelected
-To perform this script, you must select current track first. Press enter to select this.
+To use this feature you must select current track first. Press enter to select this.
+@@
+
+;messages for warning dialog when import uncompress audio
+@msgCopy
+Make a copy of the files before editing (safer)
+@@
+
+@msgDirectEdit
+Read the files directly from the original (faster)
+@@
+
+@msgDoNotWarn
+Don't warn again and always use my choice above
 @@
 EndMessages
