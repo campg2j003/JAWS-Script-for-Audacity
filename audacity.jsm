@@ -62,6 +62,7 @@ To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityS
 To reset all script options to default values, press %keyfor (ResetConfig)
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+[deleted in rev 67]
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -69,6 +70,7 @@ To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
+[end deleted]
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -333,5 +335,21 @@ To use this feature you must enable the selection toolbar
 @@
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.
+@@
+@MsgNoTrackSelected
+To use this feature you must select current track first. Press enter to select this.
+@@
+
+;messages for warning dialog when import uncompress audio
+@msgCopy
+Make a copy of the files before editing (safer)
+@@
+
+@msgDirectEdit
+Read the files directly from the original (faster)
+@@
+
+@msgDoNotWarn
+Don't warn again and always use my choice above
 @@
 EndMessages

@@ -166,9 +166,6 @@
 :script CloseFocusTrack
 :Synopsis Close the currently focused track
 
-:script AudacitySayFrame
-:Description Used to say text on some unfriendly dialogs in Audacity
-
 :script AnnounceOnOff
 :Synopsis Toggle on or off the announce message
 
@@ -190,6 +187,11 @@
 :Synopsis Returns the object state of the object in the window
 :Description Works for windows whose object name is the same as the window name
 :Param handle/hWnd window to inspect
+
+:function IsStopped
+:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
+:Synopsis Determines if Audacity is currently stopped
+:Description Determines if Audacity is currently stopped.  Returns TRUE if stopped or the Transport toolbar cannot be found.  This is used to keep cursor position from being spoken unless Audacity is stopped.
 
 :function IsStopped
 :Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
@@ -226,6 +228,8 @@
 
 :script SayAppVersion
 
+:script SelectAll
+
 :function ProcessVST
 :Description Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
 :Param int/iControlID No Description
@@ -242,4 +246,22 @@
 
 :script SayJump
 :Synopsis Speaks the position after executing a short/long jump key
+
+:function IsTrackSelected
+:Returns int True if current track selected
+:Description This function indicates that the track is selected
+
+:function SayNoTrackSelected
+:Description Warn when user performs a script that required current track must be selected.
+
+:function SayUnavailable
+:Returns int No Return Description
+:Description Alert when user performs a script in the wrong environment, such as no project, no track selected
+:Param int/iMessage Enter the constain (1 for no project, 2 for no track selected)
+
+:function IsWarningDialog
+:Returns int
+:Description Varify that focus at the warning dialog of importing uncompress audio.
+
+:script SayLine
 
