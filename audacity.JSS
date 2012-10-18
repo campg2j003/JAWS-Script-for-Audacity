@@ -2,6 +2,7 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/9/12 Previous saved to HG rev 64.
 ;10/9/12 by Gary Campbell:
 ;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
 ;10/5/2012 by Dang Manh Cuong:
