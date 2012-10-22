@@ -2,6 +2,7 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/18/12 Previous saved to HG rev 69.
 ;10/17/12 by Dang Manh Cuong: 
 ; The folowing scripts will now return when a dialog open: SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio.
 ; Script JawsDelete now performs normal functionality at metadata editor.
@@ -228,7 +229,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/17/12"
+Const CS_SCRIPT_VERSION = "1.2 10/18/12"
 
 Const
 	ID_SELECTION_START = 2705,
