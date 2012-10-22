@@ -2,10 +2,6 @@
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
 
-:function AnnounceToolbarsOn
-:Returns int True if messages should be spoken
-:Synopsis Indicate whether messages related to changing toolbars should be spoken
-
 :function FocusInTrackPanel
 :Returns int True if focus is not in the track panel
 :Description Indicates if the focus is in the track panel.

@@ -2,7 +2,19 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/22/12 by Gary Campbell:
+;Merged in from audacity_cuong changeset:   31:7ec7b4982aab.
+;Removed AnnounceToolbarsOn from audacity.jsd.
+;10/21/12 by Dang Manh Cuong:
+; Function AnnounceOn now includes checking toolbars announcement. It replaces function AnnounceToolbarsOn written by Gary.
+; In Audacity.JSI file changed key announce to announceMessage.
+; Removed function AnnounceToolbarsOn written by Garry.
+; Modified all things related to the functions wich I modified and removed.
+; Removed commented out code.
+;10/22/12 Previous saved to HG rev 71.
 ;10/18/12 Previous saved to HG rev 69.
+;10/18/12 by Dang Manh Cuong:
+;Fixed warning in script copy and CutToClipboard when no track selected an a dialog active. I found this error when copying the information in Jaws graphics labler dialog.
 ;10/17/12 by Dang Manh Cuong: 
 ; The folowing scripts will now return when a dialog open: SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio.
 ; Script JawsDelete now performs normal functionality at metadata editor.
@@ -229,7 +241,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/18/12"
+Const CS_SCRIPT_VERSION = "1.2 10/21/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -261,25 +273,17 @@ ID_Preset=11000,
 Globals
 Int App_FirstTime, String sMessage, String sScriptName
 
-Int Function AnnounceOn ()
+Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
+;This function now include checking if announce toolbars is on
+;sKey: key to read in audacity.JSI file
 Var
 Int iAnnounce
-Let iAnnounce=IniReadInteger ("Settings", "Announce", 0, IniFile)
+Let iAnnounce=IniReadInteger ("Settings", sKey, 0, IniFile)
 If iAnnounce==1 then
 Return true
 endIf
 EndFunction
-
-Int Function AnnounceToolbarsOn ()
-;Indicate whether messages related to changing toolbars should be spoken.  Return True if messages should be spoken.
-Var
-Int iAnnounce
-Let iAnnounce=IniReadInteger ("Settings", "AnnounceToolbars", 0, IniFile)
-If iAnnounce==1 then
-Return true
-endIf
-EndFunction ; AnnounceToolbarsOn
 
 Int Function FocusInTrackPanel ()
 ;This function indicates that user focus is in the track panel to prevent Jaws from speaking messages such as move to start of track etc. in the selection bar or toolbar.
@@ -293,7 +297,6 @@ Handle wnd, ;the window containing the selection bar
 String sValue ;the selection field value 
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 ElIf DialogActive () then
 SayCurrentScriptKeyLabel ()
@@ -305,7 +308,7 @@ If !DialogActive () then
 Pause ()
 let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
 ;If the Announce Messages option is on, speak the selection posision.
-If AnnounceOn () Then
+If AnnounceOn ("AnnounceMessage") Then
 Let sValue=GetPositionField (wnd) ;get value of desired control
 If !sValue then ;the selection toolbar is turned off
 Say (MSGNoSelection, OT_Error)
@@ -324,11 +327,10 @@ Void Function MarkerMovement (string sScript, string sAlert)
 If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () then
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 EndIf
 TypeCurrentScriptKey ()
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
 endIf ; if AnnounceOn
 Else
@@ -353,7 +355,7 @@ Void Function AnnounceMessage (string Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
 If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel ()   then
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 endIf ; if AnnounceOn
 TypeCurrentScriptKey ()
@@ -363,12 +365,6 @@ SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf ; else not main window, etc.
 EndFunction ; AnnounceMessage
-/*
-Void Function SayNoProject ()
-;If no project is open, speak an alert message.
-SayFormattedMessage (OT_error, msgNoProject_l, msgNoProject_s)
-EndFunction ; sayNoProject
-*/
 
 Int Function NoProject ()
 ;return true if no project is open  (no tracks in track panel).
@@ -469,15 +465,14 @@ If IsToolbar(GetToolbar ()) Then
 Let hToolbar = GetToolbar()
 If hToolbar != ghAudacityLastToolbar Then
 Let ghAudacityLastToolbar = hToolbar
-If AnnounceToolbarsOn () Then
+If AnnounceOn ("AnnounceToolbars") Then
 Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
 endIf
 endIf ; new toolbar
 endIf ; If IsToolbar
 ;Speaks an alert when no project open
-If NoProject () &&AnnounceOn () then
+If NoProject () &&AnnounceOn ("AnnounceMessage") then
 SayUnavailable (1)
-;SayNoProject ()
 endIf
 Return HandleCustomWindows () ; allow others to process
 EndFunction ; HandleCustomWindows
@@ -594,7 +589,6 @@ Var
 ;I modified this script to make it work on open project only.
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return ;exit this script when no project open
 ElIf DialogActive () then
 Return ;exit this script without saying anything
@@ -623,7 +617,6 @@ Var
 	Int bIsSelected
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 ElIf DialogActive () then
 Return
@@ -755,7 +748,7 @@ EndIf ; playing/recording
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
+If AnnounceOn ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -774,7 +767,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () Then
+If AnnounceOn ("AnnounceMessage") && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -793,7 +786,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () Then
+If AnnounceOn ("AnnounceMessage") && !NoProject () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -818,7 +811,7 @@ EndIf ; playing/recording
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn () && !NoProject () && FocusInTrackPanel () Then
+If AnnounceOn ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -832,7 +825,7 @@ SayUnavailable (1)
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped ()==true  then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped ()==true  then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -847,7 +840,7 @@ SayUnavailable (1)
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn () &&IsStopped () ==true then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped () ==true then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
@@ -862,7 +855,6 @@ SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ;The condition below past current hotkey to application if any dialog open
 ElIf !IsTrackSelected () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 Return
 Else
@@ -875,7 +867,6 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 Return
 else
@@ -889,7 +880,6 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 Return
 Else
@@ -903,7 +893,6 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 Return
 Else
@@ -915,12 +904,11 @@ Script SelectFromStartOfLine ()
 ;Select from current position to the start of file by pressing shift+ home
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
 SelectFromStartOfLine ()
-If AnnounceOn () then ;User can turn off this message
+If AnnounceOn ("AnnounceMessage") then ;User can turn off this message
 SayFormattedMessage (OT_No_Disable, msgStartOfFile) ;alerts when user activates this script at the main window, and a project is open
 endIf
 ;Otherwise, perform default script
@@ -933,12 +921,11 @@ Script SelectToEndOfLine ()
 ;Select from current position to the end of file
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () then
 SelectToEndOfLine ()
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayFormattedMessage (OT_No_Disable, msgEndOfFile)
 endIf
 Else
@@ -950,17 +937,15 @@ Script DeleteSelectedAudio ()
 ;Alerts when user deletes selected sound
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 ElIf DialogActive () then
 Return
 ElIf !IsTrackSelected () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 return
 ElIf FocusInTrackPanel ()&& IsStopped () ==true then
 TypeCurrentScriptKey ()
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
 endIf ; if AnnounceOn
 Else ; not main window, etc.
@@ -972,7 +957,6 @@ EndScript
 Script JawsDelete ()
 ;If focus is in the main window, a project exists, and audio is selected, the del key will delete it. In this case we perform the script DeleteSelectedAudio.
 If FocusInMainWindow ()&&! IsTrackSelected () &&!NoProject () then
-;SayNoTrackSelected ()
 SayUnavailable (2)
 Return
 ElIf FocusInTrackPanel ()&&!NoProject () then
@@ -995,9 +979,8 @@ Script SayPriorCharacter ()
 var
 	Handle hWnd
 
-If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 If NoProject () Then
-;SayNoProject ()
 SayUnavailable (1)
 Return
 endIf ; if no project
@@ -1014,10 +997,9 @@ Script SayNextCharacter ()
 var
 	Handle hWnd
 
-If !userBufferIsActive () && AnnounceOn () && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 If NoProject () Then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 endIf ; if no project
 TypeCurrentScriptKey ()
@@ -1032,8 +1014,7 @@ EndScript ; SayNextCharacter
 
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
-If !IsTrackSelected () &&!UserBufferIsActive () then
-;SayNoTrackSelected ()
+If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () then
 SayUnavailable (2)
 Return
 ElIf FocusInMainWindow ()
@@ -1041,11 +1022,10 @@ ElIf FocusInMainWindow ()
 
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 return
 endIf ; no project
 TypeCurrentScriptKey ()
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, msgCopyAudio, OT_status) ;the alert message declare here
 endIf ; if AnnounceOn
 Else
@@ -1055,8 +1035,7 @@ endIf
 EndScript
 
 Script CutToClipboard ()
-If !IsTrackSelected () then
-;SayNoTrackSelected ()
+If !IsTrackSelected () &&! DialogActive () then
 SayUnavailable (2)
 Return
 
@@ -1064,11 +1043,10 @@ ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 return
 endIf ; no project
 TypeCurrentScriptKey ()
-If AnnounceOn () then
+If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, msgCutAudio, OT_status) ;speak alert message
 endIf ; if AnnounceOn
 ; We've already sent the key.
@@ -1082,7 +1060,6 @@ Script DeselectAll ()
 ;Unselect all audio
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
 AnnounceMessage (msgDeselectAll)
@@ -1092,7 +1069,6 @@ EndScript
 Script CloseFocusTrack ()
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
 AnnounceMessage (msgCloseFocusedTrack)
@@ -1235,7 +1211,6 @@ ElIf DialogActive () then
 Return ;dialog active
 ElIf NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return ;No project
 EndIf ; no toolbar
 If iState & ST_PLAY Then
@@ -1362,7 +1337,7 @@ EndFunction ; NodeHlp
 string Function UOAnnounceMessages(int iRetCurVal)
 var
 	Int iVal
-Let iVal = IniReadInteger ("Settings", "Announce", CI_MESSAGES_OFF, IniFile)
+Let iVal = IniReadInteger ("Settings", "AnnounceMessage", CI_MESSAGES_OFF, IniFile)
 if !iRetCurVal then
 	if iVal == CI_MESSAGES_FULL Then
 		let iVal = CI_MESSAGES_OFF
@@ -1370,7 +1345,7 @@ if !iRetCurVal then
 		; This paves the way for multiple values.
 		let iVal = iVal + 1
 	endIf
-	IniWriteInteger ("Settings", "Announce", iVal, IniFile)
+	IniWriteInteger ("Settings", "AnnounceMessage", iVal, IniFile)
 endIf ; if !iRetCurVal
 if iVal == CI_MESSAGES_OFF then
 	Return cmsg_Off
@@ -1411,7 +1386,7 @@ EndFunction ; UOAnnounceToolbarsHlp
 
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
-IniWriteInteger ("Settings", "Announce", 1, IniFile, False) ; don't flush because we're going to write another one
+IniWriteInteger ("Settings", "AnnounceMessage", 1, IniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger ("Settings", "AnnounceToolbars", 1, IniFile, true) ; flush
 EndFunction
 
@@ -1436,9 +1411,8 @@ Script SelectAll ()
 PerformScript SelectAll()
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
-ElIf FocusInMainWindow() && ! NoProject () && AnnounceOn () then
+ElIf FocusInMainWindow() && ! NoProject () && AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
 EndIf
 EndScript
@@ -1491,9 +1465,8 @@ var
 TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&AnnounceOn () && IsStopped () then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&AnnounceOn ("AnnounceMessage") && IsStopped () then
 Pause ()
 let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -1506,7 +1479,6 @@ Int Function IsTrackSelected ()
 ;indicates current track is selected
 If NoProject () then
 SayUnavailable (1)
-;SayNoProject ()
 Return
 Else
 SaveCursor ()
@@ -1523,15 +1495,6 @@ EndIf ;FocusInTrackPanel
 RestoreCursor ()
 EndIf ;No project
 EndFunction
-
-/*
-Void Function SayNoTrackSelected ()
-;Just announce that current track has not selected
-If !NoProject () then ;this just announce when a project exists
-Say (msgNoTrackSelected, OT_error)
-EndIf ;No project
-EndFunction
-*/
 
 Int Function SayUnavailable (int iMessage)
 ;This replace function SayNoProject, and SayNoTrackSelected.
