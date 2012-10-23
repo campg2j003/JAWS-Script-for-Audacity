@@ -2,28 +2,26 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/19/12 by Gary Campbell:;In IsWarningDialog made variable for focused window name, added parens around || clauses.;In SayLine added tests for IsPCCursor and not UserBufferIsActive.;10/18/12 Previous saved to HG rev 69.
 ;10/17/12 by Dang Manh Cuong: 
-; The folowing scripts will now return when a dialog open: SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio.
-; Script JawsDelete now performs normal functionality at metadata editor.
-; Remove script AudacitySayFrame, and all things relatest to it because it work on my PC only.
-; Jaws now speech controls in warning dialog of importing uncompress Audio correctly. This done by creating function IsWarningDialog, and adding to funtion HandleCustomWindow, also modify script SayLine to make Jaws reads these well.
-; Fix: warning with no track selected while focus on vertual viewer
+;The folowing scripts will now return when a dialog is open: SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio.
+;Script JawsDelete now performs normal functionality in the metadata editor.
+;Removed script AudacitySayFrame and all things related to it because it works on my PC only.
+;Jaws now correctly speaks controls in the warning dialog shown when importing uncompressed Audio files.  This is done by new function IsWarningDialog and changes to function HandleCustomWindow and script SayLine.
+;Fix: warning with no track selected while in the virtual viewer.
 ;10/14/12 by Dang Manh Cuong
-; Added function SayUnavailable. This replaces function SayNoProject and SayNoTrackSelected.
-;Commented out these two function,and replace it with the new one for testing.
+;Added function SayUnavailable which replaces functions SayNoProject and SayNoTrackSelected.  Commented out old code.
 ;10/13/12 by Dang Manh Cuong
-; Scripts Jaws home and Jaws end now do not warn about no project in vertual buffer.
+;Scripts JawsHome and JawsEnd now do not warn about no project in virtual buffer.
 ;10/12/12 by Dang Manh Cuong:
-;Added condition to check if no project open into function IsTrackSelected.
-; Function SayNoTrackSelected now returns when no project open.
-; Function AnnounceMessage now return in any opening dialogs.
-;Modified script MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd: cause function sayNoTrackSelected return when focus in a dialog box.
+;Added check for no project open in function IsTrackSelected.
+;Function SayNoTrackSelected now returns when no project is open.
+;Function AnnounceMessage now returns in open dialogs.  Modified scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd to match.
 ;10/11/12 by Dang Manh Cuong
-; Script SayAudacityState now warns with no project open.
-;Added function IsTrackSelected and function SayNoTrackSelected. These alert when perform a script require current track must be selected, but user didn't select before.
-;Added these new funtionalities to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, cut.
-;Modified function saySelectionPosition. Added condition to allow users to give [ ] to their file name if needed.
-;Script sayAppVersion now displays script version in vertual buffer if press JawsKey+v twice.
+;Script SayAudacityState now warns when no project is open.
+;Added functions IsTrackSelected and SayNoTrackSelected. These alert when performing a script which requires that the current track be selected but is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
+;Modified function saySelectionPosition.   Added condition to allow the use of [ ] in file names.
+;Script sayAppVersion now displays script version in virtual buffer when CTRL+JawsKey+v is pressed twice quickly.
 ;10/9/12 Previous saved to HG rev 64.
 ;10/9/12 by Gary Campbell:
 ;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
@@ -228,7 +226,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/17/12"
+Const CS_SCRIPT_VERSION = "1.2 10/18/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -370,7 +368,7 @@ EndFunction ; sayNoProject
 */
 
 Int Function NoProject ()
-;return true if no project is open  (no tracks in track panel).
+;Return true if no project is open  (focus in main window and no tracks in track panel).
 ;This is a feature from GoldWave scripts.
 Var
 Int iSubtype,
@@ -536,7 +534,7 @@ Var
 
 Let s = GetWindowText(hWnd, 0)
 
-;Remove "uninteresting" stuff from the position, like leading neros and ".000"
+;Remove "uninteresting" stuff from the position, like leading zeros and ".000"
 ; A position can be in several formats, such as "0 0  h 0 0  m 0 0 .0 0 0  s " or "0 0 0 ,0 0 0  seconds ".
 ;These strings may need to be localized because H, M, ., and comma may be different.
 Let s2 = StringStripAllBlanks(s)
@@ -857,9 +855,8 @@ EndScript
 
 Script MoveToStartOfSelectedTracks ()
 If DialogActive () then
-SayCurrentScriptKeyLabel ()
+;A dialog is open, pass key to application and speak its label.SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
-;The condition below past current hotkey to application if any dialog open
 ElIf !IsTrackSelected () then
 ;SayNoTrackSelected ()
 SayUnavailable (2)
@@ -1038,7 +1035,7 @@ Return
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 
-If NoProject () then
+If NoProject () Then
 SayUnavailable (1)
 ;SayNoProject ()
 return
@@ -1292,7 +1289,7 @@ If !iRtn Then
 	Let iState = GetControlAttributes ()
 	RestoreCursor ()
 	DebugString("after") ; debug
-EndIf
+EndIf`
 */
 Return iState
 EndFunction ; GetObjectState
@@ -1503,7 +1500,7 @@ EndScript
 
 Int Function IsTrackSelected ()
 ;indicates current track is selected
-If NoProject () then
+If NoProject () Then
 SayUnavailable (1)
 ;SayNoProject ()
 Return
@@ -1511,8 +1508,8 @@ Else
 SaveCursor ()
 PCCursor ()
 If FocusInTrackPanel () then
-Let sMessage=GetObjectName () ;get the name of track currently have focus
-;if this track has selected, then its object name contain the phrase "Select On", so now I varify that
+Let sMessage=GetObjectName () ;get the name of the track that currently has focus
+;If this track is selected, then its object name contains the phrase "Select On", so now I verify that
 Let sMessage=StringSegment (sMessage, " ", -2) +" " ;extract the word "Select" in track name
 + StringSegment (sMessage, " ", -1) ;extract the word "on" in track name
 If sMessage=="Select On" then ;the track is currently selected
@@ -1533,7 +1530,7 @@ EndFunction
 */
 
 Int Function SayUnavailable (int iMessage)
-;This replace function SayNoProject, and SayNoTrackSelected.
+;This replaces functions SayNoProject and SayNoTrackSelected.
 If iMessage==1 then ;alerts with no project open.
 SayFormattedMessage (OT_error, msgNoProject_l, msgNoProject_s)
 ElIf iMessage==2 &&!NoProject () then ;Alerts with a project open, and no track selected
@@ -1542,21 +1539,21 @@ EndIf
 EndFunction
 
 Int Function IsWarningDialog ()
-;Varify that focus at the warning dialog of importing uncompress audio.
-If DialogActive ()
-&&GetWindowName (GetFocus ())==MsgCopy
-||GetWindowName (GetFocus ())==MSGDirectEdit
-||GetWindowName (GetFocus ())==MSGDoNotWarn then
+;Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
+Var	string sNamelet sName = GetWindowName (GetFocus ())If DialogActive ()
+&& (sName==MsgCopy
+||sName==MSGDirectEdit
+||sName==MSGDoNotWarn) then
 ;SayWindowTypeAndText (GetFocus ())
 Return TRUE
-EndIf ;dialog active	
+EndIf ;dialog active
 EndFunction
 
 Script SayLine ()
-If IsWarningDialog () then ;Just varify that users are importing uncompress audio, and they want to here the choice in warning dialog by pressing JawsKey+up arrow
+If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () Then ;we are importing uncompressed audio, and they want to here the choice in warning dialog by pressing JawsKey+up arrow
 SayWindowTypeAndText (GetFocus ())
 Else
-; Not at this dialog, performs normal funtionality
+; Not at this dialog, performs default funtionality
 PerformScript SayLine()
 EndIf
 EndScript
