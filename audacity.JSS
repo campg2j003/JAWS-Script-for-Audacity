@@ -2,7 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
-;10/23/12 Merged missed changes from br_69fix.
+;10/23/12 Merged missed changes from br_69fix (see below).
+;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, and DeleteSelectedAudio now pass keys to app when in a dialog.
+;In SayAudacityState reversed the order of ActiveDialog and no transport toolbar tests.
+;In SaySelectionPosition reversed the order of DialogActive and NoProject tests.
 ;10/22/12 by Gary Campbell:
 ;Merged in from audacity_cuong changeset:   31:7ec7b4982aab.
 ;Removed AnnounceToolbarsOn from audacity.jsd.
@@ -296,12 +299,12 @@ Void Function SaySelectionPosition (Int iPosition, string sKey, string sMessage)
 Var
 Handle wnd, ;the window containing the selection bar
 String sValue ;the selection field value 
-If NoProject () then
-SayUnavailable (1)
-Return
-ElIf DialogActive () then
+If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
+ElIf NoProject () then
+SayUnavailable (1)
+Return
 ElIf FocusInMainWindow () then
 TypeCurrentScriptKey ()
 Pause () ;Wait for possible appearance of Boundary Position dialog.
@@ -549,7 +552,7 @@ Else
 	endIf
 	Let s1 = s1 + csPositionHHMMFmt ; we strip as much of this as matches off the front up to the decimal point.
 	;SayString("s1 = " + s1) ; debug
-	;S1 contains what needs to be ssripped from the staart of s2.
+	;S1 contains what needs to be stripped from the staart of s2.
 endIf ; else contains decimal
 ; Return is in s1 and s2, passed by reference!!!
 StringTrimCommon(s1, s2, 1) ; 1=trim from start
@@ -592,7 +595,10 @@ If NoProject () then
 SayUnavailable (1)
 Return ;exit this script when no project open
 ElIf DialogActive () then
-Return ;exit this script without saying anything
+;Pass key to app.
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+Return
 Else
 Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 If (IsSameScript()) Then
@@ -620,6 +626,9 @@ If NoProject () then
 SayUnavailable (1)
 Return
 ElIf DialogActive () then
+;Pass key to app.
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
 Return
 Else ; project open
 Let hEnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
@@ -940,6 +949,9 @@ If NoProject () then
 SayUnavailable (1)
 Return
 ElIf DialogActive () then
+;Pass key to app.
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
 Return
 ElIf !IsTrackSelected () then
 SayUnavailable (2)
@@ -1205,11 +1217,14 @@ Var
 	String sMsg
 
 Let iState = GetAudacityState ()
-If iState == ST_NOTOOLBAR Then
+If DialogActive () then
+;Pass key to app.
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+Return ;dialog active
+ElIf iState == ST_NOTOOLBAR Then
 	Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
 	Return
-ElIf DialogActive () then
-Return ;dialog active
 ElIf NoProject () then
 SayUnavailable (1)
 Return ;No project
