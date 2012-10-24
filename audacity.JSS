@@ -2,6 +2,16 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/24/12 by Gary Campbell:
+;Merged Cuong's changes from changeset:   32:3972cadc96c6.  This switches back to using SayNoProject and SayNoTrackSelected .
+;Removed SayUnavailable from jsd.
+;10/24/12 by Dang Manh Cuong:
+;Merged changes from Gary
+;10/23/12 by Dang Manh Cuong:
+;Removed function sayUnavailable, and swiched back to the two old functions: SayNoProject and SayNoTrackSelected ().
+; Script ResetConfig now deletes the old (announce) key if it exists.
+;Start merge
+;10/23/12 Previous saved to HG rev 75.
 ;10/23/12 Merged missed changes from br_69fix (see below).
 ;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, and DeleteSelectedAudio now pass keys to app when in a dialog.
 ;In SayAudacityState reversed the order of ActiveDialog and no transport toolbar tests.
@@ -9,6 +19,7 @@
 ;10/22/12 by Gary Campbell:
 ;Merged in from audacity_cuong changeset:   31:7ec7b4982aab.
 ;Removed AnnounceToolbarsOn from audacity.jsd.
+;End merge
 ;10/21/12 by Dang Manh Cuong:
 ; Function AnnounceOn now includes checking toolbars announcement. It replaces function AnnounceToolbarsOn written by Gary.
 ; In Audacity.JSI file changed key announce to announceMessage.
@@ -38,7 +49,7 @@
 ;Function AnnounceMessage now returns in open dialogs.  Modified scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd to match.
 ;10/11/12 by Dang Manh Cuong
 ;Script SayAudacityState now warns when no project is open.
-;Added functions IsTrackSelected and SayNoTrackSelected. These alert when performing a script which requires that the current track be selected but is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
+;Added functions IsTrackSelected and SayNoTrackSelected (). These alert when performing a script which requires that the current track be selected but is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
 ;Modified function saySelectionPosition.   Added condition to allow the use of [ ] in file names.
 ;Script sayAppVersion now displays script version in virtual buffer when CTRL+JawsKey+v is pressed twice quickly.
 ;10/9/12 Previous saved to HG rev 64.
@@ -245,7 +256,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/23/12"
+Const CS_SCRIPT_VERSION = "1.2 10/24/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -303,7 +314,7 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
 ElIf NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf FocusInMainWindow () then
 TypeCurrentScriptKey ()
@@ -330,7 +341,7 @@ Void Function MarkerMovement (string sScript, string sAlert)
 ;First, check to make sure we have a project open.
 If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () then
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 EndIf
 TypeCurrentScriptKey ()
@@ -369,6 +380,11 @@ SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf ; else not main window, etc.
 EndFunction ; AnnounceMessage
+
+Void Function SayNoProject ()
+;If no project is open, speak an alert message.
+SayFormattedMessage (OT_error, msgNoProject_l, msgNoProject_s)
+EndFunction
 
 Int Function NoProject ()
 ;Return true if no project is open  (focus in main window and no tracks in track panel).
@@ -476,7 +492,7 @@ endIf ; new toolbar
 endIf ; If IsToolbar
 ;Speaks an alert when no project open
 If NoProject () &&AnnounceOn ("AnnounceMessage") then
-SayUnavailable (1)
+SayNoProject ()
 endIf
 Return HandleCustomWindows () ; allow others to process
 EndFunction ; HandleCustomWindows
@@ -592,7 +608,7 @@ Var
 	String sValue
 ;I modified this script to make it work on open project only.
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return ;exit this script when no project open
 ElIf DialogActive () then
 ;Pass key to app.
@@ -623,7 +639,7 @@ Var
 	String sValue,
 	Int bIsSelected
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf DialogActive () then
 ;Pass key to app.
@@ -831,7 +847,7 @@ EndScript
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
-SayUnavailable (1)
+SayNoProject ()
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -846,7 +862,7 @@ EndScript
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
-SayUnavailable (1)
+SayNoProject ()
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -865,7 +881,7 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 Else
 AnnounceMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
@@ -877,7 +893,7 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 else
 AnnounceMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
@@ -890,7 +906,7 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 Else
 AnnounceMessage (FormatString (MSGSelectedTo, msgStart))
@@ -903,7 +919,7 @@ If DialogActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 Else
 AnnounceMessage (FormatString (MSGSelectedTo, msgEnd))
@@ -913,7 +929,7 @@ EndScript
 Script SelectFromStartOfLine ()
 ;Select from current position to the start of file by pressing shift+ home
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () then
@@ -930,7 +946,7 @@ EndScript
 Script SelectToEndOfLine ()
 ;Select from current position to the end of file
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () then
@@ -946,7 +962,7 @@ EndScript
 Script DeleteSelectedAudio ()
 ;Alerts when user deletes selected sound
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf DialogActive () then
 ;Pass key to app.
@@ -954,7 +970,7 @@ SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 Return
 ElIf !IsTrackSelected () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 return
 ElIf FocusInTrackPanel ()&& IsStopped () ==true then
 TypeCurrentScriptKey ()
@@ -970,7 +986,7 @@ EndScript
 Script JawsDelete ()
 ;If focus is in the main window, a project exists, and audio is selected, the del key will delete it. In this case we perform the script DeleteSelectedAudio.
 If FocusInMainWindow ()&&! IsTrackSelected () &&!NoProject () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 ElIf FocusInTrackPanel ()&&!NoProject () then
 PerformScript DeleteSelectedAudio()
@@ -994,7 +1010,7 @@ var
 
 If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 If NoProject () Then
-SayUnavailable (1)
+SayNoProject ()
 Return
 endIf ; if no project
 TypeCurrentScriptKey ()
@@ -1012,7 +1028,7 @@ var
 
 If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 If NoProject () Then
-SayUnavailable (1)
+SayNoProject ()
 Return
 endIf ; if no project
 TypeCurrentScriptKey ()
@@ -1028,13 +1044,13 @@ EndScript ; SayNextCharacter
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
 If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 
 If NoProject () Then
-SayUnavailable (1)
+SayNoProject ()
 return
 endIf ; no project
 TypeCurrentScriptKey ()
@@ -1049,13 +1065,13 @@ EndScript
 
 Script CutToClipboard ()
 If !IsTrackSelected () &&! DialogActive () then
-SayUnavailable (2)
+SayNoTrackSelected ()
 Return
 
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 return
 endIf ; no project
 TypeCurrentScriptKey ()
@@ -1072,7 +1088,7 @@ EndScript
 Script DeselectAll ()
 ;Unselect all audio
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
 AnnounceMessage (msgDeselectAll)
@@ -1081,7 +1097,7 @@ EndScript
 
 Script CloseFocusTrack ()
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
 AnnounceMessage (msgCloseFocusedTrack)
@@ -1226,7 +1242,7 @@ ElIf iState == ST_NOTOOLBAR Then
 	Say(msgNoTransportToolbar, OT_JAWS_MESSAGE)
 	Return
 ElIf NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return ;No project
 EndIf ; no toolbar
 If iState & ST_PLAY Then
@@ -1409,6 +1425,14 @@ EndFunction
 
 Script ResetConfig ()
 ;Reset all audacity Jaws script options' config to default.
+;First we remove the old key because of our changes in Audacity.JSI file
+If FileExists (FindJAWSPersonalizedSettingsFile (IniFile, true)) then
+;We just remove it if exists any old settings
+Let sMessage=IniReadString ("Settings", "announce", "", IniFile) ;the old key "anounce" has been changed to "AnnounceMessage"
+If sMessage then
+IniRemoveKey ("settings", "announce", IniFile, false)
+EndIf ;sMessage
+EndIf ;FileExists
 AddDefaultConfig ()
 Say (msgResetScriptOptions, OT_message)
 EndScript ; resetConfig
@@ -1427,7 +1451,7 @@ Script SelectAll ()
 ;announce a message when user selects all tracks in current project, or no project open.
 PerformScript SelectAll()
 If NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf FocusInMainWindow() && ! NoProject () && AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
@@ -1481,7 +1505,7 @@ var
 
 TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () then
-SayUnavailable (1)
+SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&AnnounceOn ("AnnounceMessage") && IsStopped () then
 Pause ()
@@ -1495,7 +1519,7 @@ EndScript
 Int Function IsTrackSelected ()
 ;indicates current track is selected
 If NoProject () Then
-SayUnavailable (1)
+SayNoProject ()
 Return
 Else
 SaveCursor ()
@@ -1513,13 +1537,11 @@ RestoreCursor ()
 EndIf ;No project
 EndFunction
 
-Int Function SayUnavailable (int iMessage)
-;This replaces functions SayNoProject and SayNoTrackSelected.
-If iMessage==1 then ;alerts with no project open.
-SayFormattedMessage (OT_error, msgNoProject_l, msgNoProject_s)
-ElIf iMessage==2 &&!NoProject () then ;Alerts with a project open, and no track selected
+Void Function SayNoTrackSelected ()
+;Announce that the current track is not selected
+If !NoProject () then ;Only announce when a project exists
 Say (msgNoTrackSelected, OT_error)
-EndIf
+EndIf ;No project
 EndFunction
 
 Int Function IsWarningDialog ()
