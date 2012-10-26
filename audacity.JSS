@@ -2,6 +2,11 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;10/26/12 by Gary Campbell:
+;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
+;10/25/12 by Dang Manh Cuong
+;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, MoveToStartOfSelectedTrack, MoveToEndOfSelectedTrack, SelectToBeginning, SelectToEnd, Copy, function SaySelectionPosition, SayNoTrackSelected now pass keys to app when menu is actived..
+;10/24/12 Previous saved to HG rev 77.
 ;10/24/12 by Gary Campbell:
 ;Merged Cuong's changes from changeset:   32:3972cadc96c6.  This switches back to using SayNoProject and SayNoTrackSelected .
 ;Removed SayUnavailable from jsd.
@@ -256,7 +261,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/24/12"
+Const CS_SCRIPT_VERSION = "1.2 10/25/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -310,7 +315,7 @@ Void Function SaySelectionPosition (Int iPosition, string sKey, string sMessage)
 Var
 Handle wnd, ;the window containing the selection bar
 String sValue ;the selection field value 
-If DialogActive () then
+If DialogActive ()||MenusActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
 ElIf NoProject () then
@@ -610,7 +615,7 @@ Var
 If NoProject () then
 SayNoProject ()
 Return ;exit this script when no project open
-ElIf DialogActive () then
+ElIf DialogActive ()||MenusActive () then
 ;Pass key to app.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
@@ -641,7 +646,7 @@ Var
 If NoProject () then
 SayNoProject ()
 Return
-ElIf DialogActive () then
+ElIf DialogActive () || MenusActive () then
 ;Pass key to app.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
@@ -876,7 +881,7 @@ EndScript
 
 
 Script MoveToStartOfSelectedTracks ()
-If DialogActive () then
+If DialogActive () ||MenusActive () then
 ;A dialog is open, pass key to application and speak its label.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
@@ -889,7 +894,7 @@ EndIf
 EndScript
 
 Script MoveToEndOfSelectedTracks ()
-If DialogActive () then
+If DialogActive () ||MenusActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
@@ -902,7 +907,7 @@ EndScript
 
 Script SelectToBeginning ()
 ;Select to start of tracks.
-If DialogActive () then
+	If DialogActive () || MenusActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
@@ -915,7 +920,7 @@ EndScript
 
 Script SelectToEnd ()
 ;Select to end of tracks.
-If DialogActive () then
+If DialogActive () || MenusActive () then
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () then
@@ -964,7 +969,7 @@ Script DeleteSelectedAudio ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf DialogActive () then
+ElIf DialogActive () || MenusActive () then
 ;Pass key to app.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
@@ -1043,7 +1048,7 @@ EndScript ; SayNextCharacter
 
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
-If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () then
+If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () && !MenusActive ()then
 SayNoTrackSelected ()
 Return
 ElIf FocusInMainWindow ()
@@ -1233,7 +1238,7 @@ Var
 	String sMsg
 
 Let iState = GetAudacityState ()
-If DialogActive () then
+If DialogActive () ||MenusActive () then
 ;Pass key to app.
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
@@ -1539,7 +1544,7 @@ EndFunction
 
 Void Function SayNoTrackSelected ()
 ;Announce that the current track is not selected
-If !NoProject () then ;Only announce when a project exists
+If !NoProject () &&!MenusActive () then ;Only announce when a project exists
 Say (msgNoTrackSelected, OT_error)
 EndIf ;No project
 EndFunction
