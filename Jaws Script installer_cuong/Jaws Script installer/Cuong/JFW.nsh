@@ -14,10 +14,16 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Saturday, September 22, 2012
+Last updated: Friday, November 2, 2012
 
 Modifications:
 
+10/29/12 In function JAWSInstallVersion fixed logging code for jsb file.
+VERSION (script version) can now be defined in the installer prior to including this file to override searching for the version in the jss file.
+Fixed case and syntax errors in macro JAWSLOG_UNINSTALL.
+Macro JAWSSectionRemoveJawsScript now deletes ${JAWSLOGFILENAME} instead of ${UninstLog}.
+10/29/12 Removed JAWSVer parameter from AddHotKey.
+10/27/12 Corrected typo in AddHotKey
 9/22/12 Previous saved to HG rev 57.
 9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
 Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
@@ -84,8 +90,8 @@ var JAWSREADME ;loaation of the README file for the Finish page
 ;JAWSVer - JAWS version, i.e. "10.0"
 ;Source - name of script to compile without .jss extension
 ;return: writes error message on failure, returns exit code of scompile (0 if successful).
-;Recommend for scripts wich have only one source (*.JSS) file, or doesn't make any modification to any original files
-;Using this macro to save time of the installer because it doesn't store and delete any temporary files
+;Recommend for scripts wich have only one source (*.JSS) file, or don't make any modification to any original files
+;This macro saves time because it doesn't store and delete any temporary files.
 push $0
 push $R0
 push $R1
@@ -136,13 +142,16 @@ nsExec::Exec '"$1" "$0\${Source}.jss"'
 */
 !MacroEnd
 
-!Macro AddHotkey JAWSVer JKM Key Script
+!Macro AddHotkey JKM Key Script
 ;Add hotkeys to *.jkm file
-;Usually use for advance user
+;Usually used by advanced user
+;Assumes JKM file is in $OUTDIR.
+;JKM - name of JKM file without the .jkm extension.
+;key - string containing the key sequence, like "CTRL+JAWSKey+a".
+;Script - name of script to bind to key.
+;Entries will be added to the "Common Keys" section.
 push $0
-strcpy $j ${JAWSVer}
-call GetJAWSVer
-WriteIniStr "$0\${JKM}.jkm" "Common Keys" ${Key} ${Script}
+WriteIniStr "$OUTDIR\${JKM}.jkm" "Common Keys" "${Key}" "${Script}"
 pop $0
 !MacroEnd
 
@@ -236,15 +245,17 @@ pop $UninstLog
 !macroend ;JAWSLOG_CLOSEINSTALL
 
 !macro JAWSLOG_UNINSTALL
-push $UninstLog
+push $UninstLog ; save log file handle if it exists
+; if the log file name is defined, save it.
 !ifdef UninstLog
 !define __JAWSLOGTemp ${UninstLog}
-undef Uninstlog
+!undef UninstLog
 !EndIf
 !define UninstLog ${JAWSLOGFILENAME}
 !insertmacro UNINSTLOG_UNINSTALL
-pop $UninstLog
+pop $UninstLog ; restore log file handle
 !undef UninstLog
+;If the log file name was previously defined, restore it.
 !ifdef __JAWSLOGTemp
 !define UninstLog ${__JAWSLOGTemp}
 !undef __JAWSLOGTemp
@@ -1164,7 +1175,7 @@ StrCpy $UninstLogAlwaysLog ""
   ;Add .jsb file to log
   strCpy $R0 "$UninstLogAlwaysLog"
   StrCpy $UninstLogAlwaysLog "1"
-  ${AddItemDated} "$R1.jsb"
+  ${AddItemDated} "$OUTDIR\${ScriptApp}.jsb"
   StrCpy $UninstLogAlwaysLog "$R0"
 !EndIf ; else not JAWSDEBUG
 GoTo End
@@ -1209,21 +1220,23 @@ Section Un.RemoveScript
 SetOutPath "$INSTDIR"
 
 
-Delete "${UninstLog}"
+Delete "${JAWSLOGFILENAME}"
 
 SectionEnd
 !macroend ;JAWSSectionRemoveScript
 
 !macro JAWSscriptInstaller
 ;defines for product info and paths
+!ifndef VERSION
 !searchparse /ignorecase /file "${JAWSSrcDir}${ScriptApp}.jss" `const CS_SCRIPT_VERSION = "` VERSION `"`
 ;Get script version.
 !ifndef VERSION
 !warn "VERSION not gotten from source file, defining it here."
 ;!define VERSION "0.8.0.00"
 !define VERSION ""
-!endif
-!echo "VERSION=${VERSION}"
+!endif ;ifdef VERSION
+!endif ;first ifdef VERSION
+!echo "VERSION='${VERSION}'"
 
 ;The registry key in HKLM where the uninstall information is stored.
 !define UNINSTALLKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
