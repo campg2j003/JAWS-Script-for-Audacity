@@ -2,10 +2,6 @@
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
 
-:function AnnounceToolbarsOn
-:Returns int True if messages should be spoken
-:Synopsis Indicate whether messages related to changing toolbars should be spoken
-
 :function FocusInTrackPanel
 :Returns int True if focus is not in the track panel
 :Description Indicates if the focus is in the track panel.
@@ -173,9 +169,6 @@
 
 :script PreviousDocumentWindow
 
-:function GetAudacityState
-:Returns int No Return Description
-
 :script SayAudacityState
 :Synopsis Says the current program state-- play, record, pause
 
@@ -253,14 +246,12 @@
 :function SayNoTrackSelected
 :Description Warn when user performs a script that required current track must be selected.
 
-:function SayUnavailable
-:Returns int No Return Description
-:Description Alert when user performs a script in the wrong environment, such as no project, no track selected
-:Param int/iMessage Enter the constain (1 for no project, 2 for no track selected)
-
 :function IsWarningDialog
-:Returns int
+:Returns int No Return Description
 :Description Varify that focus at the warning dialog of importing uncompress audio.
 
 :script SayLine
+
+:script SwichPane
+:Synopsis Toggle swiching between two panes in the Edit change dialog
 

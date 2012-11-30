@@ -18,7 +18,7 @@ Last updated: Monday, August 27, 2012
 
 Modifications:
 
-8/27/12 Moved macro and define for ForJawsVersions and ForJawsVersionsEnd to just before pages.
+9/6/12 Added /SD to some messageboxes in the uninstaller.  Will still prompt about changed files.Added define UNINSTALLKEY containing the location of the uninstall info.Added installdirregkey.Added code in .oninit to uninstall if program is already installed.8/27/12 Previous saved to HG rev 15.8/27/12 Moved macro and define for ForJawsVersions and ForJawsVersionsEnd to just before pages.
 8/27/12 PageInstConfirm now reports JAWS versions that contain files for this application.
 8/26/12 Fixed syntax for custom page header for install confirm page.
 Added message on Install Confirm page about an existing installation.
@@ -101,8 +101,8 @@ Added comments.
 
 ; Name of folder relative to $INSTDIR in which to install the installer source files.
 !define JAWSINSTALLERSRC "Installer Source"
-
-ShowInstDetails Show ; debug
+;The registry key in HKLM where the uninstall information is stored.!define UNINSTALLKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
+ShowInstDetails Show ; debug
 AutoCloseWindow False ; debug
 SetCompressor /solid lzma ;create the smallest file
 SetOverwrite on ;always overwrite files
@@ -113,7 +113,7 @@ Name "${ScriptName}"
 OutFile "${ScriptName}.exe"
 ;installation directory
 InstallDir "$programfiles\${scriptName}" 
-BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
+;In case it is already installed.installdirregkey HKLM "${UNINSTALLKEY}\${ScriptName}\UninstallString"BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 !include "JFW.nsh" ;Header file containing all JAWS-related macros
 
 !include "uninstlog.nsh"
@@ -317,7 +317,7 @@ ${GetFileAttributes} $INSTDIR DIRECTORY $0
 intcmp $0 1 +1 +3
 MessageBox MB_YESNO "The specified folder exists, which most likely means that ${ScriptName} is already installed.  If you want to install over the current installation choose Yes." IDYES next
 abort
-MessageBox MB_OK "$INSTDIR exists and it is not a folder!"
+MessageBox MB_OK "$INSTDIR exists and it is not a folder!" /SD IDOK
 abort
 next:
 FunctionEnd
@@ -384,11 +384,11 @@ functionend
   !insertmacro MUI_LANGUAGE "English"
 
 Function .OnInit
-call GetSecIDs ; Initializes variables with some section indexes.
+;See if the program is already installedreadregstr $0 HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"iferrors notinstalledmessagebox MB_YESNOCANCEL "${ScriptName} is already installed on this computer.  It is strongly recommended that you uninstall it before continuing.  Do you wish to uninstall?" /SD IDCANCEL IDNO notinstalled IDYES +2abort ; cancelDetailPrint "Uninstalling $0"CopyFiles $INSTDIR\${uninstaller} $TEMPExecWait '"$TEMP\${uninstaller}" /S' $1DetailPrint "Uninstall returded exit code $1"intcmp $1 0 +2messagebox MB_OKCANCEL|MB_DEFBUTTON³ "The uninstall was unsuccessful, exit code $1.  Choose OK to install anyway, Cancel to quit." IDOK +2abortnotinstalled:call GetSecIDs ; Initializes variables with some section indexes.
 strCpy $0 0 ; index into registry keys
 EnumRegkey $1 hklm "software\Freedom Scientific\Jaws" $0
 ${If} $1 == ""
-MessageBox MB_ICONINFORMATION|MB_OK "Setup cannot start because the Jaws program is not installed on your system."
+MessageBox MB_ICONINFORMATION|MB_OK "Setup cannot start because the Jaws program is not installed on your system." /SD IDOK
 quit
 ${Else}
 ; Not needed with MUI2?
@@ -427,7 +427,6 @@ push $R0
 push $2
 push $3
 push $4
-;${chkst} 0 ; debug
 strCpy $R0 0 ; registry entry index
 strcpy $1 0 ; number of JAWS versions found
 strcpy $0 "" ; JAWS versions found
@@ -435,7 +434,6 @@ loop:
 ;EnumRegkey $2 hklm "software\Freedom Scientific\Jaws" $R0 ;Enumerate the existing version of Jaws
 !insertmacro tstEnumJawsversions $2 hklm "software\Freedom Scientific\Jaws" $R0 ;test Enumerate the existing versions of Jaws
 ;messagebox MB_OK "GetJawsVersions: got version $2 at index $R0" ; debug
-;${chkst} 1
 strcmp $2 "" done ; exit loop if after last JAWS version
 IntOp $R0 $R0 + 1 ;increase the registry key index by one unit
 ; Is this registry key a version number?  I have seen "Common" Victor checks for "Registration", and I don't know of any version that doesn't start with a digit.
@@ -479,12 +477,6 @@ functionend
 
 ; Probably won't do anything.
 Section -Install
-;Exstract script to enu folder
-;this will have to change to use install file logging.
-;!Insertmacro ExtractScript "script\*.*"
-;Recompile scripts
-;Needs to change to support multiple versions.
-;!insertmacro RecompileSingle ${ScriptApp}
 SectionEnd
 
 Section -Uninstaller SecUninstaller
@@ -496,8 +488,8 @@ SetOutPath $Instdir
 ;File *.txt
 ;Write the uninstaller and add it to the registry
 ${WriteUninstaller} "$Instdir\${UnInstaller}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ScriptName}" "DisplayName" "${ScriptName} (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ScriptName}" "UninstallString" '"$INSTDIR\${UnInstaller}"'
+  WriteRegStr HKLM "${UNINSTALLKEY}\${ScriptName}" "DisplayName" "${ScriptName} (remove only)"
+  WriteRegStr HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString" '"$INSTDIR\${UnInstaller}"'
 !insertmacro UNINSTLOG_CLOSEINSTALL
 sectionEnd
 
@@ -550,7 +542,7 @@ functionend
 ;-----
 ;Uninstaller function and Section
 Function un.onInit
-    MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
+    MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 /SD IDYES "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
   Abort
 FunctionEnd
 
@@ -558,10 +550,10 @@ Function un.OnUninstSuccess
   ;!Insertmacro RemoveTempFile
   HideWindow
   IfFileExists "$INSTDIR" +1 instdirgone
-    MessageBox MB_ICONEXCLAMATION|MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files."
+    MessageBox MB_ICONEXCLAMATION|MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files." /SD IDOK
     return
   instdirgone:
-  MessageBox MB_ICONINFORMATION|MB_OK "${ScriptName}  has been successfully removed from your computer."
+  MessageBox MB_ICONINFORMATION|MB_OK /SD IDOK "${ScriptName}  has been successfully removed from your computer."
 FunctionEnd
 
 Section Un.RemoveScript
@@ -864,7 +856,7 @@ abort ; no JAWS
 ${EndIf}
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
 DetailPrint "DisplayJawsList: 1 JAWS version, skipping JAWS versions page" ; debug
-MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" ; debug
+MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" /SD IDOK ; debug
 strcpy $SELECTEDJAWSVERSIONS $INSTALLEDJAWSVERSIONS
 strcpy $SELECTEDJAWSVERSIONCOUNT $INSTALLEDJAWSVERSIONCOUNT
 ;quit ; debug

@@ -65,7 +65,7 @@ To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice qui
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press %keyfor (VSTPreset).
-To load an existing preset, press  %keyfor (VSTLoadPreset).
+To load an existing preset, press  %keyfor (VSTLoadPreset). This hotkey also toggles swiching between two panes in the Edit Chains dialog.
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).

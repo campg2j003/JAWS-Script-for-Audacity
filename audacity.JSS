@@ -2,6 +2,12 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;11/30/2012 by Dang Manh Cuong
+;Added script swichPane for swiching between two panes in the Edit Chains dialog.
+;Modified script VSTLoadPreset to use this hotkey for activating script SwichPane.
+;Updated messages and comment
+;10/26/12 by Dang Manh Cuong
+; In script JawsHome, JawsEnd, CloseFocusTrack commented out "IsStopped" function because in not work right now.
 ;10/25/12 by Dang Manh Cuong
 ;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, MoveToStartOfSelectedTrack, MoveToEndOfSelectedTrack, SelectToBeginning, SelectToEnd, Copy, function SaySelectionPosition, SayNoTrackSelected now pass keys to app when menu is actived..
 ;10/24/12 Previous saved to HG rev 77.
@@ -259,7 +265,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/25/12"
+Const CS_SCRIPT_VERSION = "1.2 11/30/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -284,9 +290,10 @@ ID_Preset=11000,
 	;Each ends with a trailing space.
 	CS_IMGRECORDPRESSED = "graphic 405 ",
 	CS_IMGPLAYPRESSED = "graphic 28 ",
-	CS_IMGPAUSEPRESSED = "graphic 161 "
-
-
+	CS_IMGPAUSEPRESSED = "graphic 161 ",
+;For the edit change dialog
+ID_Change_List=7001,
+ID_Change_Parameters=10002
 
 Globals
 Int App_FirstTime, String sMessage, String sScriptName
@@ -854,7 +861,8 @@ SayNoProject ()
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped ()==true  then
+;If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped ()==true  then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -869,7 +877,8 @@ SayNoProject ()
 ;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped () ==true then
+;If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped () ==true then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
@@ -1102,7 +1111,8 @@ Script CloseFocusTrack ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
+;ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
 AnnounceMessage (msgCloseFocusedTrack)
 Else
 TypeCurrentScriptKey ()
@@ -1491,8 +1501,12 @@ ProcessVST (ID_Preset)
 EndScript
 
 Script VSTLoadPreset ()
-;Activates the load preset button
+;Activates the load preset button by pressing alt+l
 ProcessVST (ID_Load_Preset)
+;This hotkey now be able to swich between THE change list and change parameters IN the edit change dialog
+If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))=="Edit Chains" then
+PerformScript SwichPane()
+EndIf
 EndScript
 
 Script VSTSavePreset ()
@@ -1569,4 +1583,23 @@ Else
 ; Not at this dialog, performs default funtionality
 PerformScript SayLine()
 EndIf
+EndScript
+
+Script SwichPane ()
+;Toggle swiching between Change's list and change parameters in the edit change dialog
+;Feature suggested by Dang Manh Cuong
+;Code given by Gary Campbell
+Var
+Handle wnd,
+Int iCurId
+Let iCurId = GetControlID (GetFocus())
+If iCurId == ID_Change_List then
+Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_Parameters)
+ElIf iCurId == ID_Change_Parameters Then
+Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_List)
+Else
+; focus not on either control
+Return
+EndIf
+SetFocus (wnd)
 EndScript
