@@ -2,6 +2,8 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Cuong's machine.
+;10/26/12 Previous saved to HG rev 79.
 ;10/26/12 by Gary Campbell:
 ;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
 ;10/25/12 by Dang Manh Cuong
@@ -261,7 +263,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/25/12"
+Const CS_SCRIPT_VERSION = "1.2 12/1/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -447,10 +449,10 @@ Var handle hParent,
 
 If !FocusInMainWindow() Then
 	If DialogActive () && GetWindowName(GetFocus()) == cscNULL Then
-		let iMSAA_JCFOpt = GetJCFOption (opt_MSAA_mode)
-		SetJCFOption (opt_MSAA_mode, 2)
+		let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
 		Let sName = GetObjectName()
-		SetJCFOption (opt_MSAA_mode, iMSAA_JCFOpt)
+		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
 		SayControlEx(GetFocus (), 
 		sName, "",   ; control name, type
 		"",   ; control state
@@ -1286,10 +1288,14 @@ Var
 	Int iState,
 	Int iSubtype,
 	String sName,
-	Int iRtn
+	Int iRtn,
+	Int iMSAAJCFOpt
 
 Let sName = GetWindowName(hWnd)
+Let iMSAAJCFOpt = GetJCFOption(OPT_MSAA_MODE)
+SetJCFOption(OPT_MSAA_MODE, 1)
 Let iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+SetJCFOption(OPT_MSAA_MODE, iMSAAJCFOpt)
 If !iRtn Then
 	Return -1 ; error
 EndIf
@@ -1306,7 +1312,6 @@ If !iRtn Then
 	RestoreCursor ()
 	DebugString("after") ; debug
 EndIf
-`
 */
 Return iState
 EndFunction ; GetObjectState
