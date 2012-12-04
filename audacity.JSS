@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/4/12 Moved code to get button state via MSAA to GetObjectState.  This works on Cuong's machine.
+;Removed some DebugString/Integer calls and changed the others to SayString/Integer.
+;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Coung's machine.
+;10/26/12 Previous saved to HG rev 79.
 ;10/26/12 by Gary Campbell:
 ;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
 ;10/25/12 by Dang Manh Cuong
@@ -261,7 +265,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 10/25/12"
+Const CS_SCRIPT_VERSION = "1.2 12/4/12"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -430,8 +434,8 @@ Globals handle ghAudacityLastArea,
 
 /*
 Function KeyPressedEvent (int nKey, string strKeyName, int nIsBrailleKey, int nIsScriptKey)
-DebugInteger(nKey) ; debug
-DebugString(strKeyName) ; debug
+SayInteger(nKey) ; debug
+SayString(strKeyName) ; debug
 KeyPressedEvent (nKey, strKeyName, nIsBrailleKey, nIsScriptKey)
 EndFunction
 */
@@ -447,10 +451,10 @@ Var handle hParent,
 
 If !FocusInMainWindow() Then
 	If DialogActive () && GetWindowName(GetFocus()) == cscNULL Then
-		let iMSAA_JCFOpt = GetJCFOption (opt_MSAA_mode)
-		SetJCFOption (opt_MSAA_mode, 2)
+		let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
 		Let sName = GetObjectName()
-		SetJCFOption (opt_MSAA_mode, iMSAA_JCFOpt)
+		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
 		SayControlEx(GetFocus (), 
 		sName, "",   ; control name, type
 		"",   ; control state
@@ -1176,7 +1180,8 @@ Var
 	Int iStopState,
 	Int iRecordState,
 	Handle hTemp,
-	Int iState
+	Int iState,
+	Int iTemp
 
 Let hTemp = GetFirstChild(GetAppMainWindow(GetFocus()))
 Let hTemp = GetNextWindow(hTemp) ; parent of toolbars
@@ -1189,7 +1194,6 @@ Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let iPauseState = GetObjectState(hTemp)
 If iPauseState == -1 Then
 ;We can't get the state from the object, so we'll use the name of the toolbar button image.
-;SayString("pause = " + GetWindowText(hTemp, 0)) ; debug
 If StringCompare(GetWindowText(hTemp, 0), CS_IMGPAUSEPRESSED) == 0 Then
 Let iPauseState = CTRL_PRESSED
 EndIf
@@ -1286,27 +1290,47 @@ Var
 	Int iState,
 	Int iSubtype,
 	String sName,
-	Int iRtn
+	Int iRtn,
+	Int iMSAAMode,
+	Object obj,
+	Int iTemp
 
 Let sName = GetWindowName(hWnd)
+Let iMSAAMode = GetJCFOption(OPT_MSAA_MODE)
+SetJCFOption(OPT_MSAA_MODE, 1)
 Let iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
+;Let iRtn = 0 ; debug
 If !iRtn Then
-	Return -1 ; error
-EndIf
+	;Try GetObjectFromEvent.
+	;SayString("GetObjectState: GetObjectInfoByName failed for " + sName) ; debug
+	Let obj = getObjectFromEvent(hWnd, -4, 0, iTemp)
+	If obj Then
+		Let iTemp = obj.accState(1)
+		If iTemp & STATE_SYSTEM_PRESSED Then
+			Let iState = CTRL_PRESSED
+		Else
+			Let iState = 0
+		EndIf
+		;SayString("  obj.accState returned 0x" + DecToHex(iTemp)) ; debug
+	Else
+		;SayString("  ObjectFromEvent got no object") ; debug
+		Let iState = -1 ; set error
+	EndIf ; If obj
+EndIf ; If !iRtn
+SetJCFOption(OPT_MSAA_MODE, iMSAAMode)
+;SayString("GetObjectState: iState=0x" + DecToHex(iState) + " for " + sName) ; debug
 /*
 ;This works on Cuong's machine, but it is very slow!!!
-iRtn = GetObjectInfoByName(hWnd, sName, 1, iSubtype, iState)
 If !iRtn Then
-	DebugString("Before") ; debug
+	;SayString("  Before MoveToWindow") ; debug
 	SaveCursor ()
 	InvisibleCursor ()
 	MoveToWindow(hWnd)
 	Pause ()
 	Let iState = GetControlAttributes ()
 	RestoreCursor ()
-	DebugString("after") ; debug
+	;SayString("  after") ; debug
 EndIf
-`
 */
 Return iState
 EndFunction ; GetObjectState
