@@ -2,6 +2,8 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/4/12 Merged changes from br_79msaafix: Commented out code to get pause button state with images.
+;Removed other old code.
 ;12/4/12 Moved code to get button state via MSAA to GetObjectState.  This works on Cuong's machine.
 ;Removed some DebugString/Integer calls and changed the others to SayString/Integer.
 ;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Coung's machine.
@@ -9,7 +11,7 @@
 ;10/26/12 by Gary Campbell:
 ;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
 ;10/25/12 by Dang Manh Cuong
-;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, MoveToStartOfSelectedTrack, MoveToEndOfSelectedTrack, SelectToBeginning, SelectToEnd, Copy, function SaySelectionPosition, SayNoTrackSelected now pass keys to app when menu is actived..
+;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, MoveToStartOfSelectedTrack, MoveToEndOfSelectedTrack, SelectToBeginning, SelectToEnd, Copy, function SaySelectionPosition, SayNoTrackSelected now pass keys to app when menu is active.
 ;10/24/12 Previous saved to HG rev 77.
 ;10/24/12 by Gary Campbell:
 ;Merged Cuong's changes from changeset:   32:3972cadc96c6.  This switches back to using SayNoProject and SayNoTrackSelected .
@@ -66,7 +68,7 @@
 ;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
 ;10/5/2012 by Dang Manh Cuong:
 ;Modified mouse movement function. User can now perform the default Jaws mouse movement scripts when no project open
-;Modified script DeleteSelectedAudio to make it works on my PC.
+;Modified script DeleteSelectedAudio to make it work on my PC.
 ; Script CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd now stop speaking alert message when playing audio.
 ;10/9/12 by Gary Campbell:
 ;Merged in Cuong's changes from repo audacity_cuong change set 26:8e4fe6bd4ee9.
@@ -284,13 +286,16 @@ ID_Preset=11000,
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
 	CI_TOOLBARS_OFF = 0,
-	CI_TOOLBARS_ON = 1, ; announce all toolbars
+	CI_TOOLBARS_ON = 1 ; announce all toolbars
 
-	;Names of toolbar button images for use when GetObjectInfoByName doesn't work.
+/*
+Const
+	;Names of toolbar button images for use when GetObjectInfoByName doesn't work.  See GetAudacityState.
 	;Each ends with a trailing space.
 	CS_IMGRECORDPRESSED = "graphic 405 ",
 	CS_IMGPLAYPRESSED = "graphic 28 ",
 	CS_IMGPAUSEPRESSED = "graphic 161 "
+*/
 
 
 
@@ -1192,6 +1197,8 @@ endIf ; if no transport toolbar
 
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
 Let iPauseState = GetObjectState(hTemp)
+/*
+;This is an alternative method of determining if the button is pressed.  If GetObjectInfoByName doesn't work for you, uncomment this code block and the associated image name constants.  Set them to the values of your pressed and unpressed graphic images.
 If iPauseState == -1 Then
 ;We can't get the state from the object, so we'll use the name of the toolbar button image.
 If StringCompare(GetWindowText(hTemp, 0), CS_IMGPAUSEPRESSED) == 0 Then
@@ -1202,6 +1209,7 @@ Let hTemp = GetNextWindow(hTemp)
 If StringCompare(GetWindowText(hTemp, 0), CS_IMGPLAYPRESSED) == 0 Then
 Let iPlayState = CTRL_PRESSED
 EndIf
+*/
 Let hTemp = GetNextWindow(hTemp)
 ;Let iStopState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
@@ -1269,7 +1277,7 @@ EndScript ; SayAudacityState
 
 ;/*
 ;This script causes ENTER to do pause if not stopped, otherwise does normal ENTER.
-;If you comment this out you should also comment out entries for keys ENTrR and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys serarately, not commenting out these entries will cause Audacity to see both keys as standa"rd ENTER.
+;If you comment this out you should also comment out entries for keys ENTER and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys separately, not commenting out these entries will cause Audacity to see both keys as standard ENTER.
 Script Enter ()
 ;SayString(GetCurrentScriptKeyName())
 If FocusInMainWindow() && !IsStopped () Then
@@ -1319,41 +1327,9 @@ If !iRtn Then
 EndIf ; If !iRtn
 SetJCFOption(OPT_MSAA_MODE, iMSAAMode)
 ;SayString("GetObjectState: iState=0x" + DecToHex(iState) + " for " + sName) ; debug
-/*
-;This works on Cuong's machine, but it is very slow!!!
-If !iRtn Then
-	;SayString("  Before MoveToWindow") ; debug
-	SaveCursor ()
-	InvisibleCursor ()
-	MoveToWindow(hWnd)
-	Pause ()
-	Let iState = GetControlAttributes ()
-	RestoreCursor ()
-	;SayString("  after") ; debug
 EndIf
-*/
 Return iState
 EndFunction ; GetObjectState
-
-/*
-Int Function IsStopped ()
-;Returns nonzero if currently stopped or the Transport toolbar cannot be found. Returns FALSE otherwise.
-;We don't cache the stop button handle becaause the Transport toolbar may have been deselected since last invocation.  We might could detect the toolbar being destroyed with WindowDestroyedEvent.  We return FALSE in this situation so that operation is not interrupted.
-var
-	Handle hTemp
-Let hTemp = GetFirstChild(GetAppMainWindow(GetFocus()))
-Let hTemp = GetNextWindow(hTemp) ; parent of toolbars
-Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
-If !hTemp Then
-;Say("Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.", OT_JAWS_MESSAGE)
-Return False
-endIf ; if no transport toolbar
-Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ; skip the grabber
-Let hTemp = GetNextWindow(hTemp)
-Let hTemp = GetNextWindow(hTemp)
-Return GetObjectState(hTemp) & CTRL_DISABLED
-EndFunction ; IsStopped
-*/
 
 Int Function IsStopped ()
 Return GetAudacityState () & ST_STOPPED
