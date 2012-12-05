@@ -1,4 +1,4 @@
-9/20/2012 JAWS script for Audacity V1.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+12/4/2012 JAWS script for Audacity V1.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package adds the following scripts for Audacity 2.0.0 and later:
 SaySelectionStart 
@@ -24,6 +24,8 @@ In many VST plug-ins, keystrokes move focus to the Presets control and activate 
 In many plug-in dialogs control names and values are spoken.  
 
 By uncommenting a couple of key assignments and a script it is possible to use the ENTER key to pause play/record.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  It is commented out because it disables Select/Unselect Track on Cuong's machine.  (It is supposed to send ENTER when stopped, aod it does for me.)  To activate it, remove the semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and remove (or add semicolon to the start of) the lines containing /* and */ before and after script Enter in audacity.jss.  Try it out and let us know if it works for you and if you like it.
+
+We have had problems getting the state of play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
 
 The script was developed with Audacity 2.0.2 and JAWS 10.0.1178u and 13.  It should probably work with any JAWS after 5.0.exe, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
 There is no specific Braille support at this time.
