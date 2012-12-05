@@ -60,12 +60,13 @@ In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
+To toggle swiching between two panes in the Edit Change dialog, press %keyfor (SwichPane).
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press %keyfor (VSTPreset).
-To load an existing preset, press  %keyfor (VSTLoadPreset). This hotkey also toggles swiching between two panes in the Edit Chains dialog.
+To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).

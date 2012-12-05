@@ -2,10 +2,13 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/4/12 by Dang Manh Cuong: remove script SwichPane from Script VSTLoadPreset because Alt+l activated the Delete button in Edit change dialog.
+;Added new hotkey (f6) for script SwichPane, also added this to script HotkeyHelp.
+; Removed unused code and comments
+;12/1/12 by Dang Manh Cuong: script SwichPane now speaks announce message when swiching between the panes.
 ;11/30/2012 by Dang Manh Cuong
-;Added script swichPane for swiching between two panes in the Edit Chains dialog.
-;Modified script VSTLoadPreset to use this hotkey for activating script SwichPane.
-;Updated messages and comment
+;Added script swichPane for swiching between two pane in the edit change dialog.
+;Updated messages and comments.
 ;10/26/12 by Dang Manh Cuong
 ; In script JawsHome, JawsEnd, CloseFocusTrack commented out "IsStopped" function because in not work right now.
 ;10/25/12 by Dang Manh Cuong
@@ -265,7 +268,7 @@ Include "audacity.jsm"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 11/30/12"
+Const CS_SCRIPT_VERSION = "1.2 12/5/12 02:54UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -1503,10 +1506,6 @@ EndScript
 Script VSTLoadPreset ()
 ;Activates the load preset button by pressing alt+l
 ProcessVST (ID_Load_Preset)
-;This hotkey now be able to swich between THE change list and change parameters IN the edit change dialog
-If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))=="Edit Chains" then
-PerformScript SwichPane()
-EndIf
 EndScript
 
 Script VSTSavePreset ()
@@ -1595,11 +1594,18 @@ Int iCurId
 Let iCurId = GetControlID (GetFocus())
 If iCurId == ID_Change_List then
 Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_Parameters)
-ElIf iCurId == ID_Change_Parameters Then
+Let sMessage="Change list" ;list of parameters in the right pane
+	ElIf iCurId == ID_Change_Parameters 
+||GetWindowClass (GetFocus ())=="button" then ;make the script available in everywhere in edit change dialog
 Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_List)
+Let sMessage="Change name" ;list of change parameters in the left pane
 Else
 ; focus not on either control
 Return
 EndIf
 SetFocus (wnd)
+;speaks an announce message when swich between these panes
+If AnnounceOn ("AnnounceMessage") Then
+SayUsingVoice (VCTX_message, sMessage, ot_String)
+EndIf
 EndScript
