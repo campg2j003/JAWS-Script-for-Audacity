@@ -2,11 +2,22 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/4/12 Merged Cuong's changes from repo audacity_cuong changeset:   34:49566c2abd09.
+;Reactivated code using IsStopped since GetAudacityState should now work.
+;Made constant WN_EDIT_CHAINS for the Edit Chains dialog window name.
+;In audacity.jsd corrected name of function SayAudacityState to GetAudacityState.
+;11/30/2012 by Dang Manh Cuong
+;Added script swichPane for swiching between two panes in the Edit Chains dialog.
+;Modified script VSTLoadPreset to use this hotkey for activating script SwichPane.
+;Updated messages and comment
+;10/26/12 by Dang Manh Cuong
+; In script JawsHome, JawsEnd, CloseFocusTrack commented out "IsStopped" function because in not work right now.
+;End merge from audacity_cuong.
 ;12/4/12 Merged changes from br_79msaafix: Commented out code to get pause button state with images.
 ;Removed other old code.
 ;12/4/12 Moved code to get button state via MSAA to GetObjectState.  This works on Cuong's machine.
 ;Removed some DebugString/Integer calls and changed the others to SayString/Integer.
-;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Coung's machine.
+;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Cuong's machine.
 ;10/26/12 Previous saved to HG rev 79.
 ;10/26/12 by Gary Campbell:
 ;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
@@ -262,6 +273,7 @@ Include "hjconst.jsh"
 Include "hjglobal.jsh"
 Include "common.jsm"
 Include "audacity.jsm"
+Include "msaaconst.jsh"
 
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
@@ -286,7 +298,10 @@ ID_Preset=11000,
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
 	CI_TOOLBARS_OFF = 0,
-	CI_TOOLBARS_ON = 1 ; announce all toolbars
+	CI_TOOLBARS_ON = 1, ; announce all toolbars
+	;For the Edit chains dialog
+	ID_Change_List=7001,
+	ID_Change_Parameters=10002
 
 /*
 Const
@@ -296,7 +311,6 @@ Const
 	CS_IMGPLAYPRESSED = "graphic 28 ",
 	CS_IMGPAUSEPRESSED = "graphic 161 "
 */
-
 
 
 Globals
@@ -866,6 +880,7 @@ SayNoProject ()
 	Return
 EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped ()==true  then
+;If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -881,6 +896,7 @@ SayNoProject ()
 	Return
 EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped () ==true then
+;If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
@@ -1114,6 +1130,7 @@ If NoProject () then
 SayNoProject ()
 Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
+;ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
 AnnounceMessage (msgCloseFocusedTrack)
 Else
 TypeCurrentScriptKey ()
@@ -1209,7 +1226,6 @@ Let hTemp = GetNextWindow(hTemp)
 If StringCompare(GetWindowText(hTemp, 0), CS_IMGPLAYPRESSED) == 0 Then
 Let iPlayState = CTRL_PRESSED
 EndIf
-*/
 Let hTemp = GetNextWindow(hTemp)
 ;Let iStopState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
@@ -1217,13 +1233,15 @@ If StringCompare(GetWindowText(hTemp, 0), CS_IMGRECORDPRESSED) == 0 Then
 Let iRECORDState = CTRL_PRESSED
 EndIf
 Else
+;Also comment the below line EndIf ;Else got object state.
+*/
 Let hTemp = GetNextWindow(hTemp)
 Let iPlayState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(hTemp)
 Let iStopState = GetObjectState(hTemp)
 Let hTemp = GetNextWindow(GetNextWindow(GetNextWindow(hTemp))) ; skip Start and End
 Let iRecordState = GetObjectState(hTemp)
-EndIf ; else got object state
+;EndIf ; else got object state
 ;SayString("Object states: pause = " + DecToHex(iPauseState) + ", play = " + DecToHex(iPLayState) + ", stop = " + DecToHex(iStopState) + ", record = " + DecToHex(iRecordState)) ; debug
 If iPlayState & CTRL_PRESSED Then
 Let iState = ST_PLAY
@@ -1327,7 +1345,6 @@ If !iRtn Then
 EndIf ; If !iRtn
 SetJCFOption(OPT_MSAA_MODE, iMSAAMode)
 ;SayString("GetObjectState: iState=0x" + DecToHex(iState) + " for " + sName) ; debug
-EndIf
 Return iState
 EndFunction ; GetObjectState
 
@@ -1493,8 +1510,12 @@ ProcessVST (ID_Preset)
 EndScript
 
 Script VSTLoadPreset ()
-;Activates the load preset button
+;Activates the load preset button by pressing alt+l
+;IN the edit Chains dialog, switches between THE chains and Chain lists.
 ProcessVST (ID_Load_Preset)
+If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))==WN_EDIT_CHAINS then
+PerformScript SwichPane()
+EndIf
 EndScript
 
 Script VSTSavePreset ()
@@ -1572,3 +1593,22 @@ Else
 PerformScript SayLine()
 EndIf
 EndScript
+
+Script SwichPane ()
+;Toggle swiching between Chains and Chain lists in the Edit Chains dialog.
+;Feature suggested by Dang Manh Cuong
+;Code given by Gary Campbell
+Var
+Handle wnd,
+Int iCurId
+Let iCurId = GetControlID (GetFocus())
+If iCurId == ID_Change_List then
+Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_Parameters)
+ElIf iCurId == ID_Change_Parameters Then
+Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_List)
+Else
+; focus not on either control
+Return
+EndIf
+SetFocus (wnd)
+EndScript ;SwichPane

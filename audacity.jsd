@@ -169,7 +169,7 @@
 
 :script PreviousDocumentWindow
 
-:function SayAudacityState
+:function GetAudacityState
 :Synopsis returns the current program state-- play, record, pause
 :Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
 
@@ -251,8 +251,11 @@
 :Description Warn when user performs a script that required current track must be selected.
 
 :function IsWarningDialog
-:Returns int
+:Returns int No Return Description
 :Description Varify that focus at the warning dialog of importing uncompress audio.
 
 :script SayLine
+
+:script SwichPane
+:Synopsis Toggle swiching between two panes in the Edit change dialog
 
