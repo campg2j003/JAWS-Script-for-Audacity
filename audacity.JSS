@@ -2,14 +2,21 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/4/12 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   36:74c3d9384502.  Minor fix-ups.
+;In SwichPane added code to send key to app when not in Edit Chains dialog.
+;Added message constants for Edit Chains dialog messages.
+;12/4/12 by Dang Manh Cuong: remove script SwichPane from Script VSTLoadPreset because Alt+l activated the Delete button in the Edit Chains dialog.
+;Added new hotkey (f6) for script SwichPane, also added this to script HotkeyHelp.
+; Removed unused code and comments
+;12/1/12 by Dang Manh Cuong: script SwichPane now speaks announce message when swiching between the panes.
 ;12/4/12 Merged Cuong's changes from repo audacity_cuong changeset:   34:49566c2abd09.
 ;Reactivated code using IsStopped since GetAudacityState should now work.
 ;Made constant WN_EDIT_CHAINS for the Edit Chains dialog window name.
 ;In audacity.jsd corrected name of function SayAudacityState to GetAudacityState.
 ;11/30/2012 by Dang Manh Cuong
-;Added script swichPane for swiching between two panes in the Edit Chains dialog.
-;Modified script VSTLoadPreset to use this hotkey for activating script SwichPane.
-;Updated messages and comment
+;Added script swichPane for swiching between two pane in the edit change dialog.
+;Updated messages and comments.
 ;10/26/12 by Dang Manh Cuong
 ; In script JawsHome, JawsEnd, CloseFocusTrack commented out "IsStopped" function because in not work right now.
 ;End merge from audacity_cuong.
@@ -279,7 +286,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/4/12"
+Const CS_SCRIPT_VERSION = "1.2 12/5/12 03:27UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -1513,9 +1520,6 @@ Script VSTLoadPreset ()
 ;Activates the load preset button by pressing alt+l
 ;IN the edit Chains dialog, switches between THE chains and Chain lists.
 ProcessVST (ID_Load_Preset)
-If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))==WN_EDIT_CHAINS then
-PerformScript SwichPane()
-EndIf
 EndScript
 
 Script VSTSavePreset ()
@@ -1601,14 +1605,27 @@ Script SwichPane ()
 Var
 Handle wnd,
 Int iCurId
+If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))==WN_EDIT_CHAINS then
 Let iCurId = GetControlID (GetFocus())
 If iCurId == ID_Change_List then
 Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_Parameters)
-ElIf iCurId == ID_Change_Parameters Then
+Let sMessage=msgChainCommands ;list of commands in the right list
+	ElIf iCurId == ID_Change_Parameters 
+||GetWindowClass (GetFocus ())=="button" then ;make the script available in everywhere in edit change dialog
 Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_List)
+Let sMessage=msgChains ;list of chains in the left list
 Else
 ; focus not on either control
+;Should we send the key through just for completeness?
 Return
-EndIf
+EndIf ; Else neither list.
 SetFocus (wnd)
+;speaks a message when switching between the listss
+If AnnounceOn ("AnnounceMessage") Then
+SayUsingVoice (VCTX_message, sMessage, ot_String)
+EndIf
+Else
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+EndIf ;Else not Edit Chains dialog
 EndScript ;SwichPane
