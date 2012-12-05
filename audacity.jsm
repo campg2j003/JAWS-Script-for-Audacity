@@ -5,7 +5,8 @@ Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
 	WN_SELECTION = "Selection", ;window name of selection bar
-	WN_TRANSPORT_TOOLBAR = "Transport" ; window name of Transport toolbar
+	WN_TRANSPORT_TOOLBAR = "Transport", ; window name of Transport toolbar
+	WN_EDIT_CHAINS = "Edit Chains" ; name of the Edit Chains dialog
 
 Const
 	; These are used to announce different areas of the main window.  They should be translated.
@@ -60,7 +61,7 @@ In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
-To toggle swiching between two panes in the Edit Change dialog, press %keyfor (SwichPane).
+To switch between the two lists in the Edit Chains dialog, press %keyfor (SwichPane).
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
@@ -269,7 +270,7 @@ pause
 @msgPlay
 play
 @@
-@msgstop
+@msgStop
 stop
 @@
 @msgRecord
@@ -288,6 +289,9 @@ All tracks selected
 close focused track
 @@
 
+@MSG_Track_Pause
+Cannot performthis script while pause playing.
+@@
 @msgNoTransportToolbar
 Cannot find transport toolbar.  The transport toolbar must be enabled for this script to work.
 @@
@@ -343,5 +347,13 @@ Read the files directly from the original (faster)
 
 @msgDoNotWarn
 Don't warn again and always use my choice above
+@@
+
+;Messages for the two lists in the Edit Chains dialog.
+@msgChains
+Chains
+@@
+@msgChainCommands
+Chain commands
 @@
 EndMessages
