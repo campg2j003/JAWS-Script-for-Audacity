@@ -28,7 +28,7 @@ New in Jaws scripts for Audacity version 1.2 (9/20/2012):
 . [ and ] can now be used in file name dialogs.
 . Function AnnounceMessage now returns in open dialogs.
 . Jaws now correctly speaks controls in the warning dialog shown when importing uncompressed Audio files.  This is done by new function IsWarningDialog and changes to function HandleCustomWindow and script SayLine.  Removed old implementation in script AudacitySayFrame because it works on Coung's PC only.
-. In the Edit Chains dialog F6 toggles between thae Chains and Chain list views.  If the focus is not on either list view, the key is ignored.
+. In the Edit Chains dialog F6 toggles between the Chains and Chain list views.  If the focus is not on either list view, the key is ignored.
 . In the settings file changed key announce to announceMessage.  Script ResetConfig now deletes the old (announce) key if it exists.
 . In SayLine added tests for IsPCCursor and not UserBufferIsActive.
 . By uncommenting a couple of key assignments and a script it is possible to use the ENTER key to pause play/record.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  It is commented out because it disabled Select/Unselect Track on Cuong's machine (should be fixed now).  (It sends ENTER when stopped and "p" when playing.)  To activate it, remove the semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and remove (or add semicolon to the start of) the lines containing /* and */ before and after script Enter in audacity.jss.  Try it out and let us know if it works for you and if you like it.
