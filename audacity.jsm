@@ -270,7 +270,7 @@ pause
 @msgPlay
 play
 @@
-@msgstop
+@msgStop
 stop
 @@
 @msgRecord
@@ -287,6 +287,13 @@ All tracks selected
 
 @msgCloseFocusedTrack
 close focused track
+@@
+
+@msgNotStopped_l
+Cannot perform this operation unless stopped.
+@@
+@msgNotStopped_s
+not stopped.
 @@
 
 @msgNoTransportToolbar

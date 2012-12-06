@@ -2,6 +2,14 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/5/12 by Gary Campbell:
+;Merged from repo audacity_cuong changeset:   37:63cb06c0ae0d.
+;In script CloseFocusTrack added SayCurrentScriptKeyLabel when key is passed through.
+;Changed msg_track_Pause to msgNotStopped_l and _s.  Changed logic slightly.
+;12/5/12 by Dang Manh Cuong:
+; In scripts JawsHome, JawsEnd, CloseFocusTrack recalled function IsStopped
+; In script JawsHome, JawsEnd, CloseFocusTrack, DeleteSelectedAudio, copy, CutToClipboard added warning message when users perform them while playing is paused. The condition for these script might need to be rewritten.
+;Remove some unused code.
 ;12/4/12 by Gary Campbell:
 ;Merged changes from repo audacity_cuong changeset:   36:74c3d9384502.  Minor fix-ups.
 ;In SwichPane added code to send key to app when not in Edit Chains dialog.
@@ -286,7 +294,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/5/12 03:27UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/5/12 00:17UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -883,11 +891,13 @@ Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 SayNoProject ()
-;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped ()==true  then
-;If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage")then
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+return
+EndIf ;!IsStopped
 JawsHome () ; do Home without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgtrack))
 Else
@@ -899,11 +909,13 @@ Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
 If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 SayNoProject ()
-;	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") &&IsStopped () ==true then
-;If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+Return
+EndIf ;!IsStopped
 JAWSEnd () ; do End without speaking key label
 SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
 Else
@@ -1009,7 +1021,11 @@ Return
 ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 return
-ElIf FocusInTrackPanel ()&& IsStopped () ==true then
+ElIf FocusInTrackPanel () Then
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+Return
+EndIf ; If not stopped
 TypeCurrentScriptKey ()
 If AnnounceOn ("AnnounceMessage") then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
@@ -1085,11 +1101,14 @@ SayNoTrackSelected ()
 Return
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
-
 If NoProject () Then
 SayNoProject ()
 return
 endIf ; no project
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+Return
+EndIf
 TypeCurrentScriptKey ()
 If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, msgCopyAudio, OT_status) ;the alert message declare here
@@ -1104,13 +1123,16 @@ Script CutToClipboard ()
 If !IsTrackSelected () &&! DialogActive () then
 SayNoTrackSelected ()
 Return
-
 ElIf FocusInMainWindow ()
 &&!UserBufferIsActive () then ;this second condition makes the default script active in virtual viewer
 If NoProject () then
 SayNoProject ()
 return
 endIf ; no project
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+Return
+EndIf
 TypeCurrentScriptKey ()
 If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, msgCutAudio, OT_status) ;speak alert message
@@ -1136,10 +1158,15 @@ Script CloseFocusTrack ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () &&! IsStopped ()== true then ;!UserBufferIsActive () makes the default script active in virtual viewer.
-;ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
+;!UserBufferIsActive () makes the default script active in virtual viewer.
+If !IsStopped () then
+SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+Return
+EndIf ; if not Stopped
 AnnounceMessage (msgCloseFocusedTrack)
 Else
+SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf
 EndScript ; CloseFocusTrack
