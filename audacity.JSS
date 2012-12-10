@@ -2,9 +2,18 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/9/12 Merged from repo audacity_cuong changeset:   39:15181c5029e0.
+;Added return in PasteFromClipboard.
+;Start merge.
 ;12/8/12 Added code in IsTrackSelected that doesn't require that the track panel have focus.  Now returns True if at least one track is selected.  Changed message to not mention pressing ENTER since we don't know if the focus is in the track panel or on the desired track.
 ;12/7/12 Issue: If DEL is pressed when focus is in selection end the script says no track is selected and says to press enter to select it.  This is because IsSelected looks at the object at the PC cursor.  This means that it will not allow you to delete if a track is selected and the focused track is not.
+;12/7/12 merged changes from Gary
 ;12/6/12 Made function SayNotStopped which speaks the msgNotStopped_l/s message, honoring the setting of the Announce Audacity Messages option.
+;Script PasteFromClipboard now uses function SayNotStop to speak warning message.
+;12/6/12 by Dang Man Cuong: wrote script PasteFromClipboard. This just speaks a warning message when playing or pause.
+;End merge
+;12/6/12 by Gary Campbell:
+;Made function SayNotStopped which speaks the msgNotStopped_l/s message, honoring the setting of the Announce Audacity Messages option.
 ;12/5/12 Previous saved to HG rev 95.
 ;12/5/12 by Gary Campbell:
 ;Merged from repo audacity_cuong changeset:   37:63cb06c0ae0d.
@@ -298,7 +307,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/8/12 00:06UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/9/12 05:58UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -1700,3 +1709,16 @@ Else
 	TypeCurrentScriptKey ()
 EndIf ;Else not Edit Chains dialog
 EndScript ;SwichPane
+
+Script PasteFromClipboard ()
+;This just adds a warning message when not stopped.
+If NoProject () then
+SayNoProject ()
+Return
+ElIf !IsStopped () then
+SayNotStopped ()
+Return
+Else
+PerformScript PasteFromClipboard()
+EndIf 
+EndScript
