@@ -337,7 +337,7 @@ To use this feature you must enable the selection toolbar
 Jaws script version %1, for Audacity 2.0.0 or later.
 @@
 @MsgNoTrackSelected
-To use this feature you must select current track first. Press enter to select this.
+At least 1 track must be selected.
 @@
 
 ;messages for warning dialog when import uncompress audio

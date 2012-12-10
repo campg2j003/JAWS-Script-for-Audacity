@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/8/12 Added code in IsTrackSelected that doesn't require that the track panel have focus.  Now returns True if at least one track is selected.  Changed message to not mention pressing ENTER since we don't know if the focus is in the track panel or on the desired track.
+;12/7/12 Issue: If DEL is pressed when focus is in selection end the script says no track is selected and says to press enter to select it.  This is because IsSelected looks at the object at the PC cursor.  This means that it will not allow you to delete if a track is selected and the focused track is not.
+;12/6/12 Made function SayNotStopped which speaks the msgNotStopped_l/s message, honoring the setting of the Announce Audacity Messages option.
+;12/5/12 Previous saved to HG rev 95.
 ;12/5/12 by Gary Campbell:
 ;Merged from repo audacity_cuong changeset:   37:63cb06c0ae0d.
 ;In script CloseFocusTrack added SayCurrentScriptKeyLabel when key is passed through.
@@ -294,7 +298,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/5/12 00:17UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/8/12 00:06UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -423,6 +427,12 @@ SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf ; else not main window, etc.
 EndFunction ; AnnounceMessage
+
+Void Function SayNotStopped ()
+If AnnounceOn ("AnnounceMessage") then
+	SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+EndIf
+EndFunction
 
 Void Function SayNoProject ()
 ;If no project is open, speak an alert message.
@@ -895,7 +905,7 @@ SayNoProject ()
 EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage")then
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 return
 EndIf ;!IsStopped
 JawsHome () ; do Home without speaking key label
@@ -913,7 +923,7 @@ SayNoProject ()
 EndIf ; if no project
 If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") then
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 Return
 EndIf ;!IsStopped
 JAWSEnd () ; do End without speaking key label
@@ -1023,7 +1033,7 @@ SayNoTrackSelected ()
 return
 ElIf FocusInTrackPanel () Then
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 Return
 EndIf ; If not stopped
 TypeCurrentScriptKey ()
@@ -1106,7 +1116,7 @@ SayNoProject ()
 return
 endIf ; no project
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 Return
 EndIf
 TypeCurrentScriptKey ()
@@ -1130,7 +1140,7 @@ SayNoProject ()
 return
 endIf ; no project
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 Return
 EndIf
 TypeCurrentScriptKey ()
@@ -1161,7 +1171,7 @@ Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then
 ;!UserBufferIsActive () makes the default script active in virtual viewer.
 If !IsStopped () then
-SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
+SayNotStopped ()
 Return
 EndIf ; if not Stopped
 AnnounceMessage (msgCloseFocusedTrack)
@@ -1574,25 +1584,58 @@ EndIf
 EndScript
 
 Int Function IsTrackSelected ()
-;indicates current track is selected
+;indicates that there is a selected track.
+Var
+	Object obj,
+	Handle hWnd,
+	String sMsg,
+	Int i,
+	Int iTrackCount,
+	Int iState,
+	Int iMSAAMode
+
 If NoProject () Then
-SayNoProject ()
-Return
+	SayNoProject ()
+	Return
 Else
-SaveCursor ()
-PCCursor ()
-If FocusInTrackPanel () then
-Let sMessage=GetObjectName () ;get the name of the track that currently has focus
-;If this track is selected, then its object name contains the phrase "Select On", so now I verify that
-Let sMessage=StringSegment (sMessage, " ", -2) +" " ;extract the word "Select" in track name
-+ StringSegment (sMessage, " ", -1) ;extract the word "on" in track name
-If sMessage=="Select On" then ;the track is currently selected
-Return true
-EndIf ;sMessage
-EndIf ;FocusInTrackPanel
-RestoreCursor ()
-EndIf ;No project
-EndFunction
+	/*
+	SaveCursor ()
+	PCCursor ()
+	If FocusInTrackPanel () then
+		Let sMessage=GetObjectName () ;get the name of the track that currently has focus
+		;If this track is selected, then its object name contains the phrase "Select On", so now I verify that
+		Let sMessage=StringSegment (sMessage, " ", -2) +" " ;extract the word "Select" in track name
+		+ StringSegment (sMessage, " ", -1) ;extract the word "on" in track name
+		If sMessage=="Select On" then ;the track is currently selected
+			Return true
+		EndIf ;sMessage
+	EndIf ;FocusInTrackPanel
+	RestoreCursor ()
+	*/
+
+	;New method that doesn't require focus to be in track panel.
+	Let hWnd = GetFirstChild(GetLastWindow(GetFirstChild(GetAppMainWindow(GetFocus()))))
+	;SayString("Window name = " + GetWindowName(hWnd))
+		Let iMSAAMode = GetJcfOption(OPT_MSAA_MODE)
+		SetJcfOption(OPT_MSAA_MODE, 1)
+		Let obj = getObjectFromEvent(hWnd, -4, 0, i)
+	; obj is the table.
+	Let iTrackCount = obj.accChildCount
+	Let i = 1
+	While i <= iTrackCount
+		Let iState = obj.accState(i)
+		; This is a bitwise and, we are testing the bit for the selected state.
+		If iState & STATE_SYSTEM_SELECTED Then
+			SetJcfOption(OPT_MSAA_MODE, iMSAAMode)
+			Return True
+		EndIf ; selected
+		Let i = i + 1
+	EndWhile
+	;None selected.
+	SetJcfOption(OPT_MSAA_MODE, iMSAAMode)
+	Return False
+EndIf ;Else project exists
+EndFunction ;IsTrackSelected
 
 Void Function SayNoTrackSelected ()
 ;Announce that the current track is not selected
@@ -1649,10 +1692,11 @@ EndIf ; Else neither list.
 SetFocus (wnd)
 ;speaks a message when switching between the listss
 If AnnounceOn ("AnnounceMessage") Then
-SayUsingVoice (VCTX_message, sMessage, ot_String)
+	SayUsingVoice (VCTX_message, sMessage, ot_String)
 EndIf
 Else
-SayCurrentScriptKeyLabel ()
-TypeCurrentScriptKey ()
+	;Not Edit Chains dialog
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 EndIf ;Else not Edit Chains dialog
 EndScript ;SwichPane
