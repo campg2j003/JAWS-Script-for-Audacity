@@ -2,6 +2,11 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/12/12 Changed JAWSDelete and DeleteSelectedAudio so that they delete audio if Focus in the main window instead of track panel.
+;Added SayCurrentScriptKeyLabel in DeleteSelectedAudio.
+;Rewrote JAWSDelete to not use IsTrackSelected because it duplicates processing in DeleteSelectedAudio and is slow.  Also removed testing for no project since it is handled in DeleteSelectedAudio.
+;Commented out no project announcement in HandleCustomWindow so that it will not speak when moving between toolbar, track panel, and selection bar.  It previously didn't speak in track panel, only in toolbar and selection bar.
+;12/9/12 Previous saved to HG rev 98.
 ;12/9/12 Merged from repo audacity_cuong changeset:   39:15181c5029e0.
 ;Added return in PasteFromClipboard.
 ;Start merge.
@@ -307,7 +312,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/9/12 05:58UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/12/12 17:10UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -553,9 +558,9 @@ endIf
 endIf ; new toolbar
 endIf ; If IsToolbar
 ;Speaks an alert when no project open
-If NoProject () &&AnnounceOn ("AnnounceMessage") then
-SayNoProject ()
-endIf
+;If NoProject () &&AnnounceOn ("AnnounceMessage") then
+;SayNoProject ()
+;endIf
 Return HandleCustomWindows () ; allow others to process
 EndFunction ; HandleCustomWindows
 
@@ -1040,7 +1045,8 @@ Return
 ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 return
-ElIf FocusInTrackPanel () Then
+;ElIf FocusInTrackPanel () Then
+ElIf FocusInMainWindow () Then
 If !IsStopped () then
 SayNotStopped ()
 Return
@@ -1050,19 +1056,24 @@ If AnnounceOn ("AnnounceMessage") then
 SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
 endIf ; if AnnounceOn
 Else ; not main window, etc.
-; Just in case it is used somewhere else.  Actually, we could do it at the top of the script and eliminate this else.
+; !NoProject () && !DialogActive () && !MenusActive () && IsTrackSelected () && !FocusInTrackPanel () 
+; Just in case it is used somewhere else (like CTRL+k).  Actually, we could do it at the top of the script and eliminate this else.
+TypeCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 endIf ; else not main window, etc.
 EndScript
 
 Script JawsDelete ()
 ;If focus is in the main window, a project exists, and audio is selected, the del key will delete it. In this case we perform the script DeleteSelectedAudio.
-If FocusInMainWindow ()&&! IsTrackSelected () &&!NoProject () then
-SayNoTrackSelected ()
-Return
-ElIf FocusInTrackPanel ()&&!NoProject () then
+;If FocusInMainWindow ()&&! IsTrackSelected () &&!NoProject () then
+;SayNoTrackSelected ()
+;Return
+;ElIf FocusInTrackPanel ()&&!NoProject () then
+If FocusInMainWindow () Then
+; (!FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
 PerformScript DeleteSelectedAudio()
 Else
+; NoProdect() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are t`he right conditions here
 PerformScript JAWSDelete()
 endIf
 EndScript
