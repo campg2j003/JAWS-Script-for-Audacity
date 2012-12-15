@@ -20,8 +20,8 @@
 :function MouseMovement
 :Param string/sScript The script to perform. This must be define as a string variable
 
-:function AnnounceMessage
-:Description Speaks a message for an Audacity hotkey if appropriate and sends the to Audacity.
+:function AnnounceKeyMessage
+:Description Speaks a message for an Audacity hotkey if appropriate and sends the key to Audacity.
 :Param string/Message The message to speak
 
 :function SayNoProject

@@ -2,6 +2,10 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/14/12 Changed AnnounceMessage to test for FocusInMainWindow instead of FocusInTrackPanel.
+; Removed tests for FocusInTrackPanel (which should have been FocusInMainWindow) and UserBufferIsActive because these tests are done in AnnounceMessage.
+;Renamed function AnnounceMessage to AnnounceKeyMessage to indicate that it sends the key.  Also changed jsd.
+;12/12/12 Previous saved to HG rev 99.
 ;12/12/12 Changed JAWSDelete and DeleteSelectedAudio so that they delete audio if Focus in the main window instead of track panel.
 ;Added SayCurrentScriptKeyLabel in DeleteSelectedAudio.
 ;Rewrote JAWSDelete to not use IsTrackSelected because it duplicates processing in DeleteSelectedAudio and is slow.  Also removed testing for no project since it is handled in DeleteSelectedAudio.
@@ -312,7 +316,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/12/12 17:10UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/14/12 05:42UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -427,10 +431,10 @@ formatStringWithEmbeddedFunctions("<$" +sScript +">")
 endIf ; else perform default script
 EndFunction ; MouseMovement
 
-Void Function AnnounceMessage (string Message)
+Void Function AnnounceKeyMessage (string Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
-If !NoProject ()&&! UserBufferIsActive ()&&FocusInTrackPanel ()   then
+If !NoProject ()&&! UserBufferIsActive ()&&FocusInMainWindow ()   then
 If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 endIf ; if AnnounceOn
@@ -957,7 +961,7 @@ ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 Return
 Else
-AnnounceMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
+AnnounceKeyMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
 EndIf
 EndScript
 
@@ -969,7 +973,7 @@ ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 Return
 else
-AnnounceMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
+AnnounceKeyMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
 EndIf
 EndScript
 
@@ -982,7 +986,7 @@ ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 Return
 Else
-AnnounceMessage (FormatString (MSGSelectedTo, msgStart))
+AnnounceKeyMessage (FormatString (MSGSelectedTo, msgStart))
 EndIf
 EndScript
 
@@ -995,7 +999,7 @@ ElIf !IsTrackSelected () then
 SayNoTrackSelected ()
 Return
 Else
-AnnounceMessage (FormatString (MSGSelectedTo, msgEnd))
+AnnounceKeyMessage (FormatString (MSGSelectedTo, msgEnd))
 EndIf
 EndScript
 
@@ -1168,7 +1172,7 @@ If AnnounceOn ("AnnounceMessage") then
 SayUsingVoice (VCTX_Message, msgCutAudio, OT_status) ;speak alert message
 endIf ; if AnnounceOn
 ; We've already sent the key.
-;AnnounceMessage ("cut selected audio to clipboard", CksCut)
+;AnnounceKeyMessage ("cut selected audio to clipboard", CksCut)
 Else
 PerformScript CutToClipboard()
 endIf
@@ -1179,8 +1183,10 @@ Script DeselectAll ()
 If NoProject () then
 SayNoProject ()
 Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () then ;!UserBufferIsActive () makes the default script active in virtual viewer
-AnnounceMessage (msgDeselectAll)
+;These are tested in AnnounceMessage.
+;ElIf !UserBufferIsActive ()&&FocusInMainWindow () then ;!UserBufferIsActive () makes the default script active in virtual viewer
+Else
+AnnounceKeyMessage (msgDeselectAll)
 endIf
 EndScript
 
@@ -1194,7 +1200,7 @@ If !IsStopped () then
 SayNotStopped ()
 Return
 EndIf ; if not Stopped
-AnnounceMessage (msgCloseFocusedTrack)
+AnnounceKeyMessage (msgCloseFocusedTrack)
 Else
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
