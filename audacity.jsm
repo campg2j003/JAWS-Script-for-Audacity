@@ -19,7 +19,7 @@ Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages",
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars"
 
-;These are used to strip leading neros from audio positions.
+;These are used to strip leading zeros from audio positions.
 Const
 	;The format of a position with value 0 containing thousands separators, not including the last 0, like the seconds format, with blanks removed
 	csPositionGroupFmt = "000,00",
@@ -30,6 +30,9 @@ Const
 	csGroupSep = ",", ; thousands separator character
 	csDecimal = "." ; decimal point
 
+Const
+	;The key for pause
+	csPauseKey="p"
 
 Messages
 @msgProgName
@@ -337,7 +340,7 @@ To use this feature you must enable the selection toolbar
 Jaws script version %1, for Audacity 2.0.0 or later.
 @@
 @MsgNoTrackSelected
-At least 1 track must be selected.
+To use this feature you must select current track first. Press enter to select this.
 @@
 
 ;messages for warning dialog when import uncompress audio
