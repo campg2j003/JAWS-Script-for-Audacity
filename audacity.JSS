@@ -2,6 +2,12 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/23/12 Removed sKey parm from SaySelectionPosition.
+;Changed GetObjectState to GetObjState.
+;Changed StrToolbars/SelectionBar/TrackPanel to CS_....
+;Changed ID_Change_List to ID_Chains_List, ID_Change_Parms to ID_Chain_Cmds_List.
+;Changed IniFile to CS_INI_FILE.
+;12/23/12 Previous saved to patch101.
 ;12/20/12 Formatting and typo fixes.
 ;Added variables sMessage and sScriptName in scripts so global can be removed.
 ;In DeleteSelectedAudio changed TypeCurrentScriptKeylabel to SayCurrentScriptKeyLabel.
@@ -323,7 +329,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/14/12 05:42UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/23/12 04:15UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -331,7 +337,7 @@ Const
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
-	IniFile="Audacity.jsi",
+	CS_INI_FILE="Audacity.jsi",
 	;For VST plugins
 	ID_Load_Preset=11001,
 	ID_Save_Preset=11002,
@@ -342,8 +348,8 @@ Const
 	CI_TOOLBARS_OFF = 0,
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
 	;For the Edit chains dialog
-	ID_Change_List=7001,
-	ID_Change_Parameters=10002
+	ID_Chains_List=7001,
+	ID_Chain_Cmds_List=10002
 
 /*
 Const
@@ -356,7 +362,8 @@ Const
 
 
 Globals
-	Int App_FirstTime, String sMessage, String sScriptName
+	Int App_FirstTime
+	;, String sMessage, String sScriptName
 
 Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
@@ -365,7 +372,7 @@ Int Function AnnounceOn (string sKey)
 Var
 	Int iAnnounce
 
-Let iAnnounce=IniReadInteger ("Settings", sKey, 0, IniFile)
+Let iAnnounce=IniReadInteger ("Settings", sKey, 0, CS_INI_FILE)
 If iAnnounce==1 Then
 	Return true
 endIf
@@ -377,7 +384,7 @@ Int Function FocusInTrackPanel ()
 Return (FocusInMainWindow () && GetWindowName(GetFocus()) == WN_TRACKPANEL )
 EndFunction ; FocusInTrackPanel
 
-Void Function SaySelectionPosition (Int iPosition, string sKey, string sMessage)
+Void Function SaySelectionPosition (Int iPosition, string sMessage)
 ;say the selection position field and pass the key to the ap.
 ;iPosition - control ID of the selection position control.
 ;sKey - ignored-- was key to pass
@@ -498,7 +505,7 @@ Let App_FirstTime=1
 SayFormattedMessage (OT_No_Disable, MSG_App_Start)
 EndIf ; if first time
 ;write default settings of Audacity script if settings file doesn't exist.
-If !FileExists (FindJAWSPersonalizedSettingsFile (IniFile, True)) Then
+If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 AddDefaultConfig ()
 EndIf
 EndFunction ;AutoStartEvent
@@ -554,14 +561,14 @@ If hParent != hOld Then
 Let ghAudacityLastArea = hParent ; new area.
 ; We could use FocusInTrackPanel here but we've already tested most of its conditions.
 If GetWindowName(hFocus) == WN_TRACKPANEL Then
-	Say (StrTrackPanel, OT_Position)
+	Say (CS_TrackPanel, OT_Position)
 	Return HandleCustomWindows ()
 endIf ; if track panel
 ; We could also identify the selection by testing for WindowHierarchyX = 3.
 If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
-	Say (StrSelectionBar, OT_position)
+	Say (CS_SelectionBar, OT_position)
 Else
-	Say (StrToolBars, OT_position)
+	Say (CS_ToolBars, OT_position)
 endIf ; else toolbar
 endIf ; new area
 
@@ -795,6 +802,9 @@ ScriptAndAppNames(msgProgName)
 EndScript
 
 Script HotkeyHelp ()
+Var
+	String sMessage
+
 If UserBufferIsActive () Then
 	UserBufferDeactivate ()
 EndIf
@@ -852,12 +862,12 @@ EndScript ;MouseRight
 ;The scripts below just speak an alert message when user presses certain Audacity hotkeys when they are active.
 Script SelectionStart ()
 ;Say selection start position when user presses the left bracket key to set it.
-SaySelectionPosition (ID_SELECTION_START, "[", msgSelectionStart)
+SaySelectionPosition (ID_SELECTION_START, msgSelectionStart)
 EndScript ;SelectionStart
 
 Script SelectionEnd ()
 ;Say selection end position
-SaySelectionPosition (ID_SELECTION_END, "]", msgSelectionEnd)
+SaySelectionPosition (ID_SELECTION_END, msgSelectionEnd)
 EndScript ;c
 
 Script FinishMarkerRight ()
@@ -1328,7 +1338,7 @@ If !hTemp Then
 EndIf ; if no transport toolbar
 
 Let hTemp = GetNextWindow (GetFirstChild (hTemp)) ; skip the grabber
-Let iPauseState = GetObjectState (hTemp)
+Let iPauseState = GetObjState (hTemp)
 /*
 ;This is an alternative method of determining if the button is pressed.  If GetObjectInfoByName doesn't work for you, uncomment this code block and the associated image name constants.  Set them to the values of your pressed button state graphic images.
 If iPauseState == -1 Then
@@ -1342,7 +1352,7 @@ If StringCompare(GetWindowText(hTemp, 0), CS_IMGPLAYPRESSED) == 0 Then
 	Let iPlayState = CTRL_PRESSED
 EndIf
 Let hTemp = GetNextWindow (hTemp)
-;Let iStopState = GetObjectState(hTemp)
+;Let iStopState = GetObjState(hTemp)
 Let hTemp = GetNextWindow (GetNextWindow (GetNextWindow (hTemp))) ; skip Start and End
 If StringCompare (GetWindowText (hTemp, 0), CS_IMGRECORDPRESSED) == 0 Then
 	Let iRECORDState = CTRL_PRESSED
@@ -1351,11 +1361,11 @@ Else
 ;Also comment the below line EndIf ;Else got object state.
 */
 Let hTemp = GetNextWindow (hTemp)
-Let iPlayState = GetObjectState (hTemp)
+Let iPlayState = GetObjState (hTemp)
 Let hTemp = GetNextWindow (hTemp)
-Let iStopState = GetObjectState (hTemp)
+Let iStopState = GetObjState (hTemp)
 Let hTemp = GetNextWindow (GetNextWindow (GetNextWindow (hTemp))) ; skip Start and End
-Let iRecordState = GetObjectState (hTemp)
+Let iRecordState = GetObjState (hTemp)
 ;EndIf ; else got object state
 ;SayString("Object states: pause = " + DecToHex(iPauseState) + ", play = " + DecToHex(iPLayState) + ", stop = " + DecToHex(iStopState) + ", record = " + DecToHex(iRecordState)) ; debug
 If iPlayState & CTRL_PRESSED Then
@@ -1423,7 +1433,7 @@ EndIf
 EndScript ;Enter
 ;*/
 
-Int Function GetObjectState (Handle hWnd)
+Int Function GetObjState (Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
 ;The returned state uses control attribute values from hjconst.jsh, not MSAASTATE values from msaaconst.jsh.
 ;Returns -1 if unable to get the object state.
@@ -1443,7 +1453,7 @@ Let iRtn = GetObjectInfoByName (hWnd, sName, 1, iSubtype, iState)
 ;Let iRtn = 0 ; debug
 If !iRtn Then
 	;Try GetObjectFromEvent.
-	;SayString ("GetObjectState: GetObjectInfoByName failed for " + sName) ; debug
+	;SayString ("GetObjState: GetObjectInfoByName failed for " + sName) ; debug
 	Let obj = getObjectFromEvent(hWnd, -4, 0, iTemp)
 	If obj Then
 		Let iTemp = obj.accState(1)
@@ -1459,9 +1469,9 @@ If !iRtn Then
 	EndIf ; If obj
 EndIf ; If !iRtn
 SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
-;SayString ("GetObjectState: iState=0x" + DecToHex(iState) + " for " + sName) ; debug
+;SayString ("GetObjState: iState=0x" + DecToHex(iState) + " for " + sName) ; debug
 Return iState
-EndFunction ; GetObjectState
+EndFunction ; GetObjState
 
 Int Function IsStopped ()
 Return GetAudacityState () & ST_STOPPED
@@ -1507,7 +1517,7 @@ EndFunction ; NodeHlp
 string Function UOAnnounceMessages (int iRetCurVal)
 Var
 	Int iVal
-Let iVal = IniReadInteger ("Settings", "AnnounceMessage", CI_MESSAGES_OFF, IniFile)
+Let iVal = IniReadInteger ("Settings", "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
 if !iRetCurVal Then
 	if iVal == CI_MESSAGES_FULL Then
 		let iVal = CI_MESSAGES_OFF
@@ -1515,7 +1525,7 @@ if !iRetCurVal Then
 		; This paves the way for multiple values.
 		let iVal = iVal + 1
 	endIf
-	IniWriteInteger ("Settings", "AnnounceMessage", iVal, IniFile)
+	IniWriteInteger ("Settings", "AnnounceMessage", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_MESSAGES_OFF Then
 	Return cmsg_Off
@@ -1533,7 +1543,7 @@ EndFunction ; UOAnnounceMessagesHlp
 String Function UOAnnounceToolbars (int iRetCurVal)
 Var
 	Int iVal
-Let iVal = IniReadInteger ("Settings", "Announcetoolbars", CI_TOOLBARS_OFF, IniFile)
+Let iVal = IniReadInteger ("Settings", "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
 If !iRetCurVal Then
 	if iVal == CI_TOOLBARS_ON Then
 		let iVal = CI_Toolbars_OFF
@@ -1541,7 +1551,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		let iVal = iVal + 1
 	endIf
-	IniWriteInteger ("Settings", "Announcetoolbars", iVal, IniFile)
+	IniWriteInteger ("Settings", "Announcetoolbars", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_TOOLBARS_OFF Then
 	Return cmsg_Off
@@ -1556,18 +1566,21 @@ EndFunction ; UOAnnounceToolbarsHlp
 
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
-IniWriteInteger ("Settings", "AnnounceMessage", 1, IniFile, False) ; don't flush because we're going to write another one
-IniWriteInteger ("Settings", "AnnounceToolbars", 1, IniFile, true) ; flush
+IniWriteInteger ("Settings", "AnnounceMessage", 1, CS_INI_FILE, False) ; don't flush because we're going to write another one
+IniWriteInteger ("Settings", "AnnounceToolbars", 1, CS_INI_FILE, true) ; flush
 EndFunction ;AddDefaultConfig
 
 Script ResetConfig ()
 ;Reset all audacity JAWS script options to their default values.
+Var
+	String sMessage
+
 ;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
-If FileExists (FindJAWSPersonalizedSettingsFile (IniFile, True)) Then
+If FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	;Remove obsolete key if it exists.
-	Let sMessage=IniReadString ("Settings", "announce", "", IniFile) ;the old key "anounce" has been changed to "AnnounceMessage"
+	Let sMessage=IniReadString ("Settings", "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
 	If sMessage Then
-		IniRemoveKey ("settings", "announce", IniFile, false)
+		IniRemoveKey ("settings", "announce", CS_INI_FILE, false)
 	EndIf ;sMessage
 EndIf ;FileExists
 AddDefaultConfig ()
@@ -1576,6 +1589,9 @@ EndScript ; ResetConfig
 
 Script SayAppVersion ()
 ;Says current program and script version
+Var
+	String sMessage
+
 PerformScript SayAppVersion () ;Says current program version
 Let sMessage=FormatString (msg_Script_Version, cs_Script_Version) ;current script version
 Say (sMessage, OT_No_Disable) ;says current script version
@@ -1729,15 +1745,17 @@ Script SwichPane ()
 ;Code given by Gary Campbell
 Var
 	Handle wnd,
-	Int iCurId
+	Int iCurId,
+	String sMessage
+
 If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))==WN_EDIT_CHAINS Then
 Let iCurId = GetControlID (GetFocus())
-If iCurId == ID_Change_List Then
-	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_Parameters)
+If iCurId == ID_Chains_List Then
+	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
 	Let sMessage=msgChainCommands ;list of commands in the right list
-ElIf iCurId == ID_Change_Parameters 
+ElIf iCurId == ID_Chain_Cmds_List 
 ||GetWindowClass (GetFocus ())=="button" Then ;make the script available in everywhere in edit change dialog
-	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Change_List)
+	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chains_List)
 	Let sMessage=msgChains ;list of chains in the left list
 Else
 	; focus not on either control

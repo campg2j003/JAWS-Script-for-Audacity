@@ -10,9 +10,9 @@ Const
 
 Const
 	; These are used to announce different areas of the main window.  They should be translated.
-	StrToolbars="Toolbars",
-	StrSelectionBar="Selection bar",
-	StrTrackPanel="Track panel"
+	CS_Toolbars="Toolbars",
+	CS_SelectionBar="Selection bar",
+	CS_TrackPanel="Track panel"
 
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const

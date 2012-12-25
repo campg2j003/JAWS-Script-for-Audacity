@@ -10,7 +10,6 @@
 :Description Says the selection start or end position
 :Category Positioning
 :Param int/iPosition The ID of the start or end selection position
-:Param string/sKey The default hotkey
 :Param string/sMessage Spoken message
 
 :function MarkerMovement
