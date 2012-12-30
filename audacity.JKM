@@ -29,4 +29,5 @@ Alt+S=VSTSavePreset
 Shift+,=SayJump
 .=SayJump
 Shift+.=SayJump
-F6=SwichPane
+F6=SwitchChainsList
+ctrl+JAWSKey+z=test

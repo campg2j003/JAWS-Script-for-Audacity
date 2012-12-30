@@ -255,6 +255,6 @@
 
 :script SayLine
 
-:script SwichPane
+:script SwitchChainsList
 :Synopsis Toggle swiching between two panes in the Edit change dialog
 

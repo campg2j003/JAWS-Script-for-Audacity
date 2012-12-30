@@ -64,7 +64,7 @@ In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
-To switch between the two lists in the Edit Chains dialog, press %keyfor (SwichPane).
+To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
 To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
@@ -75,9 +75,13 @@ To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
 
-To close this message, press %keyfor (UpALevel)
 @@
+@msgPresetHotkeyHelp
+To set focus to the preset option, press %keyfor (VSTPreset).
+To load an existing preset, press  %keyfor (VSTLoadPreset).
+To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
+@@
 @msgAudacityHotKeyHelp
 Default keystrokes for Audacity v2.0.0 (from Audacity 2.0 Guide, by David Bailes, at http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0-Guide.html):
 
@@ -176,7 +180,6 @@ Audio Host dialog  Shift + H
 Input Device dialog  Shift + I
 Number of channels dialog  Shift + N
 
-To close this message, press %keyfor (UpALevel).
 @@
 
 @msg_App_Start

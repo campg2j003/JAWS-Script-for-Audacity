@@ -2,18 +2,25 @@
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Modifications:
+;12/29/12 Changed the name of SwichPane to SwitchChainsList in jkm, jsd, jsm.
+;12/28/12 The link for displaying default JAWS hotkeys in Hotkey Help works from the links list (JAWSKey+F7) in the virtual viewer.
+;In JAWS 10 when the link is activated from the text in the virtual viewer, it redisplays the Audacity hot keys list.  This is the same behavior as seen in Outlook for Office 2003.
+;12/26/12 Removed "to close" line from hotkey help.  Added call to AddHotkeyLinks (defined in default.jss) to a link to display default JAWS hotkeys.  There is also commented out code to add the link and clos message in case AddHotkeyLinks doesn't work.
+;12/23/12 In ProcessVST does not turn speech on if it was previously off.  Added pause after setting focus so that button is not spoken.
+;In SwichPane changed so that focus is placed on chains list if focus is on any control in the dialog except the chains list.
+;12/23/12 Previous saved to HG rev 102.
 ;12/23/12 Removed sKey parm from SaySelectionPosition.
 ;Changed GetObjectState to GetObjState.
 ;Changed StrToolbars/SelectionBar/TrackPanel to CS_....
 ;Changed ID_Change_List to ID_Chains_List, ID_Change_Parms to ID_Chain_Cmds_List.
 ;Changed IniFile to CS_INI_FILE.
-;12/23/12 Previous saved to patch101.
+;12/23/12 Previous saved to HG rev 101.
 ;12/20/12 Formatting and typo fixes.
 ;Added variables sMessage and sScriptName in scripts so global can be removed.
 ;In DeleteSelectedAudio changed TypeCurrentScriptKeylabel to SayCurrentScriptKeyLabel.
-;In AnnounceOnOff we now *se the same message used by AdjustJawsOptions.  this removes the string literal without the need for another message constant.
+;In AnnounceOnOff we now *se the same message used by AdjustJawsOptions.  This removes the string literal without the need for another message constant.
 ;In SayAudacityState commented out (hopefully) unused variables.  Changed literal space to constant cScSpace.
-;In script Enter changed "p" to csPauseKey.
+;In script Enter changed "p" to csPauseKey.  Added this constant to audacity.jsm.
 ;12/14/12 Previous saved to HG rev 100.
 ;12/14/12 Changed AnnounceMessage to test for FocusInMainWindow instead of FocusInTrackPanel.
 ; Removed tests for FocusInTrackPanel (which should have been FocusInMainWindow) and UserBufferIsActive because these tests are done in AnnounceMessage.
@@ -329,7 +336,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 ; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/23/12 04:15UTC"
+Const CS_SCRIPT_VERSION = "1.2 12/29/12 23:37UTC"
 
 Const
 	ID_SELECTION_START = 2705,
@@ -808,13 +815,29 @@ Var
 If UserBufferIsActive () Then
 	UserBufferDeactivate ()
 EndIf
-If !IsSameScript() && FocusInMainWindow () Then
+If !IsSameScript () && FocusInMainWindow () Then
 	Let sMessage=FormatString (MSGScript_Ver, CS_SCRIPT_VERSION)
 	SayFormattedMessage (OT_User_buffer, sMessage)
 	SayFormattedMessage (OT_User_Buffer, MSGHotkeyHelp)
+	;In JAWS 10 the produced link redisplays the Audacity hot keys list when activated from the text.  It works correctly from the links list (JAWSKey+F7).  This is the same behavior as seen in Outlook for Office 2003.
+	AddHotkeyLinks ()
+		;UserBufferAddText (cScBufferNewLine)
+		;UserBufferAddText (cMsgHotKeysLink, cFuncHotKey, cMsgHotKeysFunc)
+		;UserBufferAddText (cScBufferNewLine)
+		;UserBufferAddText (cMsgBuffExit)
 Else
-	PerformScript HotKeyHelp()
-EndIf
+	If DialogActive () && FindDescendantWindow (GetRealWindow (GetFocus ()), ID_PRESET) Then
+		;We are in a dialog with a preset.
+		sayFormattedMessage (OT_User_Buffer, msgPresetHotkeyHelp)
+		;UserBufferAddText (cScBufferNewLine)
+		;UserBufferAddText(cMsgHotKeysLink, cFuncHotKey, cMsgHotKeysFunc)
+		;UserBufferAddText (cScBufferNewLine)
+		;UserBufferAddText (cMsgBuffExit)
+		AddHotkeyLinks ()
+		Return
+	EndIf
+	PerformScript HotKeyHelp ()
+EndIf ;else not in main window
 EndScript ;HotkeyHelp
 
 Script WindowKeysHelp ()
@@ -1615,22 +1638,27 @@ EndScript ;SelectAll
 Void Function ProcessVST (int iControlID)
 ;Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
 Var
-	Handle hWnd
+	Handle hWnd,
+	Int bSpeechOff
 
 Let hwnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID) ;The control ID of the control the focus should be moved to
 If DialogActive () && hWnd Then ;make sure user is in a dialog and we found the desired control.
-If GetWindowClass (hWnd)=="button" Then
+If GetWindowSubtypeCode (hWnd)==WT_BUTTON Then
+	Let bSpeechOff = IsSpeechOff ()
 	SpeechOff () ;prevent JAWS from speaking while focus moves to the button
 	SetFocus (hWnd) ;move focus to the button
+	Pause () ;so button doesn't speak after speech is turned back on
 	EnterKey () ;activate the button
-	SpeechOn ()
+	If !bSpeechOff Then
+		SpeechOn ()
+	EndIf
 Else
 	;dest not a button.  Why do we set focus here?
 	;while focus at the preset control, just set focus to it.
 	SetFocus (hWnd)
 EndIf ; get window class
 Else
-	;process normal functionalities wile focus stands at main window. This mean user can add the same hotkeys of vst for any options they prefer.
+	;Process normal functionalities wile focus stands at main window. This mean user can add the same hotkeys of vst for any options they prefer.
 	;SayString("vst") ; debug
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -1739,28 +1767,32 @@ Else
 EndIf
 EndScript ;SayLine
 
-Script SwichPane ()
+Script SwitchChainsList ()
 ;Toggle switching between Chains and Chain lists in the Edit Chains dialog.
 ;Feature suggested by Dang Manh Cuong
 ;Code given by Gary Campbell
 Var
 	Handle wnd,
+	Handle hReal,
 	Int iCurId,
 	String sMessage
 
-If DialogActive () &&GetWindowName (GetRealWindow (GetFocus ()))==WN_EDIT_CHAINS Then
-Let iCurId = GetControlID (GetFocus())
+Let hReal = GetRealWindow (GetFocus ())
+If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
+Let iCurId = GetControlID (GetFocus ())
 If iCurId == ID_Chains_List Then
 	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
 	Let sMessage=msgChainCommands ;list of commands in the right list
-ElIf iCurId == ID_Chain_Cmds_List 
-||GetWindowClass (GetFocus ())=="button" Then ;make the script available in everywhere in edit change dialog
-	Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chains_List)
+;ElIf iCurId == ID_Chain_Cmds_List ||GetWindowSubtypeCode (GetFocus ())==WT_BUTTON Then ;make the script available in everywhere in edit chains dialog
+Else
+	Let wnd=FindDescendantWindow (hReal, ID_Chains_List)
 	Let sMessage=msgChains ;list of chains in the left list
+/*
 Else
 	; focus not on either control
 	;Should we send the key through just for completeness?
 	Return
+*/
 EndIf ; Else neither list.
 SetFocus (wnd)
 ;speaks a message when switching between the listss
@@ -1772,7 +1804,7 @@ Else
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 EndIf ;Else not Edit Chains dialog
-EndScript ;SwichPane
+EndScript ;SwitchChainsList
 
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
