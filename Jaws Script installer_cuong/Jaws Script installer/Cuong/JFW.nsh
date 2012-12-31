@@ -9,7 +9,7 @@ Features:
 . The user can choose whether to install scripts for all users or the current user.
 . Gets the correct install path of Jaws from the registry.
 . Checks for a Jaws installation before starting setup. If Jaws is not installed, displays a warning message and quits.
-. create macros for extracting, compiling, deleting, modifying script, so user can create a package containing multiple scripts quickly and easily.
+. contains macros for extracting, compiling, deleting, and modifying scripts, so user can create a package containing multiple scripts quickly and easily.
 ;. Macro to copy script from all users to current user.
 Limitations:
 . This installer works with English versions only.
@@ -27,26 +27,6 @@ Macro JAWSSectionRemoveJawsScript now deletes ${JAWSLOGFILENAME} instead of ${Un
 9/22/12 Previous saved to HG rev 57.
 9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
 Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
-9/22/12 Previous saved to HG rev 56.
-9/21/12 Added a JAWSREADME variable that is referenced by the default MUI_FINISHPAGE_SHOWREADME define to tell the Finish page where the README file is.  This allows it to be installed in different places based on the install type.
-Added a JAWSNoReadme define which suppresses the default definition of MUI_FINISHPAGE_SHOWREADME.
-9/14/12 Previous saved to HG rev 37.
-9/14/12 Moved more defines to JAWSscriptInstaller
-9/13/12 Changed ExecWait to nsexec when running uninstaller.
-Added adapted versions of some of Cuong's JFW macros:
-CompileSingle, AdvanceCompileSingle, AddHotkey, CopyScript, ModifyScript, AdvanceModifyScript, and Un.RemoveHotkey, not tested.
-Changed Save/RestoreInstallInfo to JAWSSave/RestoreInstallInfo.
-Added ifndef so that README file can be defined in the nsi file.
-Moved defines for the Finish page link to the nsi file.
-9/13/12 Previous saved to HG rev 36.
-9/13/12 Changed README file define to use ${ScriptApp}.
-Added support for macro JAWSInstallFullItems which generates a section to install items in the install folder like README, etc.
-Added a JAWSSec define and variable for the instdir files section and code in ComponentsPageLeave to select it when type is not Just Scripts.
-9/12/12 Widened list view by 2du.
-Added access keys to radio buttons.
-Added source files to the installer source section so that it now provides source for the full installer.
-9/12/12 Previous saved to HG rev 34.
-9/12/2012 Moved from ginstaller.nsi Mercurial changeset:   33:98ed74354a24, tag before_installer_separate_header.
 */
 
 !ifndef __JAWSSCRIPTSINCLUDED

@@ -1,7 +1,16 @@
 ; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacity.sourceforge.net).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
+
+; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
+Const CS_SCRIPT_VERSION = "2.0rc 12/30/12 00:54UTC"
+
 ;Modifications:
+;12/29/12 Moved modification history for last merge and before to file changehistory.txt.
+;Changed version to 2.0rc.
+;Updated README and What's new.
+;Moved script version constant to the top of the script.
+;12/29/12 Previous saved to HG rev 103.
 ;12/29/12 Changed the name of SwichPane to SwitchChainsList in jkm, jsd, jsm.
 ;12/28/12 The link for displaying default JAWS hotkeys in Hotkey Help works from the links list (JAWSKey+F7) in the virtual viewer.
 ;In JAWS 10 when the link is activated from the text in the virtual viewer, it redisplays the Audacity hot keys list.  This is the same behavior as seen in Outlook for Office 2003.
@@ -18,7 +27,7 @@
 ;12/20/12 Formatting and typo fixes.
 ;Added variables sMessage and sScriptName in scripts so global can be removed.
 ;In DeleteSelectedAudio changed TypeCurrentScriptKeylabel to SayCurrentScriptKeyLabel.
-;In AnnounceOnOff we now *se the same message used by AdjustJawsOptions.  This removes the string literal without the need for another message constant.
+;In AnnounceOnOff we now use the same message used by AdjustJawsOptions.  This removes the string literal without the need for another message constant.
 ;In SayAudacityState commented out (hopefully) unused variables.  Changed literal space to constant cScSpace.
 ;In script Enter changed "p" to csPauseKey.  Added this constant to audacity.jsm.
 ;12/14/12 Previous saved to HG rev 100.
@@ -30,301 +39,6 @@
 ;Added SayCurrentScriptKeyLabel in DeleteSelectedAudio.
 ;Rewrote JAWSDelete to not use IsTrackSelected because it duplicates processing in DeleteSelectedAudio and is slow.  Also removed testing for no project since it is handled in DeleteSelectedAudio.
 ;Commented out no project announcement in HandleCustomWindow so that it will not speak when moving between toolbar, track panel, and selection bar.  It previously didn't speak in track panel, only in toolbar and selection bar.
-;12/9/12 Previous saved to HG rev 98.
-;12/9/12 Merged from repo audacity_cuong changeset:   39:15181c5029e0.
-;Added return in PasteFromClipboard.
-;Start merge.
-;12/8/12 Added code in IsTrackSelected that doesn't require that the track panel have focus.  Now returns True if at least one track is selected.  Changed message to not mention pressing ENTER since we don't know if the focus is in the track panel or on the desired track.
-;12/7/12 Issue: If DEL is pressed when focus is in selection end the script says no track is selected and says to press enter to select it.  This is because IsSelected looks at the object at the PC cursor.  This means that it will not allow you to delete if a track is selected and the focused track is not.
-;12/7/12 merged changes from Gary
-;12/6/12 Made function SayNotStopped which speaks the msgNotStopped_l/s message, honoring the setting of the Announce Audacity Messages option.
-;Script PasteFromClipboard now uses function SayNotStop to speak warning message.
-;12/6/12 by Dang Man Cuong: wrote script PasteFromClipboard. This just speaks a warning message when playing or pause.
-;End merge
-;12/6/12 by Gary Campbell:
-;Made function SayNotStopped which speaks the msgNotStopped_l/s message, honoring the setting of the Announce Audacity Messages option.
-;12/5/12 Previous saved to HG rev 95.
-;12/5/12 by Gary Campbell:
-;Merged from repo audacity_cuong changeset:   37:63cb06c0ae0d.
-;In script CloseFocusTrack added SayCurrentScriptKeyLabel when key is passed through.
-;Changed msg_track_Pause to msgNotStopped_l and _s.  Changed logic slightly.
-;12/5/12 by Dang Manh Cuong:
-; In scripts JawsHome, JawsEnd, CloseFocusTrack recalled function IsStopped
-; In script JawsHome, JawsEnd, CloseFocusTrack, DeleteSelectedAudio, copy, CutToClipboard added warning message when users perform them while playing is paused. The condition for these script might need to be rewritten.
-;Remove some unused code.
-;12/4/12 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   36:74c3d9384502.  Minor fix-ups.
-;In SwichPane added code to send key to app when not in Edit Chains dialog.
-;Added message constants for Edit Chains dialog messages.
-;12/4/12 by Dang Manh Cuong: remove script SwichPane from Script VSTLoadPreset because Alt+l activated the Delete button in the Edit Chains dialog.
-;Added new hotkey (f6) for script SwichPane, also added this to script HotkeyHelp.
-; Removed unused code and comments
-;12/1/12 by Dang Manh Cuong: script SwichPane now speaks announce message when swiching between the panes.
-;12/4/12 Merged Cuong's changes from repo audacity_cuong changeset:   34:49566c2abd09.
-;Reactivated code using IsStopped since GetAudacityState should now work.
-;Made constant WN_EDIT_CHAINS for the Edit Chains dialog window name.
-;In audacity.jsd corrected name of function SayAudacityState to GetAudacityState.
-;11/30/2012 by Dang Manh Cuong
-;Added script swichPane for swiching between two pane in the edit change dialog.
-;Updated messages and comments.
-;10/26/12 by Dang Manh Cuong
-; In script JawsHome, JawsEnd, CloseFocusTrack commented out "IsStopped" function because in not work right now.
-;End merge from audacity_cuong.
-;12/4/12 Merged changes from br_79msaafix: Commented out code to get pause button state with images.
-;Removed other old code.
-;12/4/12 Moved code to get button state via MSAA to GetObjectState.  This works on Cuong's machine.
-;Removed some DebugString/Integer calls and changed the others to SayString/Integer.
-;12/1/12 In GetObjectState we now set MSAA mode to 1 when getting object state.  This reads button pressed state on Cuong's machine.
-;10/26/12 Previous saved to HG rev 79.
-;10/26/12 by Gary Campbell:
-;Merged changes from audacity_cuong changeset:   33:5ecf585448f0.
-;10/25/12 by Dang Manh Cuong
-;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, MoveToStartOfSelectedTrack, MoveToEndOfSelectedTrack, SelectToBeginning, SelectToEnd, Copy, function SaySelectionPosition, SayNoTrackSelected now pass keys to app when menu is active.
-;10/24/12 Previous saved to HG rev 77.
-;10/24/12 by Gary Campbell:
-;Merged Cuong's changes from changeset:   32:3972cadc96c6.  This switches back to using SayNoProject and SayNoTrackSelected .
-;Removed SayUnavailable from jsd.
-;10/24/12 by Dang Manh Cuong:
-;Merged changes from Gary
-;10/23/12 by Dang Manh Cuong:
-;Removed function sayUnavailable, and swiched back to the two old functions: SayNoProject and SayNoTrackSelected ().
-; Script ResetConfig now deletes the old (announce) key if it exists.
-;Start merge
-;10/23/12 Previous saved to HG rev 75.
-;10/23/12 Merged missed changes from br_69fix (see below).
-;Scripts SaySelectionStart, SaySelectionEnd, SayAudacityState, and DeleteSelectedAudio now pass keys to app when in a dialog.
-;In SayAudacityState reversed the order of ActiveDialog and no transport toolbar tests.
-;In SaySelectionPosition reversed the order of DialogActive and NoProject tests.
-;10/22/12 by Gary Campbell:
-;Merged in from audacity_cuong changeset:   31:7ec7b4982aab.
-;Removed AnnounceToolbarsOn from audacity.jsd.
-;End merge
-;10/21/12 by Dang Manh Cuong:
-; Function AnnounceOn now includes checking toolbars announcement. It replaces function AnnounceToolbarsOn written by Gary.
-; In Audacity.JSI file changed key announce to announceMessage.
-; Removed function AnnounceToolbarsOn written by Garry.
-; Modified all things related to the functions wich I modified and removed.
-; Removed commented out code.
-;10/22/12 Previous saved to HG rev 71.
-;10/19/12 by Gary Campbell (merged from branch br_69fix):
-;In IsWarningDialog made variable for focused window name, added parens around || clauses.
-;In SayLine added tests for IsPCCursor and not UserBufferIsActive.
-;10/18/12 Previous saved to HG rev 69.
-;10/18/12 by Dang Manh Cuong:
-;Fixed warning in script copy and CutToClipboard when no track selected an a dialog active. I found this error when copying the information in Jaws graphics labler dialog.
-;10/17/12 by Dang Manh Cuong: 
-;The folowing scripts will now return when a dialog is open: SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio.
-;Script JawsDelete now performs normal functionality in the metadata editor.
-;Removed script AudacitySayFrame and all things related to it because it works on my PC only.
-;Jaws now correctly speaks controls in the warning dialog shown when importing uncompressed Audio files.  This is done by new function IsWarningDialog and changes to function HandleCustomWindow and script SayLine.
-;Fix: warning with no track selected while in the virtual viewer.
-;10/14/12 by Dang Manh Cuong
-;Added function SayUnavailable which replaces functions SayNoProject and SayNoTrackSelected.  Commented out old code.
-;10/13/12 by Dang Manh Cuong
-;Scripts JawsHome and JawsEnd now do not warn about no project in virtual buffer.
-;10/12/12 by Dang Manh Cuong:
-;Added check for no project open in function IsTrackSelected.
-;Function SayNoTrackSelected now returns when no project is open.
-;Function AnnounceMessage now returns in open dialogs.  Modified scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd to match.
-;10/11/12 by Dang Manh Cuong
-;Script SayAudacityState now warns when no project is open.
-;Added functions IsTrackSelected and SayNoTrackSelected (). These alert when performing a script which requires that the current track be selected but is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
-;Modified function saySelectionPosition.   Added condition to allow the use of [ ] in file names.
-;Script sayAppVersion now displays script version in virtual buffer when CTRL+JawsKey+v is pressed twice quickly.
-;10/9/12 Previous saved to HG rev 64.
-;10/9/12 by Gary Campbell:
-;Merged in changes from repo audacity_cuong changeset 27:e663d81eefa2.
-;10/5/2012 by Dang Manh Cuong:
-;Modified mouse movement function. User can now perform the default Jaws mouse movement scripts when no project open
-;Modified script DeleteSelectedAudio to make it work on my PC.
-; Script CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd now stop speaking alert message when playing audio.
-;10/9/12 by Gary Campbell:
-;Merged in Cuong's changes from repo audacity_cuong change set 26:8e4fe6bd4ee9.
-;10/3/2012 by Dang Manh Cuong:
-;Modified script SayAppVersion. This script now just performs default script, and then speaks a message that tells the current script version.
-;Modified function SayNoProject. This function now works well at any area at the main window. Code given by Garry Campbell
-;9/30/12 Previous saved to HG rev 59.
-;9/30/12 Added FocusInTrackPanel test to condition for speaking position in FinishMarkerLeft and StartMarkerRight.
-;Added no project message in JAWSHome and JAWSEnd.
-;9/29/12 In GetAudacityState added tests of the toolbar button graphic name.  If the first call to GetObjectState fails, uses the graphics to identify the state of the remaining controls.  Added CS_IMG constants for the pressed state of the Play, Pause, and Record buttons.
-;9/29/12 Previous saved to HG rev 58.
-;9/27/12 by Dang Manh Cuong:
-;SelectFromStartOfLine and SelectToEndOfLine scripts now warn when no project is open.
-;9/29/12 By Gary Campbell:
-;Added and commented out code in GetObjectState to get object state with invisible cursor.  This works on Cuong's machine, but it is very slow, so commented out.
-;9/24/12 Changed IsStopped to use GetAudacityState.  This is because on Cuong's machine the Stop button does not return CTRL_DISABLED.
-;Added Cuong's SelectAll script, but changed FocusInTrackPanel to FocusInMainWindow because it works in selection bar and toolbars as well.
-;Removed duplicate line for AdjustJawsOptions in hotkey help.
-;9/21/12 Previous saved to HG rev 55.
-;9/21/12 Made function GetAudacityState and changed SayAudacityState to use it.  This is motivated by debugging, but it's a good change anyway.
-;9/20/12 Previous saved to HG rev 54.
-;9/20/12 Updated script version number.
-;9/20/12 Previous saved to HG rev 53.
-;9/20/12 Changed the conditions for not executing the default script in Start/FinishMarkerLeft/Right and made them perform their default scripts instead of silently sending the key through.
-;In MarkerMovement changed so that it doesn't say "no project" in the virtual buffer.  I think something else prevented this, but the logic looked wrong.
-;Movement and selection keys no longer say the position when no project is open.
-;9/20/12 Previous saved to HG rev 52.
-;9/19/12 Updated hot key help message.
-;Added script SayJump and key assignments that bind it to ,, ., shift+,, and Shift+..
-;removed commented-out code.
-;9/19/12 Previous saved to HG rev 51.
-;9/19/12 by Gary Campbell:
-; ProcessVST now tests that we found the desired control so that it won't process in other dialogs.
-;Now speaks control names in many plug-in dialogs.
-;9/19/12 Previous saved to HG rev 50.
-;9/19/12 Merged in Cuong's changes from audacity_cuong rev 25:ee441e30dd05.
-;9/19/12 by Dang Manh Cuong:
-;Modified ProcessVST function. Corrected the issue: "when focus move to the buttons control, it always say the button's name..."
-;User can now use the same hotkeys as VST script at the main window.
-;Updated comments.
-;9/19/12 by Gary Campbell:
-;Added Cuong's ProcessVST from his 9/19 distribution, added condition that hWnd is nonzero to the DialogActive test.
-;Changed ID_PRESET from 1001 to 11000.  1001 is the edit control that is the child of many combo boxes, like Sample Rate in the selection bar, and setting focus to the parent combobox class works.
-;9/18/12 by Gary Campbell:
-;Added default processing for ProcessVST.  
-;In scripts bound to [CTRL+]Shift+Left/RightArrow if not stopped sends the key to the app.  In play these keys do long jumps or nothing and in recording they don't select.
-;9/18/12 by Dang Manh Cuong:
-;Modified script SayAppVersion. The script now says current script version after saying Audacity version.
-;Added message for the script above into Audacity.jsm file.
-;updated comment to scripts has used ProcessVST function
-
-; 9/17/12 Merged in Cuong's changes from default branch, rev 40.
-;9/17/12 Previous saved to HG rev 42.
-;9/15/2012 Added script ENTER.  If not stopped, it sends key for pause.  Had to add key binding for it to audacity.jkm.  A side effect of doing this is that if JAWS is not set to treate extended keys separately, both numpad ENTER and typing keys ENTER will appear as the typing keys ENTER.  (I tried a separate NumPadEnter script but it still appeared as typing enter, even though GetScriptKeyName() returns NumPadEnter, and even if you use TypeKey(GetCurrentScriptKeyName())).  It is possible to run separate scripts.  It does not seem to be possible for a script to send NumPadEnter to the application.
-;9/17/12 Previous saved to HG rev 41.
-;9/15/2012 Script DeleteSelectedAudio now works only if stopped.
-;9/16/12 Previous saved to HG rev 38.
-;-- merge
-;9/17/2012 by Dang Manh Cuong:
-;Added function to set focus to some common controls in VST plugins, such as preset, load preset, and save preset.
-;Added script to swich to the controls above using the new function, also add its hotkeys to the script hotkey help.
-;Issue: when focus move to the buttons control, it always say the button's name, and I've not find the way to correct yet.
-;9/15/2012 by Dang Manh Cuong
-;Update the dicionary file to correct mispronounced word in the Compress Dynamic 1.2.6 dialog
-;-- end merge
-;9/14/2012 by Gary Campbell:
-;Changed function announce message to use SayCurrentScriptKeyLabel and TypeCurrentScriptKey.  Removed the sKey parameter, changed calls, and removed param from jsd.  Now speaks keys assigned to Audacity scripts when not performing Audacity functions.
-;Shortened message spoken when ends of selection are moved and added position announcement.
-;9/6/12 Previous saved to HG rev 29.
-;9/6/2012 by Gary Campbell:
-;In GetPositionField now removes zeros and point if no fractional digits.  Replaces 00 before decimal with 1 0.  Does not do this for formats without a decimal point, like 00h00m00s+frames.
-;9/5/12 by Gary Campbell:
-;Changed  GetPositionField so that it says all three digits following the decimal if there is a nonzero digit.
-;9/5/12 Previous saved to HG rev 28.
-;9/5/12 by Gary Campbell:
-;Updated jsd file.  Corrected syntax in hotkey help.
-;Made SayPrev/NextCharacter say "no project" in track panel.
-;Issue: position field announcement reads 68s for .068s.
-;9/4/12 by Gary Campbell:
-;In MouseMovement changed test from !IsJawsCursor to IsPCCursor to exclude invisible cursor as well.
-;In AddDefaultConfig made first write to ini file not flush.
-;In HandleCustomWindows commented out return false for track panel.
-;In CutToClipboard commented out extra AnnounceMessage call.
-;In many places moved return after SayNoProject.
-;Added more message constants.
-;Updated messages and comments.
-;9/3/12 Previous saved to HG rev 27.
-;9/3/12 Added SayPrior/NextCharacter to speak cursor position if stopped and messages are on.
-;9/3/12 Previous saved to HG rev 25.
-;9/3/12 by Gary Campbell:
-;Merged in changes from audacity_cuong rev 22:3eb23898db16.
-;9/3/12 by Dang Manh Cuong
-;Modified function SaySelection Position to make sure the selection toolbar is turned on.
-;Rewrote funtion AddDefaultConfig. This function can now be used to reset script settings to their default values.
-;Wrote script to reset the script config to default values, added its hotkey to the script hotkey help.
-; modified function AutoStartEvent to write the config file with default settings if it does not exist.
-;9/2/12 by Dang Manh Cuong
-;Modified script AdjustJawsOptions to make it work with Jaws 9.0 or later.
-;Added function AddDefaultConfig, called from AutoStartEvent  to store default script settings the first time the script is run.
-;Removed unused code in function FocusInTrackPanel.
-;Rewrote function NoProject.
-;Added test to verify that the selection toolbar is turned on.
-; Previous saved to HG rev 21.
-;9/2/2012 by Gary Campbell:
-;In SaySelectionPosition changed OT_POSITION to OT_USER_REQUESTED_INFORMATION as specified in sayActiveCursor in JAWS 10 default.jss.
-;Added function IsStopped, also to jsd.
-;9/1/2012 In audacity.jsm updated hotkey help to document JAWS script options.
-;Added message constants for program states.
-;Removed FocusInMainWindow where FocusInTrackPanel is also used.
-;9/1/12 Previous saved to HG rev 20.
-;9/1/2012 Placed the last revision, say stop state via ObjStateChangedEvent, on branch br_objstatechanged,  because it doesn't work.
-; Previous saved to HG rev 18.
-;9/1/2012 Added script AdjustJawsVerbosity so that options will be available in versions prior to JAWS 10, not tested.  The Audacity options will appear at the top of the list but will not indicate that they are for Audacity.
-;8/31/2012 Turning messages and toolbar alerts on/off now work.
-;HandleCustomWindows now calls HandleCustomWindows so that other functions such as in default.jsb can process the window.
-;Changed file extension of settings file from .Ini to .jsi.
-;8/31/2012 Made FocusInTrackPanel also call FocusInMainWindow so that condition does not need to be tested when it is used.
-;Added SayFocusedObject to not say "track table" when moving between tracks.
-;Added script AdjustJawsOptions code.  Added options for announce messages and announce toolbars.  Constants and messages are before script AdjustJawsOptions.
-; Rewrote script AnnounceOnOff to use UOAnnounceMessages.  It contains literal text.
-;8/30/2012 In SaySelectionPosition moved TypeCurrentScriptKey before the IsMainWindow test so that it will be sent to other dialogs.  Moved finding position inside AnnounceOn test since it is not needed until then.  Commented out sending key after a dialog opens because the sent key is what opened the dialog.
-;Changed Copy and CutToClipboard to not use AnnounceMessage.  This should allow them to speak in selection bar and toolbars.
-;Changed IsMainWindow to FocusInMainWindow.  Changed WrongFocus to FocusInTrackPanel, reversed the sense of its calls.
-;Added UserBufferIsActive to SayActiveCursor.
-;8/30/2012 Previous saved to HG rev 17.
-;8/29/2012 by Dang manh Cuong: Edidted script Jaws home and Jaws End to test the new feature of SayFormattedMessage funtions.
-;Removed function HandleCustomWindow created by me.
-;8/29/2012 Now speaks state of program-- play, record, stop, play pause, record pause.  Currently bound to JAWSKey+delete.
-;8/28/2012 NextDocumentWindow now skips grabber and statics at start of toolbar.
-;8/27/2012 Modified HandleCustomWindows to speak the toolbar name when focus moves to a new toolbar.
-;Made function GetToolbar to get the toolbar containing the focused control.  Modified JSD.
-;Added scripts Next/PreviousDocumentWindow to move focus to the next/previous toolbar when focus is in the toolbars.
-;8/26/2012 Previous saved to HG rev 13.
-;8/26/2012 by Gary Campbell: Scripts JawsHome andJawsEnd now do not speak the key name if they speak an Audacity message.  They do speak the key name if not in the track table or if Audacity announce messages are off.
-;Copy and Cut are modified to work in toolbars and selection bar, but still do not speak because AnnounceMessage tests for !WrongFocus.
-;8/25/2012 Rewrote HandleCustomWindows to announce change of focus between main window areas.
-;8/25/2012 by Gary Campbell: Moved strings to announce Toolbar, Selection Bar, and Track Panel to audacity.jsm.
-;Made message strings in jsm file for many messages.  Did not do copy or cut.
-;Rewrote HandleCustomWindows.  Now announces when focus changes from the toolbars to the track panel or the selection bar.  Added IsToolBar, but it has not been tested and is not being used.
-;8/24/2012 by Gary Campbell:
-;Updated messages and comments.
-;Removed commented-out code in IsMainWindow.
-;In script DeleteSelectedAudio moved Return to after SayNoProject.  Also added else so that key is sent if not in an audio track just in case it is used somewhere else.  This could also be done by moving TypeCurrentScriptKey at the start of the script.
-;In scripts Copy, CutToClipboard, and possibly others added additional conditions for doing the Audacity processing.
-;Do Copy/Cut audio work from the selection and tool bars?  (Yes.)  If so my changes need to be modified.
-;8/22/2012 by Gary Campbell: In SaySelectionPosition moved getting of field value after the key is sent to Audacity.  Previously Start/EndSelection was speaking the previous value.
-;Changed type of hPosition from Handle to Int.
-;Changed WrongFocus to test whether the window name of the focused control is not the track panel.
-;8/21/2012 by Gary Campbell: Commented out call to NoProject in script SayActiveCursor.
-;Previous saved to HG rev 10.
-;8/21/2012 by Gary Campbell: In function AnnounceMessage changed variable Key to sKey because of error compiling on JAWS 10.0.1178u.
-;8/21/2012 Previous saved to HG rev 9.
-;Cuong's modifications:
-;8/10/2012 wrote function and script to turn off announcement messages.
-;8/2/2012 Commented out function NoProjectOpen. (This exits my script when working with unsaved project, so I removed it at this time.)
-;8/1/2012 created function to prevent Jaws from speaking unwanted message when user presses default hotkey, such as Jaws home or Jaws end...
-;Jaws now speaks the text in warning dialog while importing an uncompressed audio file.
-;7/31/2012 modified some spoken messages and documentation
-;Modified the scripts SaySelectionStart and SaySelectionEnd to make it work only in the main window or an  open project.
-;Created function for saying start and end selection position when user presses default hotkeys
-;SayactiveCursor now performs its default function when no project is open.
-;7/28/2012 Added code to make the script be able to compile for Jaws versions before 13.0.
-;7/23/2012 wrote functions MouseMovement and CursorMovement to use in scripts assigned to JAWS mouse and cursor movement scripts. This makes the source smaller.
-;7/19/2012: created alert messages for copy, cut, deselect all audio, and close current track.
-;7/16/2012: modify the scripts for adjusting track gain and pan. User can perform the default normal JAWS functions (mouseLeft, MouseRight, MouseUp, and MouseDown) by turning the Jaws cursor on.
-;Added alert messages  for JawsHome, JawsEnd, and wrote code to activate some default script follow by announcing message.
-;Modified the JawsDelete script to announce when user deletes the selected audio.
-;Created some spoken messages.
-;7/15/2012: wrote functions to check if no project is open.
-;Created dictionary file for some mispronounced words (usually appear in Preferences dialogs synce Audacity 2.2.1).
-;Modified the hotkey help script. The hotkey now displays as a link.
-;7/13/2012: created spoken message when user moves the start or end of the selection to the left or right by a small amount.
-;7/12/2012: added announce message for start and end selection.
-;7/11/2012: added new hotkeys to the script hotkey help.
-;Added function AutoStartEvent to announce that this script is active.
-;7/2/2012:
-; Added function HandleCustomWindows.
-;wrote scripts obfor adjusting gain and pan.
-;Added hot key Jawskey+Shift+s to toggle mute synthersizer.
-;End of Cuong's modifications
-
-; 5/16/12 Converted to work with Audacity 2.0.0 and JAWS 10.0.1178u.
-; Added JAWS and Audacity hotkey help.
-; SayActiveCursor now says the value of the Audio Position field when in the main window and the PC cursor is active, press twice quickly for cursor position.
-; Added ScriptFileName.
-; Put messages and string constants in audacity.jsm.
-; Added script version string which appears in JAWS hot key help.
-; 5/12/07 Broke code to get value of a selection position field into a separate function GetPositionField(). Added script SaySelectionEnd().
 
 Include "hjconst.jsh"
 Include "hjglobal.jsh"
@@ -334,9 +48,6 @@ Include "msaaconst.jsh"
 
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
-
-; The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "1.2 12/29/12 23:37UTC"
 
 Const
 	ID_SELECTION_START = 2705,

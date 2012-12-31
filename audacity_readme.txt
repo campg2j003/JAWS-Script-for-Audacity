@@ -1,12 +1,6 @@
-12/4/2012 JAWS script for Audacity V1.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+12/29/2012 JAWS script for Audacity V2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
-This JAWS script package adds the following scripts for Audacity 2.0.0 and later:
-SaySelectionStart 
-SaySelectionEnd 
-SayActiveCursor
-ScriptFileName
-HotkeyHelp 
-WindowKeysHelp 
+This JAWS script package provides support for Audacity 2.0.0 and later.
 
 Features:
 Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
@@ -23,27 +17,28 @@ Keystrokes that extend or contract the selection speak the new position (or leng
 In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 In many plug-in dialogs control names and values are spoken.  
 
-By uncommenting a couple of key assignments and a script it is possible to use the ENTER key to pause play/record.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  It is commented out because it disables Select/Unselect Track on Cuong's machine.  (It is supposed to send ENTER when stopped, aod it does for me.)  To activate it, remove the semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and remove (or add semicolon to the start of) the lines containing /* and */ before and after script Enter in audacity.jss.  Try it out and let us know if it works for you and if you like it.
+When playing or recording the ENTER key executes pause/resume.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.    Try it out and let us know if it works for you and if you like it.  If you want to deactivate this behavior, add a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and remove the semicolons from the lines containing /* and */ before and after script Enter in audacity.jss.
 
 We have had problems getting the state of play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
 
 The script was developed with Audacity 2.0.2 and JAWS 10.0.1178u and 13.  It should probably work with any JAWS after 5.0.exe, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
 There is no specific Braille support at this time.
 
+Messages and string constants are in audacity.jsm facilitating translation.
+
+The script version can be obtained by pressing JAWSKey+CTRL+V (twice quickly to display it in the virtual viewer), and also appears in JAWS hot key help.
+
 To install: 
 Place the installer in a folder on your machine.
-Run it to install the files.  If you choose the full install type, you will be able to remove it via Add or Remove Programs, and it will make a folder in your program Files folder to store the uninstaller.  If you choose Just Scripts, it will not be removable from Add or Remove Programs, and it will not create a folder in your Program Files folder or any registry entries.  It also allows you to choose which JAWS versions to install into and whether to install for the current user or all users.
-Currently, if you choose the Just Scripts install type, you will not get the README or What's New files.  In this case you should not choose to read the README file  from the Finish page of the installer.
+Run it to install the files.  It also allows you to choose which JAWS versions to install into and whether to install for the current user or all users.  If you choose the full install type, you will be able to remove it via Add or Remove Programs, and it will make a folder in your program Files folder to store the uninstaller.  If you choose the Just Scripts install type, it will not be removable from Add or Remove Programs, and it will not create a folder in your Program Files folder or any registry entries.  
+If you choose the Just Scripts install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and What's new.txt will be called audacity_whatsnew.txt.  
 The   installer will compile the script package in each JAWS version.
-You can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
-
-Messages and string constants are in audacity.jsm facilitating translation.
-The script version appears in JAWS hot key help.
+If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
 Here is the text of the JAWS hot key help:
-JAWS keystrokes for script version 1.2 9/20/12, for Audacity 2.0.0 or later:
+JAWS keystrokes for script version 1.2 12/29/12 23:37UTC, for Audacity 2.0.0 or later:
 To say the selection start position, press control+[.
 To say the selection end position or length, press control+].
 To move focus to these controls, press the key twice quickly.
@@ -62,9 +57,9 @@ In a toolbar to move to the next toolbar press Control+Tab
 In a toolbar to move to the previous toolbar press Control+Shift+Tab
 To speak the program's state (play/pause/record/stop) press JAWSKey+delete
 To reset all script options to default values, press Shift+Control+`
+To switch between the two lists in the Edit Chains dialog, press F6.
 To get help with Audacity hot keys, press JAWSKey+W.
 To get the default Windows hot key help, press JAWSKey+W twice quickly.
-To change settings for the Audacity script press JAWSKey+V.
 
 In some common VST plugins, such as L1V:
 To set focus to the preset option, press Alt+P.

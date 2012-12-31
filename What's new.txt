@@ -1,5 +1,5 @@
-(This file last updated 12/6/2012)
-New in Jaws scripts for Audacity version 1.2 (9/20/2012):
+(This file last updated 12/29/2012)
+New in Jaws scripts for Audacity version 2.0 (12/29/2012):
 
 . Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CONTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
 . Added JAWSKey+v to jkm file so that options will appear  on JAWS 13, which apparently has a new options facility.
@@ -21,7 +21,7 @@ New in Jaws scripts for Audacity version 1.2 (9/20/2012):
 . Added SelectAll announcement.
 . Now indicates when no project is open (no tracks in track panel) for many operations.
 . Now speaks an alert message when performing an operation which requires that the current track be selected but it is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
-. Scripts CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd, Copy, and Cut speak an error message when indicating that they are not valid when Audacity is not stopped.
+. Scripts CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd, Copy, and Cut speak an error message indicating that they are not valid when Audacity is not stopped.
 . The CTRL+JawsKey+v keystroke now performs its default function, and then speaks the current Audacity script version.  When pressed twice quickly, displays this information in the virtual viewer.
 . The following now pass keys to the app when in a dialog or menu: scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd, SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, JawsDelete, and Copy, and Functions SaySelectionPosition, SayNoTrackSelected.
 . Changed the conditions for not executing the default script in Start/FinishMarkerLeft/Right and made them perform their default scripts instead of silently sending their keys through.
