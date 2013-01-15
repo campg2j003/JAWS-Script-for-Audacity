@@ -14,10 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Friday, November 2, 2012
+Last updated: Monday, December 31, 2012
 
 Modifications:
 
+12/31/12 Previous saved to HG rev 104.
 10/29/12 In function JAWSInstallVersion fixed logging code for jsb file.
 VERSION (script version) can now be defined in the installer prior to including this file to override searching for the version in the jss file.
 Fixed case and syntax errors in macro JAWSLOG_UNINSTALL.

@@ -14,10 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Monday, September 22, 2012
+Last updated: Monday, December 31, 2012
 
 Modifications:
 
+12/31/12 Previous saved to HG rev 104.
 12/31/12 Updated comments.
 Moved modification history to changehistory.txt.
 9/22/12 Previous saved to HG rev 57.

@@ -3,9 +3,11 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0rc 12/30/12 00:54UTC"
+Const CS_SCRIPT_VERSION = "2.0rc 1/8/13 12:37UTC"
 
 ;Modifications:
+; 1/8/13 In function NoProject added test for active user buffer.
+;12/31/12 Previous saved to HG rev 104.
 ;12/29/12 Moved modification history for last merge and before to file changehistory.txt.
 ;Changed version to 2.0rc.
 ;Updated README and What's new.
@@ -201,7 +203,7 @@ Var
 	Handle hTemp,
 	Object obj
 
-If FocusInMainWindow () Then
+If !UserBufferIsActive () && FocusInMainWindow () Then
 Let hTemp = GetRealWindow(GetFocus())
 Let hTemp = FindWindow (hTemp, "", WN_TRACKPANEL)
 SaveCursor ()
