@@ -1,6 +1,7 @@
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
+:Param string No Description
 
 :function FocusInTrackPanel
 :Returns int True if focus is not in the track panel
@@ -22,6 +23,8 @@
 :function AnnounceKeyMessage
 :Description Speaks a message for an Audacity hotkey if appropriate and sends the key to Audacity.
 :Param string/Message The message to speak
+
+:function SayNotStopped
 
 :function SayNoProject
 :Description Speaks a message when no project is open. For example, pressing the [ key will speak this message, and the script will exit.
@@ -81,19 +84,19 @@
 
 :script MouseUp
 :Synopsis Increase track gain or move the mouse pointer or JAWS cursor up
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseDown
 :Synopsis Decrease track gain or move the mouse pointer or JAWS cursor down
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseLeft
 :Synopsis Pan left or move the mouse pointer or JAWS cursor to the left
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseRight
 :Synopsis Pan right or move the mouse pointer or JAWS cursor to the right
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer. 
+:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script SelectionStart
 :Synopsis Says the selection start position
@@ -169,24 +172,19 @@
 :script PreviousDocumentWindow
 
 :function GetAudacityState
-:Synopsis returns the current program state-- play, record, pause
 :Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
+:Synopsis returns the current program state-- play, record, pause
 
 :script SayAudacityState
 :Synopsis Says the current program state-- play, record, pause
 
 :script Enter
 
-:function GetObjectState
+:function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
 :Synopsis Returns the object state of the object in the window
 :Description Works for windows whose object name is the same as the window name
 :Param handle/hWnd window to inspect
-
-:function IsStopped
-:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
-:Synopsis Determines if Audacity is currently stopped
-:Description Determines if Audacity is currently stopped.  Returns TRUE if stopped or the Transport toolbar cannot be found.  This is used to keep cursor position from being spoken unless Audacity is stopped.
 
 :function IsStopped
 :Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
@@ -256,5 +254,8 @@
 :script SayLine
 
 :script SwitchChainsList
-:Synopsis Toggle swiching between two panes in the Edit change dialog
+:Synopsis Toggle swiching between two panes in the Edit Chains dialog
+
+:script PasteFromClipboard
+:Returns undef No Return Description
 
