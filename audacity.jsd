@@ -4,7 +4,7 @@
 :Param string No Description
 
 :function FocusInTrackPanel
-:Returns int True if focus is not in the track panel
+:Returns int True if focus is in the track panel
 :Description Indicates if the focus is in the track panel.
 
 :function SaySelectionPosition
@@ -14,14 +14,15 @@
 :Param string/sMessage Spoken message
 
 :function MarkerMovement
-:Param string/sScript The script to be performed. This must be define as a string variable
+:Param string/sScript The script to be performed.
 :Param string/sAlert The alert message to be spoken
 
 :function MouseMovement
-:Param string/sScript The script to perform. This must be define as a string variable
+:Description Used to bypass scripts such as MouseLeft, MouseRight etc. that are assigned to Audacity keys while in the main window.
+:Param string/sScript The script to perform.
 
 :function AnnounceKeyMessage
-:Description Speaks a message for an Audacity hotkey if appropriate and sends the key to Audacity.
+:Description Speak a message for an Audacity hotkey if appropriate and send the key to Audacity.
 :Param string/Message The message to speak
 
 :function SayNotStopped
@@ -32,7 +33,7 @@
 
 :function NoProject
 :Returns int True if no project is open
-:Description This function indicates that no project has been created.
+:Description This function indicates that no project is open (there are no tracks in track panel).
 
 :function AutoStartEvent
 
@@ -52,14 +53,14 @@
 
 :function GetToolbar
 :Returns handle toolbar containing the current control
-:Synopsis When focus is on a toolbar control returns the handle of the toolbar containing the control
+:Description When focus is on a toolbar control returns the handle of the toolbar containing the control
 
 :function FocusInMainWindow
 :Returns int No Return Description
 
 :function GetPositionField
 :Returns string Value of field
-:Synopsis Get the value of one of the selection fields
+:Description Get the value of one of the selection fields
 :Param handle/hWnd Handle of position control
 
 :script SaySelectionStart
@@ -83,19 +84,19 @@
 :Description Press twice quickly to display Windows shortcut keys
 
 :script MouseUp
-:Synopsis Increase track gain or move the mouse pointer or JAWS cursor up
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
+:Synopsis Increase track gain or move the mouse pointer/JAWS cursor up
+:Description In the Audacity main window you must activate the JAWS cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseDown
-:Synopsis Decrease track gain or move the mouse pointer or JAWS cursor down
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
+:Synopsis Decrease track gain or move the mouse pointer/JAWS cursor down
+:Description In the Audacity main window you must activate the JAWS cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseLeft
-:Synopsis Pan left or move the mouse pointer or JAWS cursor to the left
-:Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
+:Synopsis Pan left or move the mouse pointer/JAWS cursor to the left
+:Description In the Audacity main window you must activate the JAWS cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script MouseRight
-:Synopsis Pan right or move the mouse pointer or JAWS cursor to the right
+:Synopsis Pan right or move the mouse pointer/JAWS cursor to the right
 :Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
 :script SelectionStart
@@ -120,9 +121,9 @@
 :script StartMarkerLeft
 :Synopsis Moves the start of the selection to the left by a small amount
 
-:script JawsHome
+:script JAWSHome
 
-:script JawsEnd
+:script JAWSEnd
 
 :script MoveToStartOfSelectedTracks
 :Synopsis Moves cursor to start of audio in selected tracks
@@ -137,15 +138,17 @@
 :Synopsis Moves the selection end to the end of the audio in the selected tracks
 
 :script SelectFromStartOfLine
+:Synopsis Select from current position to the start of file
 
 :script SelectToEndOfLine
+:Synopsis Select from current position to the end of file
 
 :script DeleteSelectedAudio
 :Synopsis Deletes the selected audio.
 
-:script JawsDelete
+:script JAWSDelete
 
-:script JawsBackspace
+:script JAWSBackspace
 
 :script SayPriorCharacter
 
@@ -165,7 +168,7 @@
 :Synopsis Close the currently focused track
 
 :script AnnounceOnOff
-:Synopsis Toggle on or off the announce message
+:Synopsis Toggle the announcement of Audacity message on or off
 
 :script NextDocumentWindow
 
@@ -217,44 +220,44 @@
 :Description Added default settings value to Audacity.JSI File
 
 :script ResetConfig
-:Synopsis Reset all audacity Jaws script' config to default.
+:Synopsis Reset all audacity JAWS script' config to default.
 
 :script SayAppVersion
 
 :script SelectAll
 
 :function ProcessVST
-:Description Performs some VST plugins' options quickly by hotkeys. The options include: preset, load preset, save preset.
-:Param int/iControlID No Description
+:Description Activates Preset, Load Preset, and Save Preset controls in VST plugin dialogs.
+:Param int/iControlID control to activate
 
 :script VSTPreset
 :Synopsis Set focus to the preset control in VST dialogs.
 :Description Adds support for an access key to set focus to the preset control in VST dialogs.
 
 :script VSTLoadPreset
-:Synopsis Quickly activates the Load button to load a preset in some vst dialogs
+:Synopsis Activates the Load button to load a preset in some VST plugin dialogs
 
 :script VSTSavePreset
-:Synopsis Quickly activates the Save button to save a preset in some vst dialogs
+:Synopsis Activates the Save button to save a preset in some VST dialogs
 
 :script SayJump
 :Synopsis Speaks the position after executing a short/long jump key
 
 :function IsTrackSelected
-:Returns int True if current track selected
-:Description This function indicates that the track is selected
+:Returns int True if current track is selected
+:Description Indicates whether the track is selected
 
 :function SayNoTrackSelected
-:Description Warn when user performs a script that required current track must be selected.
+:Description Warn when the user performs a script that requires the current track to be selected.
 
 :function IsWarningDialog
-:Returns int No Return Description
-:Description Varify that focus at the warning dialog of importing uncompress audio.
+:Returns int True if focus is in the waarning dialog
+:Description Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
 
 :script SayLine
 
 :script SwitchChainsList
-:Synopsis Toggle swiching between two panes in the Edit Chains dialog
+:Synopsis Switch between the Chains and Chain lists in the Edit Chains dialog.
 
 :script PasteFromClipboard
 :Returns undef No Return Description

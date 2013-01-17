@@ -41,7 +41,7 @@ Audacity
 
 ; Begins the hotkey help.
 ; %1 - string containing script version and date.
-@MSGScript_Ver
+@msgScript_Ver
 JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
 
 @@
@@ -56,10 +56,10 @@ To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
-The last 4 keys replace the default Jaws mouse movement scripts while focus is in the main window. If you want to activate the original functionality while in the main window, turn on the Jaws cursor.
+The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while in the main window, turn on the JAWS cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See the what's new.txt for mor info.
+See the what's new.txt for more info.
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
@@ -69,7 +69,7 @@ To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
 To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
 
 In some common VST plugins, such as L1V:
-To set focus to the preset option, press %keyfor (VSTPreset).
+To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 

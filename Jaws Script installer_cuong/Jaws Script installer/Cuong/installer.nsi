@@ -14,10 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Monday, December 31, 2012
+Last updated: Thursday, January 17, 2013
 
 Modifications:
 
+1/17/13 Removed audacity.jfd/jff.
 12/31/12 Previous saved to HG rev 104.
 12/31/12 Updated comments.
 Moved modification history to changehistory.txt.
@@ -64,8 +65,6 @@ SetOverwrite on ;always overwrite files
 ;Contains the instructions to install the scripts in each version of JAWS.  If not defined, the installer will use a default version that tries to install every type of JAWS script file for an application I know of.
 ;Assumes uninstlog is open when called.
 ${FileDated} "${JAWSSrcDir}" "audacity.jdf"
-${FileDated} "${JAWSSrcDir}" "audacity.jfd"
-${FileDated} "${JAWSSrcDir}" "audacity.jff"
 ${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"

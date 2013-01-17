@@ -1,39 +1,42 @@
-(This file last updated 12/29/2012)
-New in Jaws scripts for Audacity version 2.0 (12/29/2012):
+(This file last updated 1/16/2013)
+New in Jaws scripts for Audacity version 2.0 (1/15/2013):
 
-. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CONTROL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
-. Added JAWSKey+v to jkm file so that options will appear  on JAWS 13, which apparently has a new options facility.
-. Fixed speaking of position fields.  Previously, .012s was spoken as 12s.  Now speaks time fields containing two zeros as one 0, so 01h00m00.015s is spoken as 1h0m0.015s.  This is not yet done for formats such as ##h##m##s+##frames.  The "days"" format is now supported.  The code for this function has been rewritten to use more message constants, so it hopefully will be localizable.
-. The extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.
+. Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CTRL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
+. Added JAWSKey+v to the jkm file so that options will appear on JAWS 13, which has a new options facility.
+. Fixed speaking of position fields.  Previously, .012s was spoken as 12s.  Now speaks time fields containing two zeros as one 0, so 01h00m00.015s is spoken as 1h0m0.015s.  This is not yet done for formats such as ##h##m##s+##frames.  The "days" format is now supported.  The code for this function has been rewritten to use more message constants, so it hopefully will be localizable.
+. The extension of the Audacity script settings file has changed from .Ini to .jsi to conform to the JAWS scripting convention.  You can rename your existing audacity.Ini file to audacity.jsi and it should work.  
+. In the settings file changed key announce to announceMessage.  Script ResetConfig now deletes the old (announce) key if it exists.
 . JAWS no longer says "track table" when moving between tracks.
-. Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
-. Speaks the toolbar name when focus moves from one toolbar to another.
-. When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB moves to the first control on the next toolbar and the last control on the previous toolbar, respectively.
+. JAWS speaks main window areas: Toolbars, Track Panel, and Selection Bar, as focus moves between them.
+. JAWS speaks the toolbar name when focus moves from one toolbar to another.
+. When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB move to the first control on the next toolbar and the last control on the previous toolbar, respectively.
 . JAWSKey+Delete speaks the current program state: stop, play, play pause, record, or record pause.
 . left/right arrow keys Speak cursor position when Audacity is stopped.
 . Keystrokes that extend or contract the selection speak the new position when Focus is in the track panel.
 . Functions that use values from the selection bar now speak a message or silently omit the action requiring the value if the selection bar is not enabled.
 . Track gain and pan controls now only function when the PC cursor is active.  Otherwise they execute their default mouse movement functions.
 . HandleCustomWindows now calls HandleCustomWindows so that this function in scripts "use"d by this script will be executed.
-. In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
+. In many VST plug-ins, keystrokes move focus to the Presets control and activate Save/Load Presets.  Hotkey help is available for these keys in these dialogs.
 . In many plug-in dialogs control names and values are now spoken.  Use JAWSKey+TAB to repeat the current control name/value.
-. Added script SayJump and key assignments that bind it to ,, ., shift+,, and Shift+..
+. Added script SayJump and key assignments that bind it to comma, period, Shift+comma, and Shift+period.
 . Added SelectAll announcement.
-. Now indicates when no project is open (no tracks in track panel) for many operations.
-. Now speaks an alert message when performing an operation which requires that the current track be selected but it is not.  Added this funtionality to the folowing scripts: JawsDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
-. Scripts CloseFocusTrack, DeleteSelectedAudio, JawsHome, JawsEnd, Copy, and Cut speak an error message indicating that they are not valid when Audacity is not stopped.
-. The CTRL+JawsKey+v keystroke now performs its default function, and then speaks the current Audacity script version.  When pressed twice quickly, displays this information in the virtual viewer.
-. The following now pass keys to the app when in a dialog or menu: scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd, SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, JawsDelete, and Copy, and Functions SaySelectionPosition, SayNoTrackSelected.
+. JAWS now indicates when no project is open (no tracks in track panel) for many operations.
+. JAWS now speaks an alert message when performing an operation which requires that the current track be selected but it is not.  Added this funtionality to the folowing scripts: JAWSDelete, DeleteSelectedAudio, MoveToStartOfSelectedTracks, SelectToBeginning, SelectToEnd, copy, and cut.
+. Scripts CloseFocusTrack, DeleteSelectedAudio, JAWSHome, JAWSEnd, Copy, and Cut speak an error message indicating that they are not valid when Audacity is not stopped.
+. The CTRL+JAWSKey+v keystroke now performs its default function, and then speaks the current Audacity script version.  When pressed twice quickly, it displays this information in the virtual viewer.
+. The following now pass keys to the app when in a dialog or menu: scripts MoveToStartOfSelectedTracks, MoveToEndOfSelectedTracks, SelectToBeginning, SelectToEnd, SaySelectionStart, SaySelectionEnd, SayAudacityState, DeleteSelectedAudio, JAWSDelete, and Copy, and Functions SaySelectionPosition, and SayNoTrackSelected.
 . Changed the conditions for not executing the default script in Start/FinishMarkerLeft/Right and made them perform their default scripts instead of silently sending their keys through.
 . [ and ] can now be used in file name dialogs.
 . Function AnnounceMessage now returns in open dialogs.
-. Jaws now correctly speaks controls in the warning dialog shown when importing uncompressed Audio files.  This is done by new function IsWarningDialog and changes to function HandleCustomWindow and script SayLine.  Removed old implementation in script AudacitySayFrame because it works on Cuong's PC only.
-. In the Edit Chains dialog F6 toggles between the Chains and Chain list views.  If the focus is not on either list view, the key is ignored.
-. In the settings file changed key announce to announceMessage.  Script ResetConfig now deletes the old (announce) key if it exists.
+. JAWS now correctly speaks controls in the warning dialog shown when importing uncompressed Audio files.  This is done by new function IsWarningDialog and changes to function HandleCustomWindows and script SayLine.  Removed old implementation in script AudacitySayFrame because it works on Cuong's PC only.
+. In the Edit Chains dialog F6 toggles between the Chains and Chain list views.  If the focus is not on the Chains list view, the key moves focus to the Chains list view.  
 . In SayLine added tests for IsPCCursor and not UserBufferIsActive.
-. When playing and recording, the ENTER key executes pause.  (It sends ENTER when stopped and "p" when playing or recording.)  .  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  However, this means that you can't select/unselect tracks while playing or recording.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and removing semicolons on the lines containing /* and */ before and after script Enter in audacity.jss.  Try it out and let us know if you like it.
-. We have had problems getting the state of play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
+. When playing and recording, the ENTER key executes pause.  (It sends ENTER when stopped and "p" when playing or recording.)  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  Try it out and let us know if you like it.
 
+Issues:
+. We have had problems getting the state of Play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
+. The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity-- or JAWS, I can't find my notes on this.  This was observed with JAWS 10.
+. A side effect of ENTER pausing during record and play is that you can't select/unselect tracks while playing or recording.  Also, if you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and removing semicolons on the lines containing /* and */ before and after script Enter in audacity.jss.  
 
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 
