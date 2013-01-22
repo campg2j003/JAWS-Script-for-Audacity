@@ -14,10 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Monday, December 31, 2012
+Last updated: Tuesday, January 22, 2012
 
 Modifications:
 
+1/22/13 Added copyright statement.
 12/31/12 Previous saved to HG rev 104.
 10/29/12 In function JAWSInstallVersion fixed logging code for jsb file.
 VERSION (script version) can now be defined in the installer prior to including this file to override searching for the version in the jss file.
@@ -28,6 +29,26 @@ Macro JAWSSectionRemoveJawsScript now deletes ${JAWSLOGFILENAME} instead of ${Un
 9/22/12 Previous saved to HG rev 57.
 9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
 Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
+*/
+
+/*
+    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    
+    See the file copying.txt for details.
 */
 
 !ifndef __JAWSSCRIPTSINCLUDED

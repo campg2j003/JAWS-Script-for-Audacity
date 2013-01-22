@@ -14,16 +14,39 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Thursday, January 17, 2013
+Last updated: Tuesday, January 22, 2013
 
 Modifications:
 
+1/22/13 Added copyright statement.
 1/17/13 Removed audacity.jfd/jff.
 12/31/12 Previous saved to HG rev 104.
 12/31/12 Updated comments.
 Moved modification history to changehistory.txt.
 9/22/12 Previous saved to HG rev 57.
 9/22/12 Added the JAWSLicenseFile and LegalCopyright defines.
+*/
+
+/*
+Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
+
+    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    
+    See the file copying.txt for details.
 */
 
 ;Start of code
