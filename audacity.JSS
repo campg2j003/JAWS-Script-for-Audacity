@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0rc 1/22/13 22:59UTC"
+Const CS_SCRIPT_VERSION = "2.0rc 2/1/13 17:44UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;2/1/13 In audacity.jsm updated Audacity hotkey help to the Guide for JAWS v2.0.3.
+; 1/31/13 Added Enter Pause to options list.
+;1/28/13 Added EnterPause option to control whether ENTER pauses during play/record.
+;1/22/13 Previous saved to HG rev 109.
 ; 1/22/13 Added copyright statement.  Added code to include the copyright statement in the jsb file.
 ; Reindented with jsstidy V0.0.7
 ; 1/17/13 Previous saved to HG rev 107.
@@ -97,6 +101,8 @@ Const
 	CI_MESSAGES_FULL = 1, ; announce all messages
 	CI_TOOLBARS_OFF = 0,
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
+CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
+CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002
@@ -112,7 +118,8 @@ Const
 
 
 Globals
-	Int App_FirstTime
+	Int App_FirstTime,
+Int gfEnterPause
 
 Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
@@ -257,6 +264,7 @@ EndIf ; if first time
 If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	AddDefaultConfig ()
 EndIf
+Let gfEnterPause = IniReadInteger("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
 EndFunction ; AutoStartEvent
 
 Globals Handle ghAudacityLastArea,
@@ -1154,7 +1162,7 @@ EndScript ; SayAudacityState
 ;If you comment this out you should also comment out entries for keys ENTER and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys separately, not commenting out these entries will cause Audacity to see both keys as standard ENTER.
 Script Enter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
-If FocusInMainWindow () && !IsStopped () Then
+If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
 	TypeKey (csPauseKey)
 Else
 	SayCurrentScriptKeyLabel ()
@@ -1225,7 +1233,7 @@ If InHJDialog () Then
 	SayFormattedMessage (OT_error, cMSG337_L, cMSG337_S)
 	Return
 EndIf
-Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
+Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS + _DLG_SEPARATOR + UO_ENTER_PAUSE
 If GetJFWVersion () >= 900000 Then
 	OptionsTreeCore (strListOfOptions) ;the OptionsTreeCore available in JAWS 9.0 or later
 Else
@@ -1260,8 +1268,6 @@ If !iRetCurVal Then
 EndIf ; if !iRetCurVal
 If iVal == CI_MESSAGES_OFF Then
 	Return cmsg_Off
-	;ElIf giHTMLFrameUpdateNotification == FrameUpdateNotification_Indicate Then
-	;Return msgFrameUpdateNotificationSpeakFrameName
 ElIf iVal == CI_MESSAGES_FULL Then
 	Return cmsg_On
 EndIf
@@ -1296,10 +1302,37 @@ String Function UOAnnounceToolbarsHlp ()
 Return msgUO_AnnounceToolbarsHlp
 EndFunction ; UOAnnounceToolbarsHlp
 
+String Function UOEnterPause (Int iRetCurVal)
+Var
+	Int iVal
+
+Let iVal = IniReadInteger ("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+If !iRetCurVal Then
+	If iVal == CI_ENTERPAUSE_ON Then
+		let iVal = CI_ENTERPAUSE_OFF
+let gfEnterPause = False
+	Else
+		Let iVal = iVal + 1
+Let gfEnterPause = True
+	EndIf
+	IniWriteInteger ("Settings", "EnterPause", iVal, CS_INI_FILE)
+EndIf ; if !iRetCurVal
+If iVal == CI_ENTERPAUSE_OFF Then
+	Return cmsg_Off
+ElIf iVal == CI_ENTERPAUSE_ON Then
+	Return cmsg_On
+EndIf
+EndFunction ; UOEnterPause
+
+String Function UOEnterPauseHlp ()
+Return msgUO_EnterPauseHlp
+EndFunction ; UOEnterPauseHlp
+
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
-IniWriteInteger ("Settings", "AnnounceMessage", 1, CS_INI_FILE, False) ; don't flush because we're going to write another one
-IniWriteInteger ("Settings", "AnnounceToolbars", 1, CS_INI_FILE, true) ; flush
+IniWriteInteger ("Settings", "AnnounceMessage", CI_MESSAGES_FULL, CS_INI_FILE, False) ; don't flush because we're going to write another one
+IniWriteInteger ("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE, False) ; don't flush because we're going to write another one
+IniWriteInteger ("Settings", "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, true) ; flush
 EndFunction ; AddDefaultConfig
 
 Script ResetConfig ()

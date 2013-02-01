@@ -1,5 +1,7 @@
-(This file last updated 1/16/2013)
-New in Jaws scripts for Audacity version 2.0 (1/15/2013):
+(This file last updated 1/28/2013)
+. Added JAWS option EnterPause to control whether ENTER pauses during play/record.
+
+New in JAWS scripts for Audacity version 2.0 (1/22/2013):
 
 . Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CTRL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
 . Added JAWSKey+v to the jkm file so that options will appear on JAWS 13, which has a new options facility.
@@ -37,6 +39,7 @@ Issues:
 . We have had problems getting the state of Play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
 . The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity-- or JAWS, I can't find my notes on this.  This was observed with JAWS 10.
 . A side effect of ENTER pausing during record and play is that you can't select/unselect tracks while playing or recording.  Also, if you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and removing semicolons on the lines containing /* and */ before and after script Enter in audacity.jss.  
+. The script does not recognize when editing a label in a label track.  Arrow keys continue to report the position and DEL/BACKSPACE report deleting audio.  If entering a label while playing, ENTER will pause rather than completing the label.  Does CTRL+m work while recording?
 
 New in Jaws scripts for Audacity version 1.1 (8/10/2012):
 

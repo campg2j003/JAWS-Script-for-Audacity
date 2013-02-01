@@ -216,6 +216,13 @@
 :function UOAnnounceToolbarsHlp
 :Returns string No Return Description
 
+:function UOEntepPause
+:Returns string No Return Description
+:Param int No Description
+
+:function UOEntepPauseHlp
+:Returns string No Return Description
+
 :function AddDefaultConfig
 :Description Added default settings value to Audacity.JSI File
 
