@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0rc 2/1/13 17:44UTC"
+Const CS_SCRIPT_VERSION = "2.0rc 2/2/13 13:30UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;2/2/13 by Gary Campbell:
+;Merged in Cuong's changes from audacity_cuong changeset:   40:532e7096944b.
+;Restored editing keystrokes in Audacity hotkey help.
+;2/2/13 by Dang Manh Cuong
+;Updated keystrokes for audacity 2.0.3 (from audacity 2.0.3 guide)
+;Modified function AnnounceOn do to testing new method given by my friend Le Van Mai
 ;2/1/13 Previous saved to HG rev 111.
 ;2/1/13 In audacity.jsm updated Audacity hotkey help to the Guide for JAWS v2.0.3.
 ; 1/31/13 Added Enter Pause to options list.
@@ -124,16 +130,10 @@ Int gfEnterPause
 
 Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
-;This function can be used to check if announce toolbars is on by speacifying the appropriate value for sKey.
+;This function can be used to check if announce toolbars is on by specifying the appropriate value for sKey.
 ;sKey: key to read in audacity.JSI file
-Var
-	Int iAnnounce
-
-Let iAnnounce=IniReadInteger ("Settings", sKey, 0, CS_INI_FILE)
-If iAnnounce==1 Then
-	Return True
-EndIf
-Return False
+;New method given by Le Van Mai (Cuong's friend)
+Return IniReadInteger ("Settings", sKey, 0, CS_INI_FILE)
 EndFunction ; AnnounceOn
 
 Int Function FocusInTrackPanel ()

@@ -107,7 +107,6 @@ To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 @msgAudacityHotKeyHelp
 Default keystrokes for Audacity v2.0.3 (from Audacity 2.0.3 Guide, by David Bailes, at http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.3-Guide.html):
 
-Keystroke
 General
 Command Keystrokes 
 Open audio file Ctrl + O 
@@ -203,7 +202,6 @@ Stop Spacebar
 Audio Host dialog Shift + H 
 Input Device dialog Shift + I 
 Number of channels dialog Shift + N 
-
 @@
 
 @msg_App_Start
