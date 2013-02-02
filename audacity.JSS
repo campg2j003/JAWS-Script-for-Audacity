@@ -31,6 +31,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;2/1/13 Previous saved to HG rev 111.
 ;2/1/13 In audacity.jsm updated Audacity hotkey help to the Guide for JAWS v2.0.3.
 ; 1/31/13 Added Enter Pause to options list.
 ;1/28/13 Added EnterPause option to control whether ENTER pauses during play/record.
