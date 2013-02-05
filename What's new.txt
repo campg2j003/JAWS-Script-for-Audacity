@@ -1,4 +1,8 @@
-(This file last updated 1/28/2013)
+(This file last updated 2/4/2013)
+. In jfw.nsh added documentation for JAWSALLOWALLUSERS.  
+. In jfw.nsh added documentation that if JAWSALLOWALLUSERS is undefined and the installer changes the shell context, it must also change the value of JAWSSHELLCONTEXT acordingly.
+. In jfw.nsh if JAWSALLOWALLUSERS is undefined, on the install confirmation page, the message indicating whether installing to the current or all users read "for in".  Changed PageInstConfirmPre to not test JAWSALLOWALLUSERS.  Since JAWSSHELLCONTEXT defaults to "current", "the current user" is written if JAWSALLOWALLUSERS is undefined.
+. In jfw.nsh commented out debug message indicating that only 1 JAWS version is installed and the JAWS versions page is being skipped.
 . Added JAWS option EnterPause to control whether ENTER pauses during play/record.
 
 New in JAWS scripts for Audacity version 2.0 (1/22/2013):

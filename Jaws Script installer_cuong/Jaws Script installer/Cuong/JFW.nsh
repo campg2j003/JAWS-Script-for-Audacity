@@ -11,13 +11,18 @@ Features:
 . Checks for a Jaws installation before starting setup. If Jaws is not installed, displays a warning message and quits.
 . contains macros for extracting, compiling, deleting, and modifying scripts, so user can create a package containing multiple scripts quickly and easily.
 ;. Macro to copy script from all users to current user.
-Limitations:
+Limitfations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Tuesday, January 22, 2012
+Last updated: Monday, February 4, 2013
 
 Modifications:
 
+2/4/13 Added documentation for JAWSALLOWALLUSERS and a warning if it is not defined.  Removed ifdef in PageInstConfirmPre around adding current or all users.  This allows the including file to redefine JAWSSHELLCONTEXT after including this file.  It also requires that JAWSSHELLCONTEXT is set even if JAWSALLOWALLUSERS is undefined.
+Commented out debug message displayed when JAWSALLOWALLUSERS is not defined and there is only one JAWS version installed.
+2/2/13 Added comment on declaration of JAWSSHELLCONTEXT indicating where its default value is set.
+Changed PageInstConfirmPre so that if JAWSALLOWALLUSERS is undefined, it indicates that scripts will be installed for the current user.
+1/22/13 Previous saved to HG rev 109.
 1/22/13 Added copyright statement.
 12/31/12 Previous saved to HG rev 104.
 10/29/12 In function JAWSInstallVersion fixed logging code for jsb file.
@@ -53,6 +58,14 @@ Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
 
 !ifndef __JAWSSCRIPTSINCLUDED
 !define __JAWSSCRIPTSINCLUDED
+
+;If you want to enable support for choosing to install in either the current user or all users, define JAWSALLOWALLUSERS before including this file.  If not defined, the default is to install into the current user.  If you execute SetShellVarContext you should also set the variable JAWSSHELLCONTEXT to match.
+!ifdef JAWSALLOWALLUSERS
+!echo "Including support for choosing between current user and all users."
+!else
+!warning "Support for installing for all users is not enabled.  To enable, define JAWSALLOWALLUSERS before including this file."
+!EndIf ; else not JAWSALLOWALLUSERS
+
 !ifndef JAWSSrcDir
 !define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 !EndIf
@@ -307,7 +320,7 @@ Var INSTALLEDJAWSVERSIONS ;separated by |
 var INSTALLEDJAWSVERSIONCOUNT
 var SELECTEDJAWSVERSIONS
 var SELECTEDJAWSVERSIONCOUNT
-var JAWSSHELLCONTEXT ; value for SetShellVarContext-- current or all
+var JAWSSHELLCONTEXT ; value for SetShellVarContext-- current or all, default set to "current" in .OnInit
 
 ;-----
 
@@ -708,7 +721,7 @@ ${EndIf}
 !ifndef JAWSALLOWALLUSERS
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
 DetailPrint "DisplayJawsList: 1 JAWS version, skipping JAWS versions page" ; debug
-MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" /SD IDOK ; debug
+;MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" /SD IDOK ; debug
 strcpy $SELECTEDJAWSVERSIONS $INSTALLEDJAWSVERSIONS
 strcpy $SELECTEDJAWSVERSIONCOUNT $INSTALLEDJAWSVERSIONCOUNT
 ;quit ; debug
@@ -914,16 +927,16 @@ function PageInstConfirmPre
 !insertmacro MUI_HEADER_TEXT "Confirm Installation Settings" "The following summarizes the actions that will be performed by this install.  Click Back to change settings.  Click Install to continue."
 ${StrRep} $1 "$SELECTEDJAWSVERSIONS" "|" ", "
 
-!ifdef JAWSALLOWALLUSERS
-; These need to have a trailing space.
+;!ifdef JAWSALLOWALLUSERS
+; These messages (added to $2) need to have a trailing space.
 ${If} $JAWSSHELLCONTEXT == "current"
   strcpy $2 "the current user "
 ${Else}
   strcpy $2 "all users "
 ${EndIf}
-!Else
-strcpy $2 ""
-!EndIf
+;!Else
+;strcpy $2 "the current user "
+;!EndIf
 
 ;$2 contains the trailing space if nonempty.
 strcpy $0 "The scripts will be installed for $2in the following JAWS versions:$\r$\n$1.$\r$\n"
