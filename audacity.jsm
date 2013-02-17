@@ -56,6 +56,10 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+Const
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.3-Guide.html", ;default URL to Audacity guide for JAWS
+CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
+
 Messages
 @msgProgName
 Audacity
@@ -104,8 +108,22 @@ To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 @@
-@msgAudacityHotKeyHelp
-Default keystrokes for Audacity v2.0.3 (from Audacity 2.0.3 Guide, by David Bailes, at http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.3-Guide.html):
+
+;Spoken before loading the Audacity for JAWS web page.
+@msgLoadingJawsGuide_L
+loading Audacity JAWS Guide web page
+@@
+@msgLoadingJawsGuide_S
+JAWS Guide
+@@
+
+;Text of Audacity hotkey help that appears before the link to the Audacity guide for JAWS.
+@msgAudacityHotKeyHelp1
+Default keystrokes for Audacity v2.0.3 (from Audacity 2.0.3 Guide, by David Bailes, at
+@@
+;Text of hotkey help following the link to the guide.
+@msgAudacityHotkeyHelp2
+):
 
 General
 Command Keystrokes 

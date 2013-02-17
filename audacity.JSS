@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0rc 2/4/13 02:25UTC"
+Const CS_SCRIPT_VERSION = "2.0rc 2/16/13 23:36UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;2/16/13 Changed script Enter  to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
+;Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
+;The link in Audacity hotkey help now displays the default JAWS hotkey help instead of itself over again.  Changed script HotKeyHelp to AudacityHotKeyHelp and WindowKeysHelp to AudacityKeysHelp.  Added definitions for them in jkm file.
+;2/15/13 Added code to make the link to the Audacity JAWS guide an active link.  Split the msgAudacityHotKeyHelp into two messages-- before and after the link.  The code is designed so that it can be modified to read the URL from the JSI file.
 ;2/2/13 Previous saved to HG rev 115.
 ;2/2/13 by Gary Campbell:
 ;Merged in Cuong's changes from audacity_cuong changeset:   40:532e7096944b.
@@ -127,7 +131,8 @@ Const
 
 Globals
 	Int App_FirstTime,
-Int gfEnterPause
+Int gfEnterPause,
+String gsJawsGuideLink ;URL of Audacity Guide for JAWS users
 
 Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
@@ -261,12 +266,16 @@ Function AutoStartEvent ()
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_No_Disable, MSG_App_Start)
-EndIf ; if first time
 ;write default settings of Audacity script if settings file doesn't exist.
 If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	AddDefaultConfig ()
 EndIf
 Let gfEnterPause = IniReadInteger("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+;If we haven't read a value for the JAWS ref guide link, initialize to default.
+If !gsJawsGuideLink Then
+Let gsJawsGuideLink = CS_JawsGuide_LINK
+EndIf
+EndIf ; if first time
 EndFunction ; AutoStartEvent
 
 Globals Handle ghAudacityLastArea,
@@ -548,7 +557,7 @@ Script  ScriptFileName ()
 ScriptAndAppNames(msgProgName)
 EndScript ; ScriptFileName
 
-Script HotkeyHelp ()
+Script AudacityHotkeyHelp ()
 Var
 	String sMessage
 
@@ -580,10 +589,34 @@ Else
 EndIf ;else not in main window
 EndScript ; HotkeyHelp
 
-Script WindowKeysHelp ()
+Function ShowJawsGuide()
+SayMessage(OT_JAWS_MESSAGE, msgLoadingJawsGuide_L, msgLoadingJawsGuide_S)
+run(gsJawsGuideLink)
+EndFunction
 
+/*
+Int Function IsWinKeyHelp()
+;This causes Hotkey and window key help to display links to default JAWS and Windows hotkeys.  To use it we could make it return a global that we set in AudacityHotKeyHelp.
+Return True
+EndFunction
+*/
+
+
+Script AudacityKeysHelp ()
 If !IsSameScript() && FocusInMainWindow() Then
-	SayFormattedMessage(OT_USER_BUFFER, msgAudacityHotKeyHelp)
+If UserBufferIsActive () Then
+	UserBufferDeactivate ()
+EndIf
+	UserBufferClear()
+	UserBufferAddText(msgAudacityHotKeyHelp1)
+	UserBufferAddText(gsJawsGuideLink, "ShowJawsGuide()", CS_JawsGuide_LINK_DISP)
+	UserBufferAddText(msgAudacityHotKeyHelp2)
+	;AddHotKeyLinks ()
+	UserBufferAddText (cScBufferNewLine)
+	UserBufferAddText (cMsgBuffExit)
+	UserBufferActivate()
+	JAWSTopOfFile()
+	SayLine()
 Else
 	PerformScript WindowKeysHelp()
 EndIf
@@ -1167,10 +1200,14 @@ Script Enter ()
 If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
 	TypeKey (csPauseKey)
 Else
+	;Not pause
+	If UserBufferIsActive () Then
+	PerformScript Enter ()
+	Else
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
-	;PerformScript Enter ()
-EndIf
+	EndIf ; else user buffer not active
+EndIf ; else not pause
 EndScript ; Enter
 ;*/
 

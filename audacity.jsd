@@ -1,3 +1,6 @@
+:script for
+:Returns undef No Return Description
+
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
@@ -37,8 +40,6 @@
 
 :function AutoStartEvent
 
-:function KeyPressedEvent
-
 :function HandleCustomWindows
 :Returns int No Return Description
 :Synopsis Announce when focus changes to a different area of the main window.
@@ -77,9 +78,15 @@
 
 :script ScriptFileName
 
-:script HotkeyHelp
+:script AudacityHotkeyHelp
 
-:script WindowKeysHelp
+:function ShowJawsGuide
+:Description Runs the default web browser to display the Audacity Guide for JAWS web page.
+
+:function IsWinKeyHelp
+:Returns undef No Return Description
+
+:script AudacityKeysHelp
 :Synopsis Puts Audacity shortcut keys in the virtual viewer
 :Description Press twice quickly to display Windows shortcut keys
 
@@ -216,11 +223,11 @@
 :function UOAnnounceToolbarsHlp
 :Returns string No Return Description
 
-:function UOEntepPause
+:function UOEnterPause
 :Returns string No Return Description
 :Param int No Description
 
-:function UOEntepPauseHlp
+:function UOEnterPauseHlp
 :Returns string No Return Description
 
 :function AddDefaultConfig
@@ -270,3 +277,4 @@
 :Returns undef No Return Description
 
 :script ShowCopyright
+

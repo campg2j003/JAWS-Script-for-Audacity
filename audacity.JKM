@@ -1,4 +1,6 @@
 [Common Keys]
+JAWSKey+h=AudacityHotKeyHelp	
+JAWSKey+w=AudacityKeysHelp
 JAWSKey+delete=SayAudacityState
 shift+control+rightarrow=StartMarkerRight
 control+]=SaySelectionEnd
