@@ -11,13 +11,17 @@ Features:
 . Checks for a Jaws installation before starting setup. If Jaws is not installed, displays a warning message and quits.
 . contains macros for extracting, compiling, deleting, and modifying scripts, so user can create a package containing multiple scripts quickly and easily.
 ;. Macro to copy script from all users to current user.
-Limitfations:
+Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Monday, February 4, 2013
+Last updated: Tuesday, April 9, 2013
 
 Modifications:
 
+4/3/13 GetJAWSProgDir now returns ${JAWSDefaultProgDir} if JAWS registry "Target" value not found.
+Added define JAWSDefaultProgDir which can be overridden in the file that includes this one.
+Added message to indicate that we couldn't read the JAWS program dir from the registry.  If the user chooses OK from this message, the install continues using the default program dir.
+2/4/13 Previous saved to HG rev 116.
 2/4/13 Added documentation for JAWSALLOWALLUSERS and a warning if it is not defined.  Removed ifdef in PageInstConfirmPre around adding current or all users.  This allows the including file to redefine JAWSSHELLCONTEXT after including this file.  It also requires that JAWSSHELLCONTEXT is set even if JAWSALLOWALLUSERS is undefined.
 Commented out debug message displayed when JAWSALLOWALLUSERS is not defined and there is only one JAWS version installed.
 2/2/13 Added comment on declaration of JAWSSHELLCONTEXT indicating where its default value is set.
@@ -69,6 +73,11 @@ Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
 !ifndef JAWSSrcDir
 !define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 !EndIf
+
+!ifndef JAWSDefaultProgDir
+!define JAWSDefaultProgDir "$programfiles\Freedom Scientific\JAWS" ;Default directory containing JAWS program files (in JAWSDefaultProgDir\<JAWSVersion>)
+!EndIf
+
 !Define InstallFile $instdir\Install.ini ; file that stores information for the uninstaller
 !Define tempFile $temp\Install.ini
 !Define UnInstaller "Uninst.exe"
@@ -1077,8 +1086,15 @@ function GetJawsProgDir
 ; Get the JAWS program directory based on its version.
 ; $0 - string containing JAWS version number.
 ; Returns JAWS program directory on stack.
+;If registry key not found uses ${JAWSDefaultProgDir}\$0\.
 push $2
 ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
+  ;StrCpy $2 "" ; test ReadRegStr failure
+${If} $2 == ""
+  strCpy $2 "${JAWSDefaultProgDir}\$0\"
+  MessageBox MB_OKCANCEL `GetJawsProgDir: error reading registry key HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target": Using default program dir $2$\r$\nThis is probably okay, but please advise the JAWS script developers.` IDOK +2
+    abort ; camcel
+${EndIf}
 exch $2 ; return to TOS, $2 same as before call
 functionend
 

@@ -1,4 +1,4 @@
-1/17/2013 JAWS script for Audacity V2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+4/5/2013 JAWS script for Audacity V2.0 (for script version 2.0 4/5/2013) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -40,6 +40,8 @@ We have had problems getting the state of Play, Pause, Record, and Stop on some 
 The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity-- or JAWS, I can't find my notes on this.  This was observed with JAWS 10.
 
 A side effect of ENTER pausing during record and play is that you can't select/unselect tracks while playing or recording.  Also, if you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and removing semicolons on the lines containing /* and */ before and after script Enter in audacity.jss.  
+
+We have received reports that the installer cannot find the JAWS script compiler on 64-bit machines.  We think JAWS registry information might be in a different place on 64-bit machines.  We have not been able to verify this, but the installer now uses a default location if it can't find the value in the registry.  It displays a message if this happens.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 

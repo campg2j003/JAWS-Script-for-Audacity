@@ -1,10 +1,7 @@
-:script for
-:Returns undef No Return Description
-
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
-:Param string No Description
+:Param string/sKey No Description
 
 :function FocusInTrackPanel
 :Returns int True if focus is in the track panel
@@ -83,9 +80,6 @@
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
 
-:function IsWinKeyHelp
-:Returns undef No Return Description
-
 :script AudacityKeysHelp
 :Synopsis Puts Audacity shortcut keys in the virtual viewer
 :Description Press twice quickly to display Windows shortcut keys
@@ -154,9 +148,11 @@
 :Synopsis Deletes the selected audio.
 
 :script JAWSDelete
+:Synopsis In track panel delete selected audio, otherwise does normal delete.
+:Description If focus is in the main window, a project exists, and audio is selected, the DEL key will delete it.  In this case we perform the script DeleteSelectedAudio.  Otherwise we perform the default script.
 
 :script JAWSBackspace
-
+:Synopsis Similar to JAWSDelete.
 :script SayPriorCharacter
 
 :script SayNextCharacter
@@ -178,8 +174,10 @@
 :Synopsis Toggle the announcement of Audacity message on or off
 
 :script NextDocumentWindow
+:Synopsis In the toolbars moves to the next toolbar.
 
 :script PreviousDocumentWindow
+:Synopsis In the toolbars moves to the previous toolbar.
 
 :function GetAudacityState
 :Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
@@ -189,6 +187,7 @@
 :Synopsis Says the current program state-- play, record, pause
 
 :script Enter
+:Synopsis In the main window and not stopped, pause/unpause (if option activated).
 
 :function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
@@ -274,7 +273,6 @@
 :Synopsis Switch between the Chains and Chain lists in the Edit Chains dialog.
 
 :script PasteFromClipboard
-:Returns undef No Return Description
 
 :script ShowCopyright
 

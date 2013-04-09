@@ -1,4 +1,5 @@
-(This file last updated 2/16/2013)
+(This file last updated 4/3/2013)
+. If the installer cannot read the location of the JAWS program folder from the registry it now supplies a default.  It displays a message when this happens.
 . The link to the Audacity JAWS guide in Audacity hotkey help is now an active link.  The code is designed so that it can be easily modified to read the URL from the JSI file.
 . Changed script Enter  to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
 . Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
