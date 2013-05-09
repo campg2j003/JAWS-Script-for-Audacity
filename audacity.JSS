@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 4/9/13 22:50UTC"
+Const CS_SCRIPT_VERSION = "2.0 4/27/13 16:16UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,7 +31,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;4/3/13 Changed version number because of changed installer files, etc.
+;4/27/13 by Dang Manh Cuong:
+;Passed Ctrl+v through the Manage Curves dialog.
+;4/3/13 by Gary Campbell:
+;Changed version number because of changed installer files, etc.
 ;2/16/13 Previous saved to HG rev 117.
 ;2/16/13 Changed script Enter  to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
 ;Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
@@ -1587,7 +1590,7 @@ Script PasteFromClipboard ()
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !IsStopped () Then
+ElIf !IsStopped () &&!DialogActive () Then
 	SayNotStopped ()
 	Return
 Else
