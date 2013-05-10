@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 4/27/13 16:16UTC"
+Const CS_SCRIPT_VERSION = "2.0 5/10/13 17:43UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,9 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed cuong's test for DialogActive.  
+;Issue: Should default processing for paste happen anywhere outside the track panel?  (yes) Can you paste into a time field?  select all?  cut? copy?  (They all affect the audio.)
+;5/9/13 Previous saved to HG rev 121.
 ;4/27/13 by Dang Manh Cuong:
 ;Passed Ctrl+v through the Manage Curves dialog.
 ;4/3/13 by Gary Campbell:
@@ -1587,10 +1590,16 @@ EndScript ; SwitchChainsList
 
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
+If DialogActive () || MenusActive () Then
+	;I don't think we need to worry about menus, but check just in case.
+	PerformScript PasteFromClipboard ()
+	Return
+EndIf
+;Not in a dialog or menu.
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !IsStopped () &&!DialogActive () Then
+ElIf !IsStopped () Then
 	SayNotStopped ()
 	Return
 Else
