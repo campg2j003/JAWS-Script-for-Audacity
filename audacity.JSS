@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 5/10/13 17:43UTC"
+Const CS_SCRIPT_VERSION = "2.0 6/6/13 21:05UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,8 +31,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed cuong's test for DialogActive.  
-;Issue: Should default processing for paste happen anywhere outside the track panel?  (yes) Can you paste into a time field?  select all?  cut? copy?  (They all affect the audio.)
+;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
+;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
+;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed Cuong's test for DialogActive.  
+;Issue: Should default processing for paste happen anywhere outside the track panel?  Can you paste into a time field?  select all?  cut? copy?
 ;5/9/13 Previous saved to HG rev 121.
 ;4/27/13 by Dang Manh Cuong:
 ;Passed Ctrl+v through the Manage Curves dialog.
@@ -140,7 +142,11 @@ Const
 Globals
 	Int App_FirstTime,
 Int gfEnterPause,
-String gsJawsGuideLink ;URL of Audacity Guide for JAWS users
+String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
+
+Handle ghNull, ; to clear a handle
+;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHiligthedText.  Be sure to set this to 0 when focus moves away from the slider.
+Handle ghSliderEdit
 
 Int Function AnnounceOn (string sKey)
 ;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
@@ -286,6 +292,14 @@ EndIf
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
+Void Function SayNonHighlightedText (handle hwnd, string buffer)
+;If we are monitoring an edit associated with a slider, speak it.
+If ghSliderEdit && hWnd == ghSliderEdit Then
+	Say (buffer, OT_NONHIGHLIGHTED_SCREEN_TEXT)
+EndIf
+SayNonhighlightedText (hWnd, buffer)
+EndFunction ;SayNonhighlightedText
+
 Globals Handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
 
@@ -295,8 +309,26 @@ Var
 	Handle hFocus,
 	Handle hOld,
 	Handle hToolbar,
+	Handle hTemp,
+	Handle hTemp2,
 	String sName,
 	Int iMSAA_JCFOpt
+
+Let hFocus = GetFocus ()
+If DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && GetWindowSubtypeCode (GetPriorWindow(hFocus)) == WT_EDIT Then
+Let ghSliderEdit = GetPriorWindow (hFocus)
+Let hTemp = GetPriorWindow(ghSliderEdit) ; control name
+SayControlEx(hFocus, 
+GetWindowName(hTemp), "",   ; control name, type
+"",   ; control state
+"", "",   ; Container name, type
+"", "",   ; value, position
+"")   ; dialog text
+Return True
+Else
+;this must be executed any time focus moves away from a slider with a monitored edit, even when we exit the dialog
+Let ghSliderEdit = ghNull
+EndIf ;else not slider
 
 ;Announce when focus changes to a different area of the main window.
 If !FocusInMainWindow() Then
@@ -318,7 +350,6 @@ If !FocusInMainWindow() Then
 	EndIf ; no window name
 	Return HandleCustomWindows () ; not main window, continue with normal processing
 EndIf ; if ! focus in main window
-Let hFocus = GetFocus ()
 Let hParent = GetParent(hFocus)
 If GetWindowName(hFocus) != WN_TRACKPANEL Then
 	Let hParent = GetParent(hParent)
@@ -1590,8 +1621,8 @@ EndScript ; SwitchChainsList
 
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
-If DialogActive () || MenusActive () Then
-	;I don't think we need to worry about menus, but check just in case.
+If IsDialogActive () || MenusActive () Then
+	;I don't think we need to woroy about menus, but check just in case.
 	PerformScript PasteFromClipboard ()
 	Return
 EndIf

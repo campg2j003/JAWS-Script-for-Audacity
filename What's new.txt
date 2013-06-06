@@ -1,4 +1,5 @@
-(This file last updated 5/9/2013)
+(This file last updated 6/5/2013)
+. For slider controls in diaalogs that have associated edit boxes, the value of the edit control is now spoken when the slider changes while focus is on the slider.  These sliders are now named with the name of the edit control, and some of the extra chatter that occurred when these sliders gain focus has been eliminated.
 . Paste now works in Audacity dialogs.
 . If the installer cannot read the location of the JAWS program folder from the registry it now supplies a default.  It displays a message when this happens.
 . The link to the Audacity JAWS guide in Audacity hotkey help is now an active link.  The code is designed so that it can be easily modified to read the URL from the JSI file.
