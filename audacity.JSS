@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 6/6/13 21:05UTC"
+Const CS_SCRIPT_VERSION = "2.0 6/27/13"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;6/27/13: Wrote function IsAudacity203 and added it to HandelCustomWindow
 ;6/7/13: in script PasteFromClipboard, change IsDialogActive to DialogActive 
 ;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
 ;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
@@ -345,7 +346,7 @@ If !FocusInMainWindow() Then
 		"", "",   ; value, position
 		"")   ; dialog text
 		Return True
-	ElIf IsWarningDialog () Then
+	ElIf IsWarningDialog ()&&!IsAudacity203 () Then
 		SayWindowTypeAndText (GetFocus ())
 		return true
 	EndIf ; no window name
@@ -1642,3 +1643,20 @@ EndScript ; PasteFromClipboard
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
 EndScript ; ShowCopyright
+
+Int Function IsAudacity203 ()
+;I write this do to the accessibility feature improvement from version 2.0.3. In this version, Jaws reads the interface more better, and I think I should make my script  return in some case for users to try this one.
+var
+String sVersion, ;get the version
+Int iNumber ;convert the string version to number for comparing
+;Now check current version number
+Let sVersion=GetVersionInfoString (GetAppFilePath (), "FileVersion")
+;Now get the third number in the version string
+Let sVersion=StringSegment (sVersion, ",", 3)
+Let iNumber=StringToInt (sVersion)
+If iNumber>= 3 then ;Audacity 2.0.3 or later
+return true
+EndIf ;iNumber
+EndFunction
+
+
