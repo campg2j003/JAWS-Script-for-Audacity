@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 6/27/13"
+Const CS_SCRIPT_VERSION = "2.0 7/1/13 18:00:UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,7 +31,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;6/27/13: Wrote function IsAudacity203 and added it to HandelCustomWindow
+;7/1/13: modified script SayLine: added condition to check if current version of Audacity is 2.0.3 or higher
+;6/27/13: wrote function IsAudacity203 and added it to HandelCustomWindow
 ;6/7/13: in script PasteFromClipboard, change IsDialogActive to DialogActive 
 ;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
 ;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
@@ -1581,7 +1582,7 @@ EndIf ;dialog active
 EndFunction ; IsWarningDialog
 
 Script SayLine ()
-If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () Then ;we are in the warning dialog for importing uncompressed audio
+If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () && !IsAudacity203 () Then ;we are in the warning dialog for importing uncompressed audio
 	SayWindowTypeAndText (GetFocus ())
 Else
 	; Not at this dialog, performs default funtionality
@@ -1658,5 +1659,3 @@ If iNumber>= 3 then ;Audacity 2.0.3 or later
 return true
 EndIf ;iNumber
 EndFunction
-
-
