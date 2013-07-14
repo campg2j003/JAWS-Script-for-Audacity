@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 6/6/13 21:05UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/14/13 01:11UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,13 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/13/13 by Gary Campbell:
+;Merged in the following changes from repo audacity_cuong changeset:   44:67bdbad4d454 (revs 124-126):
+;7/1/13: modified script SayLine: added condition to check if current version of Audacity is 2.0.3 or higher
+;6/27/13: wrote function IsAudacity203 and added it to HandelCustomWindow
+;6/7/13: in script PasteFromClipboard, change IsDialogActive to DialogActive 
+; -- end merge.
+;6/6/13 Previous saved to HG rev 123.
 ;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
 ;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
 ;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed Cuong's test for DialogActive.  
@@ -344,7 +351,7 @@ If !FocusInMainWindow() Then
 		"", "",   ; value, position
 		"")   ; dialog text
 		Return True
-	ElIf IsWarningDialog () Then
+	ElIf IsWarningDialog ()&&!IsAudacity203 () Then
 		SayWindowTypeAndText (GetFocus ())
 		return true
 	EndIf ; no window name
@@ -1579,7 +1586,7 @@ EndIf ;dialog active
 EndFunction ; IsWarningDialog
 
 Script SayLine ()
-If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () Then ;we are in the warning dialog for importing uncompressed audio
+If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () && !IsAudacity203 () Then ;we are in the warning dialog for importing uncompressed audio
 	SayWindowTypeAndText (GetFocus ())
 Else
 	; Not at this dialog, performs default funtionality
@@ -1621,8 +1628,8 @@ EndScript ; SwitchChainsList
 
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
-If IsDialogActive () || MenusActive () Then
-	;I don't think we need to woroy about menus, but check just in case.
+If DialogActive () || MenusActive () Then
+	;I don't think we need to worry about menus, but check just in case.
 	PerformScript PasteFromClipboard ()
 	Return
 EndIf
@@ -1641,3 +1648,18 @@ EndScript ; PasteFromClipboard
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
 EndScript ; ShowCopyright
+
+Int Function IsAudacity203 ()
+;Accessibility  is improved in some areas in version 2.0.3.  This function allows code to skip the special processing needed for earlier versions.
+var
+String sVersion, ;get the version
+Int iNumber ;convert the string version to number for comparing
+;Now check current version number
+Let sVersion=GetVersionInfoString (GetAppFilePath (), "FileVersion")
+;Now get the third number in the version string
+Let sVersion=StringSegment (sVersion, ",", 3)
+Let iNumber=StringToInt (sVersion)
+If iNumber>= 3 then ;Audacity 2.0.3 or later
+return true
+EndIf ;iNumber
+EndFunction

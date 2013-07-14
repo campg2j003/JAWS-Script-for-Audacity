@@ -153,6 +153,7 @@
 
 :script JAWSBackspace
 :Synopsis Similar to JAWSDelete.
+
 :script SayPriorCharacter
 
 :script SayNextCharacter
@@ -275,4 +276,8 @@
 :script PasteFromClipboard
 
 :script ShowCopyright
+
+:function IsAudacity203
+:Returns int
+:Description Varify current audacity version is 2.0.3 or higher.
 
