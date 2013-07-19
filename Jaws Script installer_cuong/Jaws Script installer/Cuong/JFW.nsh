@@ -14,10 +14,12 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Tuesday, April 9, 2013
+Last updated: Friday,  July 19, 2013
 
 Modifications:
 
+7/19/13 In .oninit we now check to see if $programfiles\Freedom Scientific\JAWS exists.  If it does we set new variable $JAWSPROGDIR to it.  Otherwise we check for it in $programfiles64.  If neither of those are found we write a message saying we may not be able to compile the scripts.  (The only way we could would be if we can get the location from the registry.)
+ Also reactivated the message when the compile failed.  This might have been deactivated because it will happen for each JAWS version.
 4/3/13 GetJAWSProgDir now returns ${JAWSDefaultProgDir} if JAWS registry "Target" value not found.
 Added define JAWSDefaultProgDir which can be overridden in the file that includes this one.
 Added message to indicate that we couldn't read the JAWS program dir from the registry.  If the user chooses OK from this message, the install continues using the default program dir.
@@ -75,7 +77,7 @@ Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
 !EndIf
 
 !ifndef JAWSDefaultProgDir
-!define JAWSDefaultProgDir "$programfiles\Freedom Scientific\JAWS" ;Default directory containing JAWS program files (in JAWSDefaultProgDir\<JAWSVersion>)
+!define JAWSDefaultProgDir "$JAWSPROGDIR" ;Default directory containing JAWS program files (in JAWSDefaultProgDir\<JAWSVersion>)
 !EndIf
 
 !Define InstallFile $instdir\Install.ini ; file that stores information for the uninstaller
@@ -101,12 +103,13 @@ ${StrLoc}
 
 ;Global variables
 
+var JAWSPROGDIR ; directory containing the JAWS programs.
 var JAWSDLG ; handle of JAWS page dialog
 var JAWSLV ; handle of JAWS versions list view
 var JAWSGB
 var JAWSRB1
 var JAWSRB2
-var JAWSREADME ;loaation of the README file for the Finish page
+var JAWSREADME ;location of the README file for the Finish page
 
 ;Additional scripts from Cuong's cjfw.nsh
 !Macro CompileSingle JAWSVer Source
@@ -977,7 +980,7 @@ ${If} ${SectionIsSelected} $JAWSSecUninstaller
     strcpy $0 "$0The installer source will be installed in $INSTDIR\${JAWSINSTALLERSRC}."
   ${EndIf} ; installer source
 ${Else}
-  strcpy $0 "$0This instaallation cannot be uninstalled via Add/Remove Programs."
+  strcpy $0 "$0This installation cannot be uninstalled via Add/Remove Programs."
 ${EndIf} ; else uninstaller section not selected
 
 nsDialogs::create 1018
@@ -1137,7 +1140,7 @@ EnumRegkey $2 hklm "software\Freedom Scientific\Jaws" $R0 ;Enumerate the existin
 strcmp $2 "" done ; exit loop if after last JAWS version
 IntOp $R0 $R0 + 1 ;increase the registry key index by one unit
 ; Is this registry key a version number?  I have seen "Common" Victor checks for "Registration", and I don't know of any version that doesn't start with a digit.
-; We search for the first character of the entry in a string of digits.  If we find it, we know it staarts with a digit.  If not, we can skip this entry.
+; We search for the first character of the entry in a string of digits.  If we find it, we know it starts with a digit.  If not, we can skip this entry.
 strcpy $3 $2 1 ; copy first character
 ${StrLoc} $4 "0123456789" $3 ">"
 strcmp $4 "" loop ; if "", the character was not found
@@ -1201,7 +1204,8 @@ StrCpy $UninstLogAlwaysLog ""
 !Else ; not JAWSJEBUG
   IntCmp $1 0 GoodCompile +1 +1
     ;MessageBox MB_OK "Could not compile $R1, SCompile returned $1"
-    GoTo End
+    ;GoTo End
+    goto NoCompile
   GoodCompile:
   ;Add .jsb file to log
   strCpy $R0 "$UninstLogAlwaysLog"
@@ -1210,10 +1214,10 @@ StrCpy $UninstLogAlwaysLog ""
   StrCpy $UninstLogAlwaysLog "$R0"
 !EndIf ; else not JAWSDEBUG
 GoTo End
-/*
+;/*
 NoCompile:
 MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
-*/
+;*/
 End:
 pop $R1
 pop $R0
@@ -1321,6 +1325,20 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
   !insertmacro MUI_LANGUAGE "English"
 
 Function .OnInit
+;Find where the JAWS program files are located.
+push $0
+strcpy $0 "Freedom Scientific\JAWS"
+${If} ${FileExists} "$programfiles\$0"
+  StrCpy $JAWSPROGDIR "$programfiles\$0"
+${ElseIf} ${FileExists} "$programfiles64\$0"
+  StrCpy $JAWSPROGDIR "$programfiles64\$0"
+${Else}
+  ; couldn't find one.
+  DetailPrint "Couldn't find the folder $0 in either $programfiles or $programfiles64."
+  messagebox MB_OK "Couldn't find the folder $0 in either $programfiles or $programfiles64.  The install can continue, but you might have to compile the scripts yourself."
+${EndIf}
+pop $0
+
 ;See if the program is already installed
 readregstr $0 HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"
 iferrors notinstalled

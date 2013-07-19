@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/14/13 01:11UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/19/13 22:14UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,9 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/19/13 by Gary Campbell:
+;Changed version number because of changed installer files.
+;7/13/13 Previous saved to HG rev 127.
 ;7/13/13 by Gary Campbell:
 ;Merged in the following changes from repo audacity_cuong changeset:   44:67bdbad4d454 (revs 124-126):
 ;7/1/13: modified script SayLine: added condition to check if current version of Audacity is 2.0.3 or higher
