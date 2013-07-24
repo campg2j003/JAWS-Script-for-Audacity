@@ -3,7 +3,7 @@
 ;Modified: Dang Manh Cuong
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/19/13 22:14UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/24/13 18:44UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -31,6 +31,9 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/24/13 by Gary Campbell:
+;Changed version number because of changed installer file.
+;7/19/13 Previous saved to HG rev 128.
 ;7/19/13 by Gary Campbell:
 ;Changed version number because of changed installer files.
 ;7/13/13 Previous saved to HG rev 127.
@@ -1632,21 +1635,21 @@ EndScript ; SwitchChainsList
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
 If DialogActive () || MenusActive () Then
-	;I don't think we need to worry about menus, but check just in case.
-	PerformScript PasteFromClipboard ()
-	Return
-EndIf
+					  ;I don't think we need to worry about menus, but check just in case.
+					  PerformScript PasteFromClipboard ()
+					  Return
+					  EndIf
 ;Not in a dialog or menu.
-If NoProject () Then
-	SayNoProject ()
-	Return
-ElIf !IsStopped () Then
-	SayNotStopped ()
-	Return
-Else
-	PerformScript PasteFromClipboard ()
-EndIf 
-EndScript ; PasteFromClipboard
+    If NoProject () Then
+			 SayNoProject ()
+			 Return
+			 ElIf !IsStopped () Then
+						 SayNotStopped ()
+						 Return
+						 Else
+						     PerformScript PasteFromClipboard ()
+						     EndIf 
+    EndScript ; PasteFromClipboard
 
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)

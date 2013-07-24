@@ -14,10 +14,12 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Friday,  July 19, 2013
+Last updated: Saturday,  July 20, 2013
 
 Modifications:
 
+7/20/13 Commented out message that was displayed when we couldn't get the JAWS program folder from the registry.
+7/19/13 Previous saved to HG rev 128.
 7/19/13 In .oninit we now check to see if $programfiles\Freedom Scientific\JAWS exists.  If it does we set new variable $JAWSPROGDIR to it.  Otherwise we check for it in $programfiles64.  If neither of those are found we write a message saying we may not be able to compile the scripts.  (The only way we could would be if we can get the location from the registry.)
  Also reactivated the message when the compile failed.  This might have been deactivated because it will happen for each JAWS version.
 4/3/13 GetJAWSProgDir now returns ${JAWSDefaultProgDir} if JAWS registry "Target" value not found.
@@ -1095,8 +1097,8 @@ ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
   ;StrCpy $2 "" ; test ReadRegStr failure
 ${If} $2 == ""
   strCpy $2 "${JAWSDefaultProgDir}\$0\"
-  MessageBox MB_OKCANCEL `GetJawsProgDir: error reading registry key HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target": Using default program dir $2$\r$\nThis is probably okay, but please advise the JAWS script developers.` IDOK +2
-    abort ; camcel
+  ;MessageBox MB_OKCANCEL `GetJawsProgDir: error reading registry key HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target": Using default program dir $2$\r$\nThis is probably okay, but please advise the JAWS script developers.` IDOK +2
+    ;abort ; camcel
 ${EndIf}
 exch $2 ; return to TOS, $2 same as before call
 functionend
