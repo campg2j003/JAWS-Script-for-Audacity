@@ -1,4 +1,5 @@
-(This file last updated 7/13/2013)
+(This file last updated 7/19/2013)
+. If the installer can't find a folder at %programfiles%\Freedom Scientific\JAWS it looks for one in %programfiles64% (actually the value of the NSIS variable $programfiles64), and uses that as the fallback if it can't find the location of scompile from the registry.
 . For Audacity V2.0.3 or later the special processing for the Import Uncompressed Audio Files warning dialog, the special processing is not used since the interface has been fixed.  This is a very simple-minded version check-- it just checks to see that the last digit of the version is 3 or greater.
 . For slider controls in diaalogs that have associated edit boxes, the value of the edit control is now spoken when the slider changes while focus is on the slider.  These sliders are now named with the name of the edit control, and some of the extra chatter that occurred when these sliders gain focus has been eliminated.
 . Paste now works in Audacity dialogs.
