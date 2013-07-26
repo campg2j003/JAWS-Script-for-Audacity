@@ -1,19 +1,16 @@
-(This file last updated 7/19/2013)
-. If the installer can't find a folder at %programfiles%\Freedom Scientific\JAWS it looks for one in %programfiles64% (actually the value of the NSIS variable $programfiles64), and uses that as the fallback if it can't find the location of scompile from the registry.
+(This file last updated 7/26/2013)
 . For Audacity V2.0.3 or later the special processing for the Import Uncompressed Audio Files warning dialog, the special processing is not used since the interface has been fixed.  This is a very simple-minded version check-- it just checks to see that the last digit of the version is 3 or greater.
 . For slider controls in diaalogs that have associated edit boxes, the value of the edit control is now spoken when the slider changes while focus is on the slider.  These sliders are now named with the name of the edit control, and some of the extra chatter that occurred when these sliders gain focus has been eliminated.
 . Paste now works in Audacity dialogs.
-. If the installer cannot read the location of the JAWS program folder from the registry it now supplies a default.  It displays a message when this happens.
-. The link to the Audacity JAWS guide in Audacity hotkey help is now an active link.  The code is designed so that it can be easily modified to read the URL from the JSI file.
-. Changed script Enter  to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
+. The link to the Audacity JAWS guide in Audacity hotkey help is now an active link that opens the web page in the default browser.  The code is designed so that it can be easily modified to read the URL from the JSI file.
+. Changed script Enter to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
 . Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
-. The link in Audacity hotkey help now displays the default JAWS hotkey help instead of itself over again.  Changed script HotKeyHelp to AudacityHotKeyHelp and WindowKeysHelp to AudacityKeysHelp.  Added definitions for them in jkm file.
-. The URL for the Audacity Guide for JAWS is now an active link that opens the web page in the default browser.
+. Added JAWS option EnterPause to control whether ENTER pauses during play/record.
+. If the installer cannot read the location of the JAWS program folder from the registry it now supplies a default.  If it cannot find a folder at %programfiles%\Freedom Scientific\JAWS it looks for one in %programfiles64% (actually the value of the NSIS variable $programfiles64), and uses that as the fallback.
 . In jfw.nsh added documentation for JAWSALLOWALLUSERS.  
 . In jfw.nsh added documentation that if JAWSALLOWALLUSERS is undefined and the installer changes the shell context, it must also change the value of JAWSSHELLCONTEXT acordingly.
 . In jfw.nsh if JAWSALLOWALLUSERS is undefined, on the install confirmation page, the message indicating whether installing to the current or all users read "for in".  Changed PageInstConfirmPre to not test JAWSALLOWALLUSERS.  Since JAWSSHELLCONTEXT defaults to "current", "the current user" is written if JAWSALLOWALLUSERS is undefined.
 . In jfw.nsh commented out debug message indicating that only 1 JAWS version is installed and the JAWS versions page is being skipped.
-. Added JAWS option EnterPause to control whether ENTER pauses during play/record.
 
 New in JAWS scripts for Audacity version 2.0 (1/22/2013):
 
