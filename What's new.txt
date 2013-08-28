@@ -1,4 +1,6 @@
-(This file last updated 7/26/2013)
+(This file last updated 8/27/2013)
+. Added an Insert+ key assignment for each JAWSKey key.  This makes the script easier to use on laptops.
+. Changed script AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly represents what it does, and it removes a bogus additional entry in Keyboard Manager that was the result of a case mismatch.
 . For Audacity V2.0.3 or later the special processing for the Import Uncompressed Audio Files warning dialog, the special processing is not used since the interface has been fixed.  This is a very simple-minded version check-- it just checks to see that the last digit of the version is 3 or greater.
 . For slider controls in diaalogs that have associated edit boxes, the value of the edit control is now spoken when the slider changes while focus is on the slider.  These sliders are now named with the name of the edit control, and some of the extra chatter that occurred when these sliders gain focus has been eliminated.
 . Paste now works in Audacity dialogs.

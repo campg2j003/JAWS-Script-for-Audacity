@@ -75,13 +75,15 @@
 
 :script ScriptFileName
 
-:script AudacityHotkeyHelp
+:script AudacityScriptKeyHelp
+:Synopsis Displays Audacity JAWS hot key help in the virtual viewer.
+:Description Press twice quickly to display default JAWS hot key help.
 
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
 
 :script AudacityKeysHelp
-:Synopsis Puts Audacity shortcut keys in the virtual viewer
+:Synopsis Displays Audacity shortcut keys in the virtual viewer.
 :Description Press twice quickly to display Windows shortcut keys
 
 :script MouseUp
