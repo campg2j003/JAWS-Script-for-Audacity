@@ -14,10 +14,12 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Tuesday, January 22, 2013
+Last updated: Wed Aug 28 2013
 
 Modifications:
 
+8/28/13 Added Vietnamese README file.
+1/22/13 Previous saved to HG rev 109.
 1/22/13 Added copyright statement.
 1/17/13 Removed audacity.jfd/jff.
 12/31/12 Previous saved to HG rev 104.
@@ -111,9 +113,10 @@ pop $0
 ;/*
 ;Items to be placed in the installation folder in a full install.
 !macro JAWSInstallFullItems
-${File} "${JAWSSrcDir}" "${ScriptApp}_README.txt"
+${File} "${JAWSSrcDir}" "${ScriptApp}_readme.txt"
 ;Set the location of the README file for the Finish page.
-StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
+StrCpy $JAWSREADME "$InstDir\${ScriptApp}_readme.txt"
+${File} "${JAWSSrcDir}" "${ScriptApp}_readme_vi.txt" ; Vietnamese README file
 ${File} "${JAWSSrcDir}" "What's new.txt"
 !ifdef JAWSLicenseFile
 ${File} "${JAWSSrcDir}" "${JAWSLicenseFile}"

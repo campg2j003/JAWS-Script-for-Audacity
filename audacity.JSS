@@ -1,12 +1,14 @@
 ; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacity.sourceforge.net).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
+;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 8/27/13 00:05UTC"
+Const CS_SCRIPT_VERSION = "2.0 8/28/13 20:10UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
+
 @msgCopyright
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -31,10 +33,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-; 8/27/13 In jss, jkm, and jsd changed AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly (to me at least) indicates what the script does, and it removes a second (bogus) entry in Keyboard Manager.
-; In audacity.jkm added an Insert entry for each JAWSKey entry.  The intent is to make the Insert key still work in Laptop mode when the JAWSKey is specified as CapsLock.
+;8/28/13  Added Vietnamese README file.
+;8/28/13  Previous saved to HG rev 132.
+;8/27/13 In jss, jkm, and jsd changed AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly (to me at least) indicates what the script does, and it removes a second (bogus) entry in Keyboard Manager.
+;In audacity.jkm added an Insert entry for each JAWSKey entry.  The intent is to make the Insert key still work in Laptop mode when the JAWSKey is specified as CapsLock.
 ;8/21/13 In audacity.jkm changed AudacityHotKeyHelp to AudacityHotkeyHelp.  This removes a second (bogus) entry in Keyboard Manager.
-; 7/24/13 Previous saved to HG rev 129.
+;7/24/13 Previous saved to HG rev 129.
 ;7/24/13 by Gary Campbell:
 ;Changed version number because of changed installer file.
 ;7/19/13 Previous saved to HG rev 128.
