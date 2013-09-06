@@ -71,7 +71,7 @@ Audacity
 JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
 
 @@
-@msgHotKeyHelp
+@msgScriptKeyHelp
 
 To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
@@ -91,8 +91,10 @@ In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWind
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
 To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
-To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
-To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+To get help with Audacity hot keys, press %keyfor(AudacityKeysHelp).
+To get the default Windows hot key help, press %keyfor(AudacityKeysHelp) twice quickly.
+
+If the "ENTER pauses during play/record" option is on, pressing %KeyFor(ENTER) while playing or recording sends the Pause key.  Use %KeyFor(CtrlEnter) to execute ENTER in this situation.
 
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press %keyfor (VSTPreset).
@@ -223,7 +225,7 @@ Number of channels dialog Shift + N
 @@
 
 @msg_App_Start
-Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of JAWS hot keys for Audacity.
+Wellcome to Audacity. Press %Keyfor(AudacityScriptkeyHelp) to display the list of JAWS hot keys for Audacity.
 @@
 
 ;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
@@ -377,7 +379,7 @@ If on, speaks messages for Audacity audio operations.
 If on, speaks the toolbar name when focus moves from one toolbar to another.
 @@
 @msgUO_EnterPauseHlp
-If on, ENTER executes Pause during playback and record.  Otherwise, sends ENTER to Audacity.
+If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
 @@
 @msgNoSelection
 To use this feature you must enable the selection toolbar

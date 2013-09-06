@@ -28,6 +28,9 @@ JAWSKey+V=AdjustJAWSOptions
 Insert+V=AdjustJAWSOptions
 ENTER=Enter
 NumPadEnter=Enter
+Control+ENTER=CtrlEnter
+; Assigning CtrlEnter to NumPadEnter makes %KeyFor return Control+NumPadEnter instead of Control+ENTER.
+;Control+NumPadEnter=CtrlEnter
 Shift+Control+`=ResetConfig
 Alt+P=VSTPreset
 Alt+L=VSTLoadPreset

@@ -190,7 +190,10 @@
 :Synopsis Says the current program state-- play, record, pause
 
 :script Enter
-:Synopsis In the main window and not stopped, pause/unpause (if option activated).
+:Synopsis In the main window when not stopped, pause/unpause (if "ENTER during play/record pauses" option activated).
+
+:script CtrlEnter
+:Synopsis In the main window when not stopped, send ENTER (if "ENTER during play/record pauses" option activated).
 
 :function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh

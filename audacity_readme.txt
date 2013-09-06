@@ -1,4 +1,4 @@
-8/28/2013 JAWS script for Audacity V2.0 (for script version 2.0 8/28/13 20:10UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+9/5/2013 JAWS script for Audacity V2.0 (for script version 2.0 9/6/13 00:00UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -18,9 +18,9 @@ In many VST plug-ins, keystrokes move focus to the Presets control and activate 
 In many plug-in dialogs control names and values are spoken.  
 There is a Vietnamese translation of the README file.  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
 
-When playing or recording the ENTER key executes pause/resume.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.    Try it out and let us know if it works for you and if you like it.  
+When playing or recording the ENTER key executes pause/resume.  In this case, pressing Control+ENTER sends ENTER.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  this can be turned off with an option in Adjust JAWS Options.  Try it out and let us know if it works for you and if you like it.  
 
-The script was developed with Audacity 2.0.3 and JAWS 10.0.1178u and 13.  It should probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
+The script was developed with Audacity 2.0.3 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13 on a laptop running Windows 7.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
 There is no specific Braille support at this time.
 
 Messages and string constants are in audacity.jsm facilitating translation.
@@ -40,9 +40,9 @@ We have had problems getting the state of Play, Pause, Record, and Stop on some 
 
 The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity-- or JAWS, I can't find my notes on this.  This was observed with JAWS 10.
 
-A side effect of ENTER pausing during record and play is that you can't select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the ENTER key adds "p" in a label instead of terminating it.
+A side effect of ENTER pausing during record and play is that you can't use ENTER select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the ENTER key adds "p" in a label instead of terminating it.  Use Control+ENTER to send ENTER instead.
 
-If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER and NumPadEnter in audacity.jkm and removing semicolons on the lines containing /* and */ before and after script Enter in audacity.jss.  
+If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
 
 We have received reports that the installer cannot find the JAWS script compiler on 64-bit machines.    We think we have fixed this, but let us know if you have trouble.
 

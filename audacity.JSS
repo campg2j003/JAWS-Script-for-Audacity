@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 8/28/13 20:10UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/6/13 00:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,11 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/5/13 In audacity.jsm: In app start message fixed reference to hotkey help script.  In msgScriptKeyHelp fixed reference to key for Audacity keys help.  In msgScriptKeyHelp added info about ENTER in play/record.  In msgUO_EnterPauseHlp added info about Control+ENTER.
+;In script AudacityScriptKeyHelp changed msgHotKeyHelp to msgScriptKeyHelp.
+;Added CtrlEntre to audacity.jsd, fixed wording.
+;9/5/13 Added script CtrlEnter and key assignments to cause this key to send ENTER when not stopped.
+;8/28/13 Previous saved to HG rev 133.
 ;8/28/13  Added Vietnamese README file.
 ;8/28/13  Previous saved to HG rev 132.
 ;8/27/13 In jss, jkm, and jsd changed AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly (to me at least) indicates what the script does, and it removes a second (bogus) entry in Keyboard Manager.
@@ -627,7 +632,7 @@ EndIf
 If !IsSameScript () && FocusInMainWindow () Then
 	Let sMessage=FormatString (MSGScript_Ver, CS_SCRIPT_VERSION)
 	SayFormattedMessage (OT_User_buffer, sMessage)
-	SayFormattedMessage (OT_User_Buffer, MSGHotkeyHelp)
+	SayFormattedMessage (OT_User_Buffer, msgScriptkeyHelp)
 	;In JAWS 10 the produced link redisplays the Audacity hot keys list when activated from the text.  It works correctly from the links list (JAWSKey+F7).  This is the same behavior as seen in Outlook for Office 2003.
 	AddHotkeyLinks ()
 	;UserBufferAddText (cScBufferNewLine)
@@ -1269,6 +1274,21 @@ Else
 	EndIf ; else user buffer not active
 EndIf ; else not pause
 EndScript ; Enter
+Script CtrlEnter ()
+;SayString (GetCurrentScriptKeyName ()) ; debug
+If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
+	TypeKey (cksEnter)
+	Say(cksEnter, OT_KEYBOARD)
+Else
+	;Not pause
+	If UserBufferIsActive () Then
+	PerformScript ControlEnter ()
+	Else
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	EndIf ; else user buffer not active
+EndIf ; else not pause
+EndScript ; CtrlEnter
 ;*/
 
 Int Function GetObjState (Handle hWnd)

@@ -1,4 +1,5 @@
-(This file last updated 8/27/2013)
+(This file last updated 9/5/2013)
+. While playing/recording when ENTER pauses, Control+ENTER sends ENTER.
 . Added Vietnamese README file (translation by Nguyen Hoang Giang).
 . Added an Insert+ key assignment for each JAWSKey key.  This makes the script easier to use on laptops.
 . Changed script AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly represents what it does, and it removes a bogus additional entry in Keyboard Manager that was the result of a case mismatch.
