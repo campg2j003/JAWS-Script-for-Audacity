@@ -1,9 +1,15 @@
 [Common Keys]
+JAWSKey+h=AudacityScriptKeyHelp
+Insert+h=AudacityScriptKeyHelp
+JAWSKey+w=AudacityKeysHelp
+Insert+w=AudacityKeysHelp
 JAWSKey+delete=SayAudacityState
+Insert+delete=SayAudacityState
 shift+control+rightarrow=StartMarkerRight
-control+]=SaySelectionEnd
+control+]=
 control+k=DeleteSelectedAudio
 shift+jawskey+s=MuteSynthesizer
+shift+Insert+s=MuteSynthesizer
 shift+control+leftarrow=FinishMarkerLeft
 shift+j=SelectToBeginning
 k=MoveToEndOfSelectedTracks
@@ -11,24 +17,20 @@ shift+leftarrow=StartMarkerLeft
 shift+k=SelectToEnd
 j=MoveToStartOfSelectedTracks
 ]=SelectionEnd
-JAWSKey+Shift+w&d&a=DebugActivate
-JAWSKey+Shift+w&d&d=DebugDeActivate
-JAWSKey+Shift+w&d&c=DebugClear
-JAWSKey+Shift+w&d&s=DebugDisplay
-JAWSKey+Shift+w&d&JAWSKey+v=DebugOptions
-JAWSKey+Shift+w&d&JAWSKey+h=DebugStringHotkeyHelp
-JAWSKey+Shift+w&d&JAWSKey+Shift+/=DebugStringHotkeyHelp
 [=SelectionStart
 control+c=Copy
 shift+rightarrow=FinishMarkerRight
 shift+control+a=DeselectAll
 shift+c=CloseFocusTrack
-control+[=SaySelectionStart
+control+[= 
 Control+`=AnnounceOnOff
 JAWSKey+V=AdjustJAWSOptions
+Insert+V=AdjustJAWSOptions
 ENTER=Enter
 NumPadEnter=Enter
-;  [Laptop Keys]
+Control+ENTER=CtrlEnter
+;  Assigning CtrlEnter to NumPadEnter makes %KeyFor return Control+NumPadEnter instead of Control+ENTER.
+;  Control+NumPadEnter=CtrlEnter
 Shift+Control+`=ResetConfig
 Alt+P=VSTPreset
 Alt+L=VSTLoadPreset
@@ -37,5 +39,7 @@ Alt+S=VSTSavePreset
 Shift+,=SayJump
 .=SayJump
 Shift+.=SayJump
-[Laptop Keys]
-F6=SwichPane
+F6=SwitchChainsList
+;  ctrl+JAWSKey+z=test
+Shift+Control+\=SaySelectionEnd
+Shift+Control+[=SaySelectionStart

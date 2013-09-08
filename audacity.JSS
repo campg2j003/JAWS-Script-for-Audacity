@@ -1,12 +1,14 @@
 ; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacity.sourceforge.net).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
+;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/1/13 18:00:UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/8/13 02:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
+
 @msgCopyright
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -31,9 +33,32 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/8/13 by Dang Manh Cuong:
+;Change keys of scripts: SaySelectionStart, SaySelectionEnd do to the duplicates of the 2.0.4 version.
+;9/5/13 In audacity.jsm: In app start message fixed reference to hotkey help script.  In msgScriptKeyHelp fixed reference to key for Audacity keys help.  In msgScriptKeyHelp added info about ENTER in play/record.  In msgUO_EnterPauseHlp added info about Control+ENTER.
+;In script AudacityScriptKeyHelp changed msgHotKeyHelp to msgScriptKeyHelp.
+;Added CtrlEntre to audacity.jsd, fixed wording.
+;9/5/13 Added script CtrlEnter and key assignments to cause this key to send ENTER when not stopped.
+;8/28/13 Previous saved to HG rev 133.
+;8/28/13  Added Vietnamese README file.
+;8/28/13  Previous saved to HG rev 132.
+;8/27/13 In jss, jkm, and jsd changed AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly (to me at least) indicates what the script does, and it removes a second (bogus) entry in Keyboard Manager.
+;In audacity.jkm added an Insert entry for each JAWSKey entry.  The intent is to make the Insert key still work in Laptop mode when the JAWSKey is specified as CapsLock.
+;8/21/13 In audacity.jkm changed AudacityHotKeyHelp to AudacityHotkeyHelp.  This removes a second (bogus) entry in Keyboard Manager.
+;7/24/13 Previous saved to HG rev 129.
+;7/24/13 by Gary Campbell:
+;Changed version number because of changed installer file.
+;7/19/13 Previous saved to HG rev 128.
+;7/19/13 by Gary Campbell:
+;Changed version number because of changed installer files.
+;7/13/13 Previous saved to HG rev 127.
+;7/13/13 by Gary Campbell:
+;Merged in the following changes from repo audacity_cuong changeset:   44:67bdbad4d454 (revs 124-126):
 ;7/1/13: modified script SayLine: added condition to check if current version of Audacity is 2.0.3 or higher
 ;6/27/13: wrote function IsAudacity203 and added it to HandelCustomWindow
 ;6/7/13: in script PasteFromClipboard, change IsDialogActive to DialogActive 
+; -- end merge.
+;6/6/13 Previous saved to HG rev 123.
 ;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
 ;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
 ;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed Cuong's test for DialogActive.  
@@ -599,7 +624,7 @@ Script  ScriptFileName ()
 ScriptAndAppNames(msgProgName)
 EndScript ; ScriptFileName
 
-Script AudacityHotkeyHelp ()
+Script AudacityScriptKeyHelp ()
 Var
 	String sMessage
 
@@ -609,7 +634,7 @@ EndIf
 If !IsSameScript () && FocusInMainWindow () Then
 	Let sMessage=FormatString (MSGScript_Ver, CS_SCRIPT_VERSION)
 	SayFormattedMessage (OT_User_buffer, sMessage)
-	SayFormattedMessage (OT_User_Buffer, MSGHotkeyHelp)
+	SayFormattedMessage (OT_User_Buffer, msgScriptkeyHelp)
 	;In JAWS 10 the produced link redisplays the Audacity hot keys list when activated from the text.  It works correctly from the links list (JAWSKey+F7).  This is the same behavior as seen in Outlook for Office 2003.
 	AddHotkeyLinks ()
 	;UserBufferAddText (cScBufferNewLine)
@@ -1251,6 +1276,21 @@ Else
 	EndIf ; else user buffer not active
 EndIf ; else not pause
 EndScript ; Enter
+Script CtrlEnter ()
+;SayString (GetCurrentScriptKeyName ()) ; debug
+If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
+	TypeKey (cksEnter)
+	Say(cksEnter, OT_KEYBOARD)
+Else
+	;Not pause
+	If UserBufferIsActive () Then
+	PerformScript ControlEnter ()
+	Else
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	EndIf ; else user buffer not active
+EndIf ; else not pause
+EndScript ; CtrlEnter
 ;*/
 
 Int Function GetObjState (Handle hWnd)
@@ -1625,28 +1665,28 @@ EndScript ; SwitchChainsList
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped or no project.
 If DialogActive () || MenusActive () Then
-	;I don't think we need to woroy about menus, but check just in case.
-	PerformScript PasteFromClipboard ()
-	Return
-EndIf
+					  ;I don't think we need to worry about menus, but check just in case.
+					  PerformScript PasteFromClipboard ()
+					  Return
+					  EndIf
 ;Not in a dialog or menu.
-If NoProject () Then
-	SayNoProject ()
-	Return
-ElIf !IsStopped () Then
-	SayNotStopped ()
-	Return
-Else
-	PerformScript PasteFromClipboard ()
-EndIf 
-EndScript ; PasteFromClipboard
+    If NoProject () Then
+			 SayNoProject ()
+			 Return
+			 ElIf !IsStopped () Then
+						 SayNotStopped ()
+						 Return
+						 Else
+						     PerformScript PasteFromClipboard ()
+						     EndIf 
+    EndScript ; PasteFromClipboard
 
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
 EndScript ; ShowCopyright
 
 Int Function IsAudacity203 ()
-;I write this do to the accessibility feature improvement from version 2.0.3. In this version, Jaws reads the interface more better, and I think I should make my script  return in some case for users to try this one.
+;Accessibility  is improved in some areas in version 2.0.3.  This function allows code to skip the special processing needed for earlier versions.
 var
 String sVersion, ;get the version
 Int iNumber ;convert the string version to number for comparing
