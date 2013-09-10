@@ -33,6 +33,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/5/13  Previous saved to HG rev 134.
 ;9/5/13 In audacity.jsm: In app start message fixed reference to hotkey help script.  In msgScriptKeyHelp fixed reference to key for Audacity keys help.  In msgScriptKeyHelp added info about ENTER in play/record.  In msgUO_EnterPauseHlp added info about Control+ENTER.
 ;In script AudacityScriptKeyHelp changed msgHotKeyHelp to msgScriptKeyHelp.
 ;Added CtrlEntre to audacity.jsd, fixed wording.
