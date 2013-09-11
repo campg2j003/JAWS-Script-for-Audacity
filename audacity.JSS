@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/6/13 00:00UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/11/13 00:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/10/13 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   46:60fe43012b69.
+;9/10/13 by Dang Manh Cuong:
+;Change keys of scripts: SaySelectionStart, SaySelectionEnd to ALT+[ and ALT+] because they are easier to type and because Control+SHIFT+[/] conflict with JAWS frame-setting keys.
+;9/8/13 by Dang Manh Cuong:
+;Change keys of scripts: SaySelectionStart, SaySelectionEnd do to the duplicates of the 2.0.4 version.
 ;9/5/13  Previous saved to HG rev 134.
 ;9/5/13 In audacity.jsm: In app start message fixed reference to hotkey help script.  In msgScriptKeyHelp fixed reference to key for Audacity keys help.  In msgScriptKeyHelp added info about ENTER in play/record.  In msgUO_EnterPauseHlp added info about Control+ENTER.
 ;In script AudacityScriptKeyHelp changed msgHotKeyHelp to msgScriptKeyHelp.
