@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/11/13 00:00UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/14/13 06:30UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,13 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/14/13 Okay, this is a mess!  Substituting a changed guide title in the Audacity key help as is implies that the keys shown there are for a different version of Audacity.  For now we will remove the ability to specify the title.
+;9/13/13 made AddDefaultConfig set globals.  
+;9/11/13 Reads the guide title from the config file, which is anything in the JAWSGuideLink key following the first space.
+;Changed msgAudacityHotKeyHelp1 to receive two % substitutions for the guide title and author.  Added constants for these defaults.  There is currently no way to specify the author from the config file.
+;Changed IsAudacity203 to CheckAudacityVersion which checks the audacity version against a specified version.
+;9/10/13 Now reads and writes the value "JAWSGuideLink" from the config file for the URL of the JAWS guide.
+;9/10/13 Previous saved to HG rev 138.
 ;9/10/13 by Gary Campbell:
 ;Merged changes from repo audacity_cuong changeset:   46:60fe43012b69.
 ;9/10/13 by Dang Manh Cuong:
@@ -176,9 +183,11 @@ Globals
 	Int App_FirstTime,
 Int gfEnterPause,
 String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
+;Commented this out 9/14/13.
+;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
 
 Handle ghNull, ; to clear a handle
-;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHiligthedText.  Be sure to set this to 0 when focus moves away from the slider.
+;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 Handle ghSliderEdit
 
 Int Function AnnounceOn (string sKey)
@@ -310,6 +319,10 @@ Return False
 EndFunction ; NoProject
 
 Function AutoStartEvent ()
+Var
+String sTemp,
+Int iTemp
+
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_No_Disable, MSG_App_Start)
@@ -318,10 +331,23 @@ If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	AddDefaultConfig ()
 EndIf
 Let gfEnterPause = IniReadInteger("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
-;If we haven't read a value for the JAWS ref guide link, initialize to default.
-If !gsJawsGuideLink Then
-Let gsJawsGuideLink = CS_JawsGuide_LINK
-EndIf
+;Read a value for the JAWS ref guide link, initialize to default.
+;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
+/*
+Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
+Let sTemp = StringTrimTrailingBlanks (IniReadString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
+Let iTemp = StringContains (sTemp, cScSpace)
+If iTemp Then
+;We found a space and it's not the last character.
+Let gsJawsGuideLink = StringLeft (sTemp, iTemp - 1)
+Let gsJawsGuideTitle = StringRight(sTemp, StringLength (sTemp) - iTemp)
+Else
+Let gsJawsGuideLink = sTemp
+Let gsJawsGuideTitle = CS_JawsGuide_Title
+EndIf ; else no space
+*/
+
+Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
@@ -377,7 +403,7 @@ If !FocusInMainWindow() Then
 		"", "",   ; value, position
 		"")   ; dialog text
 		Return True
-	ElIf IsWarningDialog ()&&!IsAudacity203 () Then
+	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
 		SayWindowTypeAndText (GetFocus ())
 		return true
 	EndIf ; no window name
@@ -680,7 +706,7 @@ If UserBufferIsActive () Then
 	UserBufferDeactivate ()
 EndIf
 	UserBufferClear()
-	UserBufferAddText(msgAudacityHotKeyHelp1)
+	UserBufferAddText(FormatString(msgAudacityHotKeyHelp1, CS_JawsGuide_Title, CS_JawsGuide_Author))
 	UserBufferAddText(gsJawsGuideLink, "ShowJawsGuide()", CS_JawsGuide_LINK_DISP)
 	UserBufferAddText(msgAudacityHotKeyHelp2)
 	;AddHotKeyLinks ()
@@ -870,7 +896,6 @@ Else
 	PerformScript JAWSEnd ()
 EndIf
 EndScript ; JawsEnd
-
 
 Script MoveToStartOfSelectedTracks ()
 If DialogActive () ||MenusActive () Then
@@ -1458,7 +1483,11 @@ Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
 IniWriteInteger ("Settings", "AnnounceMessage", CI_MESSAGES_FULL, CS_INI_FILE, False) ; don't flush because we're going to write another one
 IniWriteInteger ("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE, False) ; don't flush because we're going to write another one
-IniWriteInteger ("Settings", "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, true) ; flush
+Let gfEnterPause = CI_ENTERPAUSE_ON
+IniWriteInteger ("Settings", "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, False) ; no flush
+IniWriteString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE, True)
+Let gsJawsGuidelink = CS_JawsGuide_LINK
+;Let gsJawsGuideTitle = CS_JawsGuide_Title
 EndFunction ; AddDefaultConfig
 
 Script ResetConfig ()
@@ -1627,7 +1656,7 @@ EndIf ;dialog active
 EndFunction ; IsWarningDialog
 
 Script SayLine ()
-If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () && !IsAudacity203 () Then ;we are in the warning dialog for importing uncompressed audio
+If IsWarningDialog () && IsPCCursor () && not UserBufferIsActive () && !CheckAudacityVersion ("2,0,3") Then ;we are in the warning dialog for importing uncompressed audio
 	SayWindowTypeAndText (GetFocus ())
 Else
 	; Not at this dialog, performs default funtionality
@@ -1690,17 +1719,38 @@ Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
 EndScript ; ShowCopyright
 
-Int Function IsAudacity203 ()
-;Accessibility  is improved in some areas in version 2.0.3.  This function allows code to skip the special processing needed for earlier versions.
+Int Function CheckAudacityVersion (String sCheckVer)
+;return True if program version in sCheckVer is >= the version of Audacity.  SCheckver is in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.
 var
 String sVersion, ;get the version
-Int iNumber ;convert the string version to number for comparing
+Int iMax,
+Int iCounter,
+Int fRes,
+Int iTemp,
+Int iTemp2
 ;Now check current version number
-Let sVersion=GetVersionInfoString (GetAppFilePath (), "FileVersion")
-;Now get the third number in the version string
-Let sVersion=StringSegment (sVersion, ",", 3)
-Let iNumber=StringToInt (sVersion)
-If iNumber>= 3 then ;Audacity 2.0.3 or later
-return true
-EndIf ;iNumber
+Let sVersion = GetVersionInfoString (GetAppFilePath (), "FileVersion")
+Let iMax = StringSegmentCount (sVersion, ",")
+Let iTemp = StringSegmentCount (sCheckVer, ",")
+If iTemp < iMax Then
+Let iMax = iTemp
+EndIf
+
+Let fRes = True
+Let iCounter = 1
+While fRes && iCounter <= iMax
+Let fRes = StringToInt(StringSegment(sVersion, ",", iCounter)) >= StringToInt(StringSegment(sCheckVer, ",", iCounter))
+Let iCounter = iCounter + 1
+EndWhile
+Return fRes
 EndFunction
+
+script test ()
+;Test CheckAudacityVersion.
+var String s
+Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
+Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) + ", should get True\n"
+Let s = s + "testing 2,0,5, got " + IntToString(CheckAudacityVersion("2,0,5")) + ", should get False\n"
+SayMessage(OT_USER_BUFFER, s)
+EndScript
+

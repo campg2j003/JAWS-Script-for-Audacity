@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 10/9/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/13/2013.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -58,6 +58,8 @@ Const
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.3-Guide.html", ;default URL to Audacity guide for JAWS
+CS_JawsGuide_Title = "Audacity 2.0.3 Guide", 
+CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
 Messages
@@ -120,12 +122,16 @@ JAWS Guide
 @@
 
 ;Text of Audacity hotkey help that appears before the link to the Audacity guide for JAWS.
+;We don't use a % substitution for the link because it must be added to the virtual buffer by a separate function call to make it a link.
+;û1 -- Audacity guide title
+;%2 Audacity guide author
+;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.0.3 (from Audacity 2.0.3 Guide, by David Bailes, at
+Default keystrokes for Audacity v2.0.3 (from %1, by %2).  Access the guide at
 @@
-;Text of hotkey help following the link to the guide.
+;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
-):
+
 
 General
 Command Keystrokes 

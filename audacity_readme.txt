@@ -1,4 +1,4 @@
-9/5/2013 JAWS script for Audacity V2.0 (for script version 2.0 9/6/13 00:00UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+9/14/2013 JAWS script for Audacity V2.0 (for script version 2.0 9/14/13 06:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -6,6 +6,7 @@ Features:
 Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
 Keystrokes to move the focus to the selection start and selection end/length controls.
 Displays JAWS and Audacity hotkey help.
+The Audacity 2.0.3 Guide for JAWS users, by David Bailes, is accessible from the Audaccty keys help (JAWSKey+w).
 Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
 Speaks the toolbar name when focus moves from one toolbar to another.
 When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB move to the first control on the next toolbar and the last control on the previous toolbar, respectively.
@@ -18,14 +19,11 @@ In many VST plug-ins, keystrokes move focus to the Presets control and activate 
 In many plug-in dialogs control names and values are spoken.  
 There is a Vietnamese translation of the README file.  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
 
-When playing or recording the ENTER key executes pause/resume.  In this case, pressing Control+ENTER sends ENTER.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  this can be turned off with an option in Adjust JAWS Options.  Try it out and let us know if it works for you and if you like it.  
-
-The script was developed with Audacity 2.0.3 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13 on a laptop running Windows 7.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
-There is no specific Braille support at this time.
-
-Messages and string constants are in audacity.jsm facilitating translation.
+When playing or recording the ENTER key executes pause/resume.  In this case, pressing CTRL+ENTER sends ENTER.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  this can be turned off with an option in Adjust JAWS Options.  Try it out and let us know if it works for you and if you like it.  
 
 The script version can be obtained by pressing JAWSKey+CTRL+V (twice quickly to display it in the virtual viewer), and also appears in JAWS hot key help.
+
+The URL for accessing the Audacity Guide for JAWS users can be modified by editing the config file.  To do this, edit audacity.ini (by default in the personal Settings folder in the folder containing the scripts) with a text editor such as Notepad or JAWS Script Manager.  Change or add a line in the Settings section that starts with "JAWSGuideLink=".  The URL should follow the = sign.  If Audacity has run since JAWS was started, you will need to restart JAWS for the changes to take affect.
 
 To install: 
 Place the installer in a folder on your machine.
@@ -45,6 +43,11 @@ A side effect of ENTER pausing during record and play is that you can't use ENTE
 If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
 
 We have received reports that the installer cannot find the JAWS script compiler on 64-bit machines.    We think we have fixed this, but let us know if you have trouble.
+
+The script was developed with Audacity 2.0.3 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13 on a laptop running Windows 7.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
+There is no specific Braille support at this time.
+
+Messages and string constants are in audacity.jsm facilitating translation.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 

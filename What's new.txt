@@ -1,4 +1,6 @@
-(This file last updated 9/5/2013)
+(This file last updated 9/11/2013)
+. The URL and title for the JAWS User's Guide is now read from the config file.  It can't be edited from within the script, but it can be updated with a text editor.
+. Version 2.0.4 of Audacity assigns keys Control+[ aod Control+] to Go to Start/End of Selection.  Therefore, we have changed the keys for reading the selection start and end positions to ALT+[ and ALT+].
 . While playing/recording when ENTER pauses, Control+ENTER sends ENTER.
 . Added Vietnamese README file (translation by Nguyen Hoang Giang).
 . Added an Insert+ key assignment for each JAWSKey key.  This makes the script easier to use on laptops.

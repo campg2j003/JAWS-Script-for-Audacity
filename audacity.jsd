@@ -282,7 +282,7 @@
 
 :script ShowCopyright
 
-:function IsAudacity203
-:Returns int
-:Description Varify current audacity version is 2.0.3 or higher.
-
+:function CheckAudacityVersion
+:Returns int True if the version of Audacity is <= the specified version.
+:Description Varify current audacity version is equal to or higher than a given version.
+:param String/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
