@@ -1,14 +1,14 @@
-(This file last updated 9/11/2013)
-. The URL and title for the JAWS User's Guide is now read from the config file.  It can't be edited from within the script, but it can be updated with a text editor.
+(This file last updated 9/14/2013)
+. The URL for the JAWS User's Guide is now read from the config file.  It can't be edited from within the script, but it can be updated with a text editor.
 . Version 2.0.4 of Audacity assigns keys Control+[ aod Control+] to Go to Start/End of Selection.  Therefore, we have changed the keys for reading the selection start and end positions to ALT+[ and ALT+].
 . While playing/recording when ENTER pauses, Control+ENTER sends ENTER.
 . Added Vietnamese README file (translation by Nguyen Hoang Giang).
 . Added an Insert+ key assignment for each JAWSKey key.  This makes the script easier to use on laptops.
 . Changed script AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly represents what it does, and it removes a bogus additional entry in Keyboard Manager that was the result of a case mismatch.
-. For Audacity V2.0.3 or later the special processing for the Import Uncompressed Audio Files warning dialog, the special processing is not used since the interface has been fixed.  This is a very simple-minded version check-- it just checks to see that the last digit of the version is 3 or greater.
+. For Audacity V2.0.3 or later the special processing for the Import Uncompressed Audio Files warning dialog, the special processing is not used since the interface has been fixed.
 . For slider controls in diaalogs that have associated edit boxes, the value of the edit control is now spoken when the slider changes while focus is on the slider.  These sliders are now named with the name of the edit control, and some of the extra chatter that occurred when these sliders gain focus has been eliminated.
 . Paste now works in Audacity dialogs.
-. The link to the Audacity JAWS guide in Audacity hotkey help is now an active link that opens the web page in the default browser.  The code is designed so that it can be easily modified to read the URL from the JSI file.
+. The link to the Audacity JAWS guide in Audacity hotkey help is now an active link that opens the web page in the default browser.  The URL is read from the JSI file.
 . Changed script Enter to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
 . Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
 . Added JAWS option EnterPause to control whether ENTER pauses during play/record.

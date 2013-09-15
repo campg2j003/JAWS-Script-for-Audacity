@@ -174,7 +174,7 @@
 :Synopsis Close the currently focused track
 
 :script AnnounceOnOff
-:Synopsis Toggle the announcement of Audacity message on or off
+:Synopsis Toggle the announcement of Audacity messages on or off
 
 :script NextDocumentWindow
 :Synopsis In the toolbars moves to the next toolbar.
@@ -236,10 +236,10 @@
 :Returns string No Return Description
 
 :function AddDefaultConfig
-:Description Added default settings value to Audacity.JSI File
+:Description Sets the JAWS options for Audacity to their default values and writes them to the .jsi file.
 
 :script ResetConfig
-:Synopsis Reset all audacity JAWS script' config to default.
+:Synopsis Reset all audacity JAWS script config options to their default values.
 
 :script SayAppVersion
 
@@ -270,7 +270,7 @@
 :Description Warn when the user performs a script that requires the current track to be selected.
 
 :function IsWarningDialog
-:Returns int True if focus is in the waarning dialog
+:Returns int True if focus is in the warning dialog
 :Description Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
 
 :script SayLine
@@ -284,5 +284,5 @@
 
 :function CheckAudacityVersion
 :Returns int True if the version of Audacity is <= the specified version.
-:Description Varify current audacity version is equal to or higher than a given version.
+:Description Varify that current audacity version is equal to or higher than a given version.
 :param String/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.

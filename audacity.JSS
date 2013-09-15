@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/14/13 06:30UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/15/13 00:32UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/14/13  Updated audacity key help to 2.0.4.  Updated script key help in README.  Updated jsd and What's New.
+;9/14/13 Previous saved to HG rev 139.
 ;9/14/13 Okay, this is a mess!  Substituting a changed guide title in the Audacity key help as is implies that the keys shown there are for a different version of Audacity.  For now we will remove the ability to specify the title.
 ;9/13/13 made AddDefaultConfig set globals.  
 ;9/11/13 Reads the guide title from the config file, which is anything in the JAWSGuideLink key following the first space.
