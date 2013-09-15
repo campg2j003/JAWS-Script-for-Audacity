@@ -14,19 +14,10 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Wed Aug 28 2013
+Last updated: Sat Sep 14 2013
 
 Modifications:
 
-8/28/13 Added Vietnamese README file.
-1/22/13 Previous saved to HG rev 109.
-1/22/13 Added copyright statement.
-1/17/13 Removed audacity.jfd/jff.
-12/31/12 Previous saved to HG rev 104.
-12/31/12 Updated comments.
-Moved modification history to changehistory.txt.
-9/22/12 Previous saved to HG rev 57.
-9/22/12 Added the JAWSLicenseFile and LegalCopyright defines.
 */
 
 /*

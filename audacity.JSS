@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/15/13 00:32UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/15/13 00:48UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,112 +33,6 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;9/14/13  Updated audacity key help to 2.0.4.  Updated script key help in README.  Updated jsd and What's New.
-;9/14/13 Previous saved to HG rev 139.
-;9/14/13 Okay, this is a mess!  Substituting a changed guide title in the Audacity key help as is implies that the keys shown there are for a different version of Audacity.  For now we will remove the ability to specify the title.
-;9/13/13 made AddDefaultConfig set globals.  
-;9/11/13 Reads the guide title from the config file, which is anything in the JAWSGuideLink key following the first space.
-;Changed msgAudacityHotKeyHelp1 to receive two % substitutions for the guide title and author.  Added constants for these defaults.  There is currently no way to specify the author from the config file.
-;Changed IsAudacity203 to CheckAudacityVersion which checks the audacity version against a specified version.
-;9/10/13 Now reads and writes the value "JAWSGuideLink" from the config file for the URL of the JAWS guide.
-;9/10/13 Previous saved to HG rev 138.
-;9/10/13 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   46:60fe43012b69.
-;9/10/13 by Dang Manh Cuong:
-;Change keys of scripts: SaySelectionStart, SaySelectionEnd to ALT+[ and ALT+] because they are easier to type and because Control+SHIFT+[/] conflict with JAWS frame-setting keys.
-;9/8/13 by Dang Manh Cuong:
-;Change keys of scripts: SaySelectionStart, SaySelectionEnd do to the duplicates of the 2.0.4 version.
-;9/5/13  Previous saved to HG rev 134.
-;9/5/13 In audacity.jsm: In app start message fixed reference to hotkey help script.  In msgScriptKeyHelp fixed reference to key for Audacity keys help.  In msgScriptKeyHelp added info about ENTER in play/record.  In msgUO_EnterPauseHlp added info about Control+ENTER.
-;In script AudacityScriptKeyHelp changed msgHotKeyHelp to msgScriptKeyHelp.
-;Added CtrlEntre to audacity.jsd, fixed wording.
-;9/5/13 Added script CtrlEnter and key assignments to cause this key to send ENTER when not stopped.
-;8/28/13 Previous saved to HG rev 133.
-;8/28/13  Added Vietnamese README file.
-;8/28/13  Previous saved to HG rev 132.
-;8/27/13 In jss, jkm, and jsd changed AudacityHotkeyHelp to AudacityScriptKeyHelp.  This name more clearly (to me at least) indicates what the script does, and it removes a second (bogus) entry in Keyboard Manager.
-;In audacity.jkm added an Insert entry for each JAWSKey entry.  The intent is to make the Insert key still work in Laptop mode when the JAWSKey is specified as CapsLock.
-;8/21/13 In audacity.jkm changed AudacityHotKeyHelp to AudacityHotkeyHelp.  This removes a second (bogus) entry in Keyboard Manager.
-;7/24/13 Previous saved to HG rev 129.
-;7/24/13 by Gary Campbell:
-;Changed version number because of changed installer file.
-;7/19/13 Previous saved to HG rev 128.
-;7/19/13 by Gary Campbell:
-;Changed version number because of changed installer files.
-;7/13/13 Previous saved to HG rev 127.
-;7/13/13 by Gary Campbell:
-;Merged in the following changes from repo audacity_cuong changeset:   44:67bdbad4d454 (revs 124-126):
-;7/1/13: modified script SayLine: added condition to check if current version of Audacity is 2.0.3 or higher
-;6/27/13: wrote function IsAudacity203 and added it to HandelCustomWindow
-;6/7/13: in script PasteFromClipboard, change IsDialogActive to DialogActive 
-; -- end merge.
-;6/6/13 Previous saved to HG rev 123.
-;6/6/13 Now speaks value associated with a slider in an effect dialog as the slider is changed.  (Changed HandleCustomWindows and added SayNonhighlightedText.)
-;Also explicitly gets the window name of the edit control as the slider name, which cuts out chatter in some dialogs.
-;5/9/13 Changed PasteFromClipboard to perform default processing if in a dialog or menu, removed Cuong's test for DialogActive.  
-;Issue: Should default processing for paste happen anywhere outside the track panel?  Can you paste into a time field?  select all?  cut? copy?
-;5/9/13 Previous saved to HG rev 121.
-;4/27/13 by Dang Manh Cuong:
-;Passed Ctrl+v through the Manage Curves dialog.
-;4/3/13 by Gary Campbell:
-;Changed version number because of changed installer files, etc.
-;2/16/13 Previous saved to HG rev 117.
-;2/16/13 Changed script Enter  to perform the default enter script in the user buffer.  This causes links to be run by the ENTER key.
-;Changed so that Audacity hotkey help does not display a link to default JAWS hotkey help.
-;The link in Audacity hotkey help now displays the default JAWS hotkey help instead of itself over again.  Changed script HotKeyHelp to AudacityHotKeyHelp and WindowKeysHelp to AudacityKeysHelp.  Added definitions for them in jkm file.
-;2/15/13 Added code to make the link to the Audacity JAWS guide an active link.  Split the msgAudacityHotKeyHelp into two messages-- before and after the link.  The code is designed so that it can be modified to read the URL from the JSI file.
-;2/2/13 Previous saved to HG rev 115.
-;2/2/13 by Gary Campbell:
-;Merged in Cuong's changes from audacity_cuong changeset:   40:532e7096944b.
-;Restored editing keystrokes in Audacity hotkey help.
-;2/2/13 by Dang Manh Cuong
-;Updated keystrokes for audacity 2.0.3 (from audacity 2.0.3 guide)
-;Modified function AnnounceOn do to testing new method given by my friend Le Van Mai
-;2/1/13 Previous saved to HG rev 111.
-;2/1/13 In audacity.jsm updated Audacity hotkey help to the Guide for JAWS v2.0.3.
-; 1/31/13 Added Enter Pause to options list.
-;1/28/13 Added EnterPause option to control whether ENTER pauses during play/record.
-;1/22/13 Previous saved to HG rev 109.
-; 1/22/13 Added copyright statement.  Added code to include the copyright statement in the jsb file.
-; Reindented with jsstidy V0.0.7
-; 1/17/13 Previous saved to HG rev 107.
-; 1/16/13 Indented with jsstidy v0.0.5.  Fixed comments, removed unused code.
-; 1/15/13 Previous saved to HG rev 106.
-; 1/8/13 In function NoProject added test for active user buffer.
-;12/31/12 Previous saved to HG rev 104.
-;12/29/12 Moved modification history for last merge and before to file changehistory.txt.
-;Changed version to 2.0rc.
-;Updated README and What's new.
-;Moved script version constant to the top of the script.
-;12/29/12 Previous saved to HG rev 103.
-;12/29/12 Changed the name of SwichPane to SwitchChainsList in jkm, jsd, jsm.
-;12/28/12 The link for displaying default JAWS hotkeys in Hotkey Help works from the links list (JAWSKey+F7) in the virtual viewer.
-;In JAWS 10 when the link is activated from the text in the virtual viewer, it redisplays the Audacity hot keys list.  This is the same behavior as seen in Outlook for Office 2003.
-;12/26/12 Removed "to close" line from hotkey help.  Added call to AddHotkeyLinks (defined in default.jss) to a link to display default JAWS hotkeys.  There is also commented out code to add the link and clos message in case AddHotkeyLinks doesn't work.
-;12/23/12 In ProcessVST does not turn speech on if it was previously off.  Added pause after setting focus so that button is not spoken.
-;In SwichPane changed so that focus is placed on chains list if focus is on any control in the dialog except the chains list.
-;12/23/12 Previous saved to HG rev 102.
-;12/23/12 Removed sKey parm from SaySelectionPosition.
-;Changed GetObjectState to GetObjState.
-;Changed StrToolbars/SelectionBar/TrackPanel to CS_....
-;Changed ID_Change_List to ID_Chains_List, ID_Change_Parms to ID_Chain_Cmds_List.
-;Changed IniFile to CS_INI_FILE.
-;12/23/12 Previous saved to HG rev 101.
-;12/20/12 Formatting and typo fixes.
-;Added variables sMessage and sScriptName in scripts so global can be removed.
-;In DeleteSelectedAudio changed TypeCurrentScriptKeylabel to SayCurrentScriptKeyLabel.
-;In AnnounceOnOff we now use the same message used by AdjustJawsOptions.  This removes the string literal without the need for another message constant.
-;In SayAudacityState commented out (hopefully) unused variables.  Changed literal space to constant cScSpace.
-;In script Enter changed "p" to csPauseKey.  Added this constant to audacity.jsm.
-;12/14/12 Previous saved to HG rev 100.
-;12/14/12 Changed AnnounceMessage to test for FocusInMainWindow instead of FocusInTrackPanel.
-; Removed tests for FocusInTrackPanel (which should have been FocusInMainWindow) and UserBufferIsActive because these tests are done in AnnounceMessage.
-;Renamed function AnnounceMessage to AnnounceKeyMessage to indicate that it sends the key.  Also changed jsd.
-;12/12/12 Previous saved to HG rev 99.
-;12/12/12 Changed JAWSDelete and DeleteSelectedAudio so that they delete audio if Focus in the main window instead of track panel.
-;Added SayCurrentScriptKeyLabel in DeleteSelectedAudio.
-;Rewrote JAWSDelete to not use IsTrackSelected because it duplicates processing in DeleteSelectedAudio and is slow.  Also removed testing for no project since it is handled in DeleteSelectedAudio.
-;Commented out no project announcement in HandleCustomWindow so that it will not speak when moving between toolbar, track panel, and selection bar.  It previously didn't speak in track panel, only in toolbar and selection bar.
 
 Include "hjconst.jsh"
 Include "hjglobal.jsh"

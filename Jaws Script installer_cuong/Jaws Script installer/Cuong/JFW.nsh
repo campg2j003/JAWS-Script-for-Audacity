@@ -14,34 +14,10 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Saturday,  July 20, 2013
+Last updated: Saturday,  September 14, 2013
 
 Modifications:
 
-7/20/13 Commented out message that was displayed when we couldn't get the JAWS program folder from the registry.
-7/19/13 Previous saved to HG rev 128.
-7/19/13 In .oninit we now check to see if $programfiles\Freedom Scientific\JAWS exists.  If it does we set new variable $JAWSPROGDIR to it.  Otherwise we check for it in $programfiles64.  If neither of those are found we write a message saying we may not be able to compile the scripts.  (The only way we could would be if we can get the location from the registry.)
- Also reactivated the message when the compile failed.  This might have been deactivated because it will happen for each JAWS version.
-4/3/13 GetJAWSProgDir now returns ${JAWSDefaultProgDir} if JAWS registry "Target" value not found.
-Added define JAWSDefaultProgDir which can be overridden in the file that includes this one.
-Added message to indicate that we couldn't read the JAWS program dir from the registry.  If the user chooses OK from this message, the install continues using the default program dir.
-2/4/13 Previous saved to HG rev 116.
-2/4/13 Added documentation for JAWSALLOWALLUSERS and a warning if it is not defined.  Removed ifdef in PageInstConfirmPre around adding current or all users.  This allows the including file to redefine JAWSSHELLCONTEXT after including this file.  It also requires that JAWSSHELLCONTEXT is set even if JAWSALLOWALLUSERS is undefined.
-Commented out debug message displayed when JAWSALLOWALLUSERS is not defined and there is only one JAWS version installed.
-2/2/13 Added comment on declaration of JAWSSHELLCONTEXT indicating where its default value is set.
-Changed PageInstConfirmPre so that if JAWSALLOWALLUSERS is undefined, it indicates that scripts will be installed for the current user.
-1/22/13 Previous saved to HG rev 109.
-1/22/13 Added copyright statement.
-12/31/12 Previous saved to HG rev 104.
-10/29/12 In function JAWSInstallVersion fixed logging code for jsb file.
-VERSION (script version) can now be defined in the installer prior to including this file to override searching for the version in the jss file.
-Fixed case and syntax errors in macro JAWSLOG_UNINSTALL.
-Macro JAWSSectionRemoveJawsScript now deletes ${JAWSLOGFILENAME} instead of ${UninstLog}.
-10/29/12 Removed JAWSVer parameter from AddHotKey.
-10/27/12 Corrected typo in AddHotKey
-9/22/12 Previous saved to HG rev 57.
-9/22/12 Added license page, included if JAWSLicenseFile is defined.  JAWSLicenseFile is the name in $JAWSSrcDir of the license file.
-Now Shows the contents of ${LegalCopyright} on the Welcome page if defined.
 */
 
 /*
