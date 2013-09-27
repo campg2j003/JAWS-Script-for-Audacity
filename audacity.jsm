@@ -233,7 +233,7 @@ Number of channels dialog Shift + N
 Wellcome to Audacity. Press %Keyfor(AudacityScriptkeyHelp) to display the list of JAWS hot keys for Audacity.
 @@
 
-;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectTo in all languages??
 @msgStart
 start
 @@
@@ -267,13 +267,14 @@ Move Selection %1 to %2
 @@
 
 @MsgNoProject_l
-There is no project open.
+There are no tracks in the project.
 @@
 
 @msgNoProject_s
-No project
+No tracks
 @@
 
+;Used??
 @msgSelection
 selection
 @@
@@ -282,6 +283,7 @@ selection
 track
 @@
 
+;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 all audio
 @@
@@ -291,28 +293,20 @@ selected tracks
 @@
 
 ; %1 is where we move, like start or end, %2 is of what, e.g. track or selection.
-@MSGMoveTo
+@msgMoveTo
 Move to %1 of %2
 @@
 
-; %1 = where we are selectiog to, like start or end.
-@MSGSelectedTo
-Selected to %1
+; %1 = where we are selectiog to, like start or end, %2 is of what, e.g. track or selection..
+@msgSelectTo
+Select to %1 of %2
 @@
 
-@MsgStartOfFile
-Select from start of file.
-@@
-
-@MSgEndOfFile
-Select to end of file.
-@@
-
-@MSGDelete_l
+@msgDelete_l
 Delete selected audio
 @@
 
-@MSGDelete_s
+@msgDelete_s
 Delete
 @@
 
@@ -392,10 +386,12 @@ To use this feature you must enable the selection toolbar
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.
 @@
-@MsgNoTrackSelected
-To use this feature you must select current track first. Press enter to select this.
+@MsgNoTrackSelected_L
+To use this feature you must select at least one track first. Press ENTER to select a track.
 @@
-
+@msgNoTrackSelected_S
+No tracks selected.
+@@
 ;messages for warning dialog when import uncompress audio
 @msgCopy
 Make a copy of the files before editing (safer)

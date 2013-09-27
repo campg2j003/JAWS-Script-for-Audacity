@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/15/13 19:56UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/27/13 23:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,11 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/27/13 Changed scripts SelectToStart/EndOfLine to use msgSelectedTo so that they say "select to start/end of all audio".  This makes msgStartOfFile and msgEndOfFile unused.
+;Changed JawsHome to say "all audio" instead of "track", making it consistent with JawsEnd.
+    ;Changed msgSelectedTo to msgSelectTo.
+;9/26/13 Changed msgNoTracksSelected to msgNoTrackSelected_L, added msgNoTrackSelected_S, changed content of msgNoTrackSelected_L.  Changed Say to SayMessage for this message.
+;9/15/13 Previous saved to HG rev 142, tagged with rel2.0_0915.
 
 Include "hjconst.jsh"
 Include "hjglobal.jsh"
@@ -769,7 +774,7 @@ If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive (
 		Return
 	EndIf ;!IsStopped
 	JawsHome () ; do Home without speaking key label
-	SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgStart, msgTrack))
+	SayFormattedMessage (OT_Position, FormatString (msgMoveTo, msgStart, msgAllAudio))
 Else
 	PerformScript JAWSHome ()
 EndIf
@@ -787,7 +792,7 @@ If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive (
 		Return
 	EndIf ;!IsStopped
 	JAWSEnd () ; do End without speaking key label
-	SayFormattedMessage (OT_Position, FormatString (MSGMoveTo, msgEnd, msgAllAudio))
+	SayFormattedMessage (OT_Position, FormatString (msgMoveTo, msgEnd, msgAllAudio))
 Else
 	PerformScript JAWSEnd ()
 EndIf
@@ -819,7 +824,7 @@ EndIf
 EndScript ; MoveToEndOfSelectedTracks
 
 Script SelectToBeginning ()
-;Select to start of tracks.
+;Select to start of selected tracks.
 If DialogActive () || MenusActive () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -827,7 +832,7 @@ ElIf !IsTrackSelected () Then
 	SayNoTrackSelected ()
 	Return
 Else
-	AnnounceKeyMessage (FormatString (MSGSelectedTo, msgStart))
+	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
 EndIf
 EndScript ; SelectToBeginning
 
@@ -840,12 +845,13 @@ ElIf !IsTrackSelected () Then
 	SayNoTrackSelected ()
 	Return
 Else
-	AnnounceKeyMessage (FormatString (MSGSelectedTo, msgEnd))
+	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
 EndIf
 EndScript ; SelectToEnd
 
 Script SelectFromStartOfLine ()
-;Select from current position to the start of file
+;Select from current position to the start of all audio.
+;We do not use AnnounceKeyMessage so that we can execute the default JAWS script instead of just sending the key on.
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -853,7 +859,7 @@ EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () Then
 	SelectFromStartOfLine ()
 	If AnnounceOn ("AnnounceMessage") Then ;User can turn off this message
-		SayFormattedMessage (OT_No_Disable, msgStartOfFile) ;alerts when user activates this script at the main window, and a project is open
+		SayFormattedMessage (OT_No_Disable, FormatString (msgSelectTo, msgStart, msgAllAudio)) ;alerts when user activates this script at the main window, and a project is open
 	EndIf
 	;Otherwise, perform default script
 Else
@@ -863,6 +869,7 @@ EndScript ; SelectFromStartOfLine
 
 Script SelectToEndOfLine ()
 ;Select from current position to the end of file
+;We do not use AnnounceKeyMessage so that we can execute the default JAWS script instead of just sending the key on.
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -870,7 +877,7 @@ EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () Then
 	SelectToEndOfLine ()
 	If AnnounceOn ("AnnounceMessage") Then
-		SayFormattedMessage (OT_No_Disable, msgEndOfFile)
+		SayFormattedMessage (OT_No_Disable, FormatString(msgSelectTo, msgEnd, msgAllAudio))
 	EndIf
 Else
 	PerformScript SelectToEndOfLine ()
@@ -1533,7 +1540,7 @@ EndFunction ; IsTrackSelected
 Void Function SayNoTrackSelected ()
 ;Announce that the current track is not selected
 If !NoProject () &&!MenusActive () Then ;Only announce when a project exists
-	Say (msgNoTrackSelected, OT_error)
+	SayMessage (OT_error, msgNoTrackSelected_L, msgNoTrackSelected_S)
 EndIf ;No project
 EndFunction ; SayNoTrackSelected
 
