@@ -1,4 +1,8 @@
-(This file last updated 9/14/2013)
+(This file last updated 9/27/2013)
+
+. Made messages for moving and selecting more consistent.
+
+New in V2.0 (9/15/2013):
 . The URL for the JAWS User's Guide is now read from the config file.  It can't be edited from within the script, but it can be updated with a text editor.
 . Version 2.0.4 of Audacity assigns keys Control+[ aod Control+] to Go to Start/End of Selection.  Therefore, we have changed the keys for reading the selection start and end positions to ALT+[ and ALT+].
 . While playing/recording when ENTER pauses, Control+ENTER sends ENTER.
@@ -18,7 +22,7 @@
 . In jfw.nsh if JAWSALLOWALLUSERS is undefined, on the install confirmation page, the message indicating whether installing to the current or all users read "for in".  Changed PageInstConfirmPre to not test JAWSALLOWALLUSERS.  Since JAWSSHELLCONTEXT defaults to "current", "the current user" is written if JAWSALLOWALLUSERS is undefined.
 . In jfw.nsh commented out debug message indicating that only 1 JAWS version is installed and the JAWS versions page is being skipped.
 
-New in JAWS scripts for Audacity version 2.0 (1/22/2013):
+New in JAWS scripts for Audacity version 2.0RC (1/22/2013):
 
 . Adjust JAWS Options (JAWSKey+v) now contains a section for Audacity options.  It currently contains two options: Announce Messages, which duplicates the CTRL+` key, and Announce Toolbars, which controls the announcement of the toolbar name when focus moves from one toolbar to another.  There is support for the older AdjustJawsVerbosity script, but it has not been tested.
 . Added JAWSKey+v to the jkm file so that options will appear on JAWS 13, which has a new options facility.
