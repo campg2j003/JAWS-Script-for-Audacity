@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 10/30/13 20:16UTC"
+Const CS_SCRIPT_VERSION = "2.0 10/30/13 20:49UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,8 +33,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;10/30/13 Corrected referenced changeset in modification comments of 148.
+;10/30/13 Previous saved to HG rev 148.
 ;10/30/13 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00.
+;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00 (correction: 48:b3ac8e4ba038).
 ;10/23/13 by Dang Manh Cuong:
 ;Uncommented script Paste from clipboard. Remove the check for no project in this script.
 ;Updated comment
