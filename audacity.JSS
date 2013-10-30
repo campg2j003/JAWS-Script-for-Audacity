@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 10/23/13 62:23UTC"
+Const CS_SCRIPT_VERSION = "2.0 10/30/13 20:16UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,11 +33,19 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;10/30/13 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00.
+;10/23/13 by Dang Manh Cuong:
+;Uncommented script Paste from clipboard. Remove the check for no project in this script.
+;Updated comment
+;Previous saved to HG rev 147.
 ;10/23/13 by Gary Campbell:
 ;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00, other minor comment fix.
 ;10/16/13 by Dang Manh Cuong:
 ;Modified the script swichChainsList do to the control ID for swiching to Chain CMD changed in Audacity 2.0.4
 ;Commented out script Paste from clipboard because it does not allow pasting into a blank project.
+;10/16/13: Modified the script swichChangeList do to the control ID for swiching to Change CMD changed in Audacity 2.0.4
+;Commented out script Paste from clipboard
 ;9/27/13 Changed scripts SelectToStart/EndOfLine to use msgSelectedTo so that they say "select to start/end of all audio".  This makes msgStartOfFile and msgEndOfFile unused.
 ;Changed JawsHome to say "all audio" instead of "track", making it consistent with JawsEnd.
     ;Changed msgSelectedTo to msgSelectTo.
@@ -74,7 +82,7 @@ Const
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
-	ID_Chain_Cmds_List2=7002
+	ID_Chain_Cmds_List2=7002 ;Audacity 2.0.4 or higher
 	
 /*
 Const
@@ -1587,7 +1595,7 @@ Let hReal = GetRealWindow (GetFocus ())
 If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
 	Let iCurId = GetControlID (GetFocus ())
 	If iCurId == ID_Chains_List Then
-If CheckAudacityVersion ("2,0,4") then
+If CheckAudacityVersion ("2,0,4") then ;The control ID of Change CMD has changed since Audacity 2.0.4. So we add this condition to varify that.
 		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List2)
 Else
 		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
@@ -1609,26 +1617,28 @@ Else
 EndIf ;Else not Edit Chains dialog
 EndScript ; SwitchChainsList
 
-/*
 Script PasteFromClipboard ()
-;Speaks a warning message when not stopped or no project.
+;Speaks a warning message when not stopped
 If DialogActive () || MenusActive () Then
 	;I don't think we need to worry about menus, but check just in case.
 	PerformScript PasteFromClipboard ()
 	Return
 EndIf
 ;Not in a dialog or menu.
+/*
+This should be removed because we can paste audio without opening a project.
 If NoProject () Then
 	SayNoProject ()
 	Return
 ElIf !IsStopped () Then
+*/
+If !IsStopped () then
 	SayNotStopped ()
 	Return
 Else
 	PerformScript PasteFromClipboard ()
 EndIf 
 EndScript ; PasteFromClipboard
-*/
 
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
