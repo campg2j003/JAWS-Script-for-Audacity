@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 10/23/13 16:15UTC"
+Const CS_SCRIPT_VERSION = "2.0 1/27/14 14:08UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,9 +33,20 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;10/23/13: uncommented script Paste from clipboard. Remove the check for no project in this script.
+;1/27/14 by Dang Manh Cuong: 
+;Updated comments.  Corrected some misspellings.
+;10/30/13 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00.
+;10/23/13 by Dang Manh Cuong:
+;Uncommented script Paste from clipboard. Remove the check for no project in this script.
 ;Updated comment
-;10/16/13: Modified the script swichChangeList do to the control ID for swiching to Change CMD changed in Audacity 2.0.4
+;Previous saved to HG rev 147.
+;10/23/13 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00, other minor comment fix.
+;10/16/13 by Dang Manh Cuong:
+;Modified the script swichChainsList due to the control ID for swiching to Chain CMD changed in Audacity 2.0.4
+;Commented out script Paste from clipboard because it does not allow pasting into a blank project.
+;10/16/13: Modified the script swichChangeList due to the control ID for swiching to Change CMD changed in Audacity 2.0.4
 ;Commented out script Paste from clipboard
 ;9/27/13 Changed scripts SelectToStart/EndOfLine to use msgSelectedTo so that they say "select to start/end of all audio".  This makes msgStartOfFile and msgEndOfFile unused.
 ;Changed JawsHome to say "all audio" instead of "track", making it consistent with JawsEnd.
@@ -926,7 +937,7 @@ If FocusInMainWindow () Then
 	; (!FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
 	PerformScript DeleteSelectedAudio()
 Else
-	; NoProdect() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are t`he right conditions here
+	; NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are t`he right conditions here
 	PerformScript JAWSDelete ()
 EndIf
 EndScript ; JawsDelete

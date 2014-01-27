@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 10/9/2012.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/14/2013.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -56,6 +56,13 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+Const
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.4-Guide.html", ;default URL to Audacity guide for JAWS
+;This should reference the guide from which the Audacity Keys help message was taken.
+CS_JawsGuide_Title = "Audacity 2.0.4 Guide", 
+CS_JawsGuide_Author = "David Bailes",
+CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
+
 Messages
 @msgProgName
 Audacity
@@ -67,7 +74,7 @@ Audacity
 JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
 
 @@
-@msgHotKeyHelp
+@msgScriptKeyHelp
 
 To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
@@ -87,8 +94,10 @@ In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWind
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
 To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
-To get help with Audacity hot keys, press %keyfor(WindowKeysHelp).
-To get the default Windows hot key help, press %keyfor(WindowKeysHelp) twice quickly.
+To get help with Audacity hot keys, press %keyfor(AudacityKeysHelp).
+To get the default Windows hot key help, press %keyfor(AudacityKeysHelp) twice quickly.
+
+If the "ENTER pauses during play/record" option is on, pressing %KeyFor(ENTER) while playing or recording sends the Pause key.  Use %KeyFor(CtrlEnter) to execute ENTER in this situation.
 
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press %keyfor (VSTPreset).
@@ -105,108 +114,26 @@ To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 @@
 
-@msgAudacityHotKeyHelpOld
-Default keystrokes for Audacity v2.0.0 (from Audacity 2.0 Guide, by David Bailes, at http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0-Guide.html):
-
-General
-Command  Keystrokes
-Open audio file  Ctrl + O
-Import audio file  Ctrl + Shift + I
-New project  Ctrl + N
-Save project  Ctrl + S
-Preferences dialog  Ctrl + P
-Cycle forward through Toolbars, Track table, and Selection bar  Ctrl + F6
-Cycle backward through Toolbars, Track table, and Selection bar  Ctrl + Shift + F6
-Zoom normal  Ctrl + 2
-Zoom in  Ctrl + 1
-Zoom out  Ctrl + 3
-
-Playback
-Command  Keystrokes
-Start/Stop  Spacebar
-Start/Stop and move cursor  Shift + A
-Pause/unpause  P
-Seek backward short period during playback  Left Arrow
-Seek forward short period during playback  Right Arrow
-Seek backward long period during playback  Shift + Left Arrow
-Seek forward long period during playback  Shift + Right Arrow
-Play cut/delete preview  C
-Play looped  Shift + Spacebar
-Output Device dialog  Shift + O
-
-Track table
-Command  Keystrokes
-Move to previous track  Up Arrow
-Move to next track  Down Arrow
-Toggle selection of focused track  Enter
-Select all the tracks (and all the audio)  Ctrl + A
-Deselect all the tracks (and any time-range)  Ctrl + Shift + A
-Open menu of focused track  Application Key or Shift + M
-Close (Delete) focused track  Shift + C
-
-Audio track
-Command  Keystrokes
-Change gain of focused track  Shift + G
-Change pan of focused track  Shift + P
-Mute/Unmute focused track  Shift + U
-Mute all tracks  Ctrl + U
-Unmute all tracks  Ctrl Shift + U
-Solo/Unsolo focused track  Shift + S
-
-Moving the cursor
-Command  Keystrokes
-Move to start of tracks (time zero)  Home
-Move to end of all audio  End
-Move to start of audio in selected tracks  J
-Move to end of audio in selected tracks  K
-New cursor position at playback position  [
-Stop playback and move cursor  Shift + A
-Move backward short period  Comma
-Move forward short period  Period
-Move backward long period  Shift + Comma
-Move forward long period  Shift + Period
-Cursor left by a small amount  Left Arrow
-Cursor right by a small amount  Right Arrow
-
-Selecting a time range
-Command  Keystrokes
-Select time range which includes all the audio, and select all tracks  Ctrl + A
-Selection start at start of tracks (time zero)  Shift + Home
-Selection end at end of all the audio  Shift + End
-Selection start at playback position  [
-Selection end at playback position  ]
-Selection start at start of audio in selected tracks  Shift + J
-Selection end at end of audio in selected tracks  Shift + K
-To move the end of the selection to the right by a small amount  Shift + Right Arrow
-To move the end of the selection to the left by a small amount  Ctrl + Shift + Left Arrow
-To move the start of the selection to the right by a small amount  Ctrl + Shift + Right Arrow
-To move the start of the selection to the left by a small amount  Shift + Left Arrow
-
-Editing
-Command  Keystrokes
-Undo  Ctrl + Z
-Redo  Ctrl + Y
-Delete selected audio  Delete
-Cut selected audio  Ctrl + X
-Copy selected audio  Ctrl + C
-Paste  Ctrl + V
-Replace selected audio with silence  Ctrl + L
-Close (Delete) focused track  Shift + C
-
-Recording
-Command  Keystrokes
-Record  R
-Append Record  Shift + R
-Pause/unpause  P
-Stop  Spacebar
-Audio Host dialog  Shift + H
-Input Device dialog  Shift + I
-Number of channels dialog  Shift + N
-
+;Spoken before loading the Audacity for JAWS web page.
+@msgLoadingJawsGuide_L
+loading Audacity JAWS Guide web page
+@@
+@msgLoadingJawsGuide_S
+JAWS Guide
 @@
 
-@msgAudacityHotKeyHelp
-Default keystrokes for Audacity v2.0.3 (from Audacity 2.0.3 Guide, by David Bailes, at http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.3-Guide.html):
+;Text of Audacity hotkey help that appears before the link to the Audacity guide for JAWS.
+;We don't use a % substitution for the link because it must be added to the virtual buffer by a separate function call to make it a link.
+;û1 -- Audacity guide title
+;%2 Audacity guide author
+;There is a newline before and after the guide link.
+@msgAudacityHotKeyHelp1
+Default keystrokes for Audacity v2.0.4 (from %1, by %2).  Access the guide at
+@@
+;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
+@msgAudacityHotkeyHelp2
+
+
 General
 Command Keystrokes 
 Open audio file Ctrl + O 
@@ -224,7 +151,7 @@ Playback
 Command Keystroke 
 Start/Stop Spacebar 
 Start/Stop and move cursor Shift + A 
-Pause/unpause P 
+Pause/resume P 
 Seek backward short period during playback Left Arrow 
 Seek forward short period during playback Right Arrow 
 Seek backward long period during playback Shift + Left Arrow 
@@ -272,21 +199,30 @@ Command Keystroke
 Select time range which includes all the audio, and select all tracks Ctrl + A 
 Selection start at start of tracks (time zero) Shift + Home 
 Selection end at end of all the audio Shift + End 
-Selection start at playback position [ 
 Selection end at playback position ] 
 Selection start at start of audio in selected tracks Shift + J 
 Selection end at end of audio in selected tracks Shift + K 
-Find zero crossings Z 
 To move the end of the selection to the right by a small amount Shift + Right Arrow 
 To move the end of the selection to the left by a small amount Ctrl + Shift + Left Arrow 
 To move the start of the selection to the right by a small amount Ctrl + Shift + Right Arrow 
 To move the start of the selection to the left by a small amount Shift + Left Arrow 
 
+Editing
+Command Keystroke 
+Undo Ctrl + Z 
+Redo Ctrl + Y 
+Delete selected audio Delete 
+Cut selected audio Ctrl + X 
+Copy selected audio Ctrl + C 
+Paste Ctrl + V 
+Replace selected audio with silence Ctrl + L 
+Close (Delete) focused track Shift + C 
+
 Recording
 Command Keystroke 
 Record R 
 Append Record Shift + R 
-Pause/unpause P 
+Pause/resume P 
 Stop Spacebar 
 Audio Host dialog Shift + H 
 Input Device dialog Shift + I 
@@ -294,10 +230,10 @@ Number of channels dialog Shift + N
 @@
 
 @msg_App_Start
-Wellcome to audacity. Press %Keyfor(HotkeyHelp)) to display the list of JAWS hot keys for Audacity.
+Wellcome to Audacity. Press %Keyfor(AudacityScriptkeyHelp) to display the list of JAWS hot keys for Audacity.
 @@
 
-;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectTo in all languages??
 @msgStart
 start
 @@
@@ -331,13 +267,14 @@ Move Selection %1 to %2
 @@
 
 @MsgNoProject_l
-There is no project open.
+There are no tracks in the project.
 @@
 
 @msgNoProject_s
-No project
+No tracks
 @@
 
+;Used??
 @msgSelection
 selection
 @@
@@ -346,6 +283,7 @@ selection
 track
 @@
 
+;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 all audio
 @@
@@ -355,28 +293,20 @@ selected tracks
 @@
 
 ; %1 is where we move, like start or end, %2 is of what, e.g. track or selection.
-@MSGMoveTo
+@msgMoveTo
 Move to %1 of %2
 @@
 
-; %1 = where we are selectiog to, like start or end.
-@MSGSelectedTo
-Selected to %1
+; %1 = where we are selectiog to, like start or end, %2 is of what, e.g. track or selection..
+@msgSelectTo
+Select to %1 of %2
 @@
 
-@MsgStartOfFile
-Select from start of file.
-@@
-
-@MSgEndOfFile
-Select to end of file.
-@@
-
-@MSGDelete_l
+@msgDelete_l
 Delete selected audio
 @@
 
-@MSGDelete_s
+@msgDelete_s
 Delete
 @@
 
@@ -448,7 +378,7 @@ If on, speaks messages for Audacity audio operations.
 If on, speaks the toolbar name when focus moves from one toolbar to another.
 @@
 @msgUO_EnterPauseHlp
-If on, ENTER executes Pause during playback and record.  Otherwise, sends ENTER to Audacity.
+If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
 @@
 @msgNoSelection
 To use this feature you must enable the selection toolbar
@@ -456,10 +386,12 @@ To use this feature you must enable the selection toolbar
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.
 @@
-@MsgNoTrackSelected
-To use this feature you must select current track first. Press enter to select this.
+@MsgNoTrackSelected_L
+To use this feature you must select at least one track first. Press ENTER to select a track.
 @@
-
+@msgNoTrackSelected_S
+No tracks selected.
+@@
 ;messages for warning dialog when import uncompress audio
 @msgCopy
 Make a copy of the files before editing (safer)
