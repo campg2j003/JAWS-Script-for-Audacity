@@ -297,7 +297,7 @@ selected tracks
 Move to %1 of %2
 @@
 
-; %1 = where we are selectiog to, like start or end, %2 is of what, e.g. track or selection..
+; %1 = where we are selecting to, like start or end, %2 is of what, e.g. track or selection..
 @msgSelectTo
 Select to %1 of %2
 @@
