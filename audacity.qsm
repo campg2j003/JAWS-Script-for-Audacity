@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LocalizableDefinitions File="Audacity.qs">
+	<DisplayNameDefinitions>
+		<DisplayName ID="audacity Options" Text="Audacity Settings">
+			<HelpMsg>
+Audacity specific settings.</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce Audacity messages" Text="Announce Audacity messages">
+			<HelpMsg>
+If on, speaks messages for Audacity audio operations.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce toolbars" Text="Announce Audacity toolbars">
+			<HelpMsg>
+If on, speaks the toolbar name when focus moves from one toolbar to another.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.ENTER pauses during play/record" Text="ENTER pauses during play/record">
+			<HelpMsg>
+If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
+			</HelpMsg>
+		</DisplayName>
+	</DisplayNameDefinitions>
+</LocalizableDefinitions>

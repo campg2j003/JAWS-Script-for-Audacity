@@ -1,3 +1,5 @@
+:script for
+
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
@@ -37,6 +39,10 @@
 
 :function AutoStartEvent
 
+:function SayNonHighlightedText
+:Param handle/hwnd No Description
+:Param string/buffer No Description
+
 :function HandleCustomWindows
 :Returns int No Return Description
 :Synopsis Announce when focus changes to a different area of the main window.
@@ -75,13 +81,17 @@
 
 :script ScriptFileName
 
-:script AudacityHotkeyHelp
+:script AudacityScriptKeyHelp
+:Synopsis Displays Audacity JAWS hot key help in the virtual viewer.
+:Description Press twice quickly to display default JAWS hot key help.
 
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
 
+:function IsWinKeyHelp
+
 :script AudacityKeysHelp
-:Synopsis Puts Audacity shortcut keys in the virtual viewer
+:Synopsis Displays Audacity shortcut keys in the virtual viewer.
 :Description Press twice quickly to display Windows shortcut keys
 
 :script MouseUp
@@ -172,7 +182,7 @@
 :Synopsis Close the currently focused track
 
 :script AnnounceOnOff
-:Synopsis Toggle the announcement of Audacity message on or off
+:Synopsis Toggle the announcement of Audacity messages on or off
 
 :script NextDocumentWindow
 :Synopsis In the toolbars moves to the next toolbar.
@@ -188,7 +198,10 @@
 :Synopsis Says the current program state-- play, record, pause
 
 :script Enter
-:Synopsis In the main window and not stopped, pause/unpause (if option activated).
+:Synopsis In the main window when not stopped, pause/unpause (if "ENTER during play/record pauses" option activated).
+
+:script CtrlEnter
+:Synopsis In the main window when not stopped, send ENTER (if "ENTER during play/record pauses" option activated).
 
 :function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
@@ -231,10 +244,10 @@
 :Returns string No Return Description
 
 :function AddDefaultConfig
-:Description Added default settings value to Audacity.JSI File
+:Description Sets the JAWS options for Audacity to their default values and writes them to the .jsi file.
 
 :script ResetConfig
-:Synopsis Reset all audacity JAWS script' config to default.
+:Synopsis Reset all audacity JAWS script config options to their default values.
 
 :script SayAppVersion
 
@@ -265,7 +278,7 @@
 :Description Warn when the user performs a script that requires the current track to be selected.
 
 :function IsWarningDialog
-:Returns int True if focus is in the waarning dialog
+:Returns int True if focus is in the warning dialog
 :Description Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
 
 :script SayLine
@@ -277,7 +290,16 @@
 
 :script ShowCopyright
 
-:function IsAudacity203
-:Returns int
-:Description Varify current audacity version is 3.0.3 or higher
+:function CheckAudacityVersion
+:Returns int True if the version of Audacity is <= the specified version.
+:Description Varify that current audacity version is equal to or higher than a given version.
+:Param string/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
+
+:script test
+
+:function loadNonJCFOptions
+
+:script AddAudacityJawsGuide
+:Synopsis Allow adding, or changing the Audacity Guide link
+:Category Script
 
