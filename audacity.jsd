@@ -1,3 +1,5 @@
+:script for
+
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
@@ -36,6 +38,10 @@
 :Description This function indicates that no project is open (there are no tracks in track panel).
 
 :function AutoStartEvent
+
+:function SayNonHighlightedText
+:Param handle/hwnd No Description
+:Param string/buffer No Description
 
 :function HandleCustomWindows
 :Returns int No Return Description
@@ -81,6 +87,8 @@
 
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
+
+:function IsWinKeyHelp
 
 :script AudacityKeysHelp
 :Synopsis Displays Audacity shortcut keys in the virtual viewer.
@@ -285,4 +293,13 @@
 :function CheckAudacityVersion
 :Returns int True if the version of Audacity is <= the specified version.
 :Description Varify that current audacity version is equal to or higher than a given version.
-:param String/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
+:Param string/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
+
+:script test
+
+:function loadNonJCFOptions
+
+:script AddAudacityJawsGuide
+:Synopsis Allow adding, or changing the Audacity Guide link
+:Category Script
+

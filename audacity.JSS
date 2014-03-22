@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 1/27/14 14:08UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/22/14 02:58UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,10 +33,32 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/22/14 by Dang Man Cuong
+;Script AddAudacityJawsGuide now returns if user doesn't type anything into the box.
+;Updated messages.
+;3/20/14 by Dang Manh Cuong
+;Script AddAudacityJawsGuide now returns if new and current URL are the same.
+;Updated message and documentation for the script above.
+;3/19/14 by Dang Manh Cuong:
+;Added script AddAudacityJawsGuide for changing Jaws guide link.
+;3/17/14 by Dang Manh Cuong
+;Modified function HandleCustomWindows. Jaws now reads the checkbox and button in the quick settings dialog when navigated to these by the tab key.
+;Make the settings section in the JSI file as a constant so it is  easier to change if needed, and modified all related scripts.
+;3/16/14 by DangManh Cuong
+;Commented out keystroke Jawskey+V for testing the quick settings script.
+;Wrote xml files for the QuickSetting (Similar to script adjust Jaws options). This is for use on Jaws 13 or later.
+;Wrote function LoadNonJCF Options to get info from JCF file, and write to Audacity>JSI file. This is for script QuickSettings
+;Modified Hotkey Help message. Now the hotkey Insert+v displays in all Jaws versions, although it has been removed from the JKM file.
+;3/14/14 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   49:b3b6b02544ec.
+;And fixed a couple more typos.
 ;1/27/14 by Dang Manh Cuong: 
 ;Updated comments.  Corrected some misspellings.
 ;10/30/13 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00.
+;Corrected referenced changeset in modification comments of 148.
+;10/30/13 Previous saved to HG rev 148.
+;10/30/13 by Gary Campbell:
+;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00 (correction: 48:b3ac8e4ba038).
 ;10/23/13 by Dang Manh Cuong:
 ;Uncommented script Paste from clipboard. Remove the check for no project in this script.
 ;Updated comment
@@ -47,6 +69,7 @@ EndMessages
 ;Modified the script swichChainsList due to the control ID for swiching to Chain CMD changed in Audacity 2.0.4
 ;Commented out script Paste from clipboard because it does not allow pasting into a blank project.
 ;10/16/13: Modified the script swichChangeList due to the control ID for swiching to Change CMD changed in Audacity 2.0.4
+
 ;Commented out script Paste from clipboard
 
 ;9/27/13 Changed scripts SelectToStart/EndOfLine to use msgSelectedTo so that they say "select to start/end of all audio".  This makes msgStartOfFile and msgEndOfFile unused.
@@ -71,6 +94,7 @@ Const
 	ID_LENGTH_RADIO = 2703,
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	CS_INI_FILE="Audacity.jsi",
+Settings="Settings", ;make easier to change the section name in the config file if needed
 	;For VST plugins
 	ID_Load_Preset=11001,
 	ID_Save_Preset=11002,
@@ -100,7 +124,10 @@ Const
 
 Globals
 	Int App_FirstTime,
+;For adjust Jaws options and quick settings script
 	Int gfEnterPause,
+	Int announceMessage,
+	Int AnnounceToolbars,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -114,7 +141,7 @@ Int Function AnnounceOn (String sKey)
 ;This function can be used to check if announce toolbars is on by specifying the appropriate value for sKey.
 ;sKey: key to read in audacity.JSI file
 ;New method given by Le Van Mai (Cuong's friend)
-Return IniReadInteger ("Settings", sKey, 0, CS_INI_FILE)
+Return IniReadInteger (Settings, sKey, 0, CS_INI_FILE)
 EndFunction ; AnnounceOn
 
 Int Function FocusInTrackPanel ()
@@ -249,12 +276,12 @@ If !App_FirstTime Then
 	If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 		AddDefaultConfig ()
 	EndIf
-	Let gfEnterPause = IniReadInteger("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+	Let gfEnterPause = IniReadInteger(Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
 	;Read a value for the JAWS ref guide link, initialize to default.
 	;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 	/*
 	Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
-	Let sTemp = StringTrimTrailingBlanks (IniReadString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
+	Let sTemp = StringTrimTrailingBlanks (IniReadString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
 	Let iTemp = StringContains (sTemp, cScSpace)
 	If iTemp Then
 	;We found a space and it's not the last character.
@@ -266,7 +293,7 @@ If !App_FirstTime Then
 	EndIf ; else no space
 	*/
 	
-	Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
+	Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
@@ -280,7 +307,7 @@ EndFunction ; SayNonHighlightedText
 
 Globals Handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
-	
+
 Int Function HandleCustomWindows ()
 Var
 	Handle hParent,
@@ -291,7 +318,13 @@ Var
 	Handle hTemp2,
 	String sName,
 	Int iMSAA_JCFOpt
-	
+
+;Make Jaws reads the checkbox and button in the quick settings dialog
+Let sName=GetWindowName (GetRealWindow (GetCurrentWindow ()))
+If DialogActive ()&&sName=="QuickSettings - audacity" then
+	Return
+EndIf ;quick settings dialog
+
 Let hFocus = GetFocus ()
 If DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && GetWindowSubtypeCode (GetPriorWindow(hFocus)) == WT_EDIT Then
 	Let ghSliderEdit = GetPriorWindow (hFocus)
@@ -322,7 +355,7 @@ If !FocusInMainWindow() Then
 		"", "",   ; value, position
 		"")   ; dialog text
 		Return True
-	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
+	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") then
 		SayWindowTypeAndText (GetFocus ())
 		Return true
 	EndIf ; no window name
@@ -939,7 +972,7 @@ If FocusInMainWindow () Then
 	; (!FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
 	PerformScript DeleteSelectedAudio()
 Else
-	; NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are t`he right conditions here
+	; NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are the right conditions here
 	PerformScript JAWSDelete ()
 EndIf
 EndScript ; JawsDelete
@@ -1328,7 +1361,7 @@ EndFunction ; NodeHlp
 String Function UOAnnounceMessages (Int iRetCurVal)
 Var
 	Int iVal
-Let iVal = IniReadInteger ("Settings", "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (Settings, "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_MESSAGES_FULL Then
 		Let iVal = CI_MESSAGES_OFF
@@ -1336,7 +1369,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger ("Settings", "AnnounceMessage", iVal, CS_INI_FILE)
+	IniWriteInteger (Settings, "AnnounceMessage", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_MESSAGES_OFF Then
 	Return cmsg_Off
@@ -1353,7 +1386,7 @@ String Function UOAnnounceToolbars (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger ("Settings", "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (Settings, "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_TOOLBARS_ON Then
 		Let iVal = CI_TOOLBARS_OFF
@@ -1361,7 +1394,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger ("Settings", "Announcetoolbars", iVal, CS_INI_FILE)
+	IniWriteInteger (Settings, "Announcetoolbars", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_TOOLBARS_OFF Then
 	Return cmsg_Off
@@ -1378,7 +1411,7 @@ String Function UOEnterPause (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger ("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+Let iVal = IniReadInteger (Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_ENTERPAUSE_ON Then
 		Let iVal = CI_ENTERPAUSE_OFF
@@ -1387,7 +1420,7 @@ If !iRetCurVal Then
 		Let iVal = iVal + 1
 		Let gfEnterPause = True
 	EndIf
-	IniWriteInteger ("Settings", "EnterPause", iVal, CS_INI_FILE)
+	IniWriteInteger (Settings, "EnterPause", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_ENTERPAUSE_OFF Then
 	Return cmsg_Off
@@ -1402,11 +1435,11 @@ EndFunction ; UOEnterPauseHlp
 
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
-IniWriteInteger ("Settings", "AnnounceMessage", CI_MESSAGES_FULL, CS_INI_FILE, False) ; don't flush because we're going to write another one
-IniWriteInteger ("Settings", "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE, False) ; don't flush because we're going to write another one
+IniWriteInteger (Settings, "AnnounceMessage", CI_MESSAGES_FULL, CS_INI_FILE, False) ; don't flush because we're going to write another one
+IniWriteInteger (Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE, False) ; don't flush because we're going to write another one
 Let gfEnterPause = CI_ENTERPAUSE_ON
-IniWriteInteger ("Settings", "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, False) ; no flush
-IniWriteString ("Settings", "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE, True)
+IniWriteInteger (Settings, "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, False) ; no flush
+IniWriteString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE, True)
 Let gsJawsGuidelink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
 EndFunction ; AddDefaultConfig
@@ -1419,9 +1452,9 @@ Var
 	;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
 If FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	;Remove obsolete key if it exists.
-	Let sMessage=IniReadString ("Settings", "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
+	Let sMessage=IniReadString (Settings, "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
 	If sMessage Then
-		IniRemoveKey ("settings", "announce", CS_INI_FILE, false)
+		IniRemoveKey (settings, "announce", CS_INI_FILE, false)
 	EndIf ;sMessage
 EndIf ;FileExists
 AddDefaultConfig ()
@@ -1683,3 +1716,44 @@ Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) +
 Let s = s + "testing 2,0,5, got " + IntToString(CheckAudacityVersion("2,0,5")) + ", should get False\n"
 SayMessage(OT_USER_BUFFER, s)
 EndScript ; test
+
+Void Function loadNonJCFOptions ()
+;This function is effected by the QuickSettings script, support for Jaws 13 and later
+Var
+String NonJCF ;the section for storing settings within the JCF file
+Let NonJCF="NonJCFOptions"
+;Now read the info get from Audacity.jcf file
+Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", 1, "Audacity.jcf")
+Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", 1, "audacity.jcf")
+Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", 1, "audacity.jcf")
+;Write the info above to Audacity.JSI file
+		IniWriteInteger (Settings, "AnnounceMessage", AnnounceMessage, CS_Ini_File, false)
+	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
+	IniWriteInteger (Settings, "AnnounceToolbars", AnnounceToolbars, CS_Ini_File, true)
+;The condition below got from JAWS Scripts for Foobar 2000 (written by Andrew Hart)
+If GetJFWVersion()<1300000 Then
+Return ; prevent loadNonJCFOptions from chaining to itself since it doesn't exist in JAWS version prior to 13.0
+EndIf
+loadNonJCFOptions ()
+EndFunction
+
+Script AddAudacityJawsGuide ()
+;Script for adding new Jaws Guide link if present
+Var
+String sURL, ;The current URL get from the JSI file
+String sTemp, ;store current URL at a a temp
+String sNewURL ;The New URL added by user
+Let sURL=IniReadString (Settings, "JAWSGuideLink", sURL, CS_INI_File)
+Let sTemp=sURL ;store current URL
+;Now display the input box wich contains the Current URL, and allows adding new URL
+InputBox ("Paste or Enter the exactly URL for the Jaws Guide Link for Audacity", "Add Audacity Jaws Guide Link", sURL)
+Let sNewURL=sURL ;get the URL from the box.
+If StringIsBlank (sNewURL) 
+|| sNewURL==sTemp then ;user doesnt enter anything, or the URL from the box and the original URL are the same.
+	SayFormattedMessage (OT_Jaws_Message, MSGNoChange_l, msgNoChange_s)
+Return
+ElIf sNewURL != sTemp then
+	IniWriteString (Settings, "JAWSGuideLink", sNewURL, CS_Ini_File, true)
+	SayFormattedMessage (OT_Jaws_message, FormatString (msgNewURL, sNewURL))
+EndIf
+EndScript
