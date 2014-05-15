@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/22/14 02:58UTC"
+Const CS_SCRIPT_VERSION = "2.0 5/15/14 13:26UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,9 +33,13 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;5/15/14 by Dang Manh Cuong:
+; Wrote script Preview: turn Jaws speech off when hitting the preview button in some effect dialog.
+;Issue: cannot turn Jaws speech on when finish previewing
+;Updated comments
 ;3/22/14 by Dang Man Cuong
-;Script AddAudacityJawsGuide now returns if user doesn't type anything into the box.
-;Updated messages.
+;Script AddAudacityJawsGuide now returns user doesn't type anything to the box.
+;Updated messages and comments.
 ;3/20/14 by Dang Manh Cuong
 ;Script AddAudacityJawsGuide now returns if new and current URL are the same.
 ;Updated message and documentation for the script above.
@@ -43,12 +47,12 @@ EndMessages
 ;Added script AddAudacityJawsGuide for changing Jaws guide link.
 ;3/17/14 by Dang Manh Cuong
 ;Modified function HandleCustomWindows. Jaws now reads the checkbox and button in the quick settings dialog when navigated to these by the tab key.
-;Make the settings section in the JSI file as a constant so it is  easier to change if needed, and modified all related scripts.
+;Make the settings section in the JSI file at a contans for easier to change if needed, and modified all relatest scripts.
 ;3/16/14 by DangManh Cuong
-;Commented out keystroke Jawskey+V for testing the quick settings script.
-;Wrote xml files for the QuickSetting (Similar to script adjust Jaws options). This is for use on Jaws 13 or later.
-;Wrote function LoadNonJCF Options to get info from JCF file, and write to Audacity>JSI file. This is for script QuickSettings
-;Modified Hotkey Help message. Now the hotkey Insert+v displays in all Jaws versions, although it has been removed from the JKM file.
+;Commented out keystroke: Jawskey+V for testing the quick settings script.
+;Wrote xml files for the QuickSetting (Similar to script adjust Jaws options). This use on Jaws 13 or later.
+;Wrote function LoadNonJCF Options to get info from JCF file, and write to Audacity>JSI file. This for script QuickSettings
+;Modified Hotkey Help message. Now the hotkey Insert+v displays in all Jaws version. Although, it removed from JKM file
 ;3/14/14 by Gary Campbell:
 ;Merged changes from repo audacity_cuong changeset:   49:b3b6b02544ec.
 ;And fixed a couple more typos.
@@ -128,6 +132,7 @@ Globals
 	Int gfEnterPause,
 	Int announceMessage,
 	Int AnnounceToolbars,
+Int SpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -1726,16 +1731,19 @@ Let NonJCF="NonJCFOptions"
 Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", 1, "Audacity.jcf")
 Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", 1, "audacity.jcf")
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", 1, "audacity.jcf")
+Let SpeechOff=IniReadInteger (NonJCF, "SpeechOff", 1, "audacity.jcf")
 ;Write the info above to Audacity.JSI file
 		IniWriteInteger (Settings, "AnnounceMessage", AnnounceMessage, CS_Ini_File, false)
 	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
+	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
+IniWriteInteger (Settings, "SpeechOff", SpeechOff, CS_Ini_File, False)
 	IniWriteInteger (Settings, "AnnounceToolbars", AnnounceToolbars, CS_Ini_File, true)
 ;The condition below got from JAWS Scripts for Foobar 2000 (written by Andrew Hart)
 If GetJFWVersion()<1300000 Then
 Return ; prevent loadNonJCFOptions from chaining to itself since it doesn't exist in JAWS version prior to 13.0
-EndIf
+EndIf ;Get JFW
 loadNonJCFOptions ()
-EndFunction
+EndFunction ;LoadNonJCFOptions
 
 Script AddAudacityJawsGuide ()
 ;Script for adding new Jaws Guide link if present
@@ -1743,10 +1751,10 @@ Var
 String sURL, ;The current URL get from the JSI file
 String sTemp, ;store current URL at a a temp
 String sNewURL ;The New URL added by user
-Let sURL=IniReadString (Settings, "JAWSGuideLink", sURL, CS_INI_File)
-Let sTemp=sURL ;store current URL
+Let sURL=IniReadString (Settings, "JAWSGuideLink", sURL, CS_INI_File) ;get the URL from JSI file
+Let sTemp=sURL ;store current URL at temp
 ;Now display the input box wich contains the Current URL, and allows adding new URL
-InputBox ("Paste or Enter the exactly URL for the Jaws Guide Link for Audacity", "Add Audacity Jaws Guide Link", sURL)
+InputBox (MSGJawsGuideDialog, "Add Audacity Jaws Guide Link", sURL)
 Let sNewURL=sURL ;get the URL from the box.
 If StringIsBlank (sNewURL) 
 || sNewURL==sTemp then ;user doesnt enter anything, or the URL from the box and the original URL are the same.
@@ -1756,4 +1764,16 @@ ElIf sNewURL != sTemp then
 	IniWriteString (Settings, "JAWSGuideLink", sNewURL, CS_Ini_File, true)
 	SayFormattedMessage (OT_Jaws_message, FormatString (msgNewURL, sNewURL))
 EndIf
-EndScript
+EndScript ;AddAudacityJawsGuide
+
+Script Preview ()
+;This just turn Jaws speech off because I don't like Jaws saying when preview an effect
+Var
+Int iSpeech ;Variable to get setting from the JSI file. The setting adjusts within the quick settings.
+Let iSpeech=IniReadInteger (Settings, "SpeechOff", 0, CS_Ini_File)
+If DialogActive ()&&iSpeech==1 then
+	SpeechOff ()
+EndIf ;Dialog active
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+EndScript ;Preview

@@ -20,5 +20,10 @@ If on, speaks the toolbar name when focus moves from one toolbar to another.
 If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
 			</HelpMsg>
 		</DisplayName>
-	</DisplayNameDefinitions>
+		<DisplayName ID="Audacity Options.Preview Speech Off" Text="Preview Speech Off">
+			<HelpMsg>
+If on, Turns speech off when preview an effect.
+			</HelpMsg>
+		</DisplayName>
+</DisplayNameDefinitions>
 </LocalizableDefinitions>
