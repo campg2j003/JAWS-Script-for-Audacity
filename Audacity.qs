@@ -13,6 +13,10 @@
 			<Setting ID="Audacity Options.ENTER pauses during play/record" Type="Boolean">
 				<SettingsFile Section="NonJCFOptions" Name="EnterPause" />
 			</Setting>
+			<Setting
+ ID="Audacity Options.Preview Speech Off" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="SpeechOff" />
+			</Setting>
 		</Category>
 	</QuickSettingsDefinitions>
 </QuickSettings>
