@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/14/2013.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 3/22/2013.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -104,8 +104,9 @@ To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
-To change settings for the Audacity script press %KeyFor (AdjustJawsOptions).
+To change settings for the Audacity script press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
+To Change the Audacity Jaws Guide link press %keyfor (AddAudacityJawsGuide)
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -411,5 +412,15 @@ Chains
 @@
 @msgChainCommands
 Chain commands
+@@
+;for changing Jaws guide's link
+@msgNoChange_l
+No change has been made.
+@@
+@msgNoChange_s
+No change.
+@@
+@MSGNewURL
+The URL has been change to %1
 @@
 EndMessages
