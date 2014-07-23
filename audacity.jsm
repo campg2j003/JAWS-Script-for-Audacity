@@ -104,9 +104,9 @@ To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
-To change settings for the Audacity script press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
+To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
-To Change the Audacity Jaws Guide link press %keyfor (AddAudacityJawsGuide)
+To Change the Audacity Jaws Guide link, press %keyfor (AddAudacityJawsGuide)
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -422,5 +422,8 @@ No change.
 @@
 @MSGNewURL
 The URL has been change to %1
+@@
+@MSGJawsGuideDialog
+Paste or Enter the exactly URL for the Audacity Jaws Guide Link.
 @@
 EndMessages
