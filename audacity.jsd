@@ -299,3 +299,6 @@
 :Synopsis Allow adding, or changing the Audacity Guide link
 :Category Script
 
+:Script Record
+:Synopsis Silence key that starts recording functions.
+:Description Silence key that starts recording functions.  This script types the key to which it is bound.  If it is not in a dialog or menu it does not speak the key label.

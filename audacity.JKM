@@ -41,4 +41,6 @@ Alt+[=SaySelectionStart
 Alt+]=SaySelectionEnd
 Shift+Insert+S=MuteSynthesizer
 Shift+Control+J=AddAudacityJawsGuide
+r=Record
+Shift+r=Record
 [Laptop Keys]

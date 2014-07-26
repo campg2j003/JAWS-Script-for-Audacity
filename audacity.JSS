@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/26/14 00:56UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/26/14 01:45UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/25/14 Added Record script to silence the key that starts recording.  Should this be controlled by a user option?
+;7/25/14 Previous saved to HG rev 158.
 ;7/25/14 Removed HandleCustomWindows entry from audacity.jsd.  It had no arguments, whereas the version in JAWS 10 and JAWS 15 has one argument.  It appears it has been with us since the beginning.
 ;Updated messages in jsm file.
 ;Script AddAudacityJAWSGuide now updates the global containing the URL so its effect is immediately available.
@@ -1092,7 +1094,7 @@ EndIf
 EndScript ; DeselectAll
 
 Script CloseFocusTrack ()
-;If this key will close the current track, speaak a message, otherwise send to ap normally.
+;If this key will close the current track, speak a message, otherwise send to ap normally.
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -1769,6 +1771,17 @@ ElIf sNewURL != sTemp then
 	SayFormattedMessage (OT_Jaws_message, FormatString (msgNewURL, sNewURL))
 EndIf
 EndScript ;AddAudacityJawsGuide
+
+Script Record ()
+;Don't speak Record or Record-Append keys.
+If DialogActive () ||MenusActive () Then
+	;A dialog is open, pass key to application and speak its label.
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+Else
+	TypeCurrentScriptKey ()
+EndIf
+EndScript ; Record
 
 Script Preview ()
 ;This just turn Jaws speech off because I don't like Jaws saying when preview an effect
