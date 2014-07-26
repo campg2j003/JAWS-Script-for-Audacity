@@ -1,4 +1,4 @@
-9/15/2013 JAWS script for Audacity V2.0 (for script version 2.0 9/14/13 19:56UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+9/15/2013 JAWS script for Audacity V2.0 (for script version 2.0 7/26/14 00:56UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -23,7 +23,7 @@ When playing or recording the ENTER key executes pause/resume.  In this case, pr
 
 The script version can be obtained by pressing JAWSKey+CTRL+V (twice quickly to display it in the virtual viewer), and also appears in JAWS hot key help.
 
-The URL for accessing the Audacity Guide for JAWS users can be modified by editing the config file.  To do this, edit audacity.jsi (by default in the personal Settings folder in the folder containing the scripts) with a text editor such as Notepad or JAWS Script Manager.  Change or add a line in the Settings section that starts with "JAWSGuideLink=".  The URL should follow the = sign.  If Audacity has run since JAWS was started, you will need to restart JAWS for the changes to take affect.
+The URL for accessing the Audacity Guide for JAWS users can be modified via the script by pressing Control+Shift+j.  This opens a dialog with an edit box containing the URL.  Update or replace it and press OK.
 
 To install: 
 Place the installer in a folder on your machine.
@@ -36,15 +36,15 @@ Issues:
 
 We have had problems getting the state of Play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
 
-The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity-- or JAWS, I can't find my notes on this.  This was observed with JAWS 10.
+The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10 and 15.
 
 A side effect of ENTER pausing during record and play is that you can't use ENTER to select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the ENTER key adds "p" in a label instead of terminating it.  Use Control+ENTER to send ENTER in this case.
 
+When entering a label in a label track JAWS speaks the Audacity functions for letter keys even though they are being entered into the label.  We will correct this if we can find a way to tell that we are in a label track.
+
 If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
 
-We have received reports that the installer cannot find the JAWS script compiler on 64-bit machines.    We think we have fixed this, but let us know if you have trouble.
-
-The script was developed with Audacity 2.0.3 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13 and 14 on a laptop running Windows 7.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
+The script was developed with Audacity 2.0.3, 2.0.4, and 2.0.5 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13, 14, and 15 on a laptop running Windows 7 and 8.1.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
 There is no specific Braille support at this time.
 
 Messages and string constants are in audacity.jsm facilitating translation.
@@ -52,7 +52,7 @@ Messages and string constants are in audacity.jsm facilitating translation.
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
 Here is the text of the JAWS hot key help:
-JAWS keystrokes for script version 2.0 9/14/13 06:30UTC, for Audacity 2.0.0 or later:
+JAWS keystrokes for script version 2.0 7/25/14 22:25UTC, for Audacity 2.0.0 or later:
 To say the selection start position, press Alt+[.
 To say the selection end position or length, press Alt+].
 To move focus to these controls, press the key twice quickly.
@@ -64,9 +64,9 @@ To adjust pan left, press Alt+Shift+LeftArrow.
 To adjust pan right, press Alt+Shift+RightArrow.
 The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while
 in the main window, turn on the JAWS cursor.
-To toggle speech on or off, press shift+Insert+s.
+To toggle speech on or off, press Shift+Insert+S.
 To toggle alert messages on or off, press Control+`).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See the what's new.txt for more info.
+See what's new.txt for more info.
 In a toolbar to move to the next toolbar press Control+Tab
 In a toolbar to move to the previous toolbar press Control+Shift+Tab
 To speak the program's state (play/pause/record/stop) press JAWSKey+delete
@@ -83,9 +83,11 @@ To set focus to the preset control, press Alt+P.
 To load an existing preset, press  Alt+L.
 To save the current settings as a preset, press  Alt+S.
 
-To change settings for the Audacity script press JAWSKey+V.
+To change settings for the Audacity script, press   JAWSKey+V.
+
+To Change the URL for the Audacity Jaws Guide, press Shift+Control+J
 
 List JAWS Hot Keys
-
+Press ESCAPE to close this message. 
 
 Enjoy!
