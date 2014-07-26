@@ -426,4 +426,10 @@ The URL has been change to %1
 @MSGJawsGuideDialog
 Enter the new URL for the Audacity with Jaws Guide.
 @@
+
+;Used to speak the field value along with the slider value in the Compressor effect.
+;%1 percentage value of the slider (without percent), %2 value of the field (the static after the slider).
+@msgCompressorSlider
+%1%%%2
+@@
 EndMessages
