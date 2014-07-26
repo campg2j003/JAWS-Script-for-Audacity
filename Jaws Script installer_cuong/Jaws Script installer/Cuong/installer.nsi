@@ -14,10 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Sat Sep 14 2013
+Last updated: Fri Jul 25 2014
 
 Modifications:
 
+7/25/14 Added QuickSettings files.
 */
 
 /*
@@ -85,6 +86,8 @@ ${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
+${FileDated} "${JAWSSrcDir}" "audacity.qs"
+${FileDated} "${JAWSSrcDir}" "audacity.qsm"
 ;If it is a Just Scripts installation, install text files into the script folder.
 push $0
 GetCurInstType $0

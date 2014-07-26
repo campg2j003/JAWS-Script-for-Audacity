@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 3/22/2013.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 7/25/2014.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -88,7 +88,7 @@ To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while in the main window, turn on the JAWS cursor.
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See the what's new.txt for more info.
+See what's new.txt for more info.
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
@@ -106,7 +106,7 @@ To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
-To Change the Audacity Jaws Guide link, press %keyfor (AddAudacityJawsGuide)
+To Change the URL for the Audacity Jaws Guide, press %keyfor (AddAudacityJawsGuide)
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -115,7 +115,7 @@ To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
 @@
 
-;Spoken before loading the Audacity for JAWS web page.
+;Spoken before loading the Audacity for JAWS Guide web page.
 @msgLoadingJawsGuide_L
 loading Audacity JAWS Guide web page
 @@
@@ -125,7 +125,7 @@ JAWS Guide
 
 ;Text of Audacity hotkey help that appears before the link to the Audacity guide for JAWS.
 ;We don't use a % substitution for the link because it must be added to the virtual buffer by a separate function call to make it a link.
-;û1 -- Audacity guide title
+;%1 -- Audacity guide title
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
@@ -424,6 +424,6 @@ No change.
 The URL has been change to %1
 @@
 @MSGJawsGuideDialog
-Paste or Enter the exactly URL for the Audacity Jaws Guide Link.
+Enter the new URL for the Audacity with Jaws Guide.
 @@
 EndMessages

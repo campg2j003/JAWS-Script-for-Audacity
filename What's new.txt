@@ -1,5 +1,7 @@
-(This file last updated 9/27/2013)
+(This file last updated 7/25/2014)
 
+. The URL for the JAWS User's Guide can now be updated via the script (Control+Shift+j).
+. Added support for the QuickSettings dialog (JAWS 13 and later).
 . Made messages for moving and selecting more consistent.
 
 New in V2.0 (9/15/2013):

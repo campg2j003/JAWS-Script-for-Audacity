@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 5/15/14 13:26UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/26/14 00:56UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,11 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/25/14 Removed HandleCustomWindows entry from audacity.jsd.  It had no arguments, whereas the version in JAWS 10 and JAWS 15 has one argument.  It appears it has been with us since the beginning.
+;Updated messages in jsm file.
+;Script AddAudacityJAWSGuide now updates the global containing the URL so its effect is immediately available.
+;Added .qs and .qsm files to installer.  Updated What's New and English README files.
+;7/16/14 Previous saved to HG rev 154 (same as 156 except that 156 contains correct version of audacity.jsm).
 ;7/16/14 Merged changes from repo audacity_cuong changeset:   51:2fdf46c42638.
 ;5/15/14 by Dang Manh Cuong:
 ; Wrote script Preview: turn Jaws speech off when hitting the preview button in some effect dialog.
@@ -1746,20 +1751,21 @@ EndFunction ;LoadNonJCFOptions
 Script AddAudacityJawsGuide ()
 ;Script for adding new Jaws Guide link if present
 Var
-String sURL, ;The current URL get from the JSI file
-String sTemp, ;store current URL at a a temp
+String sURL, ;The current URL gotten from the JSI file
+String sTemp, ;store current URL
 String sNewURL ;The New URL added by user
 Let sURL=IniReadString (Settings, "JAWSGuideLink", sURL, CS_INI_File) ;get the URL from JSI file
-Let sTemp=sURL ;store current URL at temp
-;Now display the input box wich contains the Current URL, and allows adding new URL
+Let sTemp=sURL ;store current URL
+;Now display the input box wich contains the Current URL, and allows changing it
 InputBox (MSGJawsGuideDialog, "Add Audacity Jaws Guide Link", sURL)
 Let sNewURL=sURL ;get the URL from the box.
 If StringIsBlank (sNewURL) 
-|| sNewURL==sTemp then ;user doesnt enter anything, or the URL from the box and the original URL are the same.
+|| sNewURL==sTemp then ;user doesn't enter anything, or the URL from the box and the original URL are the same.
 	SayFormattedMessage (OT_Jaws_Message, MSGNoChange_l, msgNoChange_s)
 Return
 ElIf sNewURL != sTemp then
-	IniWriteString (Settings, "JAWSGuideLink", sNewURL, CS_Ini_File, true)
+    Let gsJawsGuideLink = sNewURL
+    IniWriteString (Settings, "JAWSGuideLink", gsJawsGuideLink, CS_Ini_File, true)
 	SayFormattedMessage (OT_Jaws_message, FormatString (msgNewURL, sNewURL))
 EndIf
 EndScript ;AddAudacityJawsGuide

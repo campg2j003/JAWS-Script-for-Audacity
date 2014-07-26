@@ -43,10 +43,6 @@
 :Param handle/hwnd No Description
 :Param string/buffer No Description
 
-:function HandleCustomWindows
-:Returns int No Return Description
-:Synopsis Announce when focus changes to a different area of the main window.
-
 :function SayFocusedObject
 
 :function IsToolbar
