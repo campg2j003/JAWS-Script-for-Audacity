@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/26/14 01:45UTC"
+Const CS_SCRIPT_VERSION = "2.0 7/26/14 01:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;7/25/14 Now speaks the field value after the slider percentage in the compressor dialog.  May want to include this behavior in SayLine.  SayCharacter?
+;7/25/14 Previous saved to HG rev 159.
 ;7/25/14 Added Record script to silence the key that starts recording.  Should this be controlled by a user option?
 ;7/25/14 Previous saved to HG rev 158.
 ;7/25/14 Removed HandleCustomWindows entry from audacity.jsd.  It had no arguments, whereas the version in JAWS 10 and JAWS 15 has one argument.  It appears it has been with us since the beginning.
@@ -348,6 +350,17 @@ If DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && Get
 	"",   ; control state
 	"", "",   ; Container name, type
 	"", "",   ; value, position
+	"")   ; dialog text
+	Return True
+ElIf DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && GetWindowSubtypeCode (GetPriorWindow(hFocus)) == WT_STATIC && GetWindowSubtypeCode (GetNextWindow(hFocus)) == WT_STATIC Then
+	Let ghSliderEdit = GetNextWindow (hFocus)
+	Let hTemp = GetPriorWindow(hFocus) ; control name
+	SayControlEx(hFocus, 
+	GetWindowName(hTemp), "",   ; control name, type
+	;"", "", ; name, type
+	"",   ; control state
+	"", "",   ; Container name, type
+	FormatString(msgCompressorSlider, GetObjectValue(hFocus), GetWindowText (ghSliderEdit, False)), "",   ; value, position
 	"")   ; dialog text
 	Return True
 Else
