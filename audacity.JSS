@@ -33,7 +33,9 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;12/04/14 by Dang Manh Cuong:
+;3/11/15 Previous saved to HG rev 165.
+;3/11/15 Merged changes from repo audacity_cuong changeset 53:cfe6956ccc18.  This contains a partial implementation of silencing speech during previewing which doesn't work.
+;12/04/14 by Dang Manh Cuong (merge parent changeset:   155:3a7120b2adb7):
 ;Modified script record. Now user has ability to turn jaws speech off when pressing the record or record append key in the quick setting.
 ;7/25/14 Now speaks the field value after the slider percentage in the compressor dialog.  May want to include this behavior in SayLine.  SayCharacter?
 ;7/25/14 Previous saved to HG rev 159.
