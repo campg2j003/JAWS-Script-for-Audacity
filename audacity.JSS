@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 7/26/14 01:55UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/11/15 21:20UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -28,11 +28,16 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
     
+
     See the file copying.txt for details.
 @@
 EndMessages
 
 ;Modifications:
+;3/11/15 Merged changes from repo audacity_cuong changeset 53:cfe6956ccc18.  This contains a partial implementation of silencing speech during previewing which doesn't work.
+;12/04/14 by Dang Manh Cuong (merge parent changeset:   155:3a7120b2adb7):
+;Modified script record. Now user has ability to turn jaws speech off when pressing the record or record append key in the quick setting.
+;7/25/14 Previous saved to HG changeset:   160:28d0b01c49b7.
 ;7/25/14 Now speaks the field value after the slider percentage in the compressor dialog.  May want to include this behavior in SayLine.  SayCharacter?
 ;7/25/14 Previous saved to HG rev 159.
 ;7/25/14 Added Record script to silence the key that starts recording.  Should this be controlled by a user option?
@@ -141,6 +146,7 @@ Globals
 	Int announceMessage,
 	Int AnnounceToolbars,
 Int SpeechOff,
+Int RecordSpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -1750,11 +1756,13 @@ Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", 1, "Audacity.jcf"
 Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", 1, "audacity.jcf")
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", 1, "audacity.jcf")
 Let SpeechOff=IniReadInteger (NonJCF, "SpeechOff", 1, "audacity.jcf")
+Let RecordSpeechOff=IniReadInteger (NonJCF, "RecordSpeechOff", 1, "audacity.jcf")
 ;Write the info above to Audacity.JSI file
 		IniWriteInteger (Settings, "AnnounceMessage", AnnounceMessage, CS_Ini_File, false)
 	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
 	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
 IniWriteInteger (Settings, "SpeechOff", SpeechOff, CS_Ini_File, False)
+IniWriteInteger (Settings, "RecordSpeechOff", RecordSpeechOff, CS_Ini_File, False)
 	IniWriteInteger (Settings, "AnnounceToolbars", AnnounceToolbars, CS_Ini_File, true)
 ;The condition below got from JAWS Scripts for Foobar 2000 (written by Andrew Hart)
 If GetJFWVersion()<1300000 Then
@@ -1787,13 +1795,30 @@ EndScript ;AddAudacityJawsGuide
 
 Script Record ()
 ;Don't speak Record or Record-Append keys.
+Var
+	Int iRecord ;the settings from JSI file
 If DialogActive () ||MenusActive () Then
 	;A dialog is open, pass key to application and speak its label.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 Else
-	TypeCurrentScriptKey ()
-EndIf
+	; Gary's version from changeset:   159:f64a0d22c597:
+	;TypeCurrentScriptKey ()
+	;Cuong's version.
+	;Read settings from JSI file:
+	Let iRecord=IniReadInteger (Settings, "RecordSpeechOff", iRecord, CS_Ini_File)
+	If iRecord == 1 then
+		;Stop Jaws from saying: "track 1, track 2, etc
+		SpeechOff ()
+		TypeCurrentScriptKey ()
+		Delay (5)
+		SpeechOn ()
+	Else
+		;iRecord!=1
+		TypeCurrentScriptKey ()
+	EndIf ; else iRecord!=1
+	;-- end Cuong's version
+EndIf ;else not (DialogActive () ||MenusActive ())
 EndScript ; Record
 
 Script Preview ()
