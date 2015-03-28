@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/27/15 21:20UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/28/15 19:30UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/28/15 Added code to silence speech during previewing.  The flags associated with this (gfSilence and gfPreviewing) are cleared by AutoStartEvent every time it runs, so if they aren't turned off when previewing is over switching focus away from Audacity and back will clear them.  However, have not been able to get this implementation stuck.
+;Implemented a flag to suppress the next tutor message.  This is currently not used.
+;Changed 1 to symbolic constants in code that writes default settings entries and the default value of code that reads settings.
+;3/28/15 Previous saved to HG changeset:   169:3d20f4e12301.
 ;3/27/15 Changed back to using the globals used before.  (The only one is gfEnterPause.)  Uncommented the global declarations, their initialization in AutoStartEvent, and LoadNonJCFOptions.  In AutoStartEvent made loading of JAWS guide link only execute for pre JAWS 13, and added initialization for it in LoadNonJCFOptions.
 ;Added new globals gsIniFile and gsIniSection.  For pre JAWS 13 gsIniFile is the old CS_Ini_File, for 13 and later it is "Audacity.jcf".  gsIniSection is "Settings" and "NonJCFOptions", respectively.  Removed constant Settings, which was replaced by gsIniSection.  Most existing code that only executes pre JAWS 13 still uses CS_Ini_File.  These changes should allow AddAudacityJAWSGuide to work.
 ;In script AddAudacityJawsGuide now initializes URL to default if not in file.
@@ -119,6 +123,7 @@ Const
 	ID_SELECTION_END = 2706,   ; selection end or selection length
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
+	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	CS_INI_FILE="Audacity.jsi",
 	;For VST plugins
@@ -132,6 +137,8 @@ Const
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
 	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
 	CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
+	CI_SILENCEPRIVEW_OFF = 0,
+	CI_SILENCE_PREVIEW_ON = 1, ; silence speech when previewing an effect
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
@@ -149,13 +156,13 @@ Const
 
 Globals
 	Int App_FirstTime,
-String gsIniFile, ; CS_Ini_File for pre JAWS 13, the JCF file for 13 and later.
+	String gsIniFile, ; CS_Ini_File for pre JAWS 13, the JCF file for 13 and later.
 	String gsIniSection, ;"Settings" for pre JAWS 13, "NonJCFOptions" for 13 and later
 	;For adjust Jaws options and quick settings script
 	Int gfEnterPause,
 	Int announceMessage,
 	Int AnnounceToolbars,
-	Int SpeechOff,
+	Int gfSilencePreview,
 	Int RecordSpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
@@ -163,7 +170,10 @@ String gsIniFile, ; CS_Ini_File for pre JAWS 13, the JCF file for 13 and later.
 	
 	Handle ghNull, ; to clear a handle
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
-	Handle ghSliderEdit
+	Handle ghSliderEdit,
+	Int gfPreviewing,
+	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
+	Int gfSuppressNextTutor ;Suppress next TutorMessegeEvent, not currently used.
 	
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -302,6 +312,9 @@ Var
 	String sTemp,
 	Int iTemp
 	
+;We reset these two flags in case they get stuck on.
+Let gfSilence = False
+Let gfPreviewing = False
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_No_Disable, MSG_App_Start)
@@ -349,10 +362,36 @@ EndFunction ; SayNonHighlightedText
 Globals Handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
 
-Int Function HandleCustomWindows ()
+Void Function TutorMessageEvent(Handle hWnd, Int nMenuMode)
+; Suppress tutor message while previewing.
+If gfSilence Then
+	Return
+EndIf
+If gfSuppressNextTutor Then
+    Let gfSuppressNextTutor = False
+    Return
+EndIf
+    ;DebugString("Tutor message for " + GetWindowType(hWnd)) ; debug
+TutorMessageEvent(hWnd, nMenuMode)    
+EndFunction ; TutorMessageEvent
+
+Int Function HandleCustomRealWindows(Handle hReal)
+;Suppress speech for preview.
+var int iRtn ; debug
+
+;DebugString("Enter HandleReal" + GetWindowName(hReal)) ; debug
+If gfSilence Then
+	;DebugString("HandleCustomReal: speech suppressed") ; debug
+	Return True
+EndIf ; if gfSilence
+Let iRtn = HandleCustomRealWindows(hReal)
+;DebugString("Exit HandleReal") ; debug
+return iRtn
+EndFunction ; HandleCustomRealWindows
+
+Int Function HandleCustomWindows (Handle hFocus)
 Var
 	Handle hParent,
-	Handle hFocus,
 	Handle hOld,
 	Handle hToolbar,
 	Handle hTemp,
@@ -360,13 +399,20 @@ Var
 	String sName,
 	Int iMSAA_JCFOpt
 
-;Make Jaws reads the checkbox and button in the quick settings dialog
+; Turn off silencing for preview.
+If gfSilence && gfPreviewing Then
+    ; stop preview silence
+	;DebugString("Turning off preview silence") ; debug
+	Let gfSilence = False
+    Let gfPreviewing = False
+EndIf ; stop preview silence
+
+;Make Jaws read the checkbox and button in the quick settings dialog
 Let sName=GetWindowName (GetRealWindow (GetCurrentWindow ()))
 If DialogActive ()&&sName=="QuickSettings - audacity" then
 	Return
 EndIf ;quick settings dialog
 
-Let hFocus = GetFocus ()
 If DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && GetWindowSubtypeCode (GetPriorWindow(hFocus)) == WT_EDIT Then
 	Let ghSliderEdit = GetPriorWindow (hFocus)
 	Let hTemp = GetPriorWindow(ghSliderEdit) ; control name
@@ -393,6 +439,23 @@ Else
 	Let ghSliderEdit = ghNull
 EndIf ;else not slider
 
+If gfSilencePreview && hFocus == GetAppMainWindow(hFocus) Then
+	;DebugString("previewing " + IntToString(hFocus)) ; debug
+    Let gfSilence = True
+	;DebugString("suppress focus exit say custom") ; debug
+	Return True
+EndIf
+
+If DialogActive() && gfSilence && GetControlId(hFocus) == ID_STOP_BUTTON Then
+	Let gfPreviewing = True
+	Return True
+EndIf ; stop button
+
+If gfSilence Then
+	;DebugString("custom suppressing focus") ; debug
+    Return True ; we're doing something like previewing and we don't want focus change stuff spoken
+EndIf ; if gfSilence
+
 ;Announce when focus changes to a different area of the main window.
 If !FocusInMainWindow() Then
 	If DialogActive () && GetWindowName(GetFocus()) == cscNULL Then
@@ -411,7 +474,7 @@ If !FocusInMainWindow() Then
 		SayWindowTypeAndText (GetFocus ())
 		Return true
 	EndIf ; no window name
-	Return HandleCustomWindows () ; not main window, continue with normal processing
+	Return HandleCustomWindows (hFocus) ; not main window, continue with normal processing
 EndIf ; if ! focus in main window
 Let hParent = GetParent(hFocus)
 If GetWindowName(hFocus) != WN_TRACKPANEL Then
@@ -424,7 +487,7 @@ If hParent != hOld Then
 	; We could use FocusInTrackPanel here but we've already tested most of its conditions.
 	If GetWindowName(hFocus) == WN_TRACKPANEL Then
 		Say (CS_TrackPanel, OT_Position)
-		Return HandleCustomWindows ()
+		Return HandleCustomWindows (hFocus)
 	EndIf ; if track panel
 	; We could also identify the selection by testing for WindowHierarchyX = 3.
 	If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
@@ -443,7 +506,7 @@ If IsToolbar(GetToolbar ()) Then
 		EndIf
 	EndIf ; new toolbar
 EndIf ; If IsToolbar
-Return HandleCustomWindows () ; allow others to process
+Return HandleCustomWindows (hFocus) ; allow others to process
 EndFunction ; HandleCustomWindows
 
 Void Function SayFocusedObject ()
@@ -1484,10 +1547,11 @@ Return msgUO_EnterPauseHlp
 EndFunction ; UOEnterPauseHlp
 
 Void Function AddDefaultConfig ()
-;Adds values of default settings to Audacity.JSI File.
+;Adds values of default settings to Audacity.JSI File.  
 IniWriteInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_FULL, gsIniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, False) ; no flush
+IniWriteInteger (gsIniSection, "SilencePreview", CI_SILENCE_PREVIEW_ON, gsIniFile, False) ; no flush
 IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, True)
 Let gsJawsGuidelink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
@@ -1772,10 +1836,10 @@ String NonJCF ;the section for storing settings within the JCF file
 Let NonJCF="NonJCFOptions"
 ;Now read the info from the NonJCFOptions section of Audacity.jcf.
 ;The value following the key name is the default value.
-Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", 1, "Audacity.jcf")
-Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", 1, "audacity.jcf")
-Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", 1, "audacity.jcf")
-Let SpeechOff=IniReadInteger (NonJCF, "SpeechOff", 1, "audacity.jcf")
+Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", CI_MESSAGES_FULL, "Audacity.jcf")
+Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", CI_TOOLBARS_ON, "audacity.jcf")
+Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", CI_ENTERPAUSE_ON, "audacity.jcf")
+Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_SILENCE_PREVIEW_ON, "audacity.jcf")
 Let RecordSpeechOff=IniReadInteger (NonJCF, "RecordSpeechOff", 1, "audacity.jcf")
 ;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 /*
@@ -1797,8 +1861,7 @@ Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JA
 ;Write the info above to Audacity.JSI file
 IniWriteInteger (gsIniSection, "AnnounceMessage", AnnounceMessage, gsIniFile, false)
 IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
-IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
-IniWriteInteger (gsIniSection, "SpeechOff", SpeechOff, gsIniFile, False)
+IniWriteInteger (gsIniSection, "SilencePreview", gfSilencePreview, gsIniFile, False)
 IniWriteInteger (gsIniSection, "RecordSpeechOff", RecordSpeechOff, gsIniFile, False)
 IniWriteInteger (gsIniSection, "AnnounceToolbars", AnnounceToolbars, gsIniFile, true)
 */
@@ -1867,7 +1930,7 @@ Script Preview ()
 ;This just turn Jaws speech off because I don't like Jaws saying when preview an effect
 Var
 Int iSpeech ;Variable to get setting from the JSI file. The setting adjusts within the quick settings.
-Let iSpeech=IniReadInteger (gsIniSection, "SpeechOff", 0, gsIniFile)
+Let iSpeech=IniReadInteger (gsIniSection, "SilencePreview", 0, gsIniFile)
 If DialogActive ()&&iSpeech==1 then
 	SpeechOff ()
 EndIf ;Dialog active
