@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
-		<DisplayName ID="audacity Options" Text="Audacity Settings">
+		<DisplayName ID="Audacity Options" Text="Audacity Settings">
 			<HelpMsg>
 Audacity specific settings.</HelpMsg>
 		</DisplayName>
