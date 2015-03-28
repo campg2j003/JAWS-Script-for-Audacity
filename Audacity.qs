@@ -14,8 +14,8 @@
 				<SettingsFile Section="NonJCFOptions" Name="EnterPause" />
 			</Setting>
 			<Setting
- ID="Audacity Options.Preview Speech Off" Type="Boolean">
-				<SettingsFile Section="NonJCFOptions" Name="SpeechOff" />
+ ID="Audacity Options.Silence Preview" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="SilencePreview" />
 			</Setting>
 		</Category>
 	</QuickSettingsDefinitions>
