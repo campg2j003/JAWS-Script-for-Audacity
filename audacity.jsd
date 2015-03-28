@@ -1,9 +1,9 @@
 :script for
 
-:function AnnounceOn
-:Returns int True if messages should be spoken
-:Synopsis Indicate whether messages related to certain Audacity operations should be spoken
-:Param string/sKey No Description
+:function GetQuickSetting
+:Returns int True if the setting is on.
+:Synopsis Retrieve the requested setting.  For JAWS 13 and later this retrieves the option with GetNonJCFOption.  For JAWS versions earlier than 13.0, gets the option from the JSI file.
+:Param string/sKey The key of the desired setting.
 
 :function FocusInTrackPanel
 :Returns int True if focus is in the track panel

@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/11/15 21:20UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/27/15 21:20UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,14 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/27/15 Changed back to using the globals used before.  (The only one is gfEnterPause.)  Uncommented the global declarations, their initialization in AutoStartEvent, and LoadNonJCFOptions.  In AutoStartEvent made loading of JAWS guide link only execute for pre JAWS 13, and added initialization for it in LoadNonJCFOptions.
+;Added new globals gsIniFile and gsIniSection.  For pre JAWS 13 gsIniFile is the old CS_Ini_File, for 13 and later it is "Audacity.jcf".  gsIniSection is "Settings" and "NonJCFOptions", respectively.  Removed constant Settings, which was replaced by gsIniSection.  Most existing code that only executes pre JAWS 13 still uses CS_Ini_File.  These changes should allow AddAudacityJAWSGuide to work.
+;In script AddAudacityJawsGuide now initializes URL to default if not in file.
+;In Audacity.qsm corrected case of ID for the root node.  The root node text and help text are now correctly displayed.
+;3/25/15 Changed AnnounceOn to GetQuickSetting.  It now uses the JSI file for JAWS prior to 13.0 and GetNonJCFOption for 13.0 and later.  Converted references to globals representing settings to calls to GetQuickSetting.
+;Commented out LoadNonJCFOptions because no globals need to be initialized.
+;Note that globals can be used for option values since LoadNonJCFOptions is called when the QuickSettings dialog finishes, so it was not necessary to change the globals to calls to GetQuickSetting.
+;Decided that for JAWS 13 or later we use QuickSettings and NonJCFOptions, and we don't attempt to transfer settings from a JSI file.  For prior to JAWS 13 we continue to use JSI file.
 ;3/11/15 Previous saved to HG rev 165.
 ;3/11/15 Merged changes from repo audacity_cuong changeset 53:cfe6956ccc18.  This contains a partial implementation of silencing speech during previewing which doesn't work.
 ;12/04/14 by Dang Manh Cuong (merge parent changeset:   155:3a7120b2adb7):
@@ -113,7 +121,6 @@ Const
 	ID_LENGTH_RADIO = 2703,
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
 	CS_INI_FILE="Audacity.jsi",
-Settings="Settings", ;make easier to change the section name in the config file if needed
 	;For VST plugins
 	ID_Load_Preset=11001,
 	ID_Save_Preset=11002,
@@ -142,12 +149,14 @@ Const
 
 Globals
 	Int App_FirstTime,
-;For adjust Jaws options and quick settings script
+String gsIniFile, ; CS_Ini_File for pre JAWS 13, the JCF file for 13 and later.
+	String gsIniSection, ;"Settings" for pre JAWS 13, "NonJCFOptions" for 13 and later
+	;For adjust Jaws options and quick settings script
 	Int gfEnterPause,
 	Int announceMessage,
 	Int AnnounceToolbars,
-Int SpeechOff,
-Int RecordSpeechOff,
+	Int SpeechOff,
+	Int RecordSpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -156,13 +165,17 @@ Int RecordSpeechOff,
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 	Handle ghSliderEdit
 	
-Int Function AnnounceOn (String sKey)
-;Indicate whether messages related to certain Audacity operations should be spoken.  Return True if messages should be spoken.
-;This function can be used to check if announce toolbars is on by specifying the appropriate value for sKey.
-;sKey: key to read in audacity.JSI file
-;New method given by Le Van Mai (Cuong's friend)
-Return IniReadInteger (Settings, sKey, 0, CS_INI_FILE)
-EndFunction ; AnnounceOn
+Int Function GetQuickSetting (String sKey)
+;Get the desired user option.
+;For JAWS 13.0 and later gets the setting from the NonJCFOptions section of the JCF file.  For earlier versions gets it from the JSI file.
+;sKey: key of desired setting.
+If GetJFWVersion()<1300000 Then
+	;New method given by Le Van Mai (Cuong's friend)
+	Return IniReadInteger (gsIniSection, sKey, 0, CS_INI_FILE)
+Else
+	return GetNonJCFOption(sKey)
+EndIf ; else JAWS 13 or later
+EndFunction ; GetQuickSetting
 
 Int Function FocusInTrackPanel ()
 ;Indicates that the focus is in the track panel.  It is used to prevent JAWS from speaking messages such as move to start of track etc. in the selection bar or toolbar.
@@ -191,7 +204,7 @@ ElIf FocusInMainWindow () Then
 		Pause ()
 		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
 		;If the Announce Messages option is on, speak the selection posision.
-		If AnnounceOn ("AnnounceMessage") Then
+		If GetQuickSetting ("AnnounceMessage") Then
 			Let sValue=GetPositionField (wnd) ;get value of desired control
 			If !sValue Then ;the selection toolbar is turned off
 				Say (MSGNoSelection, OT_Error)
@@ -213,7 +226,7 @@ If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () Then
 		Return
 	EndIf
 	TypeCurrentScriptKey ()
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_Cursor, sAlert) ;The alert specified by calling script
 	EndIf ; if AnnounceOn
 Else
@@ -238,7 +251,7 @@ Void Function AnnounceKeyMessage (String Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
 If !NoProject ()&&! UserBufferIsActive ()&&FocusInMainWindow () Then
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 	EndIf ; if AnnounceOn
 	TypeCurrentScriptKey ()
@@ -250,7 +263,7 @@ EndIf ; else not main window, etc.
 EndFunction ; AnnounceKeyMessage
 
 Void Function SayNotStopped ()
-If AnnounceOn ("AnnounceMessage") Then
+If GetQuickSetting ("AnnounceMessage") Then
 	SayFormattedMessage (ot_Error, msgNotStopped_l, msgNotStopped_s)
 EndIf
 EndFunction ; SayNotStopped
@@ -292,28 +305,36 @@ Var
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_No_Disable, MSG_App_Start)
-	;write default settings of Audacity script if settings file doesn't exist.
-	If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
-		AddDefaultConfig ()
-	EndIf
-	Let gfEnterPause = IniReadInteger(Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
-	;Read a value for the JAWS ref guide link, initialize to default.
-	;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
-	/*
-	Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
-	Let sTemp = StringTrimTrailingBlanks (IniReadString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
-	Let iTemp = StringContains (sTemp, cScSpace)
-	If iTemp Then
-	;We found a space and it's not the last character.
-	Let gsJawsGuideLink = StringLeft (sTemp, iTemp - 1)
-	Let gsJawsGuideTitle = StringRight(sTemp, StringLength (sTemp) - iTemp)
+	If GetJFWVersion()<1300000 Then
+		Let gsIniFile = CS_Ini_File
+		Let gsIniSection = "Settings"
 	Else
-	Let gsJawsGuideLink = sTemp
-	Let gsJawsGuideTitle = CS_JawsGuide_Title
-	EndIf ; else no space
-	*/
-	
-	Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
+		Let gsIniFile = "Audacity.jcf"
+		Let gsIniSection = "NonJCFOptions"
+	EndIf ; else V13 or later
+	If GetJFWVersion()<1300000 Then
+		;write default settings of Audacity script if settings file doesn't exist.
+		If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
+			AddDefaultConfig ()
+		EndIf
+		;Read a value for the JAWS ref guide link, initialize to default.
+		;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
+		/*
+		Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
+		Let sTemp = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
+		Let iTemp = StringContains (sTemp, cScSpace)
+		If iTemp Then
+		;We found a space and it's not the last character.
+		Let gsJawsGuideLink = StringLeft (sTemp, iTemp - 1)
+		Let gsJawsGuideTitle = StringRight(sTemp, StringLength (sTemp) - iTemp)
+		Else
+		Let gsJawsGuideLink = sTemp
+		Let gsJawsGuideTitle = CS_JawsGuide_Title
+		EndIf ; else no space
+		*/
+
+		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
+	EndIf ; if before JAWS 13
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
@@ -417,7 +438,7 @@ If IsToolbar(GetToolbar ()) Then
 	Let hToolbar = GetToolbar ()
 	If hToolbar != ghAudacityLastToolbar Then
 		Let ghAudacityLastToolbar = hToolbar
-		If AnnounceOn ("AnnounceToolbars") Then
+		If GetQuickSetting ("AnnounceToolbars") Then
 			Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
 		EndIf
 	EndIf ; new toolbar
@@ -768,7 +789,7 @@ EndIf ; playing/recording
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 	pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -789,7 +810,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn ("AnnounceMessage") && !NoProject () Then
+If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -810,7 +831,7 @@ EndIf
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn ("AnnounceMessage") && !NoProject () Then
+If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -837,7 +858,7 @@ EndIf ; playing/recording
 Let sMessage=FormatString (MSGMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
-If AnnounceOn ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 	pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -850,7 +871,7 @@ If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage")Then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&GetQuickSetting ("AnnounceMessage")Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -868,7 +889,7 @@ If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&AnnounceOn ("AnnounceMessage") Then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&GetQuickSetting ("AnnounceMessage") Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -940,7 +961,7 @@ If NoProject () Then
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () Then
 	SelectFromStartOfLine ()
-	If AnnounceOn ("AnnounceMessage") Then ;User can turn off this message
+	If GetQuickSetting ("AnnounceMessage") Then ;User can turn off this message
 		SayFormattedMessage (OT_No_Disable, FormatString (msgSelectTo, msgStart, msgAllAudio)) ;alerts when user activates this script at the main window, and a project is open
 	EndIf
 	;Otherwise, perform default script
@@ -958,7 +979,7 @@ If NoProject () Then
 EndIf ;No project
 If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () Then
 	SelectToEndOfLine ()
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_No_Disable, FormatString(msgSelectTo, msgEnd, msgAllAudio))
 	EndIf
 Else
@@ -985,7 +1006,7 @@ ElIf FocusInMainWindow () Then
 		Return
 	EndIf ; If not stopped
 	TypeCurrentScriptKey ()
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_Jaws_Message, MSGDelete_l, MSGDelete_s)
 	EndIf ; if AnnounceOn
 Else ; not main window, etc.
@@ -1021,7 +1042,7 @@ Script SayPriorCharacter ()
 Var
 	Handle hWnd
 	
-If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1039,7 +1060,7 @@ Script SayNextCharacter ()
 Var
 	Handle hWnd
 	
-If !userBufferIsActive () && AnnounceOn ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1070,7 +1091,7 @@ ElIf FocusInMainWindow ()
 		Return
 	EndIf
 	TypeCurrentScriptKey ()
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayUsingVoice (VCTX_Message, msgCopyAudio, OT_status) ;speak alert message
 	EndIf ; if AnnounceOn
 Else
@@ -1094,7 +1115,7 @@ ElIf FocusInMainWindow ()
 		Return
 	EndIf
 	TypeCurrentScriptKey ()
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayUsingVoice (VCTX_Message, msgCutAudio, OT_status) ;speak alert message
 	EndIf ; if AnnounceOn
 	; We've already sent the key.
@@ -1279,7 +1300,7 @@ EndScript ; SayAudacityState
 ;If you comment this out you should also comment out entries for keys ENTER and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys separately, not commenting out these entries will cause Audacity to see both keys as standard ENTER.
 Script Enter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
-If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
+If FocusInMainWindow () && !IsStopped () && GetQuickSetting("EnterPause") Then
 	TypeKey (csPauseKey)
 Else
 	;Not pause
@@ -1293,7 +1314,7 @@ EndIf ; else not pause
 EndScript ; Enter
 Script CtrlEnter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
-If FocusInMainWindow () && !IsStopped () && gfEnterPause Then
+If FocusInMainWindow () && !IsStopped () && GetQuickSetting("EnterPause") Then
 	TypeKey (cksEnter)
 	Say(cksEnter, OT_KEYBOARD)
 Else
@@ -1392,7 +1413,7 @@ EndFunction ; NodeHlp
 String Function UOAnnounceMessages (Int iRetCurVal)
 Var
 	Int iVal
-Let iVal = IniReadInteger (Settings, "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_MESSAGES_FULL Then
 		Let iVal = CI_MESSAGES_OFF
@@ -1400,7 +1421,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (Settings, "AnnounceMessage", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "AnnounceMessage", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_MESSAGES_OFF Then
 	Return cmsg_Off
@@ -1417,7 +1438,7 @@ String Function UOAnnounceToolbars (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (Settings, "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_TOOLBARS_ON Then
 		Let iVal = CI_TOOLBARS_OFF
@@ -1425,7 +1446,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (Settings, "Announcetoolbars", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "Announcetoolbars", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_TOOLBARS_OFF Then
 	Return cmsg_Off
@@ -1442,16 +1463,14 @@ String Function UOEnterPause (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
 If !iRetCurVal Then
 	If iVal == CI_ENTERPAUSE_ON Then
 		Let iVal = CI_ENTERPAUSE_OFF
-		Let gfEnterPause = False
 	Else
 		Let iVal = iVal + 1
-		Let gfEnterPause = True
 	EndIf
-	IniWriteInteger (Settings, "EnterPause", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "EnterPause", iVal, CS_INI_FILE)
 EndIf ; if !iRetCurVal
 If iVal == CI_ENTERPAUSE_OFF Then
 	Return cmsg_Off
@@ -1466,11 +1485,10 @@ EndFunction ; UOEnterPauseHlp
 
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.
-IniWriteInteger (Settings, "AnnounceMessage", CI_MESSAGES_FULL, CS_INI_FILE, False) ; don't flush because we're going to write another one
-IniWriteInteger (Settings, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE, False) ; don't flush because we're going to write another one
-Let gfEnterPause = CI_ENTERPAUSE_ON
-IniWriteInteger (Settings, "AnnounceToolbars", CI_TOOLBARS_ON, CS_INI_FILE, False) ; no flush
-IniWriteString (Settings, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE, True)
+IniWriteInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_FULL, gsIniFile, False) ; don't flush because we're going to write another one
+IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, False) ; don't flush because we're going to write another one
+IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, False) ; no flush
+IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, True)
 Let gsJawsGuidelink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
 EndFunction ; AddDefaultConfig
@@ -1481,11 +1499,11 @@ Var
 	String sMessage
 	
 	;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
-If FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
+If GetJFWVersion()<1300000 && FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
 	;Remove obsolete key if it exists.
-	Let sMessage=IniReadString (Settings, "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
+	Let sMessage=IniReadString (gsIniSection, "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
 	If sMessage Then
-		IniRemoveKey (settings, "announce", CS_INI_FILE, false)
+		IniRemoveKey (gsIniSection, "announce", CS_INI_FILE, false)
 	EndIf ;sMessage
 EndIf ;FileExists
 AddDefaultConfig ()
@@ -1511,7 +1529,7 @@ PerformScript SelectAll()
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf FocusInMainWindow () && ! NoProject () && AnnounceOn ("AnnounceMessage") Then
+ElIf FocusInMainWindow () && ! NoProject () && GetQuickSetting ("AnnounceMessage") Then
 	SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
 EndIf
 EndScript ; SelectAll
@@ -1572,7 +1590,7 @@ TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&AnnounceOn ("AnnounceMessage") && IsStopped () Then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	Pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -1675,7 +1693,7 @@ EndIf ;Check Audacity version
 	EndIf ; Else neither list.
 	SetFocus (wnd)
 	;speaks a message when switching between the listss
-	If AnnounceOn ("AnnounceMessage") Then
+	If GetQuickSetting ("AnnounceMessage") Then
 		SayUsingVoice (VCTX_message, sMessage, ot_String)
 	EndIf
 Else
@@ -1748,26 +1766,45 @@ SayMessage(OT_USER_BUFFER, s)
 EndScript ; test
 
 Void Function loadNonJCFOptions ()
-;This function is effected by the QuickSettings script, support for Jaws 13 and later
+;This function is used by the QuickSettings facility, support for Jaws 13 and later
 Var
 String NonJCF ;the section for storing settings within the JCF file
 Let NonJCF="NonJCFOptions"
-;Now read the info get from Audacity.jcf file
+;Now read the info from the NonJCFOptions section of Audacity.jcf.
+;The value following the key name is the default value.
 Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", 1, "Audacity.jcf")
 Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", 1, "audacity.jcf")
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", 1, "audacity.jcf")
 Let SpeechOff=IniReadInteger (NonJCF, "SpeechOff", 1, "audacity.jcf")
 Let RecordSpeechOff=IniReadInteger (NonJCF, "RecordSpeechOff", 1, "audacity.jcf")
+;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
+/*
+Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
+Let sTemp = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , "audacity.jcf"))
+Let iTemp = StringContains (sTemp, cScSpace)
+If iTemp Then
+;We found a space and it's not the last character.
+Let gsJawsGuideLink = StringLeft (sTemp, iTemp - 1)
+Let gsJawsGuideTitle = StringRight(sTemp, StringLength (sTemp) - iTemp)
+Else
+Let gsJawsGuideLink = sTemp
+Let gsJawsGuideTitle = CS_JawsGuide_Title
+EndIf ; else no space
+*/
+
+Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, "audacity.jcf"))
+/* Commented out because we aren't supporting the JSI file for versions that have Quick Settings.
 ;Write the info above to Audacity.JSI file
-		IniWriteInteger (Settings, "AnnounceMessage", AnnounceMessage, CS_Ini_File, false)
-	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
-	IniWriteInteger (Settings, "EnterPause", gfEnterPause, CS_Ini_File, false)
-IniWriteInteger (Settings, "SpeechOff", SpeechOff, CS_Ini_File, False)
-IniWriteInteger (Settings, "RecordSpeechOff", RecordSpeechOff, CS_Ini_File, False)
-	IniWriteInteger (Settings, "AnnounceToolbars", AnnounceToolbars, CS_Ini_File, true)
+IniWriteInteger (gsIniSection, "AnnounceMessage", AnnounceMessage, gsIniFile, false)
+IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
+IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
+IniWriteInteger (gsIniSection, "SpeechOff", SpeechOff, gsIniFile, False)
+IniWriteInteger (gsIniSection, "RecordSpeechOff", RecordSpeechOff, gsIniFile, False)
+IniWriteInteger (gsIniSection, "AnnounceToolbars", AnnounceToolbars, gsIniFile, true)
+*/
 ;The condition below got from JAWS Scripts for Foobar 2000 (written by Andrew Hart)
 If GetJFWVersion()<1300000 Then
-Return ; prevent loadNonJCFOptions from chaining to itself since it doesn't exist in JAWS version prior to 13.0
+	Return ; prevent loadNonJCFOptions from chaining to itself since it doesn't exist in JAWS version prior to 13.0
 EndIf ;Get JFW
 loadNonJCFOptions ()
 EndFunction ;LoadNonJCFOptions
@@ -1778,7 +1815,11 @@ Var
 String sURL, ;The current URL gotten from the JSI file
 String sTemp, ;store current URL
 String sNewURL ;The New URL added by user
-Let sURL=IniReadString (Settings, "JAWSGuideLink", sURL, CS_INI_File) ;get the URL from JSI file
+Let sURL=IniReadString (gsIniSection, "JAWSGuideLink", sURL, gsIniFile) ;get the URL from settings file
+	If StringIsBlank(sUrl) Then
+	;Set default
+	Let sUrl = CS_JawsGuide_LINK
+	EndIf
 Let sTemp=sURL ;store current URL
 ;Now display the input box wich contains the Current URL, and allows changing it
 InputBox (MSGJawsGuideDialog, "Add Audacity Jaws Guide Link", sURL)
@@ -1789,7 +1830,7 @@ If StringIsBlank (sNewURL)
 Return
 ElIf sNewURL != sTemp then
     Let gsJawsGuideLink = sNewURL
-    IniWriteString (Settings, "JAWSGuideLink", gsJawsGuideLink, CS_Ini_File, true)
+    IniWriteString (gsIniSection, "JAWSGuideLink", gsJawsGuideLink, gsIniFile, true)
 	SayFormattedMessage (OT_Jaws_message, FormatString (msgNewURL, sNewURL))
 EndIf
 EndScript ;AddAudacityJawsGuide
@@ -1807,7 +1848,7 @@ Else
 	;TypeCurrentScriptKey ()
 	;Cuong's version.
 	;Read settings from JSI file:
-	Let iRecord=IniReadInteger (Settings, "RecordSpeechOff", iRecord, CS_Ini_File)
+	Let iRecord=IniReadInteger (gsIniSection, "RecordSpeechOff", iRecord, gsIniFile)
 	If iRecord == 1 then
 		;Stop Jaws from saying: "track 1, track 2, etc
 		SpeechOff ()
@@ -1826,7 +1867,7 @@ Script Preview ()
 ;This just turn Jaws speech off because I don't like Jaws saying when preview an effect
 Var
 Int iSpeech ;Variable to get setting from the JSI file. The setting adjusts within the quick settings.
-Let iSpeech=IniReadInteger (Settings, "SpeechOff", 0, CS_Ini_File)
+Let iSpeech=IniReadInteger (gsIniSection, "SpeechOff", 0, gsIniFile)
 If DialogActive ()&&iSpeech==1 then
 	SpeechOff ()
 EndIf ;Dialog active
