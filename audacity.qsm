@@ -25,5 +25,10 @@ If on, ENTER executes Pause during playback and record, and Control+ENTER sends 
 If on, Turns speech off while previewing an effect.
 			</HelpMsg>
 		</DisplayName>
+		<DisplayName ID="Audacity Options.Silence Record" Text="Silence Record">
+			<HelpMsg>
+If on, silences speech that occurs when starting to record.
+			</HelpMsg>
+		</DisplayName>
 </DisplayNameDefinitions>
 </LocalizableDefinitions>

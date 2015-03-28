@@ -1,19 +1,19 @@
 :script for
 
-:function GetQuickSetting
-:Returns int True if the setting is on.
-:Synopsis Retrieve the requested setting.  For JAWS 13 and later this retrieves the option with GetNonJCFOption.  For JAWS versions earlier than 13.0, gets the option from the JSI file.
-:Param string/sKey The key of the desired setting.
+:function AnnounceOn
+:Synopsis Indicate whether messages related to certain Audacity operations should be spoken
+:Returns int True if messages should be spoken
+:Param string/sKey No Description
 
 :function FocusInTrackPanel
-:Returns int True if focus is in the track panel
 :Description Indicates if the focus is in the track panel.
+:Returns int True if focus is in the track panel
 
 :function SaySelectionPosition
 :Description Says the selection start or end position
-:Category Positioning
 :Param int/iPosition The ID of the start or end selection position
 :Param string/sMessage Spoken message
+:Category Positioning
 
 :function MarkerMovement
 :Param string/sScript The script to be performed.
@@ -34,8 +34,8 @@
 :Category Say
 
 :function NoProject
-:Returns int True if no project is open
 :Description This function indicates that no project is open (there are no tracks in track panel).
+:Returns int True if no project is open
 
 :function AutoStartEvent
 
@@ -46,21 +46,21 @@
 :function SayFocusedObject
 
 :function IsToolbar
-:Returns int True if window hWnd is a toolbar, False otherwise
 :Synopsis Return True if hWnd is one of the toolbars.
 :Description Return True if hWnd is one of the toolbars. The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock. Assumes focus is in the main window.
+:Returns int True if window hWnd is a toolbar, False otherwise
 :Param handle/hWnd handle of toolbar
 
 :function GetToolbar
-:Returns handle toolbar containing the current control
 :Description When focus is on a toolbar control returns the handle of the toolbar containing the control
+:Returns handle toolbar containing the current control
 
 :function FocusInMainWindow
 :Returns int No Return Description
 
 :function GetPositionField
-:Returns string Value of field
 :Description Get the value of one of the selection fields
+:Returns string Value of field
 :Param handle/hWnd Handle of position control
 
 :script SaySelectionStart
@@ -187,8 +187,8 @@
 :Synopsis In the toolbars moves to the previous toolbar.
 
 :function GetAudacityState
-:Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
 :Synopsis returns the current program state-- play, record, pause
+:Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
 
 :script SayAudacityState
 :Synopsis Says the current program state-- play, record, pause
@@ -200,15 +200,15 @@
 :Synopsis In the main window when not stopped, send ENTER (if "ENTER during play/record pauses" option activated).
 
 :function GetObjState
-:Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
 :Synopsis Returns the object state of the object in the window
 :Description Works for windows whose object name is the same as the window name
+:Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
 :Param handle/hWnd window to inspect
 
 :function IsStopped
-:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
 :Synopsis Determines if Audacity is currently stopped
 :Description Determines if Audacity is currently stopped.  Returns TRUE if stopped or the Transport toolbar cannot be found.  This is used to keep cursor position from being spoken unless Audacity is stopped.
+:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
 
 :script AdjustJawsVerbosity
 
@@ -267,15 +267,15 @@
 :Synopsis Speaks the position after executing a short/long jump key
 
 :function IsTrackSelected
-:Returns int True if current track is selected
 :Description Indicates whether the track is selected
+:Returns int True if current track is selected
 
 :function SayNoTrackSelected
 :Description Warn when the user performs a script that requires the current track to be selected.
 
 :function IsWarningDialog
-:Returns int True if focus is in the warning dialog
 :Description Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
+:Returns int True if focus is in the warning dialog
 
 :script SayLine
 
@@ -287,8 +287,8 @@
 :script ShowCopyright
 
 :function CheckAudacityVersion
-:Returns int True if the version of Audacity is <= the specified version.
 :Description Varify that current audacity version is equal to or higher than a given version.
+:Returns int True if the version of Audacity is <= the specified version.
 :Param string/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
 
 :script test
@@ -302,3 +302,7 @@
 :Script Record
 :Synopsis Silence key that starts recording functions.
 :Description Silence key that starts recording functions.  This script types the key to which it is bound.  If it is not in a dialog or menu it does not speak the key label.
+
+:Function ClearSilence
+:Synopsis Clears the gfSilence flag used to silence speaking of focus changes.
+:Description This function can be scheduled with ScheduleFunction to terminate silencing of speech in the future.  It is used to reactivate speech after starting a recording.

@@ -1,5 +1,7 @@
-(This file last updated 7/25/2014)
+(This file last updated 3/28/2014)
 
+. Added the ability to silence the speech that occurs when starting to record.
+.Added ability to silence the speech that occurs during the previewing of an effect.
 . The URL for the JAWS User's Guide can now be updated via the script (Control+Shift+j).
 . Added support for the QuickSettings dialog (JAWS 13 and later).
 . Made messages for moving and selecting more consistent.
