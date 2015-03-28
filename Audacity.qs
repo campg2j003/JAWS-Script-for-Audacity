@@ -17,6 +17,10 @@
  ID="Audacity Options.Silence Preview" Type="Boolean">
 				<SettingsFile Section="NonJCFOptions" Name="SilencePreview" />
 			</Setting>
+			<Setting
+ ID="Audacity Options.Silence Record" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="SilenceRecord" />
+			</Setting>
 		</Category>
 	</QuickSettingsDefinitions>
 </QuickSettings>

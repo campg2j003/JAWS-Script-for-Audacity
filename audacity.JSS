@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/28/15 19:30UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/28/15 21:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -12,7 +12,7 @@ Messages
 @msgCopyright
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2015  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,6 +33,9 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/28/15 Updated copyright message.
+;Added ability to silence the speech that occurs when starting to record.
+;3/28/15 Previous saved to HG changeset:   170:3ab850c030e6.
 ;3/28/15 Added code to silence speech during previewing.  The flags associated with this (gfSilence and gfPreviewing) are cleared by AutoStartEvent every time it runs, so if they aren't turned off when previewing is over switching focus away from Audacity and back will clear them.  However, have not been able to get this implementation stuck.
 ;Implemented a flag to suppress the next tutor message.  This is currently not used.
 ;Changed 1 to symbolic constants in code that writes default settings entries and the default value of code that reads settings.
@@ -136,8 +139,10 @@ Const
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
 	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
 	CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
-	CI_SILENCEPRIVEW_OFF = 0,
+	CI_SILENCE_PREVIEW_OFF = 0,
 	CI_SILENCE_PREVIEW_ON = 1, ; silence speech when previewing an effect
+	CI_SILENCE_RECORD_OFF = 0,
+	CI_SILENCE_RECORD_ON = 1, ; silence the speech that occurs when starting to record
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
@@ -163,7 +168,7 @@ Globals
 	Int announceMessage,
 	Int AnnounceToolbars,
 	Int gfSilencePreview,
-	Int RecordSpeechOff,
+	Int gfRecordSpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -173,7 +178,8 @@ Globals
 	Handle ghSliderEdit,
 	Int gfPreviewing,
 	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
-	Int gfSuppressNextTutor ;Suppress next TutorMessegeEvent, not currently used.
+	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
+	Int giScheduleClearSilence ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
 	
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1552,6 +1558,7 @@ IniWriteInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_FULL, gsIniFile, F
 IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, False) ; no flush
 IniWriteInteger (gsIniSection, "SilencePreview", CI_SILENCE_PREVIEW_ON, gsIniFile, False) ; no flush
+IniWriteInteger (gsIniSection, "SilenceRecord", CI_SILENCE_RECORD_ON, gsIniFile, False) ; no flush
 IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, True)
 Let gsJawsGuidelink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
@@ -1841,7 +1848,7 @@ Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", CI_MESSAGES_FULL,
 Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", CI_TOOLBARS_ON, "audacity.jcf")
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", CI_ENTERPAUSE_ON, "audacity.jcf")
 Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_SILENCE_PREVIEW_ON, "audacity.jcf")
-Let RecordSpeechOff=IniReadInteger (NonJCF, "RecordSpeechOff", 1, "audacity.jcf")
+Let gfRecordSpeechOff=IniReadInteger (NonJCF, "SilenceRecord", CI_SILENCE_RECORD_ON, "audacity.jcf")
 ;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 /*
 Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
@@ -1863,7 +1870,7 @@ Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JA
 IniWriteInteger (gsIniSection, "AnnounceMessage", AnnounceMessage, gsIniFile, false)
 IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
 IniWriteInteger (gsIniSection, "SilencePreview", gfSilencePreview, gsIniFile, False)
-IniWriteInteger (gsIniSection, "RecordSpeechOff", RecordSpeechOff, gsIniFile, False)
+IniWriteInteger (gsIniSection, "SilenceRecord", gfRecordSpeechOff, gsIniFile, False)
 IniWriteInteger (gsIniSection, "AnnounceToolbars", AnnounceToolbars, gsIniFile, true)
 */
 ;The condition below got from JAWS Scripts for Foobar 2000 (written by Andrew Hart)
@@ -1900,39 +1907,27 @@ EndIf
 EndScript ;AddAudacityJawsGuide
 
 Script Record ()
-;Don't speak when press record or record append key.
-Var
-Int iRecord ;the settings from JSI file
+;Don't speak Record or Record-Append keys.
 If DialogActive () ||MenusActive () Then
 	;A dialog is open, pass key to application and speak its label.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 Else
-	; Gary's version from changeset:   159:f64a0d22c597:
-	;TypeCurrentScriptKey ()
-	;Cuong's version.
-	;Read settings from JSI file:
-	Let iRecord=IniReadInteger (gsIniSection, "RecordSpeechOff", iRecord, gsIniFile)
-	If iRecord == 1 then
-;Stop Jaws from saying: "track 1, track 2, etc
-		SpeechOff ()
-			TypeCurrentScriptKey ()
-		Delay (5)
-		SpeechOn ()
-	Else
+	If gfRecordSpeechOff == 1 then
+		;Stop Jaws from saying: "track 1, track 2, etc
+		Let gfSilence = True
 		TypeCurrentScriptKey ()
-	EndIf
-EndIf
+		Let giScheduleClearSilence = ScheduleFunction("ClearSilence", 5)
+	Else
+		;gfRecordSpeechOff != 1
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+	EndIf ; else iRecord!=1
+EndIf ;else not (DialogActive () ||MenusActive ())
 EndScript ; Record
 
-Script Preview ()
-;This just turn Jaws speech off because I don't like Jaws saying when preview an effect
-Var
-Int iSpeech ;Variable to get setting from the JSI file. The setting adjusts within the quick settings.
-Let iSpeech=IniReadInteger (gsIniSection, "SilencePreview", 0, gsIniFile)
-If DialogActive ()&&iSpeech==1 then
-	SpeechOff ()
-EndIf ;Dialog active
-SayCurrentScriptKeyLabel ()
-TypeCurrentScriptKey ()
-EndScript ;Preview
+Void Function ClearSilence()
+;Clear the gfSilence Flag.  Used to schedule silencing to be terminated.
+Let gfSilence = False
+	Let giScheduleClearSilence = 0
+EndFunction ;ClearSilence
