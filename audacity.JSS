@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/28/15 21:00UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/29/15 02:25UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/28/15 Added code in SayFocusedObject to return if gfSilence is set.  This suppresses speaking of the creation of the first track in the project.  Something odd about this-- the first time after you change the associated setting it hasn't updated yet.
+;3/28/15 Previous saved to HG changeset:   171:3e12c08f2ec3.
 ;3/28/15 Updated copyright message.
 ;Added ability to silence the speech that occurs when starting to record.
 ;3/28/15 Previous saved to HG changeset:   170:3ab850c030e6.
@@ -516,6 +518,9 @@ Return HandleCustomWindows (hFocus) ; allow others to process
 EndFunction ; HandleCustomWindows
 
 Void Function SayFocusedObject ()
+If gfSilence Then
+	Return
+EndIf
 If FocusInTrackPanel () Then
 	;Suppress speaking of "track table" when moving between tracks.
 	SayObjectActiveItem ()
