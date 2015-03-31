@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/30/15 01:25UTC"
+Const CS_SCRIPT_VERSION = "2.0 3/30/15 21:25UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;3/30/15 Added scripts Tab and ShiftTab to cause JAWS to update label display info (in alpha version from Robert Hanggi).  Added MSAARefresh() in AnnounceKeyMessage to make JAWS read updated values after keys like j, k, etc.  (Observed it not working for C.)
+;3/30/15 Previous saved to HG changeset:   173:b29b44afdd42.
 ;3/29/15 Added ProgressBarChangedEvent that obeys gfSilence.
 ;3/28/15 Previous saved to HG changeset:   172:32ae2fb7b7ca.
 ;3/28/15 Added code in SayFocusedObject to return if gfSilence is set.  This suppresses speaking of the creation of the first track in the project.  Something odd about this-- the first time after you change the associated setting it hasn't updated yet.
@@ -275,6 +277,8 @@ If !NoProject ()&&! UserBufferIsActive ()&&FocusInMainWindow () Then
 		SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 	EndIf ; if AnnounceOn
 	TypeCurrentScriptKey ()
+;Update MSAA so JAWS will announce updated values.
+	MSAARefresh()
 Else
 	;Not main window, etc.
 	SayCurrentScriptKeyLabel ()
@@ -1245,6 +1249,22 @@ Var
 Let sMessage=StringSegment (UO_ANNOUNCE_MESSAGES, ":", 2) + UOAnnounceMessages(0)
 Say (sMessage, OT_Status)
 EndScript ; AnnounceOnOff
+
+Script Tab()
+PerformScript Tab()
+If !UserBufferIsActive() && !DialogActive() && FocusInTrackPanel() Then
+;Force MSAA to be refreshed so JAWS will correctly read current label (in alpha version).
+	MSAARefresh()
+EndIf
+EndScript ; Tab
+
+Script ShiftTab()
+PerformScript ShiftTab()
+If !UserBufferIsActive() && !DialogActive() && FocusInTrackPanel() Then
+;Force MSAA to be refreshed so JAWS will correctly read current label (in alpha version).
+	MSAARefresh()
+EndIf
+EndScript ; ShiftTab
 
 Script NextDocumentWindow ()
 ;Skip to next toolbar when in the toolbars.
