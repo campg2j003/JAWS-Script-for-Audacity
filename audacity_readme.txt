@@ -32,6 +32,9 @@ If you choose the Just Scripts install type, the README and What's New files wil
 The installer will compile the script package in each JAWS version.
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
+
+The script has several options that control some of its features which can be accessed by pressing JAWSKey+v.  For JAWS versions prior to 13 these settings are stored in file audacity.jsi in the PersonalSettings folder of the JAWS installation.  For versions after 13 they are stored in audacity.jcf in the NonJCFOptions section.  If you upgrade from a version of JAWS before 13 to 13 or later the settings are not transferred from audacity.jsi, so you will have to set them again.
+
 Issues:
 
 This version of the scripts adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
