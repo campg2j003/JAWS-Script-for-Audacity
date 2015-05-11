@@ -2,7 +2,7 @@
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2015  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,9 +57,9 @@ Const
 	csPauseKey="p"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.4-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.0-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Audacity 2.0.4 Guide", 
+CS_JawsGuide_Title = "Audacity 2.1.0 Guide", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
@@ -104,6 +104,8 @@ To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
 
+If SilencePreview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
+ 
 To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 To Change the URL for the Audacity Jaws Guide, press %keyfor (AddAudacityJawsGuide)
@@ -129,14 +131,17 @@ JAWS Guide
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.0.4 (from %1, by %2).  Access the guide at
+Default keystrokes for Audacity v2.1.0 (from %1, by %2).  Access the guide at
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
 
 
 General
-Command Keystrokes 
+
+
+Command Keystrokes
+
 Open audio file Ctrl + O 
 Import audio file Ctrl + Shift + I 
 New project Ctrl + N 
@@ -144,12 +149,17 @@ Save project Ctrl + S
 Preferences dialog Ctrl + P 
 Cycle forward through Toolbars, Track table, and Selection bar Ctrl + F6 
 Cycle backward through Toolbars, Track table, and Selection bar Ctrl + Shift + F6 
+Cycle forward through the Audacity main window and any open modeless dialogs Alt + F6 
+Cycle backward through the Audacity main window and any open modeless dialogs Alt + Shift + F6 
 Zoom normal Ctrl + 2 
 Zoom in Ctrl + 1 
 Zoom out Ctrl + 3 
 
 Playback
-Command Keystroke 
+
+
+Command Keystroke
+
 Start/Stop Spacebar 
 Start/Stop and move cursor Shift + A 
 Pause/resume P 
@@ -159,10 +169,13 @@ Seek backward long period during playback Shift + Left Arrow
 Seek forward long period during playback Shift + Right Arrow 
 Play cut/delete preview C 
 Play looped Shift + Spacebar 
-Output Device dialog Shift + O 
+Select Playback Device dialog Shift + O 
 
 Track table
-Command Keystroke 
+
+
+Command Keystroke
+
 Move to previous track Up Arrow 
 Move to next track Down Arrow 
 Toggle selection of focused track Enter 
@@ -172,7 +185,10 @@ Open menu of focused track Application Key or Shift + M
 Close (Delete) focused track Shift + C 
 
 Audio track
-Command Keystroke 
+
+
+Command Keystroke
+
 Change gain of focused track Shift + G 
 Change pan of focused track Shift + P 
 Mute/Unmute focused track Shift + U 
@@ -181,7 +197,10 @@ Unmute all tracks Ctrl + Shift + U
 Solo/Unsolo focused track Shift + S 
 
 Moving the cursor
-Command Keystroke 
+
+
+Command Keystroke
+
 Move to start of tracks (time zero) Home 
 Move to end of all audio End 
 Move to start of audio in selected tracks J 
@@ -196,7 +215,10 @@ Cursor left by a small amount Left Arrow
 Cursor right by a small amount Right Arrow 
 
 Selecting a time range
-Command Keystroke 
+
+
+Command Keystroke
+
 Select time range which includes all the audio, and select all tracks Ctrl + A 
 Selection start at start of tracks (time zero) Shift + Home 
 Selection end at end of all the audio Shift + End 
@@ -209,7 +231,10 @@ To move the start of the selection to the right by a small amount Ctrl + Shift +
 To move the start of the selection to the left by a small amount Shift + Left Arrow 
 
 Editing
-Command Keystroke 
+
+
+Command Keystroke
+
 Undo Ctrl + Z 
 Redo Ctrl + Y 
 Delete selected audio Delete 
@@ -218,16 +243,19 @@ Copy selected audio Ctrl + C
 Paste Ctrl + V 
 Replace selected audio with silence Ctrl + L 
 Close (Delete) focused track Shift + C 
+Find zero crossings Z 
 
 Recording
-Command Keystroke 
+
+
+Command Keystroke
+
 Record R 
 Append Record Shift + R 
 Pause/resume P 
 Stop Spacebar 
-Audio Host dialog Shift + H 
-Input Device dialog Shift + I 
-Number of channels dialog Shift + N 
+Select Audio Host dialog Shift + H 
+ 
 @@
 
 @msg_App_Start
