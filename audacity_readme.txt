@@ -1,4 +1,4 @@
-9/15/2013 JAWS script for Audacity V2.0 (for script version 2.0 7/26/14 00:56UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+5/6/2015  JAWS script for Audacity V2.0 (for script version 2.0 5/7/15 06:25UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -6,7 +6,7 @@ Features:
 Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
 Keystrokes to move the focus to the selection start and selection end/length controls.
 Displays JAWS and Audacity hotkey help.
-The Audacity 2.0.3 Guide for JAWS users, by David Bailes, is accessible from the Audacity keys help (JAWSKey+w).
+The Audacity Guide for JAWS users, by David Bailes, is accessible from the Audacity keys help (JAWSKey+w).
 Speaks main window areas: Toolbars, Track Panel, and selection Bar, as focus moves between them.
 Speaks the toolbar name when focus moves from one toolbar to another.
 When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB move to the first control on the next toolbar and the last control on the previous toolbar, respectively.
@@ -34,7 +34,7 @@ If you want to modify the installer, or are just curious how it works, you can i
 
 Issues:
 
-We have had problems getting the state of Play, Pause, Record, and Stop on some configurations.  In function GetAudacityState there is commented out code to determine the pressed state of toolbar buttons by testing the button graphic name.  There are also CS_IMG constants for the pressed state of the Play, Pause, and Record buttons that must be uncommented as well.  If the current code doesn't work for you, this might work.  This code needs further work, so if you need this code please let us know.
+This version of the scripts adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
 
 The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10 and 15.
 
@@ -44,7 +44,7 @@ When entering a label in a label track JAWS speaks the Audacity functions for le
 
 If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
 
-The script was developed with Audacity 2.0.3, 2.0.4, and 2.0.5 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13, 14, and 15 on a laptop running Windows 7 and 8.1.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
+The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13-16 on a laptop running Windows 7 and 8.1.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.
 There is no specific Braille support at this time.
 
 Messages and string constants are in audacity.jsm facilitating translation.

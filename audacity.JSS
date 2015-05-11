@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 3/30/15 21:25UTC"
+Const CS_SCRIPT_VERSION = "2.0 5/7/15 06:25UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;5/7/15 jsm: updated guide URL and version msg.
+;Updated copyright date in jsm.
+;In JAWS hotkey help added a paragraph about turning Preview Silence off.
+;README: Deleted issue about correctly identifying play state.
+;Added paragraph about turning silence preview off.
+;3/31/15 Previous saved to HG changeset:   174:fa732fae52b5.
 ;3/30/15 Added scripts Tab and ShiftTab to cause JAWS to update label display info (in alpha version from Robert Hanggi).  Added MSAARefresh() in AnnounceKeyMessage to make JAWS read updated values after keys like j, k, etc.  (Observed it not working for C.)
 ;3/30/15 Previous saved to HG changeset:   173:b29b44afdd42.
 ;3/29/15 Added ProgressBarChangedEvent that obeys gfSilence.
