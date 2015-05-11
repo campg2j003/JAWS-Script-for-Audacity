@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 5/7/15 06:25UTC"
+Const CS_SCRIPT_VERSION = "2.0 5/11/15 20:45UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,11 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;5/11/15 Added AdjustJawsOptions support for SilencePreview and SilenceRecord options.
+;Added constants CI_UO_ON and CI_UO_OFF to support boolean settings so they don't need their own on and off constants.
+;Added a comment near the AdjustJawsOptions code explaining how to add a new option.  
+;Compiled but not tested.
+;5/11/15 Previous saved to HG changeset:   175:afeeb7b2d893.
 ;5/7/15 jsm: updated guide URL and version msg.
 ;Updated copyright date in jsm.
 ;In JAWS hotkey help added a paragraph about turning Preview Silence off.
@@ -145,17 +150,15 @@ Const
 	ID_Load_Preset=11001,
 	ID_Save_Preset=11002,
 	ID_Preset=11000,
-	;For user options.
+	;For user options.  The first two can be used for options that don't need special on and off values, which is all of them right now.  This is added to make support of future options easier.
+	CI_UO_OFF = 0,
+	CI_UO_ON = 1,
 	CI_MESSAGES_OFF = 0,
 	CI_MESSAGES_FULL = 1, ; announce all messages
 	CI_TOOLBARS_OFF = 0,
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
 	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
 	CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
-	CI_SILENCE_PREVIEW_OFF = 0,
-	CI_SILENCE_PREVIEW_ON = 1, ; silence speech when previewing an effect
-	CI_SILENCE_RECORD_OFF = 0,
-	CI_SILENCE_RECORD_ON = 1, ; silence the speech that occurs when starting to record
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
@@ -1483,6 +1486,15 @@ Return GetAudacityState () & ST_STOPPED
 EndFunction ; IsStopped
 
 ; *** Adapted from ie.jss
+/*To add a new option:
+In audacity.qs copy an existing setting (from <setting through </setting>) element and change the ID and Name attributes appropriately.  (I didn't think you could include spaces in attribute values, but it seems to work.)
+In audacity.qsm copy an existing DisplayName element (from <DisplayName through </DisplayName>).  The value of the ID attribute needs to match exactly that of the corresponding Setting element in audacity.qs.  The value of the Text attribute is the text shown in the QuickSettings list and the text in the line between <HelpMsg> and </HelpMsg> is the text of the setting help.
+To support JAWS prior to V13:
+Copy the two functions UOOptionName and UOOptionNameHlp for an option below, changing OptionName to the new option name in the copy.
+In AdjustJawsOptions add UO_OPTION_NAME to variable strListOfOptions.
+In audacity.jsm add a UO_OPTION_NAME constant and a msgUO_OptionNameHlp message.  UO_OPTION_NAME is a string containing the function name UOOptionName, a colon, and the text that appears in the text attribute of the DisplayName element in audacity.qsm.  The value of msgUOOptionName is the line from the HelpMsg element in audacity.qsm.
+*/
+
 Script AdjustJawsVerbosity ()
 ;This is to support JAWS versions that do not support tree-style user options.  This should work but may not look very nice.  Not tested!
 Var
@@ -1499,7 +1511,7 @@ If InHJDialog () Then
 	SayFormattedMessage (OT_error, cMSG337_L, cMSG337_S)
 	Return
 EndIf
-Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS + _DLG_SEPARATOR + UO_ENTER_PAUSE
+Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS + _DLG_SEPARATOR + UO_ENTER_PAUSE + _DLG_SEPARATOR + UO_SILENCE_PREVIEW + _DLG_SEPARATOR + UO_SILENCE_RECORD
 If GetJFWVersion () >= 900000 Then
 	OptionsTreeCore (strListOfOptions) ;the OptionsTreeCore available in JAWS 9.0 or later
 Else
@@ -1592,13 +1604,61 @@ String Function UOEnterPauseHlp ()
 Return msgUO_EnterPauseHlp
 EndFunction ; UOEnterPauseHlp
 
+String Function UOSilencePreview (Int iRetCurVal)
+Var
+	Int iVal
+	
+Let iVal = IniReadInteger (gsIniSection, "SilencePreview", CI_UO_ON, CS_INI_FILE)
+If !iRetCurVal Then
+	If iVal == CI_UO_ON Then
+		Let iVal = CI_UO_OFF
+	Else
+		Let iVal = iVal + 1
+	EndIf
+	IniWriteInteger (gsIniSection, "SilencePreview", iVal, CS_INI_FILE)
+EndIf ; if !iRetCurVal
+If iVal == CI_UO_OFF Then
+	Return cmsg_Off
+ElIf iVal == CI_UO_ON Then
+	Return cmsg_On
+EndIf
+EndFunction ; UOSilencePreview
+
+String Function UOSilencePreviewHlp ()
+Return msgUO_SilencePreviewHlp
+EndFunction ; UOSilencePreviewHlp
+
+String Function UOSilenceRecord (Int iRetCurVal)
+Var
+	Int iVal
+	
+Let iVal = IniReadInteger (gsIniSection, "SilenceRecord", CI_UO_ON, CS_INI_FILE)
+If !iRetCurVal Then
+	If iVal == CI_UO_ON Then
+		Let iVal = CI_UO_OFF
+	Else
+		Let iVal = iVal + 1
+	EndIf
+	IniWriteInteger (gsIniSection, "SilenceRecord", iVal, CS_INI_FILE)
+EndIf ; if !iRetCurVal
+If iVal == CI_UO_OFF Then
+	Return cmsg_Off
+ElIf iVal == CI_UO_ON Then
+	Return cmsg_On
+EndIf
+EndFunction ; UOSilenceRecord
+
+String Function UOSilenceRecordHlp ()
+Return msgUO_SilenceRecordHlp
+EndFunction ; UOSilenceRecordHlp
+
 Void Function AddDefaultConfig ()
 ;Adds values of default settings to Audacity.JSI File.  
 IniWriteInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_FULL, gsIniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, False) ; don't flush because we're going to write another one
 IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, False) ; no flush
-IniWriteInteger (gsIniSection, "SilencePreview", CI_SILENCE_PREVIEW_ON, gsIniFile, False) ; no flush
-IniWriteInteger (gsIniSection, "SilenceRecord", CI_SILENCE_RECORD_ON, gsIniFile, False) ; no flush
+IniWriteInteger (gsIniSection, "SilencePreview", CI_UO_ON, gsIniFile, False) ; no flush
+IniWriteInteger (gsIniSection, "SilenceRecord", CI_UO_ON, gsIniFile, False) ; no flush
 IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, True)
 Let gsJawsGuidelink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
@@ -1886,8 +1946,8 @@ Let NonJCF="NonJCFOptions"
 Let AnnounceMessage=IniReadInteger (NonJCF, "AnnounceMessage", CI_MESSAGES_FULL, "Audacity.jcf")
 Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", CI_TOOLBARS_ON, "audacity.jcf")
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", CI_ENTERPAUSE_ON, "audacity.jcf")
-Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_SILENCE_PREVIEW_ON, "audacity.jcf")
-Let gfRecordSpeechOff=IniReadInteger (NonJCF, "SilenceRecord", CI_SILENCE_RECORD_ON, "audacity.jcf")
+Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_UO_ON, "audacity.jcf")
+Let gfRecordSpeechOff=IniReadInteger (NonJCF, "SilenceRecord", CI_UO_ON, "audacity.jcf")
 ;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 /*
 Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
