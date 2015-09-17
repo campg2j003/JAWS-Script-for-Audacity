@@ -199,6 +199,12 @@
 :script CtrlEnter
 :Synopsis In the main window when not stopped, send ENTER (if "ENTER during play/record pauses" option activated).
 
+:script OpenListBox
+:Synopsis If focus is in the track panel, pass the key through.
+
+:script CloseListBox
+:Synopsis If focus is in the track panel, pass the key through.
+
 :function GetObjState
 :Synopsis Returns the object state of the object in the window
 :Description Works for windows whose object name is the same as the window name

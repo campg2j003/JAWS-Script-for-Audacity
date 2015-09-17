@@ -34,6 +34,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/17/15 Added Open/CloseListBox.
+;5/11/15 Previous saved to HG changeset:   176:fa11e2d464b0.
 ;5/11/15 Added AdjustJawsOptions support for SilencePreview and SilenceRecord options.
 ;Added constants CI_UO_ON and CI_UO_OFF to support boolean settings so they don't need their own on and off constants.
 ;Added a comment near the AdjustJawsOptions code explaining how to add a new option.  
@@ -1424,6 +1426,7 @@ Else
 	EndIf ; else user buffer not active
 EndIf ; else not pause
 EndScript ; Enter
+
 Script CtrlEnter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
 If FocusInMainWindow () && !IsStopped () && GetQuickSetting("EnterPause") Then
@@ -1440,6 +1443,31 @@ Else
 EndIf ; else not pause
 EndScript ; CtrlEnter
 ;*/
+
+
+Script OpenListBox ()
+;If focus is in the track panel, pass the key through.
+Var Int iRtn ; debug
+If FocusInTrackPanel() Then
+    ;SayString("move track down") ; debug
+    SayCurrentScriptKeyLabel ()
+    TypeCurrentScriptKey ()
+    ;If iRtn Then SayString("success") ; debug
+else
+    PerformScript OpenListBox ()
+EndIf
+EndScript ;OpenListBox
+
+Script CloseListBox ()
+;If focus is in the track panel, pass the key through.
+If FocusInTrackPanel() Then
+    ;SayString("move track up") ; debug
+    SayCurrentScriptKeyLabel ()
+    TypeCurrentScriptKey ()
+Else
+    PerformScript CloseListBox ()
+EndIf
+EndScript ;CloseListBox
 
 Int Function GetObjState (Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
@@ -1930,10 +1958,58 @@ EndFunction ; CheckAudacityVersion
 Script test ()
 ;Test CheckAudacityVersion.
 Var String s
-Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
+/*Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
 Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) + ", should get True\n"
 Let s = s + "testing 2,0,5, got " + IntToString(CheckAudacityVersion("2,0,5")) + ", should get False\n"
+*/
+/*
+;Let s = "gfSilence = " + IntToString(gfSilence)
+Let s = IntToString(GetJFWVersion())
 SayMessage(OT_USER_BUFFER, s)
+*/
+;Say number of focused track
+;SayInteger(GetFocusObject(0).accFocus) ; debug
+If FocusInTrackPanel() Then
+    ;/*
+    If InputBox("track number:", "go to", s) Then
+		var object o = GetFocusObject(0), int rtn
+		var int iNum, Int iStart, Int iMove, Int iCount, Int fSilence, String sUp, String sDown, String sKey
+		iNum = StringToInt(s)
+		sUp = "UpArrow"
+		sDown = "DownArrow"
+		SayString("going to " + IntToString(iNum))
+		iCount = abs(iNum)
+		if iNum < 0 Then
+			sKey = sUp
+		Else
+			sKey = sDown
+		EndIf
+		fSilence = gfSilence
+		gfSilence = True
+		Let giScheduleClearSilence = ScheduleFunction("ClearSilence", 5)
+		Pause()
+		While iCount > 0
+			TypeKey("Alt+" + sKey)
+			If iCount % 3 == 0 Then
+				delay(1)
+			EndIf
+			iCount = iCount - 1
+		EndWhile
+		Pause()
+		gfSilence = fSilence
+		SayObjectActiveItem()
+		;rtn = o.AccSelect(SELFLAG_TAKEFOCUS, iNum)
+		;SayString("returned " + IntToString(rtn))
+		
+    EndIf ; InputBox
+    ;*/
+    /*; get focused object rectangle.
+    var object o, int ix, int iYTop, int iWidth, int iHeight
+    o = GetFocusObject(0)
+    o.accLocation(IntRef(ix), IntRef(iYTop), IntRef(iWidth), IntRef(iHeight), o.accFocus)
+    SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
+    */
+EndIf ; in track panel
 EndScript ; test
 
 Void Function loadNonJCFOptions ()
