@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 5/11/2015.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/18/2015.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -96,6 +96,8 @@ In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWind
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
 To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
+To go to a track by number, press %KeyFor(GoToTrack).
+To move the current track to a track position by number, press %KeyFor(MoveCurrentTrackTo).
 To get help with Audacity hot keys, press %keyfor(AudacityKeysHelp).
 To get the default Windows hot key help, press %keyfor(AudacityKeysHelp) twice quickly.
 
@@ -467,5 +469,20 @@ Enter the new URL for the Audacity with Jaws Guide.
 ;%1 percentage value of the slider (without percent), %2 value of the field (the static after the slider).
 @msgCompressorSlider
 %1%%%2
+@@
+
+; Prompt for the input boxes in the GoToTrack and MoveCurrentTrackTo scripts.
+@msgTrackNumber
+track number:
+@@
+
+; Title of the input box in the  GoToTrack script.
+@msgGoToTrackTitle
+go to
+@@
+
+;Title of the input box in the MoveCurrentTrackTo script.
+@msgMoveTrackToTitle
+Move to
 @@
 EndMessages

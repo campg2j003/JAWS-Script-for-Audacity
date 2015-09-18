@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 5/11/15 20:45UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/18/15 16:38UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/18/15 Finished scripts GoToTrack and MoveCurrentTrackTo.  Added associated messages to jsm.  Wrote scripts MoveTrackUp and MoveTrackDown, currently assigned to Alt+Up/DownArrow.  These assignments should probably not be released.
+;9/17/15 Added functions NavigateTrackPanel and IsDigits, and scripts GoToTrack and MoveCurrentTrackTo.  GoToTrack is partially written.  The functions are written.  Wrote JSD entry for NavigateTrackPanel.  Added key JAWSKey+a&g for GoToTrack.  Consider renaming NavigateTrackPanel to NavigateToTrack.
+;Works.
+;9/17/15 Previous saved to HG changeset:   177:38ea73ad4564.
 ;9/17/15 Added Open/CloseListBox.
 ;5/11/15 Previous saved to HG changeset:   176:fa11e2d464b0.
 ;5/11/15 Added AdjustJawsOptions support for SilencePreview and SilenceRecord options.
@@ -1468,6 +1472,127 @@ Else
     PerformScript CloseListBox ()
 EndIf
 EndScript ;CloseListBox
+
+Int Function IsDigits(String s)
+;Returns True if all of the characters in s are digits, +, or -.
+Var
+	String s2
+
+Let s2 = StringStripAllBlanks(StringReplaceChars(s, "+-0123456789", " "))
+;SayString("IsDigits(" + s + "), s2 = " + s2 + ", returning " + IntToString(StringLength(s2))) ; debug
+Return StringLength(s2) == 0
+EndFunction ;IsDigits
+
+Void Function NavigateTrackPanel (String sDest, String sUpKey, String sDownKey)
+;sDest: string containing the number of the track to move to.  If starts with + move down that many tracks, if -, move up that many tracks.
+;sUpKey: string containing name of key to move up (to lower numbered tracks).
+;sDownKey: string containing name of key to move down (to higher numbered tracks).
+;Assumes focus in track panel.
+Var
+	Object o,
+	int iNum,
+	Int iStart,
+	;Int iMove,
+	Int iCount,
+	Int fSilence,
+	String sKey,
+	String s
+
+Let sDest = StringStripAllBlanks(sDest)
+If ! IsDigits(sDest) Then
+	Return
+EndIf ; if not digits, +, or -
+Let s = StringLeft(sDest, 1)
+Let iNum = StringToInt(sDest)
+If !(s == "+" || s == "-") Then
+	;Absolute
+	Let iStart = GetFocusObject (0).accFocus
+	Let iNum = iNum - iStart
+EndIf ; if absolute
+Let iCount = abs(iNum)
+if iNum < 0 Then
+	Let sKey = sUpKey
+Else
+	Let sKey = sDownKey
+EndIf
+Let fSilence = gfSilence
+Let gfSilence = True
+;Pause()
+While iCount > 0
+	TypeKey(sKey)
+	If iCount % 3 == 0 Then
+		delay(1)
+	EndIf
+	Let iCount = iCount - 1
+EndWhile
+Pause()
+	Let gfSilence = fSilence
+
+EndFunction ;NavigateTrackPanel
+
+Script GoToTrack ()
+
+Var
+	String s
+
+If !FocusInTrackPanel () Then
+	Return
+EndIf
+
+If InputBox(msgTrackNumber, msgGoToTrackTitle, s) Then
+	NavigateTrackPanel (s, "UpArrow", "DownArrow")
+	SayFocusedObject ()
+EndIf ; InputBox
+
+EndScript ;GoToTrack
+
+Script MoveCurrentTrackTo ()
+
+Var
+	String s
+
+If !FocusInTrackPanel () Then
+	Return
+EndIf
+
+If InputBox(msgTrackNumber, msgMoveTrackToTitle, s) Then
+	NavigateTrackPanel (s, "ALT+UpArrow", "ALT+DownArrow")
+	SayFocusedObject ()
+EndIf ; InputBox
+
+EndScript ; MoveCurrentTrackTo
+
+Script MoveTrackUp ()
+Var
+	Object o,
+	String s
+
+;SayCurrentScriptKeyLabel ()
+Let o = GetFocusObject(0)
+If o.accFocus == 1 Then
+	Return
+EndIf
+Let s = o.accName (o.accFocus - 1)
+TypeCurrentScriptKey ()
+Say (s, OT_LINE)
+
+EndScript
+
+Script MoveTrackDown ()
+Var
+	Object o,
+	String s
+
+;SayCurrentScriptKeyLabel ()
+Let o = GetFocusObject(0)
+If o.accFocus == o.AccChildCount Then
+	Return
+EndIf
+Let s = o.accName (o.accFocus + 1)
+TypeCurrentScriptKey ()
+Say (s, OT_LINE)
+
+EndScript
 
 Int Function GetObjState (Handle hWnd)
 ;Gets the object state from an object in a window.  Assumes the object has the same name as the window (returned by GetWindowName).  This is used to get the Pressed state of toolbar buttons.
