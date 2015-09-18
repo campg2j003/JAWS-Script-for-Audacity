@@ -43,4 +43,10 @@ Shift+Insert+S=MuteSynthesizer
 Shift+Control+J=AddAudacityJawsGuide
 r=Record
 Shift+r=Record
+JAWSKey+a&g=GoToTrack
+Insert+a&g=GoToTrack
+JAWSKey+a&m=MoveCurrentTrackTo
+Insert+a&m=MoveCurrentTrackTo
+Alt+UpArrow=MoveTrackUp
+Alt+DownArrow=MoveTrackDown
 [Laptop Keys]

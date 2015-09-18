@@ -1,5 +1,9 @@
-(This file last updated 3/28/2014)
+(This file last updated 9/18/2014)
 
+. Added the ability to go to a track by number.  Entering a number causes focus to move to that track.  Preceding the number with a plus sign moves down (to higher track numbers) that many tracks.  A minus sign moves up that many tracks.  When the operation is complete the name of the target track is spoken.  This is assigned to JAWSKey+a followed by g.  For this to work, Alt+Uparrow must be assigned to the Move Focused Track Up and Alt+DownArrow must be assigned to the Move Focused Track Down Audacity commands.
+. Added the ability to move the current track to a track position by number, similar to the Go To track feature.  For this to work, Alt+Uparrow must be assigned to the Move Focused Track Up and Alt+DownArrow must be assigned to the Move Focused Track Down Audacity commands.
+. Added scripts for Move Focused Track Up/Down.  They speak the track that the track being moved passed over.  They are currently assigned to Alt+Up/DownArrow.  For these to work, these keys must be assigned to the Move Focused Track Up and Move Focused Track Down Audacity commands.
+. In the track panel the keys Alt+UpArrow and Alt+DownArrow are now sent to the application.  Previously they were not sent through because of a conflict with the OpenListBox and CloseListBox scripts.
 . Added the ability to silence the speech that occurs when starting to record.
 .Added ability to silence the speech that occurs during the previewing of an effect.
 . The URL for the JAWS User's Guide can now be updated via the script (Control+Shift+j).

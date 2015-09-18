@@ -205,6 +205,30 @@
 :script CloseListBox
 :Synopsis If focus is in the track panel, pass the key through.
 
+:Function NavigateTrackPanel
+:Synopsis In the track panel moves to the specified track.
+:Description Sends keystrokes to move to the specified track.  Assumes focus is in the track panel.  If sDest contains characters other than blanks, digits, +, or - silently returns without taking any action.
+:Returns void no return description
+:Param string/sDest a number optionally preceded by + or -.  If preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.
+:Param string/sUpKey string containing name of key to move up (to lower numbered tracks).
+:Param string/sDownKeystring containing name of key to move down (to higher numbered tracks).
+
+:script GoToTrack
+:Synopsis Go to a track by number.
+:Description Prompts for a number and moves the focus to that track.  If the specified number contains characters other than blanks, digits, +, or - silently returns without taking any action.  If the number is preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.
+
+:script MoveCurrentTrackTo
+:Synopsis Moves the current track to the specified track number.
+:Description Prompts for a number and moves the current track to that position in the track list.  If the specified number contains characters other than blanks, digits, +, or - silently returns without taking any action.  If the number is preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.  Assumes that ALT+UpArrow is assigned to Move focused track up and ALT+DownArrow to Move focused track down.
+
+:script MoveTrackUp
+:Synopsis Moves the current track up one track.
+:Description Moves the focused track up and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track up.
+
+:script MoveTrackDown
+:Synopsis Moves the current track down one track.
+:Description Moves the focused track down and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track down.
+
 :function GetObjState
 :Synopsis Returns the object state of the object in the window
 :Description Works for windows whose object name is the same as the window name
