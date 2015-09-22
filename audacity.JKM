@@ -36,7 +36,7 @@ Shift+,=SayJump
 .=SayJump
 Shift+.=SayJump
 F6=SwitchChainsList
-;  ctrl+JAWSKey+z=test
+ctrl+JAWSKey+z=test
 Alt+[=SaySelectionStart
 Alt+]=SaySelectionEnd
 Shift+Insert+S=MuteSynthesizer
@@ -49,4 +49,6 @@ JAWSKey+a&m=MoveCurrentTrackTo
 Insert+a&m=MoveCurrentTrackTo
 Alt+UpArrow=MoveTrackUp
 Alt+DownArrow=MoveTrackDown
+Control+B=AddLabelAtSelection
+Control+m=AddLabelAtPlayPosition
 [Laptop Keys]

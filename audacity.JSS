@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/18/15 16:38UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/21/15 02:23UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,11 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;Testing.
+;9/20/15 Added code to allow keys to speak while writing a label.
+;TAB and Shift+TAB now attempt to speak the active label while in the track pannel.
+;9/19/15 Added ActiveItemChangedEvent to speak when called, does not work in Audacity track panel.  Commented out.
+;9/18/15 Previous saved to HG changeset:   178:04e0202a6328.
 ;9/18/15 Finished scripts GoToTrack and MoveCurrentTrackTo.  Added associated messages to jsm.  Wrote scripts MoveTrackUp and MoveTrackDown, currently assigned to Alt+Up/DownArrow.  These assignments should probably not be released.
 ;9/17/15 Added functions NavigateTrackPanel and IsDigits, and scripts GoToTrack and MoveCurrentTrackTo.  GoToTrack is partially written.  The functions are written.  Wrote JSD entry for NavigateTrackPanel.  Added key JAWSKey+a&g for GoToTrack.  Consider renaming NavigateTrackPanel to NavigateToTrack.
 ;Works.
@@ -200,6 +205,7 @@ Globals
 	Int gfPreviewing,
 	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
+	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
 	Int giScheduleClearSilence ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
 	
 Int Function GetQuickSetting (String sKey)
@@ -228,7 +234,7 @@ Var
 	Handle wnd, ;the window containing the selection bar
 	String sValue ;the selection field value 
 	
-If DialogActive ()||MenusActive () Then
+If DialogActive ()||MenusActive () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
 ElIf NoProject () Then
@@ -257,7 +263,7 @@ EndFunction ; SaySelectionPosition
 Void Function MarkerMovement (String sScript, String sAlert)
 ;Used for marker scripts, such as move start of selection to the left by a small amount
 ;First, check to make sure we have a project open.
-If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () Then
+If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -344,6 +350,7 @@ Var
 ;We reset these two flags in case they get stuck on.
 Let gfSilence = False
 Let gfPreviewing = False
+Let gfInLabel = False
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_No_Disable, MSG_App_Start)
@@ -411,6 +418,14 @@ EndIf
 ProgressBarChangedEvent(hProgress, sName, sValue)
 endFunction
 
+/*
+Void Function ActiveItemChangedEvent (handle curHwnd, int curObjectId, int curChildId,
+	handle prevHwnd, int prevObjectId, int prevChildId)
+SayString("ActiveItemChangedEvent") ; debug
+ActiveItemChangedEvent (curHwnd, curObjectId, curChildId, prevHwnd, prevObjectId, prevChildId)
+EndFunction
+*/
+
 Int Function HandleCustomRealWindows(Handle hReal)
 ;Suppress speech for preview.
 var int iRtn ; debug
@@ -434,6 +449,11 @@ Var
 	Handle hTemp2,
 	String sName,
 	Int iMSAA_JCFOpt
+
+If hFocus != GlobalPrevFocus Then
+	;This test keeps this from being executed by SayWindowPromptAndText.
+	Let gfInLabel = False
+EndIf
 
 ; Turn off silencing for preview.
 If gfSilence && gfPreviewing Then
@@ -877,7 +897,7 @@ Var
 	String sScriptName,
 	String sMessage
 	
-If !IsPCCursor () || UserBufferIsActive () Then
+If !IsPCCursor () || UserBufferIsActive () || gfInLabel Then
 	PerformScript SelectNextCharacter ()
 	Return
 EndIf
@@ -904,7 +924,7 @@ Var
 	String sScriptName,
 	String sMessage
 	
-If !IsPCCursor () || UserBufferIsActive () || !IsStopped () Then
+If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	PerformScript SelectPriorWord ()
 	Return
 EndIf
@@ -925,7 +945,7 @@ Var
 	String sScriptName,
 	String sMessage
 	
-If !IsPCCursor () || UserBufferIsActive () || !IsStopped () Then
+If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	PerformScript SelectNextWord ()
 	Return
 EndIf
@@ -946,7 +966,7 @@ Var
 	String sScriptName,
 	String sMessage
 	
-If !IsPCCursor () || UserBufferIsActive () Then
+If !IsPCCursor () || UserBufferIsActive () || gfInLabel Then
 	PerformScript SelectPriorCharacter ()
 	Return
 EndIf
@@ -973,7 +993,7 @@ If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive ()&&GetQuickSetting ("AnnounceMessage")Then
+If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage")Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -991,7 +1011,7 @@ If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive ()&&GetQuickSetting ("AnnounceMessage") Then
+If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -1004,8 +1024,8 @@ EndIf
 EndScript ; JawsEnd
 
 Script MoveToStartOfSelectedTracks ()
-If DialogActive () ||MenusActive () Then
-	;A dialog is open, pass key to application and speak its label.
+If DialogActive () ||MenusActive () || gfInLabel Then
+	;A dialog is open, we are in a menu, or we are writing a label, pass key to application and speak its label.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () Then
@@ -1017,7 +1037,7 @@ EndIf
 EndScript ; MoveToStartOfSelectedTracks
 
 Script MoveToEndOfSelectedTracks ()
-If DialogActive () ||MenusActive () Then
+If DialogActive () ||MenusActive () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () Then
@@ -1030,7 +1050,7 @@ EndScript ; MoveToEndOfSelectedTracks
 
 Script SelectToBeginning ()
 ;Select to start of selected tracks.
-If DialogActive () || MenusActive () Then
+If DialogActive () || MenusActive () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () Then
@@ -1043,7 +1063,7 @@ EndScript ; SelectToBeginning
 
 Script SelectToEnd ()
 ;Select to end of tracks.
-If DialogActive () || MenusActive () Then
+If DialogActive () || MenusActive () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 ElIf !IsTrackSelected () Then
@@ -1061,7 +1081,7 @@ If NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ;No project
-If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () Then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () && !gfInLabel Then
 	SelectFromStartOfLine ()
 	If GetQuickSetting ("AnnounceMessage") Then ;User can turn off this message
 		SayFormattedMessage (OT_No_Disable, FormatString (msgSelectTo, msgStart, msgAllAudio)) ;alerts when user activates this script at the main window, and a project is open
@@ -1079,7 +1099,7 @@ If NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ;No project
-If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () Then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () && !gfInLabel Then
 	SelectToEndOfLine ()
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_No_Disable, FormatString(msgSelectTo, msgEnd, msgAllAudio))
@@ -1094,7 +1114,7 @@ Script DeleteSelectedAudio ()
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf DialogActive () || MenusActive () Then
+ElIf DialogActive () || MenusActive () || gfInLabel Then
 	;Pass key to app.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -1120,20 +1140,20 @@ EndIf ; else not main window, etc.
 EndScript ; DeleteSelectedAudio
 
 Script JawsDelete ()
-;If focus is in the main window, a project exists, and audio is selected, the DEL key will delete it.  In this case we perform the script DeleteSelectedAudio.  Otherwise we perform the defaault script.
+;If focus is in the main window, a project exists, and audio is selected, the DEL key will delete it.  In this case we perform the script DeleteSelectedAudio.  Otherwise we perform the default script.
 
-If FocusInMainWindow () Then
-	; (!FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
+If FocusInMainWindow () && !gfInLabel Then
+	; (!gfInLabel || !FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
 	PerformScript DeleteSelectedAudio()
 Else
-	; NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are the right conditions here
+	; gfInLabel || NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are the right conditions here
 	PerformScript JAWSDelete ()
 EndIf
 EndScript ; JawsDelete
 
 Script JAWSBackspace ()
 ;This script is similar to the JawsDelete script.
-If FocusInTrackPanel ()&&!NoProject () Then
+If FocusInTrackPanel ()&&!NoProject () && !gfInLabel Then
 	PerformScript DeleteSelectedAudio()
 Else
 	PerformScript JAWSBackspace()
@@ -1144,7 +1164,7 @@ Script SayPriorCharacter ()
 Var
 	Handle hWnd
 	
-If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1162,7 +1182,7 @@ Script SayNextCharacter ()
 Var
 	Handle hWnd
 	
-If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () Then
+If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1179,11 +1199,11 @@ EndScript ; SayNextCharacter
 
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
-If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () && !MenusActive () Then
+If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () && !MenusActive () && !gfInLabel Then
 	SayNoTrackSelected ()
 	Return
-ElIf FocusInMainWindow ()
-&&!UserBufferIsActive () Then ;this second condition makes the default script active in virtual viewer
+ElIf FocusInMainWindow () && !gfInLabel
+&&!UserBufferIsActive () Then ;this third condition makes the default script active in virtual viewer
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1203,11 +1223,11 @@ EndIf
 EndScript ; Copy
 
 Script CutToClipboard ()
-If !IsTrackSelected () &&! DialogActive () Then
+If !IsTrackSelected () &&! DialogActive () && !gfInLabel Then
 	SayNoTrackSelected ()
 	Return
-ElIf FocusInMainWindow ()
-&&!UserBufferIsActive () Then ;this second condition makes the default script active in virtual viewer
+ElIf FocusInMainWindow () && !gfInLabel
+&&!UserBufferIsActive () Then ;this third condition makes the default script active in virtual viewer
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -1241,7 +1261,7 @@ Script CloseFocusTrack ()
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () Then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel Then
 	;!UserBufferIsActive () makes the default script active in virtual viewer.
 	If !IsStopped () Then
 		SayNotStopped ()
@@ -1265,11 +1285,27 @@ Let sMessage=StringSegment (UO_ANNOUNCE_MESSAGES, ":", 2) + UOAnnounceMessages(0
 Say (sMessage, OT_Status)
 EndScript ; AnnounceOnOff
 
+Void Function SayActiveLabel ()
+;Speak the text of the active label if any.  Assumes focus in track panel.
+SaveCursor ()
+InvisibleCursor ()
+RouteInvisibleToPC ()
+;Delay(2)
+Pause ()
+If FindColors (IgnoreColor, RGBStringToColor ("255255255"), S_NEXT, True) Then
+	Say(GetColorField (), OT_LINE)
+EndIf
+RestoreCursor ()
+EndFunction ;SayActiveLabel
+
 Script Tab()
 PerformScript Tab()
 If !UserBufferIsActive() && !DialogActive() && FocusInTrackPanel() Then
 ;Force MSAA to be refreshed so JAWS will correctly read current label (in alpha version).
 	MSAARefresh()
+EndIf
+If FocusInTrackPanel () Then
+	SayActiveLabel ()
 EndIf
 EndScript ; Tab
 
@@ -1278,6 +1314,9 @@ PerformScript ShiftTab()
 If !UserBufferIsActive() && !DialogActive() && FocusInTrackPanel() Then
 ;Force MSAA to be refreshed so JAWS will correctly read current label (in alpha version).
 	MSAARefresh()
+EndIf
+If FocusInTrackPanel () Then
+	SayActiveLabel ()
 EndIf
 EndScript ; ShiftTab
 
@@ -1418,6 +1457,12 @@ EndScript ; SayAudacityState
 ;If you comment this out you should also comment out entries for keys ENTER and NumPadEnter in the jkm file.  Otherwise, if JAWS is set to treat numpad keys separately, not commenting out these entries will cause Audacity to see both keys as standard ENTER.
 Script Enter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
+If gfInLabel Then
+	Let gfInLabel = False
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf ; if gfInLabel
 If FocusInMainWindow () && !IsStopped () && GetQuickSetting("EnterPause") Then
 	TypeKey (csPauseKey)
 Else
@@ -1433,7 +1478,7 @@ EndScript ; Enter
 
 Script CtrlEnter ()
 ;SayString (GetCurrentScriptKeyName ()) ; debug
-If FocusInMainWindow () && !IsStopped () && GetQuickSetting("EnterPause") Then
+If FocusInMainWindow () && !IsStopped () && !gfInLabel && GetQuickSetting("EnterPause") Then
 	TypeKey (cksEnter)
 	Say(cksEnter, OT_KEYBOARD)
 Else
@@ -1567,7 +1612,6 @@ Var
 	Object o,
 	String s
 
-;SayCurrentScriptKeyLabel ()
 Let o = GetFocusObject(0)
 If o.accFocus == 1 Then
 	Return
@@ -1583,7 +1627,6 @@ Var
 	Object o,
 	String s
 
-;SayCurrentScriptKeyLabel ()
 Let o = GetFocusObject(0)
 If o.accFocus == o.AccChildCount Then
 	Return
@@ -1853,7 +1896,7 @@ PerformScript SelectAll()
 If NoProject () Then
 	SayNoProject ()
 	Return
-ElIf FocusInMainWindow () && ! NoProject () && GetQuickSetting ("AnnounceMessage") Then
+ElIf FocusInMainWindow () && ! NoProject () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
 	SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
 EndIf
 EndScript ; SelectAll
@@ -1914,7 +1957,7 @@ TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel ()&&GetQuickSetting ("AnnounceMessage") && IsStopped () Then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	Pause ()
 	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
@@ -1991,6 +2034,17 @@ Else
 EndIf
 EndScript ; SayLine
 
+Script SayPriorLine ()
+Let gfInLabel = False
+PerformScript SayPriorLine ()
+EndScript ;SayPriorLine
+
+
+Script SayNextLine ()
+Let gfInLabel = False
+PerformScript SayNextLine ()
+EndScript ;SayNextLine
+
 Script SwitchChainsList ()
 ;Switch between the Chains and Chain lists in the Edit Chains dialog.
 ;Feature suggested by Dang Manh Cuong
@@ -2029,7 +2083,7 @@ EndScript ; SwitchChainsList
 
 Script PasteFromClipboard ()
 ;Speaks a warning message when not stopped
-If DialogActive () || MenusActive () Then
+If DialogActive () || MenusActive () || gfInLabel Then
 	;I don't think we need to worry about menus, but check just in case.
 	PerformScript PasteFromClipboard ()
 	Return
@@ -2096,7 +2150,7 @@ SayMessage(OT_USER_BUFFER, s)
 ;Say number of focused track
 ;SayInteger(GetFocusObject(0).accFocus) ; debug
 If FocusInTrackPanel() Then
-    ;/*
+    /*
     If InputBox("track number:", "go to", s) Then
 		var object o = GetFocusObject(0), int rtn
 		var int iNum, Int iStart, Int iMove, Int iCount, Int fSilence, String sUp, String sDown, String sKey
@@ -2128,7 +2182,7 @@ If FocusInTrackPanel() Then
 		;SayString("returned " + IntToString(rtn))
 		
     EndIf ; InputBox
-    ;*/
+    */
     /*; get focused object rectangle.
     var object o, int ix, int iYTop, int iWidth, int iHeight
     o = GetFocusObject(0)
@@ -2136,6 +2190,7 @@ If FocusInTrackPanel() Then
     SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
     */
 EndIf ; in track panel
+SayString ("MSAAMode = " + IntToString(GetJCFOption(OPT_MSAA_MODE))) ; debug
 EndScript ; test
 
 Void Function loadNonJCFOptions ()
@@ -2211,6 +2266,10 @@ Script Record ()
 ;Don't speak Record or Record-Append keys.
 If DialogActive () ||MenusActive () Then
 	;A dialog is open, pass key to application and speak its label.
+=======
+If DialogActive () ||MenusActive () || gfInLabel Then
+	;A dialog is open or we are writing a label, pass key to application and speak its label.
+>>>>>>> Partial label track support.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 Else
@@ -2232,3 +2291,18 @@ Void Function ClearSilence()
 Let gfSilence = False
 	Let giScheduleClearSilence = 0
 EndFunction ;ClearSilence
+
+Script AddLabelAtSelection ()
+Let gfInLabel = True
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+EndScript ; AddLabelAtSelection
+
+Script AddLabelAtPlayPosition ()
+If !IsStopped () Then
+	Let gfInLabel = True
+EndIf ; if not stopped
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+EndScript ; AddLabelAtPlayPosition
+
