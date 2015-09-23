@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/21/15 02:23UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/22/15 21:05UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,10 +33,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;Testing.
-;9/20/15 Added code to allow keys to speak while writing a label.
-;TAB and Shift+TAB now attempt to speak the active label while in the track pannel.
-;9/19/15 Added ActiveItemChangedEvent to speak when called, does not work in Audacity track panel.  Commented out.
+;9/22/15 Added code to MoveTrackUp, MoveTrackDown, GoToTrack and MoveCurrentTrackTo to send key to app if not in track panel.
+;Added global variables gsGoTrackUpKey, gsGoTrackDownKey for the keys that move focus to prior/next track, and gsMoveTrackUpKey and gsMoveTrackDownKey for keys that move a track.  This will make it easier to allow the user to specify these keys if desired.
+;Added scripts MarkTrack, GoToMarkedTrack, ExchangeWithMark, and MoveCurrentTrackToMark.  Added keys in JKM.  
+;Changed NavigateTrackPanel so that it clamps the values if they are outside the track table.
+;Added new keys to script key help.
+;Reorganized script key help and added blank lines between sections.
 ;9/18/15 Previous saved to HG changeset:   178:04e0202a6328.
 ;9/18/15 Finished scripts GoToTrack and MoveCurrentTrackTo.  Added associated messages to jsm.  Wrote scripts MoveTrackUp and MoveTrackDown, currently assigned to Alt+Up/DownArrow.  These assignments should probably not be released.
 ;9/17/15 Added functions NavigateTrackPanel and IsDigits, and scripts GoToTrack and MoveCurrentTrackTo.  GoToTrack is partially written.  The functions are written.  Wrote JSD entry for NavigateTrackPanel.  Added key JAWSKey+a&g for GoToTrack.  Consider renaming NavigateTrackPanel to NavigateToTrack.
@@ -205,8 +207,12 @@ Globals
 	Int gfPreviewing,
 	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
-	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
-	Int giScheduleClearSilence ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
+	Int giScheduleClearSilence, ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
+	String gsGoTrackUpKey, ;key that moves focus to the prior (lower numbered) track
+	String gsGoTrackDownKey, ;key that moves focus to the next (higher numbered) track
+	String gsMoveTrackUpKey, ; key that moves a track up in the track panel (to lower-numbered tracks)
+	String gsMoveTrackDownKey, ; key that moves a track down in the track panel (to higher-numbered tracks)
+	Int giTrackMark ;Holds the number of the marked track, 0 if none
 	
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -384,6 +390,14 @@ If !App_FirstTime Then
 
 		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
 	EndIf ; if before JAWS 13
+
+	;Set keys that move the focus up and down in the track panel.
+	Let gsGoTrackUpKey = "UpArrow"
+	Let gsGoTrackDownKey = "DownArrow"
+
+	;Set keys that move a track up and down in the track panel.
+	Let gsMoveTrackUpKey = "Alt+UpArrow"
+	Let gsMoveTrackDownKey = "Alt+DownArrow"
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
@@ -1529,7 +1543,7 @@ Return StringLength(s2) == 0
 EndFunction ;IsDigits
 
 Void Function NavigateTrackPanel (String sDest, String sUpKey, String sDownKey)
-;sDest: string containing the number of the track to move to.  If starts with + move down that many tracks, if -, move up that many tracks.
+;sDest: string containing the number of the track to move to.  If starts with + move down that many tracks, if -, move up that many tracks.  If it would move beyond the first or last track its value is adjusted acordingly.
 ;sUpKey: string containing name of key to move up (to lower numbered tracks).
 ;sDownKey: string containing name of key to move down (to higher numbered tracks).
 ;Assumes focus in track panel.
@@ -1537,12 +1551,15 @@ Var
 	Object o,
 	int iNum,
 	Int iStart,
-	;Int iMove,
+	Int iMax,
 	Int iCount,
 	Int fSilence,
 	String sKey,
 	String s
 
+Let iStart = GetFocusObject (0).accFocus
+Let iMax = GetFocusObject (0).accChildCount
+;SayString ("iNum = " + IntToString (iNum) + ", iStart = " + IntToString (iStart) + ", iMax = " + IntToString(iMax)) ; debug
 Let sDest = StringStripAllBlanks(sDest)
 If ! IsDigits(sDest) Then
 	Return
@@ -1551,9 +1568,16 @@ Let s = StringLeft(sDest, 1)
 Let iNum = StringToInt(sDest)
 If !(s == "+" || s == "-") Then
 	;Absolute
-	Let iStart = GetFocusObject (0).accFocus
 	Let iNum = iNum - iStart
 EndIf ; if absolute
+;SayString ("iNum = " + IntToString (iNum) + ", iStart = " + IntToString (iStart) + ", iMax = " + IntToString(iMax)) ; debug
+;Clamp to limits
+If iStart + iNum > iMax Then
+	Let iNum = iMax -iStart
+	;SayString ("> iMax, now " + IntToString(iNum)) ; debug
+ElIf iStart + iNum < 1 Then
+	Let iNum = 1 - iStart
+EndIf
 Let iCount = abs(iNum)
 if iNum < 0 Then
 	Let sKey = sUpKey
@@ -1562,7 +1586,6 @@ Else
 EndIf
 Let fSilence = gfSilence
 Let gfSilence = True
-;Pause()
 While iCount > 0
 	TypeKey(sKey)
 	If iCount % 3 == 0 Then
@@ -1581,15 +1604,63 @@ Var
 	String s
 
 If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 	Return
 EndIf
 
 If InputBox(msgTrackNumber, msgGoToTrackTitle, s) Then
-	NavigateTrackPanel (s, "UpArrow", "DownArrow")
+	NavigateTrackPanel (s, gsGoTrackUpKey, gsGoTrackDownKey)
 	SayFocusedObject ()
 EndIf ; InputBox
 
 EndScript ;GoToTrack
+
+Script MarkTrack ()
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
+Let giTrackMark = GetFocusObject (0).accFocus
+SayMessage (OT_JAWS_MESSAGE, FormatString (msgTrackMarked, IntToString (giTrackMark)))
+EndScript ;MarkTrack
+
+Script GoToMarkedTrack ()
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+If giTrackMark <= 0 Then
+	SayMessage(OT_JAWS_MESSAGE, msgNoTrackMarked)
+	Return
+EndIf ; no mark
+NavigateTrackPanel (IntToString(giTrackMark), gsGoTrackUpKey, gsGoTrackDownKey)
+SayFocusedObject ()
+EndScript ;GoToMarkedTrack
+
+Script ExchangeWithMark ()
+Var
+	Int iStartTrack
+
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
+If giTrackMark <= 0 Then
+	SayMessage(OT_JAWS_MESSAGE, msgNoTrackMarked)
+	Return
+EndIf ; no mark
+
+Let iStartTrack = GetFocusObject (0).accFocus
+NavigateTrackPanel (IntToString(giTrackMark), gsGoTrackUpKey, gsGoTrackDownKey)
+SayFocusedObject ()
+Let giTrackMark = iStartTrack
+EndScript ;ExchangeWithMark
 
 Script MoveCurrentTrackTo ()
 
@@ -1597,21 +1668,50 @@ Var
 	String s
 
 If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 	Return
 EndIf
 
 If InputBox(msgTrackNumber, msgMoveTrackToTitle, s) Then
-	NavigateTrackPanel (s, "ALT+UpArrow", "ALT+DownArrow")
+	NavigateTrackPanel (s, gsMoveTrackUpKey, gsMoveTrackDownKey)
 	SayFocusedObject ()
 EndIf ; InputBox
 
 EndScript ; MoveCurrentTrackTo
+
+Script MoveCurrentTrackToMark ()
+Var
+	Int iStartTrack
+
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
+
+If giTrackMark <= 0 Then
+	SayMessage(OT_JAWS_MESSAGE, msgNoTrackMarked)
+	Return
+EndIf ; no mark
+
+Let iStartTrack = GetFocusObject (0).accFocus
+NavigateTrackPanel (IntToString(giTrackMark), gsMoveTrackUpKey, gsMoveTrackDownKey)
+SayFocusedObject ()
+Let giTrackMark = iStartTrack
+EndScript ;MoveCurrentTrackToMark
 
 Script MoveTrackUp ()
 Var
 	Object o,
 	String s
 
+;SayCurrentScriptKeyLabel ()
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
 Let o = GetFocusObject(0)
 If o.accFocus == 1 Then
 	Return
@@ -1627,6 +1727,12 @@ Var
 	Object o,
 	String s
 
+;SayCurrentScriptKeyLabel ()
+If !FocusInTrackPanel () Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
+	Return
+EndIf
 Let o = GetFocusObject(0)
 If o.accFocus == o.AccChildCount Then
 	Return

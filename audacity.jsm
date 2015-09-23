@@ -83,21 +83,31 @@ To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
+
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while in the main window, turn on the JAWS cursor.
+
+To go to a track by number, press %KeyFor(GoToTrack).
+To move the current track to a track position by number, press %KeyFor(MoveCurrentTrackTo).
+To mark the current track, press %KeyFor(MarkTrack).
+To go to the marked track, press %KeyFor(GoToMarkedTrack).
+To go to the marked track and mark the starting track, press %KeyFor(ExchangeWithMark).
+To move the current track to the position of the marked track and set the mark to the current track, press %KeyFor(MoveCurrentTrackToMark).
+
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
 See what's new.txt for more info.
+
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
+
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
 To reset all script options to default values, press %keyfor (ResetConfig)
 To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
-To go to a track by number, press %KeyFor(GoToTrack).
-To move the current track to a track position by number, press %KeyFor(MoveCurrentTrackTo).
+
 To get help with Audacity hot keys, press %keyfor(AudacityKeysHelp).
 To get the default Windows hot key help, press %keyfor(AudacityKeysHelp) twice quickly.
 
@@ -484,5 +494,15 @@ go to
 ;Title of the input box in the MoveCurrentTrackTo script.
 @msgMoveTrackToTitle
 Move to
+@@
+
+
+;%1 = track number
+@msgTrackMarked
+Track %1 marked
+@@
+
+@msgNoTrackMarked
+no mark
 @@
 EndMessages
