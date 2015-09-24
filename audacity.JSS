@@ -1,10 +1,10 @@
-; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacity.sourceforge.net).
+; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacityteam.org).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/22/15 21:05UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/24/15 03:03UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/23/15 Changed Audacity web site to http://audacityteam.org.
+;9/22/15 Previous saved to HG changeset:   180:eb23d14b240.
 ;9/22/15 Added code to MoveTrackUp, MoveTrackDown, GoToTrack and MoveCurrentTrackTo to send key to app if not in track panel.
 ;Added global variables gsGoTrackUpKey, gsGoTrackDownKey for the keys that move focus to prior/next track, and gsMoveTrackUpKey and gsMoveTrackDownKey for keys that move a track.  This will make it easier to allow the user to specify these keys if desired.
 ;Added scripts MarkTrack, GoToMarkedTrack, ExchangeWithMark, and MoveCurrentTrackToMark.  Added keys in JKM.  
