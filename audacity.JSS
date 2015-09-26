@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/24/15 03:11UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/26/15 18:44UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/26/15 .
+=======
+;9/26/15 Added code to refresh track panel after CloseFocusTrack.  Added function RefreshFocus.
+;9/23/15 Previous saved to HG changeset:   182:dc6e89354c2c.
 ;9/23/15 Merged out from default:
 ;9/23/15 Changed Audacity web site to http://audacityteam.org.
 ;9/22/15 Merged out from default:
@@ -1280,6 +1284,13 @@ Else
 EndIf
 EndScript ; DeselectAll
 
+Void Function RefreshFocused ()
+;Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
+Pause ()
+RefreshWindow (GetFocus ())
+MSAARefresh ()
+EndFunction ;RefreshFocused
+
 Script CloseFocusTrack ()
 ;If this key will close the current track, speak a message, otherwise send to ap normally.
 If NoProject () Then
@@ -1292,6 +1303,7 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel Then
 		Return
 	EndIf ; if not Stopped
 	AnnounceKeyMessage (msgCloseFocusedTrack)
+	RefreshFocus ()
 Else
 	;Focus not in track panel, send to app.
 	SayCurrentScriptKeyLabel ()
