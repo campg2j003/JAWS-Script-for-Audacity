@@ -1260,7 +1260,7 @@ Else
 EndIf
 EndScript ; DeselectAll
 
-Void Function RefreshFocused ()
+Void Function RefreshFocus ()
 ;Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
 Pause ()
 RefreshWindow (GetFocus ())
