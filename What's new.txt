@@ -1,5 +1,8 @@
-(This file last updated 9/18/2014)
+(This file last updated 9/28/2015)
 
+. Added code to refresh the track panel after CloseFocusTrack.  This is intended to make JAWS not indicate that the old track is still current.
+. Changed Audacity web site to http://audacityteam.org (in source code).
+. Added scripts MarkTrack (JAWSKey+a,k), GoToMarkedTrack (JAWSKey+a,Shift+g), ExchangeWithMark (JAWSKey+a,x), and MoveCurrentTrackToMark (JAWSKey+a,Shift+m).  The "mark" remembers the number of the current track. This mark is very simple-minded-- it will become confused if you add, delete, or move tracks.
 . Added the ability to go to a track by number.  Entering a number causes focus to move to that track.  Preceding the number with a plus sign moves down (to higher track numbers) that many tracks.  A minus sign moves up that many tracks.  When the operation is complete the name of the target track is spoken.  This is assigned to JAWSKey+a followed by g.  For this to work, Alt+Uparrow must be assigned to the Move Focused Track Up and Alt+DownArrow must be assigned to the Move Focused Track Down Audacity commands.
 . Added the ability to move the current track to a track position by number, similar to the Go To track feature.  For this to work, Alt+Uparrow must be assigned to the Move Focused Track Up and Alt+DownArrow must be assigned to the Move Focused Track Down Audacity commands.
 . Added scripts for Move Focused Track Up/Down.  They speak the track that the track being moved passed over.  They are currently assigned to Alt+Up/DownArrow.  For these to work, these keys must be assigned to the Move Focused Track Up and Move Focused Track Down Audacity commands.
