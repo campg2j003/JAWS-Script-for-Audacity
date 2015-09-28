@@ -33,6 +33,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/26/15 Merged RefreshFocus from default.
 ;9/26/15 Added code to refresh track panel after CloseFocusTrack.  Added function RefreshFocus.
 ;9/23/15 Previous saved to HG changeset:   182:dc6e89354c2c.
 ;9/23/15 Changed Audacity web site to http://audacityteam.org.
@@ -1274,7 +1275,7 @@ Else
 EndIf
 EndScript ; DeselectAll
 
-Void Function RefreshFocused ()
+Void Function RefreshFocus ()
 ;Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
 Pause ()
 RefreshWindow (GetFocus ())
