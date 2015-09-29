@@ -232,11 +232,11 @@
 
 :script MoveCurrentTrackTo
 :Synopsis Moves the current track to the specified track number.
-:Description Prompts for a number and moves the current track to that position in the track list.  If the specified number contains characters other than blanks, digits, +, or - silently returns without taking any action.  If the number is preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.  Assumes that ALT+UpArrow is assigned to Move focused track up and ALT+DownArrow to Move focused track down.  If focus is not in the track panel sends the keystroke to the application.
+:Description Prompts for a number and moves the current track to that position in the track list.  If the specified number contains characters other than blanks, digits, +, or - silently returns without taking any action.  If the number is preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.  Assumes that Control+Shift+UpArrow is assigned to Move focused track up and Control+Shift+DownArrow to Move focused track down.  If focus is not in the track panel sends the keystroke to the application.
 
 :script MoveCurrentTrackToMark
 :Synopsis Move the current track to the position of the marked track.
-:Description Move the current track to the position of the marked track.  Assumes that ALT+UpArrow is assigned to Move focused track up and ALT+DownArrow to Move focused track down.  If focus is not in the track panel sends the keystroke to the application.
+:Description Move the current track to the position of the marked track.  Assumes that Control+Shift+UpArrow is assigned to Move focused track up and Control+Shift+DownArrow to Move focused track down.  If focus is not in the track panel sends the keystroke to the application.
 
 :script MoveTrackUp
 :Synopsis Moves the current track up one track.
