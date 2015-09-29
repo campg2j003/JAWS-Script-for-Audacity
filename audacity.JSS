@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/26/15 18:30UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/29/15 20:30UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,8 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;9/29/15 Changed Alt+Up/DownArrow to Control+Shift+Up/DownArrow.
+;9/28/15 Previous saved to HG changeset:   188:6a035d4cd476.
 ;9/28/15 Added mark, web site change, and RefreshFocus to What's New.
 ;9/26/15 Added code to refresh track panel after CloseFocusTrack.  Added function RefreshFocus.
 ;9/23/15 Previous saved to HG changeset:   182:dc6e89354c2c.
@@ -400,8 +402,8 @@ If !App_FirstTime Then
 	Let gsGoTrackDownKey = "DownArrow"
 
 	;Set keys that move a track up and down in the track panel.
-	Let gsMoveTrackUpKey = "Alt+UpArrow"
-	Let gsMoveTrackDownKey = "Alt+DownArrow"
+	Let gsMoveTrackUpKey = "Control+Shift+UpArrow"
+	Let gsMoveTrackDownKey = "Control+Shift+DownArrow"
 EndIf ; if first time
 EndFunction ; AutoStartEvent
 
