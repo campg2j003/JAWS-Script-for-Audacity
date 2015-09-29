@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/29/15 19:55UTC"
+Const CS_SCRIPT_VERSION = "2.0 9/29/15 20:05UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,7 +34,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
-;9/29/15 Changed gsMoveTrackUp/DownKey to Control+Shift+Up/DownArrow.  Changed binding of scripts MoveTrackUp/Down.
+;9/29/15 Changed gsMoveTrackUp/DownKey to Control+Shift+Up/DownArrow.  Changed binding of scripts MoveTrackUp/Down.  Updated What's New.
 ;9/28/15 Merged from default: Added mark, web site change, and RefreshFocus to What's New.
 ;9/26/15 Merged RefreshFocus from default.
 
