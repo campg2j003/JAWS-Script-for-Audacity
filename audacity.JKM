@@ -55,8 +55,7 @@ JAWSKey+a&x=ExchangeWithMark
 Insert+a&x=ExchangeWithMark
 JAWSKey+a&Shift+m=MoveCurrentTrackToMark
 Insert+a&Shift+m=MoveCurrentTrackToMark
-Alt+UpArrow=MoveTrackUp
-Alt+DownArrow=MoveTrackDown
-Control+B=AddLabelAtSelection
-Control+m=AddLabelAtPlayPosition
+Control+Shift+UpArrow=MoveTrackUp
+Control+Shift+DownArrow=MoveTrackDown
+
 [Laptop Keys]
