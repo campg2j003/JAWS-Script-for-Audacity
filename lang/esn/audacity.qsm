@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 10/5/15 The text from the 9/2014 Spanis JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.  Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
+<LocalizableDefinitions File="Audacity.qs">
+	<DisplayNameDefinitions>
+		<DisplayName ID="Audacity Options" Text="Audacity Settings">
+			<HelpMsg>
+Opciones específicas para Audacity.</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce Audacity messages" Text="Anunciar los mensajes de Audacity">
+			<HelpMsg>
+Si se activa, lee mensajes para las operaciones con audio en Audacity.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce toolbars" Text="Anunciar las barras de herramientas">
+			<HelpMsg>
+SI se activa, lee el nombre de las barras de herramientas cuando el foco se mueve de una barra de herramientas a otra.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.ENTER pauses during play/record" Text="ENTER pausa al reproducir/grabar">
+			<HelpMsg>
+Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
+			</HelpMsg>
+		</DisplayName>
+<!-- ***** Not translated -->
+		<DisplayName ID="Audacity Options.Silence Preview" Text="Silence Preview">
+			<HelpMsg>
+If on, Turns speech off while previewing an effect.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Silence Record" Text="Silence Record">
+			<HelpMsg>
+If on, silences speech that occurs when starting to record.
+			</HelpMsg>
+		</DisplayName>
+</DisplayNameDefinitions>
+</LocalizableDefinitions>
