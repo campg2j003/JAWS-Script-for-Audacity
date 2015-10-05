@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 9/18/2015.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 10/5/2015.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -37,11 +37,33 @@ Const
 
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const
-	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages",
+	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages", ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pauses during play/record",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Preview",
 	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record"
+
+Messages
+; For user options.
+@msgUO_AudacityOptionsHlp
+Audacity-specific options
+@@
+@msgUO_AnnounceMessagesHlp
+If on, speaks messages for Audacity audio operations.
+@@
+@msgUO_AnnounceToolbarsHlp
+If on, speaks the toolbar name when focus moves from one toolbar to another.
+@@
+@msgUO_EnterPauseHlp
+If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
+@@
+@msgUO_SilencePreviewHlp
+If on, Turns speech off while previewing an effect.
+@@
+@msgUO_SilenceRecordHlp
+If on, silences speech that occurs when starting to record.
+@@
+EndMessages
 
 ;These are used to strip leading zeros from audio positions.
 Const
@@ -410,25 +432,6 @@ Announce messages on
 Script options reset to default values
 @@
 
-; For user options.
-@msgUO_AudacityOptionsHlp
-Audacity-specific options
-@@
-@msgUO_AnnounceMessagesHlp
-If on, speaks messages for Audacity audio operations.
-@@
-@msgUO_AnnounceToolbarsHlp
-If on, speaks the toolbar name when focus moves from one toolbar to another.
-@@
-@msgUO_EnterPauseHlp
-If on, ENTER executes Pause during playback and record, and Control+ENTER sends ENTER.  Otherwise, sends ENTER to Audacity.
-@@
-@msgUO_SilencePreviewHlp
-If on, Turns speech off while previewing an effect.
-@@
-@msgUO_SilenceRecordHlp
-If on, silences speech that occurs when starting to record.
-@@
 @msgNoSelection
 To use this feature you must enable the selection toolbar
 @@
