@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 9/29/15 20:35UTC"
+Const CS_SCRIPT_VERSION = "2.0 10/6/15  22:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -34,6 +34,14 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;10/6/15 Merged multilanguage support from default:
+;10/5/15 In AdjustJawsVerbosity replaced strListOfOptions with the version from AdjustJawsOptions.  This adds a couple of options that were overlooked.  This is for support of JAWS versions prior to 9.0 and is not tested.
+;Moved JAWS options help messages to after the other JAWS options constants.
+;10/5/15 Previous saved to HG 192:4152c0d30b00.
+;9/29/15 Changed Alt+Up/DownArrow to Control+Shift+Up/DownArrow.
+;9/28/15 Previous saved to HG changeset:   188:6a035d4cd476.
+;9/28/15 Added mark, web site change, and RefreshFocus to What's New.
+; end merge
 ;9/29/15 Merged from default: Changed gsMoveTrackUp/DownKey to Control+Shift+Up/DownArrow.  Changed binding of scripts MoveTrackUp/Down.  Updated What's New.
 ;9/29/15 Previous saved to HG changeset:   191:7410c37118cb.
 ;9/28/15 Merged from default: Added mark, web site change, and RefreshFocus to What's New.
@@ -1825,7 +1833,8 @@ Script AdjustJawsVerbosity ()
 Var
 	String strListOfOptions
 	
-Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
+;Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
+Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS + _DLG_SEPARATOR + UO_ENTER_PAUSE + _DLG_SEPARATOR + UO_SILENCE_PREVIEW + _DLG_SEPARATOR + UO_SILENCE_RECORD
 JawsVerbosityCore (strListOfOptions)
 EndScript ; AdjustJawsVerbosity
 
