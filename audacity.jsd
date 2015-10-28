@@ -353,3 +353,16 @@
 :Function ClearSilence
 :Synopsis Clears the gfSilence flag used to silence speaking of focus changes.
 :Description This function can be scheduled with ScheduleFunction to terminate silencing of speech in the future.  It is used to reactivate speech after starting a recording.
+
+:function SayActiveLabel ()
+:Description Speak the text of the active label if any.  Assumes focus in track panel.  Uses the invisible cursor.
+:Returns Void
+
+:script AddLabelAtSelection
+:Synopsis Add a label for the selected region.
+:Description Special audacity speech functionality is cancelled until ENTER is pressed, SayNext/PriorLine is pressed, or focus moves out of the window.
+
+:script AddLabelAtPlayPosition
+:Synopsis Add a label at the current play/record position.
+:Description Special audacity speech functionality is cancelled until ENTER is pressed, SayNext/PriorLine is pressed, or focus moves out of the window.
+
