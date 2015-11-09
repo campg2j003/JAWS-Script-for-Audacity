@@ -14,10 +14,38 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Saturday,  September 14, 2013
+Last updated: Saturday,  November 7, 2015
 
 Modifications:
-
+11/7/15 Added DumpLog function, called in leave function of instfiles page.  Writes to installer.log in the $InstDir.
+One compile seems to work, with multiple compiles it seems like only 1 works, although the files are extracted for all of them.  If you run separate installs the compiles work.
+11/6/15 Removed "not found" message.
+Changed DEFAULT_GUI_FONT to GUI_DEFAULT_FONT, removed 1 warning.
+Now adds all versions.
+Commented out debug messages.
+With this version the list view does not speak properly in JAWS 16.0.4463. (It does now, no known changes.) Items speak when SayLine is pressed but not for prior/next line.  The checked state is not spoken for either of these, only when SPACE is pressed to change state.  It does work in NVDA 2015.3.
+Reordered pushes in CheckScriptExists to prevent clobbering register.
+When installing to a fra or esn directory the script is not compiled, compiled successfully manually.
+Language files are copied to the proper folders.
+Issue:  I observe that after running the installer from File Explorer, the focus has moved a couple of tabs to the right-- i.e. to View Mode or something.
+11/5/15 Widened listview to accomodate language.
+Compiles and executes up to display of JAWS list.  Only displays 1 version when 2 folders (fra and enu) exist, displays fra.
+Prints "fra not found" in messagebox.
+Debug MessageBoxes are active in DisplayJawsList and some of the getversion functions.
+11/3/15 Wrote and tested ${StrContainsTok}.
+Added star to unsupported version/language pairs in list view.
+11/1/15 Converted keywords in JAWSSaveInstallInfo and JAWSRestoreInstallInfo to JAWSVersionLangs and JAWSVersionLangsCount.
+Macro JAWSInstallItems now receives version in $0 and lang in $1.
+10/31/15 Documented list view code.
+Documented JAWSSelectVersionsPage for version/language pairs.
+Added count to GetVersionLangs.
+Converted GetJawsVersions, not tested.
+10/30/15 Finished GetVersionLangs, tested in stand-alone test program.  It gets the lang dirs in a version.
+Converted GetJawsScriptDir to work with a version/language pair or just a version.
+Converted CompileSingle to work with version/lang pair.
+JawsInstallVersion should be okay.  Changed documentation and commented out can't find compiler message which duplicates one in CompileSingle.
+10/30/15 Added qs and qsm files to default JAWSInstallScriptItems macro.
+10/29/15 Added define ScriptVerLangSep to separate version and language directory.  Removed enu from ScriptDir.
 */
 
 /*
@@ -62,7 +90,12 @@ Modifications:
 !Define tempFile $temp\Install.ini
 !Define UnInstaller "Uninst.exe"
 !Define JawsDir "$appdata\Freedom Scientific\Jaws" ;the folder where app data for Jaws 6.0 and above is located
-!Define Scriptdir "Settings\Enu" ;folder in $JawsDir to put the script
+!Define ScriptVerLangSep "/" ;separates JAWS version and language string.  The language string is the folder under ScriptDir for the scripts.
+!ifndef JAWSScriptLangs
+!Define JAWSScriptLangs "" ;default supported languages.
+!EndIf
+!Define ScriptDefaultLang "enu" ;default language string, these script files will be in the script source directory.
+!Define Scriptdir "Settings" ;folder in $JawsDir, the script is put in a language folder under this folder
 !Define JawsApp "JFW.EXE" ;Used to check if Jaws is installed
 !Define Compiler "Scompile.exe" ;Used to compile script after installation
 
@@ -71,13 +104,23 @@ Modifications:
 
 !include "uninstlog.nsh"
 !include "strfunc.nsh" ; used in DisplayJawsList to check for a digit, and other things
+!include "filefunc.nsh" ; used to get language subfolders
+
 ; Declare used functions from strfunc.nsh.
+!ifndef StrTok_INCLUDED
+${StrTok}
+!endif
+!ifndef StrLoc_INCLUDED
 ${StrLoc}
+!endif
 
 !include "nsDialogs.nsh"
 ;Modern UI configurations
 !Include "MUI2.nsh"
 
+;Timestamp of this run for messages.
+!define /DATE MsgTimeStamp "%Y-%m-%d %H:%M"
+;!define MUI_FINISHPAGE_NOAUTOCLOSE ; debug
 
 ;Global variables
 
@@ -89,33 +132,142 @@ var JAWSRB1
 var JAWSRB2
 var JAWSREADME ;location of the README file for the Finish page
 
+;-----
+;Multi-language script support
+function GetVersionLangs
+  ;$0 -- JAWS version
+  ;Returns language subfolders separated by | in $1, count in $2.
+  ;Uses defines ${JawsDir} and ${ScriptDir}.
+  push $R1
+push $R2
+  Push $R6
+  Push $R7
+  Push $R8
+  Push $R9
+  StrCpy $R1 "" ;accumulator
+StrCpy $R2 0 ; count
+  ${Locate} "${JawsDir}\$0\${ScriptDir}" "/L=D /G=0 /M=???" "GetVersionLangsHelper"
+  Pop $R9
+  Pop $R8
+  Pop $R7
+  Pop $R6
+  StrCpy $2 $R2
+  pop $R2
+  StrCpy $1 $R1
+  Pop $R1
+  ${if} $1 != ""
+    StrCpy $1 $1 -1
+  ${endif}
+FunctionEnd ;GetVersionLangs
+  
+Function GetVersionLangsHelper
+StrCpy $R1 "$R1$R7|"
+intop $R2 $R2 + 1 ;count
+Push $R1 ;used to stop execution
+FunctionEnd ; GetVersionLangsHelper
+
+Function GetVerLang
+  ;Separate version and lang dir.
+  ;$0 - ver/lang pair, or just ver which will use default for lang
+  ;Return: TOS = lang  dir (default lang dir if none given), TOS -1 = ver
+  ;Uses ${ScriptVerLangSep}, ${ScriptDefaultDir}
+push $1 ; used for version
+push $3 ;used for lang dir
+${StrLoc} $3 "$0" "${ScriptVerLangSep}" ">"
+${if} $3 != ""
+  ${StrTok} $1 "$0" "${ScriptVerLangSep}" "0" "0"
+  ${StrTok} $3 "$0" "${ScriptVerLangSep}" "1" "0"
+${else}
+  ;Assume $0 is just a version, so copy it.
+  StrCpy $1 "$0"
+  StrCpy $3 "${ScriptDefaultLang}"
+${endif}
+;$1 = version, $3 = lang dir
+;TOS = old $3, TOS-1 = old $1
+exch 
+; TOS = old $1, TOS-1 = old $3
+exch $1 ; TOS = ver
+exch ; TOS = old $3, TOS-1 = ver
+exch $3 ; TOS = lang
+FunctionEnd ;GetVerLang
+
+!ifndef StrLoc_INCLUDED
+  ${StrLoc}
+!endif
+function _StrContainsTok
+  ;Report if token $1 is in $0 where $0 is a list of tokens with separator $2.  $2 must be a single character.
+  ; Returns "" in $3 if not found, a number >= 0 otherwise.
+  Push $R0
+  StrCpy $R0 "$2$0$2"
+  ${StrLoc} $3 $R0 "$2$1$2" ">"
+  pop $R0
+FunctionEnd ;_StrContainsTok
+
+!macro StrContainsTok rslt list tok sep
+  ;Determine if string tok is a token in list which is separated by character sep.
+  ;Returns 1 in rslt if found, 0 otherwise.
+  push $3
+  push $0
+  push $1
+  push $2
+  StrCpy $0 "${list}"
+  StrCpy $1 "${tok}"
+  StrCpy $2 "${sep}"
+  call _StrContainsTok
+  ${If} $3 == ""
+    ;MessageBox MB_OK "StrContainsTok: $1 not found" ; debug
+    StrCpy $3 0
+  ${Else}
+    StrCpy $3 1
+    ${EndIf}
+  pop $2
+  pop $1
+  pop $0
+  exch $3
+  pop ${rslt}
+!MacroEnd ;StrContainsTok
+!define StrContainsTok "!InsertMacro strContainsTok"
+
+;-----
+
 ;Additional scripts from Cuong's cjfw.nsh
 !Macro CompileSingle JAWSVer Source
 ;Assumes $OUTDIR points to folder where source file is and compiled file will be placed.
-;JAWSVer - JAWS version, i.e. "10.0"
+;JAWSVer - JAWS version/lang or version, i.e. "10.0/enu" or "10.0"
 ;Source - name of script to compile without .jss extension
-;return: writes error message on failure, returns exit code of scompile (0 if successful).
+;return: writes error message on failure, returns exit code of scompile (0 if successful) in $1.
 ;Recommend for scripts wich have only one source (*.JSS) file, or don't make any modification to any original files
 ;This macro saves time because it doesn't store and delete any temporary files.
 push $0
 push $R0
 push $R1
+push $R2 ;stdout/stderr output of scompile.
 strcpy $0 ${JAWSVer}
+call GetVerLang
+pop $0 ;lang, we don't need it
+pop $0 ;version
 call GetJawsProgDir
 pop $R0
 ; $R0 has backslash at end of path.
 StrCpy $R0 "$R0${Compiler}"
 StrCpy $R1 "$OUTDIR\${Source}"
+${GetFileAttributes} "$R1.jss" "all" $1
+;DetailPrint "Attributes of file $R1.jss: $1"
 !ifndef JAWSDEBUG ; debug
 IfFileExists "$R0" +1 csNoCompile
 !endif ; debug
 !ifdef JAWSDEBUG
   MessageBox MB_OK `Pretending to run nsexec::Exec '"$R0" "$R1.jss"'`
-!Else ; not JAWSJEBUG
-  nsexec::Exec '"$R0" "$R1.jss"'
-  pop $1
-  IntCmp $1 0 csGoodCompile +1 +1
-    MessageBox MB_OK "Could not compile $R1.jss, SCompile returned $1"
+  !Else ; not JAWSJEBUG
+  ;nsexec::Exec '"$R0" "$R1.jss"'
+  ;pop $1 ;exit code of scompile
+  nsexec::ExecToStack '"$R0" "$R1.jss"'
+  pop $1 ;exit code of scompile
+  pop $R2 ;scompile output
+    ;MessageBox MB_OK "compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\R$\N$R2" ; debug
+    IntCmp $1 0 csGoodCompile +1 +1
+    DetailPrint "CompileSingle: Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2$\r$\n"
+    ;MessageBox MB_OK "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2"
     GoTo csEnd
   csGoodCompile:
 !EndIf ; else not JAWSDEBUG
@@ -131,10 +283,10 @@ pop $0
 
 !Macro AdvanceCompileSingle JAWSVer Path Source
 ;Assumes $OUTDIR points to folder where source file is and compiled file will be placed.
-;JAWSVer - JAWS version, i.e. "10.0"
+;JAWSVer - JAWS version/lang or version, i.e. "10.0/enu" or "10.0"
 ;Path - desired context, either "current" or "all".
 ;Source - name of script to compile without .jss extension
-;return: writes error message on failure, returns exit code of scompile (0 if successful).
+;return: writes error message on failure, returns exit code of scompile (0 if successful)-- actually returns 1 on failure.
 SetShellVarContext ${path}
 !insertmacro CompileSingle ${JAWSVer} ${Source}
 SetShellVarContext $JAWSShellContext
@@ -295,7 +447,9 @@ ${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.jkm"
 ${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.jsd"
 ${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.jsh"
 ${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.jsm"
-!macroend ; JAWSInstallScriqtItems
+${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.qs"
+${FileDatedNF} "${JAWSSrcDir}" "${ScriptApp}.qsm"
+!macroend ; JAWSInstallScriptItems
 !EndIf ;macro JAWSInstallScriptItems not defined
 
 
@@ -306,6 +460,7 @@ var JAWSSecUninstaller
 var JAWSSecInstDirFiles
 
 ;-----
+;Now deals with version/language pairs.
 Var INSTALLEDJAWSVERSIONS ;separated by |
 var INSTALLEDJAWSVERSIONCOUNT
 var SELECTEDJAWSVERSIONS
@@ -340,10 +495,6 @@ push $1
 !define NSD_RemoveStyle "!insertmacro _NSD_RemoveStyle"
 
 ;-----
-!ifndef StrTok_INCLUDED
-${StrTok}
-!endif
-
 !macro _ForJawsVersions
 ; Execute a block of code for each selected JAWS version.
 ; Place before the code to be executed for each selected JAWS version.
@@ -409,7 +560,7 @@ insttype /COMPONENTSONLYONCUSTOM
 ;!define INST_CUSTOM 33
 !define INST_CUSTOM 32
 
-; Displays 3 lines of ab 98 chars.
+; Displays 3 lines of about 98 chars.
 !define MUI_COMPONENTSPAGE_TEXT_TOP "Full allows you to uninstall using Add or Remove Programs.  $\n\
 Just Scripts installs scripts and README, can't be uninstalled from Add or Remove Programs."
 ;!define MUI_COMPONENTSPAGE_TEXT_COMPLIST text
@@ -441,8 +592,9 @@ functionend
 
 ; List view control
 
-;Messages, styles, and structs for handling a list view.
+;(Windows) Messages, styles, and structs for handling a list view.
 ;!define LVM_FIRST           0x1000
+!define /math LVM_GETITEMCOUNT ${LVM_FIRST} + 4
 !define /math LVM_GETITEMTEXTA ${LVM_FIRST} + 45
 !define /math LVM_GETITEMTEXTW ${LVM_FIRST} + 115
 !define LVM_GETUNICODEFORMAT 0x2006
@@ -499,20 +651,26 @@ $tagLVITEM = "uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;
 !define LVCF_TEXT 0x0004
 !define LVCF_WIDTH 0x0002
 
+; i is integers, I think t is a pointer to a text string.
 !define tagLVCOLUMN "i, i, i, t, i, i, i, i, i, i, i"
 
 ; debug function
 function DisplayLVItem
 ; Display the LVITEM struct for item $0 in $JAWSLV.  For debugging.
+;store manipulates the stack: p# pushes $#, P# pushes $R#, r# pops into $#, R# pops into $R#.
+;This pushes $1-7 and $R0-2.
 system::store "p1p2p3p4p5p6p7P0P1P2"
+;This allocates a struct.  A register without a . stores that register into the struct, .r# reads into $#, .R# reads into $R#, result address to $4
 system::call "*(i -1, i $0, i .r2, i .r3, i 0xffff, t .r5, i .r6, i, i, i, i, i .r7, i, i, i) i .r4"
 SendMessage $JAWSLV ${LVM_GETITEMA} 0 $4
+;Read from the struct.
 system::call "*$4(i -1, i .r1, i .r2, i .r3, i 0xffff, t .r5, i .r6, i, i, i, i, i .r7, i, i, i)"
 intfmt $R1 "%x" $3
 ;intfmt $R2 "%x" $4
 strcpy $R0 "item $1, subitem $2, state 0x$R1, text $5, len $6, columns $7"
 messagebox MB_OK "LVItem: $R0"
 system::free $4
+;Pop registers stored at start.
 system::store "R2R1R0r7r6r5r4r3r2r1"
 functionend
 !macro _DisplayLVItem item
@@ -525,7 +683,7 @@ pop $0
 
 ; Adapted from AutoIt include file winapi.au3.
 !macro GetStockObject obj
-; return on stack.
+; return is on stack.
 system::call "gdi32::GetStockObject(${obj}) i .s"
 !macroend
 
@@ -534,6 +692,8 @@ system::call "gdi32::GetStockObject(${obj}) i .s"
 !macro _LVSetFont font
 push $0
 !insertmacro GetStockObject ${font}
+;Do we need to pop to $0?
+;$0 is WPARAM, 1 is LPARAM, no return.
 SendMessage $JAWSLV ${WM_SETFONT} $0 1
 pop $0
 !macroend
@@ -550,6 +710,7 @@ pop $0
 ; Returns extended style on stack.
 push $0
 SendMessage $JAWSLV ${LVM_GETEXTENDEDLISTVIEWSTYLE} 0 0 $0
+;Result in $0.
 exch $0
 !macroend
 
@@ -560,21 +721,22 @@ function LVInsertItem
 push $R0
 push $R1
 push $R2
-strlen $R0 $1
+strlen $R0 $1 ; length of item text
 intop $R0 $R0 + 1 ; for terminating null in case we need it.
 intop $R0 $R0 * 2 ; unicode?
+;Allocate a struct, its address placed in $R1.
 ;u doesn't seem to allocate memory, changed to i.
 system::call "*(i ${LVIF_TEXT}, i r0, i 0, i, i, t r1, i R0, i, i, i, i, i, i, i, i) i .R1"
-SendMessage $JAWSLV ${LVM_INSERTITEMA} 0 $R1 $R2
+SendMessage $JAWSLV ${LVM_INSERTITEMA} 0 $R1 $R2 ; result in $R2
 intcmp $R2 -1 0 +2 +2
-; error
+; returned -1, error
 messagebox MB_OK "LVInsertItem: LVM_INSERTITEMA failed for item $0" ; debug
 system::free $R1
 ;messagebox MB_OK "added item $R2" ; debug
 pop $R2
 pop $R1
 pop $R0
-functionend
+functionend ; LVInsertItem
 
 !macro _LVAddItem text
 ; Add an item to the end of the list view.  Does not handle subitems.
@@ -598,12 +760,12 @@ function LVIsItemChecked
 push $R0
 ; set up the LVitem struct.
 ;system::call "*(u ${LVIF_STATE}, i $0, i 0, u, u 0xffff, t, i, i, i, i, i, u, i, i,i) i .R0"
-SendMessage $JAWSLV ${LVM_GETITEMSTATE} $0 ${LVIS_IMAGESTATEMASK} $1
+SendMessage $JAWSLV ${LVM_GETITEMSTATE} $0 ${LVIS_IMAGESTATEMASK} $1 ; result in $1
 ;push $R0 ; debug
 ;intfmt $R0 "%x" $1 ; debug
 ;messagebox MB_OK "LVIsItemChecked: item state = 0x$R0" ; debug
 ;pop $R0 ; debug
-intop $1 $1 & ${LVIS_IMAGESTATECHECKED}
+intop $1 $1 & ${LVIS_IMAGESTATECHECKED} ; mask all but desired bit
 ;system::free $R0
 pop $R0
 ;messagebox MB_OK "LVIsItemChecked: returning $1" ; debug
@@ -612,22 +774,24 @@ functionend
 function LVCheckItem
 ; $0 - item index
 ; $1 - 0 = unchecked, else checked.
+;10/31/15 Result of SendMessage ${LVM_SETITEMSTATE} in $R3.  Is this intended or a bug?
 push $2
 push $R0
 strcpy $2 ${LVIS_IMAGESTATECHECKED}
 intcmp $1 0 +1 +2 +2
 strcpy $2 ${LVIS_IMAGESTATEUNCHECKED} ; unchecked
+;Allocate struct, ptr to it in $R0.
 ; We probably don't need to set LVIF_STATE or item.
 system::call "*(i ${LVIF_STATE}, i r0, i 0, i r2, i ${LVIS_IMAGESTATEMASK}, t, i, i, i, i, i, i, i, i, i) i .R0"
 ;messagebox MB_OK "LVCheckItem: setting item $0 to $2 in $JAWSLV" ; debug
-SendMessage $JAWSLV ${LVM_SETITEMSTATE} $0 $R0 $R3
+SendMessage $JAWSLV ${LVM_SETITEMSTATE} $0 $R0 $R3 ;result in $R3
 system::free $R0
 ;SendMessage $JAWSLV ${LVM_GETITEMSTATE} $0 ${LVIS_IMAGESTATEMASK} $R4 ; debug
 ;intfmt $R4 "%x" $R4 ; debug
 ;messagebox MB_OK "GetItemState returned 0x$R4, SetItemState returned $R3" ; debug
 pop $R0
 pop $2
-functionend
+functionend ;LVCheckItem
 
 !macro _LVCheckItem item checked
 push $0
@@ -644,10 +808,10 @@ pop $0
 !macro __NSD_LV_GetSelection CONTROL VAR
 
 	SendMessage ${CONTROL} ${LVM_GETCURSEL} 0 0 ${VAR}
-	System::Call 'user32::SendMessage(i ${CONTROL}, i ${LVM_GETITEMTEXT}, i ${VAR}, t .s)'
-	Pop ${VAR}
+	System::Call 'user32::SendMessage(i ${CONTROL}, i ${LVM_GETITEMTEXT}, i ${VAR}, t .s)' ;result seems to be passed back in LPARAM, returned on stack
+	Pop ${VAR} ; placed in ${VAR}
 
-!macroend
+!macroend ;__NSD_LV_GetSelection
 
 !define NSD_LV_GetSelection `!insertmacro __NSD_LV_GetSelection`
 
@@ -666,19 +830,19 @@ push $2 ; value we're looking for
 push $3 ; value we're examining
 strcpy $0 0
 strcpy $1 0
-${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0 ; first checked version
+${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0 ; index of first checked version in $2
 strcpy $3 ""
 loop:
-intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
+intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done ;jump out if index >= count
 intcmp $1 $SELECTEDJAWSVERSIONCOUNT done 0 done
 ${StrTok} $3 "$INSTALLEDJAWSVERSIONS" "|" $0 0
 ;messagebox MB_OK "MarkSelectedVersions: checking item $0 $3 against $1 $2" ; debug
 ${If} $2 == $3
 ${LVCheckItem} $0 1
-intop $1 $1 + 1
-${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0
+intop $1 $1 + 1 ; inc $1
+${StrTok} $2 "$SELECTEDJAWSVERSIONS" "|" $1 0 ;next value we're looking for
 ${EndIf}
-intop $0 $0 + 1
+intop $0 $0 + 1 ;index for installed version
 goto loop
 done:
 pop $3
@@ -689,11 +853,13 @@ functionend ; MarkSelectedVersions
 
 ;Create installed JAWS versions page.
 Function DisplayJawsList
+  ;If no versions installed writes message and aborts (what is aborted? the page?).
 ;!InsertMacro SectionFlagIsSet ${SecJAWS} ${SF_SELECTED} DoJawsPage ""
-goto DoJawsPage ; debug, uncomment section selected test above.
+goto DoJawsPage ; to debug, uncomment section selected test above.
 DetailPrint "DisplayJawsList: install JAWS section not selected" ; debug
 abort ; JAWS script install section not selected
-DoJawsPage:
+  DoJawsPage:
+    ;MessageBox MB_OK "Enter DisplayJawsList" ; debug
 ; .oninit has determined that there is at least 1 JAWS version installed, but we'll check here so maybe we can eliminate checking in .oninit.
 ; I use ${If} here so that I can include a debug message which can later be commented out without rewriting the code.
 call GetJAWSVersions
@@ -710,7 +876,7 @@ ${EndIf}
 ;If we allow install for all users then we need to show the JAWS Versions page even if there is only 1 version installed.
 !ifndef JAWSALLOWALLUSERS
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
-DetailPrint "DisplayJawsList: 1 JAWS version, skipping JAWS versions page" ; debug
+DetailPrint "DisplayJawsList: 1 JAWS version/lang, skipping JAWS versions page" ; debug
 ;MessageBox MB_OK "DisplayJawsList: 1 JAWS version $INSTALLEDJAWSVERSIONS, skipping JAWS versions page" /SD IDOK ; debug
 strcpy $SELECTEDJAWSVERSIONS $INSTALLEDJAWSVERSIONS
 strcpy $SELECTEDJAWSVERSIONCOUNT $INSTALLEDJAWSVERSIONCOUNT
@@ -721,26 +887,27 @@ ${EndIf} ; if a version installed
 nsDialogs::Create 1018
 pop $JAWSDLG
 ;The versions do not include those installed that are outside JAWSMINVRSION and JAWSMAXVERSION.
-${NSD_CreateLabel} 0 0 100% 10u "Select JAWS versions to which to install scripts:"
+${NSD_CreateLabel} 0 0 100% 10u "Select JAWS versions/languages to which to install scripts:"
 Pop $0
 ;math::script 'r0 = ${__NSD_ListView_EXSTYLE}' ; debug
 ;IntFmt $0 "%x" $0 ; debug
 ;messagebox MB_OK "Before creating list view ex style = 0x$0, defined is '${__NSD_ListView_EXSTYLE}'" ; debug
-${NSD_CreateListView} 0u 12u 37u 100u "JAWS Versions"
+${NSD_CreateListView} 3u 12u 55u 100u "JAWS Version/Languagess"
 Pop $JAWSLV
 math::script 'r0 = ${__NSD_ListView_EXSTYLE}'
 SendMessage $JAWSLV ${LVM_SetExtendedListViewStyle} 0 $0 $1
 ;IntFmt $0 "%x" $0 ; debug
 ;messagebox MB_OK "After sending LVM_SetExtendedListViewStyle, old ex style = 0x$0" ; debug
-${LVSetFont} ${DEFAULT_GUI_FONT}
+${LVSetFont} ${GUI_DEFAULT_FONT}
 
 ; Set column header
 /*
 ; Doesn't work, don't know why.
 push $R0
 push $R1
+;Allocate struct, ptr to it in $R0
 system::call "*(${tagLVCOLUMN}) (${LVCF_TEXT}, , , t "Version", 7) i .$R0"
-SendMessage $JAWSLV ${LVM_INSERTCOLUMNA} 0 $R0 $R1
+SendMessage $JAWSLV ${LVM_INSERTCOLUMNA} 0 $R0 $R1 ;result in $R1
 system::free $R0
 ${If} $R1 = -1
 messagebox MB_OK "DisplayJawsList: unable to insert column, returned $R1"
@@ -750,15 +917,38 @@ pop $R0
 */ ; column header
 push $0
 push $1
+push $2
+push $3
+push $4
+StrCpy $3 "${ScriptDefaultLang}|${JawsScriptLangs}" ; all the supported languages.
+;MessageBox MB_OK "DisplayJawsList: before loop Supported languages ($$3) = $3" ; debug
 strcpy $0 0
 loop:
-  intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
-  ${strtok} $1 $INSTALLEDJAWSVERSIONS "|" $0 0
+  intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done ;jump out if >= limit
+  ${strtok} $1 $INSTALLEDJAWSVERSIONS "|" $0 0 ;get the version/language pair
+  ;MessageBox MB_OK "DisplayJawsList: got $1 from InstalledJawsVersions" ; debug
+  push $0
+  StrCpy $0 $1
+  ;MessageBox MB_OK "DisplayJawsList: before GetVerLang $$1=$1" ; debug
+  call GetVerLang
+  exch
+  pop $2 ;version, we don't need it
+  pop $2 ;lang dir
+  pop $0 ; restore the loop counter
+  ;MessageBox MB_OK "DisplayJawsList: got language $2, $$1=$1" ; debug
+  ${StrContainsTok} $4 "$3" "$2" "|"
+  ${If} $4 == 0
+    StrCpy $1 "$1*"
+  ${EndIf}
+  ;MessageBox MB_OK "DisplayJawsList: adding $1 to list view" ; debug
   ${LVAddItem} "$1"
   intop $0 $0 + 1
 goto loop
 done:
 ;messagebox MB_OK "DisplayJawsList: added $0 of $INSTALLEDJAWSVERSIONCOUNT items" ; debug
+pop $4
+pop $3
+pop $2
 pop $1
 pop $0
 
@@ -768,12 +958,12 @@ ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
 ${LVCheckItem} 0 1
 ${EndIf}
 ; Install for group box
-${NSD_CreateGroupBox} 40u 12u 60u 40u "Install for"
+${NSD_CreateGroupBox} 55u 12u 60u 40u "Install for"
 pop $JAWSGB
-${NSD_CreateRadioButton} 45u 22u 55u 10u "&Current user"
+${NSD_CreateRadioButton} 60u 22u 55u 10u "&Current user"
 pop $JAWSRB1
 ${NSD_AddStyle} $JAWSRB1 ${BS_AUTORADIOBUTTON}
-${NSD_CreateRadioButton} 45u 35u 55u 10u "&All users"
+${NSD_CreateRadioButton} 60u 35u 55u 10u "&All users"
 pop $JAWSRB2
 ${NSD_AddStyle} $JAWSRB2 ${BS_AUTORADIOBUTTON}
 ${If} $JAWSSHELLCONTEXT == "current"
@@ -785,6 +975,7 @@ ${NSD_Check} $JAWSRB2
 ;Initially remove the unselected button from the tabbing order.
 ${NSD_RemoveStyle} $JAWSRB1 ${WS_TABSTOP}
 ${EndIf} ; else all users
+;Set initial focus
 ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
   ${LVCheckItem} 0 1
   ${If} $JAWSSHELLCONTEXT == "all"
@@ -808,7 +999,7 @@ nsDialogs::Show
 FunctionEnd ; DisplayJawsList
 
 Function DisplayJawsListLeave
-; On exit, var $SELECTEDJAWSVERSIONS contains the list of selected versions separated by | and $SELECTEDJAWSVERSIONCOUNT contains the number of versions selected.
+; On exit, var $SELECTEDJAWSVERSIONS contains the list of selected version/language pairs separated by | and $SELECTEDJAWSVERSIONCOUNT contains the number of version/language pairs selected.
 push $0
 push $1
 push $3
@@ -819,8 +1010,9 @@ IntFmt $1 "%x" $0 ; debug
 !insertmacro LVGetExStyle ; debug
 pop $0 ; debug
 IntFmt $3 "%x" $0 ; debug
-messagebox MB_OK "Enter DisplayJawsListLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed$\r$\nList view style = 0x$1, extended style = 0x$3." ; debug
+;messagebox MB_OK "Enter DisplayJawsListLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed$\r$\nList view style = 0x$1, extended style = 0x$3." ; debug
 */
+;messagebox MB_OK "Enter DisplayJawsListLeave with $INSTALLEDJAWSVERSIONCOUNT versions installed"
 
 !ifdef JAWSALLOWALLUSERS
 ; Get the selected context.
@@ -834,17 +1026,17 @@ ${Else}
 ${EndIf}
 ;messagebox MB_OK "Context is $JAWSSHELLCONTEXT" ; debug
 !EndIf ;if JAWSALLOWALLUSERS
-; Get the selected JAWS versions.
+; Get the selected JAWS version/language pairs.
 strcpy $SELECTEDJAWSVERSIONS ""
 strcpy $SELECTEDJAWSVERSIONCOUNT 0
 strcpy $0 0
-loop:
-intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done
+loop: ;over installed version/language pairs
+intcmp $0 $INSTALLEDJAWSVERSIONCOUNT done 0 done ;jump out if >= limit
 ;${DisplayLVItem} $0 ; debug
 call LVIsItemChecked
 ; $1 is nonzero if item $0 is checked
 ;messagebox MB_OK "after LVIsItemChecked $$1 = $1" ; debug
-intcmp $1 0 skip 0 0
+intcmp $1 0 skip 0 0 ;skip if =0-- not checked
 
 ;messagebox MB_OK "item $0 is checked" ; debug
 ${strtok} $3 $INSTALLEDJAWSVERSIONS "|" $0 0
@@ -854,6 +1046,7 @@ strcpy $0 $3
 call CheckScriptExists
 pop $0
 ; $1 = 0 if script does not exist or user chooses to overwrite.
+;MessageBox MB_OK "DisplayJawsListLeave: CheckScriptExists returned $1" ; debug
 ${If} $1 = 0
   strcpy $SELECTEDJAWSVERSIONS "$SELECTEDJAWSVERSIONS$3|"
   intop $SELECTEDJAWSVERSIONCOUNT $SELECTEDJAWSVERSIONCOUNT + 1
@@ -864,8 +1057,8 @@ skip:
 intop $0 $0 + 1
 goto loop
 
-done: ; we have finished searching for selected JAWS versions.
-; If any versions were checked, remove final separator.
+done: ; we have finished searching for selected JAWS version/language pairs.
+; If any were checked, remove final separator.
 strcmp $SELECTEDJAWSVERSIONS "" +2
 strcpy $SELECTEDJAWSVERSIONS $SELECTEDJAWSVERSIONS -1 ; remove trailing |
 DetailPrint "DisplayJawsListLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
@@ -983,7 +1176,7 @@ IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging
   !insertmacro JAWSLOG_OPENINSTALL
 NoLogging:
 ${ForJawsVersions}
-  ; $0 contains the version string.
+  ; $0 contains the version/lang pair string.
   call JawsInstallVersion
 ${ForJawsVersionsEnd}
 GetCurInstType $0
@@ -1009,6 +1202,7 @@ functionend ;JAWSOnInit
 Function JAWSOnInstSuccess
 IfFileExists ${TempFile} 0 +2
 delete ${TempFile}
+SetAutoClose false ; debug
 FunctionEnd ;JAWSOnInstSuccess
 
 function GetSecIDs
@@ -1046,20 +1240,28 @@ pop $2
 FunctionEnd
 
 function GetJawsScriptDir
-; Get the JAWS script directory based on its version.
-; $0 - string containing JAWS version number.
+; Get the JAWS script directory based on its version and language.  If there is just a version use the default lang dir.  (This is intended for transitioning.)
+; $0 - string containing JAWS version number or version-lang pair.
 ; Returns script directory on stack.
 ; Does logicLib support the >= test for strings? yes!
-push $2
-;messagebox MB_OK "GetJawsScriptDir: checking version $0" ; debug
-${If} $0 >= "6.0" ;Current selected version is 6.0 or later
-strcpy $2 "${JawsDir}\$0\${ScriptDir}" ;get the script location from current user
+push $2 ;used for return value
+push $1 ; used for version
+push $3 ;used for lang dir
+;messagebox MB_OK "GetJawsScriptDir: checking version/lang $0" ; debug
+call GetVerLang
+pop $3 ;lang dir
+pop $1 ;version
+;MessageBox MB_OK "GetJawsScriptDir: version ($$1) = $1, langdir ($$3) = $3" ; debug
+${If} $1 >= "6.0" ;Current selected version is 6.0 or later
+strcpy $2 "${JawsDir}\$1\${ScriptDir}\$3" ;get the script location from current user
 ;messagebox MB_OK "GetJawsScriptDir: $${JawsScriptDir} = ${JawsScriptDir}, returning $2" ; debug
 ${Else}
-;Jaws 5.0 or erlier, the enu folder is inside the folder containing the JAWS program, so we'll find the path by reading from the registry.
-ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$0" "Target"
-strcpy $2 "$2\${ScriptDir}"
+;Jaws 5.0 or erlier, the language folder is inside the folder containing the JAWS program, so we'll find the path by reading from the registry.
+ReadRegStr $2 HKLM "SOFTWARE\Freedom Scientific\Jaws\$1" "Target"
+strcpy $2 "$2\${ScriptDir}\$3"
 ${EndIf}
+pop $3
+pop $1
 exch $2 ; return value
 functionend
 
@@ -1100,65 +1302,84 @@ tstenumskip:
 */
 
 function GetJAWSVersions
-; Makes a list of installed JAWS versions.  If $JAWSMINVERSION or $JAWSMAXVERSION are defined, versions outside of their limits are excluded.
-; return: TOS - string containing list of JAWS versions separated by |, TOS-1 - number of JAWS versions found.
+; Makes a list of installed JAWS version/language pairs.  If ${JAWSMINVERSION} or ${JAWSMAXVERSION} are defined, versions outside of their limits are excluded.
+; return: TOS - string containing list of JAWS version/language pairs separated by |, TOS-1 - number of JAWS versions found.
+push $5
+push $6
+push $R0
+push $7
+push $8
+push $9
+;Yes, an odd order, long story, you don't want to know!
 push $0
 push $1
-push $R0
 push $2
 push $3
 push $4
 strCpy $R0 0 ; registry entry index
-strcpy $1 0 ; number of JAWS versions found
-strcpy $0 "" ; JAWS versions found
+strcpy $6 0 ; number of JAWS versions found
+strcpy $5 "" ; JAWS versions found
 loop:
-EnumRegkey $2 hklm "software\Freedom Scientific\Jaws" $R0 ;Enumerate the existing version of Jaws
-;!insertmacro tstEnumJawsversions $2 hklm "software\Freedom Scientific\Jaws" $R0 ;test Enumerate the existing versions of Jaws
-;messagebox MB_OK "GetJawsVersions: got version $2 at index $R0" ; debug
-strcmp $2 "" done ; exit loop if after last JAWS version
+EnumRegkey $7 hklm "software\Freedom Scientific\Jaws" $R0 ;Enumerate the existing version of Jaws
+;!insertmacro tstEnumJawsversions $7 hklm "software\Freedom Scientific\Jaws" $R0 ;test Enumerate the existing versions of Jaws
+;messagebox MB_OK "GetJawsVersions: got version $7 at index $R0" ; debug
+strcmp $7 "" done ; exit loop if after last JAWS version
 IntOp $R0 $R0 + 1 ;increase the registry key index by one unit
 ; Is this registry key a version number?  I have seen "Common" Victor checks for "Registration", and I don't know of any version that doesn't start with a digit.
 ; We search for the first character of the entry in a string of digits.  If we find it, we know it starts with a digit.  If not, we can skip this entry.
-strcpy $3 $2 1 ; copy first character
-${StrLoc} $4 "0123456789" $3 ">"
-strcmp $4 "" loop ; if "", the character was not found
+strcpy $8 $7 1 ; copy first character
+${StrLoc} $9 "0123456789" $8 ">"
+strcmp $9 "" loop ; if "", the character was not found
 ; character is in "0" through "9"
 ; Starts with a digit, is a version.
 
 ;Is it within min and max version limits?
 ${If} "${JAWSMINVERSION}" == ""
-${OrIf} $2 >= "${JAWSMINVERSION}"
+${OrIf} $7 >= "${JAWSMINVERSION}"
 ;messagebox MB_OK "passed minversion" ; debug
 ${If} "${JAWSMAXVERSION}" == ""
-${OrIf} $2 <= "${JAWSMAXVERSION}"
-;messagebox MB_OK "passed minversion" ; debug
-intop $1 $1 + 1 ; increment versions count
-;Add this version to the Jaws versions we have already found if any
-strcpy $0 "$0$2|"
+${OrIf} $7 <= "${JAWSMAXVERSION}"
+  ;messagebox MB_OK "passed minversion" ; debug
+  ;Get the languages for this version
+  StrCpy $0 $7 ; version
+  call GetVersionLangs  ;$1 contains langs separated by |, $2 contains number of langs.
+  ;Index of last lang is $2 - 1.
+  loop2:
+  IntOp $2 $2 - 1
+${StrTok} $3  "$1" "|" "$2" "0"
+intop $6 $6 + 1 ; increment version/langs count
+;Add this version/lang to the Jaws versions we have already found if any
+strcpy $5 "$5$7${ScriptVerLangSep}$3|"
+IntCmp $2 0 0 0 loop2
 ${EndIf} ; meets max version conditions
 ${EndIf} ; meets min version condition
 goto loop ;continue checking
 
 done: ; done with loop
-strcmp $0 "" +2 ; Did we find any JAWS versions?
-strcpy $0 $0 -1 ;yes, remove trailing |
-detailprint "GetJAWSVersions: got $1 versions: $0" ; debug
-;messagebox MB_OK "GetJAWSVersions: got $1 versions: $0" ; debug
+strcmp $5 "" +2 ; Did we find any JAWS versions?
+strcpy $5 $5 -1 ;yes, remove trailing |
+detailprint "GetJAWSVersions: got $6 versions: $5" ; debug
+;messagebox MB_OK "GetJAWSVersions: got $6 versions: $5" ; debug
 pop $4
 pop $3
 pop $2
-;messagebox MB_OK "After popping $$2 $$4 = $4, $$3 = $3, $$2 = $2" ; debug
+pop $1
+pop $0
+pop $9
+pop $8
+pop $7
+;messagebox MB_OK "After popping $$7 $$9 = $9, $$8 = $8, $$7 = $7" ; debug
 pop $R0
 ; Put the return values on the stack and restore to the registers their original values.
-exch $1
+exch $6
 exch
-exch $0
+exch $5
 ; stack contains: versions, version count
 functionend
 
 function JawsInstallVersion
-; Installs scripts to a JAWS version.
-; $0 - string containing JAWS version.
+; Installs scripts to a JAWS version/lang.
+; $0 - string containing JAWS version/lang pair or version.
 ; Assumes overwrite is set to on.
 ; On exit $outDir set to script directory for the version.
 ; Should we return an error indication if the script did not compile?
@@ -1171,17 +1392,24 @@ ${SetOutPath} "$R1"
 !ifndef JAWSDEBUG
 StrCpy $UninstLogAlwaysLog 1
 DetailPrint "JAWSInstallVersion: invoking macro JAWSInstallScriptItems for version $0" ; debug
-push $0 ; save version
+push $0 ; save version/lang
+push $1
+call GetVerLang
+pop $1
+pop $0
+; $0 = version, $1 = lang
 !insertmacro JAWSInstallScriptItems
+pop $1
 pop $0 ; restore version
 StrCpy $UninstLogAlwaysLog ""
 !EndIf
 !insertmacro CompileSingle $0 "${ScriptApp}"
 !ifdef JAWSDEBUG
+  ;$R0 doesn't contain compiler!!
   ;MessageBox MB_OK `Pretending to run ExecWait '"$R0" "$R1.jss"' $$1`
 !Else ; not JAWSJEBUG
   IntCmp $1 0 GoodCompile +1 +1
-    ;MessageBox MB_OK "Could not compile $R1, SCompile returned $1"
+    ;MessageBox MB_OK "Could not compile $R1, CompileSingle returned $1"
     ;GoTo End
     goto NoCompile
   GoodCompile:
@@ -1192,10 +1420,11 @@ StrCpy $UninstLogAlwaysLog ""
   StrCpy $UninstLogAlwaysLog "$R0"
 !EndIf ; else not JAWSDEBUG
 GoTo End
-;/*
 NoCompile:
+/*
+;$R0 isn't compiler here!
 MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
-;*/
+*/
 End:
 pop $R1
 pop $R0
@@ -1208,8 +1437,8 @@ functionend ; JawsInstallVersion
 function JAWSSaveInstallInfo
 ;Store information needed by the uninstaller.  Only JAWSShellContext is needed right now but we store versions and version count for future use.
 ;Writes to ${TempFile}.
-writeinistr "${TempFile}" "Install" JAWSVersions $SELECTEDJAWSVERSIONS
-writeinistr "${TempFile}" "Install" JAWSVersionCount $SELECTEDJAWSVERSIONCOUNT
+writeinistr "${TempFile}" "Install" JAWSVersionLangs $SELECTEDJAWSVERSIONS
+writeinistr "${TempFile}" "Install" JAWSVersionLangsCount $SELECTEDJAWSVERSIONCOUNT
 !ifdef JAWSALLOWALLUSERS
   writeinistr "${TempFile}" "Install" JAWSShellContext $JAWSSHELLCONTEXT
 !EndIf
@@ -1218,8 +1447,8 @@ functionend ; JAWSSaveInstallInfo
 function un.JAWSRestoreInstallInfo
 ;Restore installation info from ini file.  All we need right now is JAWSShELLCONTEXT but we'll get the other stuff anyway.
 ;Reads from ${InstallFile}.
-readinistr $SELECTEDJAWSVERSIONS "${InstallFile}" "Install" JAWSVersions
-readinistr $SELECTEDJAWSVERSIONCOUNT "${InstallFile}" "Install" JAWSVersionCount
+readinistr $SELECTEDJAWSVERSIONS "${InstallFile}" "Install" JAWSVersionLangs
+readinistr $SELECTEDJAWSVERSIONCOUNT "${InstallFile}" "Install" JAWSVersionLangsCount
 !ifdef JAWSALLOWALLUSERS
   readinistr $JAWSSHELLCONTEXT "${InstallFile}" "Install" JAWSShellContext
 !EndIf
@@ -1293,8 +1522,14 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 
 !insertmacro JAWSInstConfirmPage
 
+!define mui_page_customfunction_leave InstFilesLeave
 !insertmacro mui_page_instfiles
 
+Function InstFilesLeave
+  push "$INSTDIR\installer.log"
+  call dumplog
+FunctionEnd ; InstFilesLeave
+  
 !insertmacro mui_page_Finish
 
 ;Uninstall pages
@@ -1303,7 +1538,7 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
   !insertmacro MUI_LANGUAGE "English"
 
 Function .OnInit
-;Find where the JAWS program files are located.
+  ;Find where the JAWS program files are located.
 push $0
 strcpy $0 "Freedom Scientific\JAWS"
 ${If} ${FileExists} "$programfiles\$0"
@@ -1354,6 +1589,7 @@ StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
 ${EndIf}
 !EndIf ; ifdef MUI_FINISHPAGE_SHOWREADME
 */
+DetailPrint "Installing JAWS scripts for Audacity, installer compiled at ${MsgTimeStamp}."
 SectionEnd
 
 !ifmacrodef JAWSInstallFullItems
@@ -1404,6 +1640,78 @@ SetOutPath $INSTDIR
 SectionEnd
 
 !insertmacro JAWSAfterInstallSections
+
+;-----
+;From NSIS user manual appendix:
+/*
+To use it, push a file name and call it. It will dump the log to the file specified. For example:
+
+GetTempFileName $0
+Push $0
+Call DumpLog
+*/
+;These are defined in list view stuff.
+;!define LVM_GETITEMCOUNT 0x1004
+;!define LVM_GETITEMTEXT 0x102D
+
+Function DumpLog
+  Exch $5
+  Push $0
+  Push $1
+  Push $2
+  Push $3
+  Push $4
+  Push $6
+  push $7 ; error description
+
+  FindWindow $0 "#32770" "" $HWNDPARENT
+  ;DetailPrint "DumpLog: $$HWNDPARENT=$HWNDPARENT, FindWindow found $0$\r$\n"
+  StrCpy $7 "in FindWindow"
+  IntCmp $0 0 error
+  GetDlgItem $0 $0 1016
+  ;DetailPrint "  GetDlgItem found $0$\r$\n"
+  StrCpy $7 "in GetDlgItem"
+  StrCmp $0 0 error
+  delete $5
+  !insertmacro JAWSLOG_OPENINSTALL
+  ${AddItemAlways} "$5"
+      !insertmacro JAWSLOG_CLOSEINSTALL
+  FileOpen $5 $5 "w"
+  StrCpy $7 "opening file"
+  StrCmp $5 0 error
+  SendMessage $0 ${LVM_GETITEMCOUNT} 0 0 $6
+  StrCpy $7 "no items"
+  IntCmp $6 0 error
+    System::Alloc ${NSIS_MAX_STRLEN}
+    Pop $3
+    StrCpy $2 0
+    System::Call "*(i, i, i, i, i, i, i, i, i) i \
+      (0, 0, 0, 0, 0, r3, ${NSIS_MAX_STRLEN}) .r1"
+    loop: StrCmp $2 $6 done
+      System::Call "User32::SendMessageA(i, i, i, i) i \
+        ($0, ${LVM_GETITEMTEXTA}, $2, r1)"
+      System::Call "*$3(&t${NSIS_MAX_STRLEN} .r4)"
+      FileWrite $5 "$4$\r$\n"
+      IntOp $2 $2 + 1
+      Goto loop
+    done:
+      FileClose $5
+      System::Free $1
+      System::Free $3
+      Goto exit
+  error:
+    DetailPrint "DumpLog: error $7$\r$\n"
+    ;MessageBox MB_OK "DumpLog: error $7"
+  exit:
+    Pop $7
+    Pop $6
+    Pop $4
+    Pop $3
+    Pop $2
+    Pop $1
+    Pop $0
+    Exch $5
+FunctionEnd ;DumpLog
 
 ;-----
 ;Uninstaller function and Section

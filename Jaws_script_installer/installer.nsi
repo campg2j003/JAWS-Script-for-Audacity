@@ -18,6 +18,7 @@ Last updated: Fri Jul 25 2014
 
 Modifications:
 
+11/1/15 Added constructs for languages, and Spanish language message files.
 7/25/14 Added QuickSettings files.
 */
 
@@ -55,6 +56,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
+!Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source directory ${JAWSSrcDir}.
 
 ;Will be omitted if not defined.
 !define LegalCopyright "Copyright 2012 Gary Campbell and Dang Manh Cuong.  All rights reserved.  This is free software distributed under the terms of the GNU General Public License."
@@ -63,7 +65,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
-;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${ScriptApp}_readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "Go to author's project page"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
@@ -81,13 +83,24 @@ SetOverwrite on ;always overwrite files
 !macro JAWSInstallScriptItems
 ;Contains the instructions to install the scripts in each version of JAWS.  If not defined, the installer will use a default version that tries to install every type of JAWS script file for an application I know of.
 ;Assumes uninstlog is open when called.
+;Version in $0, lang in $1.
 ${FileDated} "${JAWSSrcDir}" "audacity.jdf"
 ${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
-${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
 ${FileDated} "${JAWSSrcDir}" "audacity.qs"
+
+;Language-specific files
+${Switch} $1
+${Case} "esn"
+${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
+${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
+${Break}
+${Default}
+${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.qsm"
+${Break}
+${EndSwitch}
 ;If it is a Just Scripts installation, install text files into the script folder.
 push $0
 GetCurInstType $0
