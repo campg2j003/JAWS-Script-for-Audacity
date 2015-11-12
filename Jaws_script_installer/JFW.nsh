@@ -14,9 +14,21 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Saturday,  November 7, 2015
+Last updated: Wednesday,  November 11, 2015
 
 Modifications:
+11/11/15 Now does not dump log file for just scripts install.
+11/9/15 Converted body of macro CompileSingle to function __CompileSingle.  This was to see if not compiling problem was caused by being a macro.  Didn't help.
+Reactivated could not compile messageBox and converted to yes/no.  If yes retries the compile.  Hasn't helped.
+Have seen the funny list view again.
+Added missing pop in CompileSingle.  This was causing only one version to be compiled.  Earlier I thought I could compile the failing version if I compiled them 1 at a time.  That isn't working now.
+Changed CompileSingle so that it passes only the base file name and extension to scompile.  Did not help.
+Added DetailPrint of scompile command.
+11/8/15 Made DumpLog append to an existing log file.  Changed some logic to use LogicLib.
+Now writes install time to log.  Added log message for good compile.
+Added Alt+i to install confirm page.
+Removed "CompileSingle" from DetailPrints for compile.
+11/8/15 Previous saved to HG changeset:   202:8701e1cd473f.
 11/7/15 Added DumpLog function, called in leave function of instfiles page.  Writes to installer.log in the $InstDir.
 One compile seems to work, with multiple compiles it seems like only 1 works, although the files are extracted for all of them.  If you run separate installs the compiles work.
 11/6/15 Removed "not found" message.
@@ -105,6 +117,7 @@ JawsInstallVersion should be okay.  Changed documentation and commented out can'
 !include "uninstlog.nsh"
 !include "strfunc.nsh" ; used in DisplayJawsList to check for a digit, and other things
 !include "filefunc.nsh" ; used to get language subfolders
+;!include "stack.nsh" ; debug
 
 ; Declare used functions from strfunc.nsh.
 !ifndef StrTok_INCLUDED
@@ -239,10 +252,20 @@ FunctionEnd ;_StrContainsTok
 ;Recommend for scripts wich have only one source (*.JSS) file, or don't make any modification to any original files
 ;This macro saves time because it doesn't store and delete any temporary files.
 push $0
-push $R0
-push $R1
-push $R2 ;stdout/stderr output of scompile.
 strcpy $0 ${JAWSVer}
+push $R1
+;StrCpy $R1 "$OUTDIR\${Source}"
+StrCpy $R1 "${Source}"
+call __CompileSingle
+pop $R1
+pop $0
+!MacroEnd
+
+Function __CompileSingle
+;$0 - JAWS version/lang or version, i.e. "10.0/enu" or "10.0"
+;$R1 - name of script to compile without .jss extension
+push $R0
+push $R2 ;stdout/stderr output of scompile.
 call GetVerLang
 pop $0 ;lang, we don't need it
 pop $0 ;version
@@ -250,8 +273,8 @@ call GetJawsProgDir
 pop $R0
 ; $R0 has backslash at end of path.
 StrCpy $R0 "$R0${Compiler}"
-StrCpy $R1 "$OUTDIR\${Source}"
-${GetFileAttributes} "$R1.jss" "all" $1
+;StrCpy $R1 "$OUTDIR\${Source}"
+;${GetFileAttributes} "$R1.jss" "all" $1
 ;DetailPrint "Attributes of file $R1.jss: $1"
 !ifndef JAWSDEBUG ; debug
 IfFileExists "$R0" +1 csNoCompile
@@ -259,27 +282,32 @@ IfFileExists "$R0" +1 csNoCompile
 !ifdef JAWSDEBUG
   MessageBox MB_OK `Pretending to run nsexec::Exec '"$R0" "$R1.jss"'`
   !Else ; not JAWSJEBUG
+  csRecompile:
+    DetailPrint `Executing command '"$R0" "$R1.jss"'` ; debug
   ;nsexec::Exec '"$R0" "$R1.jss"'
   ;pop $1 ;exit code of scompile
+  ;StrCpy $R0 "c:\progra~2\mingw_sylvan\win32\wbin\cp" ; debug
+  ;nsexec::ExecToStack '"$R0" "$R1.jss" "$R1.jsb"' ; debug
   nsexec::ExecToStack '"$R0" "$R1.jss"'
   pop $1 ;exit code of scompile
   pop $R2 ;scompile output
     ;MessageBox MB_OK "compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\R$\N$R2" ; debug
     IntCmp $1 0 csGoodCompile +1 +1
-    DetailPrint "CompileSingle: Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2$\r$\n"
-    ;MessageBox MB_OK "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2"
+    DetailPrint "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2$\r$\n"
+    MessageBox MB_YESNO "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2.  Retry compile?" /SD IDNO IDYES csRecompile
     GoTo csEnd
   csGoodCompile:
+    DetailPrint "Compiled $R1.jss"
 !EndIf ; else not JAWSDEBUG
 GoTo csEnd
 csNoCompile:
+DetailPrint "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
 MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
 strcpy $1 1 ; return error
-csEnd:
-pop $R1
-pop $R0
-pop $0
-!MacroEnd
+  csEnd:
+    pop $R2
+  pop $R0
+  FunctionEnd ;__CompileSingle
 
 !Macro AdvanceCompileSingle JAWSVer Path Source
 ;Assumes $OUTDIR points to folder where source file is and compiled file will be placed.
@@ -499,7 +527,7 @@ push $1
 ; Execute a block of code for each selected JAWS version.
 ; Place before the code to be executed for each selected JAWS version.
 ; Follow the code block with _ForJawsVersionsEnd.  These macros can be used more than once but they cannot be nested.
-;In the code block $0 contains the current version and $R0 contains the 0-based index of this version in $SELECTEDJAWSVERSIONS.
+;In the code block $0 contains the current version and $R0 contains the 0-based index of this version in $SELECTEDJAWSVERSIONS.  The code block must protect $R0 since it is the loop index.
 !ifndef _ForJawsVersionsCounter
 !define _ForJawsVersionsCounter 0
 !else
@@ -513,11 +541,15 @@ push $R0
 strcpy $R0 0
 _ForJawsVersionsLoop${_ForJawsVersionsCounter}:
 ${StrTok} $0 "$SELECTEDJAWSVERSIONS" "|" $R0 0
+Push $R0 ; protect loop index
+;DetailPrint "ForJawsVersions: running code block with $$R0 = $R0" ; debug
 !macroend ; _ForJawsVersions
 !define ForJawsVersions "!insertmacro _ForJawsVersions"
 
 !macro _ForJawsversionsEnd
 ; Place after the code that installs scripts to a version.
+Pop $R0 ;restore loop index
+;DetailPrint "ForJawsVersionsEnd: before incrementing, $$R0 = $R0" ; debug
 intop $R0 $R0 + 1
 intcmp $R0 $SELECTEDJAWSVERSIONCOUNT 0 _ForJawsVersionsLoop${_ForJawsVersionsCounter} 0
 pop $R0
@@ -1107,7 +1139,7 @@ ${StrRep}
 !EndIf
 
 function PageInstConfirmPre
-!insertmacro MUI_HEADER_TEXT "Confirm Installation Settings" "The following summarizes the actions that will be performed by this install.  Click Back to change settings.  Click Install to continue."
+!insertmacro MUI_HEADER_TEXT "Confirm Installation Settings" "The following summarizes the actions that will be performed by this install.  Click Back to change settings.  Click Install (Alt+i) to continue."
 ${StrRep} $1 "$SELECTEDJAWSVERSIONS" "|" ", "
 
 ;!ifdef JAWSALLOWALLUSERS
@@ -1172,18 +1204,18 @@ functionend
 ; Must be inserted before function JawsInstallVersion.
 GetCurInstType $0
 IntOp $0 $0 + 1 ;make it the same as for SectionIn
-IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging
+${If} $0 <> ${INST_JUSTSCRIPTS}
   !insertmacro JAWSLOG_OPENINSTALL
-NoLogging:
+${EndIf} ;logging
 ${ForJawsVersions}
-  ; $0 contains the version/lang pair string.
+  ; $0 contains the version/lang pair string, $R0 contains the index into $SELECTEDJAWSVERSIONS.
   call JawsInstallVersion
 ${ForJawsVersionsEnd}
 GetCurInstType $0
 IntOp $0 $0 + 1 ;make it the same as for SectionIn
-IntCmp $0 ${INST_JUSTSCRIPTS} NoLogging2
+${If} $0 <> ${INST_JUSTSCRIPTS}
   !insertmacro JAWSLOG_CLOSEINSTALL
-NoLogging2:
+${EndIf} ;logging
 !macroend
 
 !macro JAWSAfterInstallSections
@@ -1377,12 +1409,16 @@ exch $5
 ; stack contains: versions, version count
 functionend
 
+;VAR STACKSIZE ; debug
 function JawsInstallVersion
 ; Installs scripts to a JAWS version/lang.
 ; $0 - string containing JAWS version/lang pair or version.
 ; Assumes overwrite is set to on.
 ; On exit $outDir set to script directory for the version.
 ; Should we return an error indication if the script did not compile?
+;DetailPrint "JawsInstallVersion: on entry $$R0 = $R0" ; debug
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "  stack size = $STACKSIZE" ; debug
 push $1
 push $R0
 push $R1
@@ -1398,16 +1434,24 @@ call GetVerLang
 pop $1
 pop $0
 ; $0 = version, $1 = lang
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "Before JAWSInstallScriptItems stack size = $STACKSIZE" ; debug
 !insertmacro JAWSInstallScriptItems
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "After JAWSInstallVersion stack size = $STACKSIZE" ; debug
 pop $1
 pop $0 ; restore version
 StrCpy $UninstLogAlwaysLog ""
-!EndIf
+!EndIf ;ifndef JAWSDEBUG
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "Before CompileSingle stack size = $STACKSIZE" ; debug
 !insertmacro CompileSingle $0 "${ScriptApp}"
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "after CompileSingle stack size = $STACKSIZE" ; debug
 !ifdef JAWSDEBUG
   ;$R0 doesn't contain compiler!!
   ;MessageBox MB_OK `Pretending to run ExecWait '"$R0" "$R1.jss"' $$1`
-!Else ; not JAWSJEBUG
+!Else ; not JAWSDEBUG
   IntCmp $1 0 GoodCompile +1 +1
     ;MessageBox MB_OK "Could not compile $R1, CompileSingle returned $1"
     ;GoTo End
@@ -1429,6 +1473,9 @@ End:
 pop $R1
 pop $R0
 pop $1
+;DetailPrint "JawsInstallVersion: on exit $$R0 = $R0" ; debug
+;${stack::ns_size} $STACKSIZE ; debug
+;DetailPrint "  stack size = $STACKSIZE" ; debug
 functionend ; JawsInstallVersion
 
 ;-----
@@ -1526,8 +1573,13 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 !insertmacro mui_page_instfiles
 
 Function InstFilesLeave
+;If we are installing just scripts we don't have the folder in program files, so we don't dump the log file to not clutter up the sripts folder.
+  GetCurInstType $0
+IntOp $0 $0 + 1 ;make it like SectionIn
+${IfNot} $0 = ${INST_JUSTSCRIPTS}
   push "$INSTDIR\installer.log"
   call dumplog
+${EndIf}
 FunctionEnd ; InstFilesLeave
   
 !insertmacro mui_page_Finish
@@ -1589,7 +1641,8 @@ StrCpy $JAWSREADME "$InstDir\${ScriptApp}_README.txt"
 ${EndIf}
 !EndIf ; ifdef MUI_FINISHPAGE_SHOWREADME
 */
-DetailPrint "Installing JAWS scripts for Audacity, installer compiled at ${MsgTimeStamp}."
+${GetTime} "" "l" $R0 $R1 $R2 $R3 $R4 $R5 $R6
+DetailPrint "Installing JAWS scripts for Audacity, installer compiled at ${MsgTimeStamp}, installed at $R2-$R1-$R0 $R4:$R5."
 SectionEnd
 
 !ifmacrodef JAWSInstallFullItems
@@ -1672,13 +1725,22 @@ Function DumpLog
   ;DetailPrint "  GetDlgItem found $0$\r$\n"
   StrCpy $7 "in GetDlgItem"
   StrCmp $0 0 error
-  delete $5
+  ;delete $5
   !insertmacro JAWSLOG_OPENINSTALL
+  DetailPrint "Adding $5."
   ${AddItemAlways} "$5"
-      !insertmacro JAWSLOG_CLOSEINSTALL
-  FileOpen $5 $5 "w"
-  StrCpy $7 "opening file"
-  StrCmp $5 0 error
+  !insertmacro JAWSLOG_CLOSEINSTALL
+  ${IfNot} ${FileExists} $5
+    FileOpen $5 $5 "w"
+    StrCpy $7 "opening file"
+    StrCmp $5 0 error
+  ${Else}
+    ;SetFileAttributes "$INSTDIR\$0" NORMAL
+    FileOpen $5 $5 "a"
+    StrCpy $7 "opening file for append"
+    StrCmp $5 0 error
+    FileSeek $5 0 END
+  ${EndIf}
   SendMessage $0 ${LVM_GETITEMCOUNT} 0 0 $6
   StrCpy $7 "no items"
   IntCmp $6 0 error

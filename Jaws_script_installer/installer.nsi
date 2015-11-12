@@ -86,17 +86,18 @@ SetOverwrite on ;always overwrite files
 ;Version in $0, lang in $1.
 ${FileDated} "${JAWSSrcDir}" "audacity.jdf"
 ${FileDated} "${JAWSSrcDir}" "audacity.jkm"
-${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
 ${FileDated} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
 ${Case} "esn"
+${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
 ${Break}
 ${Default}
+${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.qsm"
 ${Break}
