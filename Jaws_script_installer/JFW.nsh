@@ -14,9 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Wednesday,  November 11, 2015
+Last updated: Thursday,  November 12, 2015
 
 Modifications:
+11/12/15 Converted to use language strings.  
+11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
 11/11/15 Now does not dump log file for just scripts install.
 11/9/15 Converted body of macro CompileSingle to function __CompileSingle.  This was to see if not compiling problem was caused by being a macro.  Didn't help.
 Reactivated could not compile messageBox and converted to yes/no.  If yes retries the compile.  Hasn't helped.
@@ -61,7 +63,7 @@ JawsInstallVersion should be okay.  Changed documentation and commented out can'
 */
 
 /*
-    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+  h  Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -294,7 +296,7 @@ IfFileExists "$R0" +1 csNoCompile
     ;MessageBox MB_OK "compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\R$\N$R2" ; debug
     IntCmp $1 0 csGoodCompile +1 +1
     DetailPrint "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2$\r$\n"
-    MessageBox MB_YESNO "Could not compile $R1.jss, SCompile returned $1$\r$\n$$OutDir=$OutDir, Output:$\r$\n$R2.  Retry compile?" /SD IDNO IDYES csRecompile
+    MessageBox MB_YESNO "$(CouldNotCompile)" /SD IDNO IDYES csRecompile
     GoTo csEnd
   csGoodCompile:
     DetailPrint "Compiled $R1.jss"
@@ -302,7 +304,7 @@ IfFileExists "$R0" +1 csNoCompile
 GoTo csEnd
 csNoCompile:
 DetailPrint "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
-MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
+MessageBox MB_OK "$(CouldNotFindCompiler)"
 strcpy $1 1 ; return error
   csEnd:
     pop $R2
@@ -518,7 +520,7 @@ push $1
 	pop $1
 	Pop $0
 
-!macroend
+!macroend ;_NSD_RemoveStyle
 
 !define NSD_RemoveStyle "!insertmacro _NSD_RemoveStyle"
 
@@ -562,22 +564,13 @@ pop $0
 ;-----
 ;Pages
 !macro JAWSWelcomePage
-!define MUI_WELCOMEPAGE_TITLE "Setup for ${ScriptName}"
-!if VERSION != ""
-!define _VERSIONMSG " V${VERSION}"
-!else
-!define _VERSIONMSG ""
-!endif
+!define MUI_WELCOMEPAGE_TITLE "$(WelcomePageTitle)"
 
 !ifdef LegalCopyright
-!define MUI_WELCOMEPAGE_TEXT "Welcome to the installation for ${ScriptName}${_VERSIONMSG}.$\n\
-This wizard will guide you through the installation of ${ScriptName}.$\n\
-${LegalCopyright}$\n"
+!define MUI_WELCOMEPAGE_TEXT "$(WelcomeTextCopyright)"
 !else
-!define MUI_WELCOMEPAGE_TEXT "Welcome to the installation for ${ScriptName}${_VERSIONMSG}.$\n\
-This wizard will guide you through the installation of ${ScriptName}.$\n"
+!define MUI_WELCOMEPAGE_TEXT "$(WelcomeTextNoCopyright)"
 !EndIf
-!undef _VERSIONMSG
 !Insertmacro Mui_Page_Welcome
 !macroend ; JAWSWelcomePage
 
@@ -593,8 +586,7 @@ insttype /COMPONENTSONLYONCUSTOM
 !define INST_CUSTOM 32
 
 ; Displays 3 lines of about 98 chars.
-!define MUI_COMPONENTSPAGE_TEXT_TOP "Full allows you to uninstall using Add or Remove Programs.  $\n\
-Just Scripts installs scripts and README, can't be uninstalled from Add or Remove Programs."
+!define MUI_COMPONENTSPAGE_TEXT_TOP "$(InstTypeFullMsg)"
 ;!define MUI_COMPONENTSPAGE_TEXT_COMPLIST text
 ;!define MUI_COMPONENTSPAGE_TEXT_INSTTYPE text
 ;!define MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_TITLE text
@@ -919,7 +911,7 @@ ${EndIf} ; if a version installed
 nsDialogs::Create 1018
 pop $JAWSDLG
 ;The versions do not include those installed that are outside JAWSMINVRSION and JAWSMAXVERSION.
-${NSD_CreateLabel} 0 0 100% 10u "Select JAWS versions/languages to which to install scripts:"
+${NSD_CreateLabel} 0 0 100% 10u "$(SelectJawsVersions)"
 Pop $0
 ;math::script 'r0 = ${__NSD_ListView_EXSTYLE}' ; debug
 ;IntFmt $0 "%x" $0 ; debug
@@ -1096,7 +1088,7 @@ strcpy $SELECTEDJAWSVERSIONS $SELECTEDJAWSVERSIONS -1 ; remove trailing |
 DetailPrint "DisplayJawsListLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
 ;messagebox MB_OK "DisplayJawsListLeave: found  $SELECTEDJAWSVERSIONCOUNT versions: $SELECTEDJAWSVERSIONS" ; debug
 ${If} $SELECTEDJAWSVERSIONCOUNT = 0
-  messagebox MB_OK "No versions selected."
+  messagebox MB_OK "$(NoVersionSelected)"
   abort
 ${EndIf} ; if no versions
 pop $3
@@ -1109,8 +1101,7 @@ functionend ; DisplayJawsListLeave
 !macro JAWSDirectoryPage
 PageEx Directory
 PageCallbacks DirPagePre "" DirPageLeave
-DirText "Choose the folder in which to store ${ScriptName}'s installation files, such as uninstaller, help or other files. $\n\
-Setup will store ${ScriptName}'s installation in the following folder. To install in a different folder, click Browse and select another folder."
+DirText "$(DirPageText)"
 PageExEnd
 
 function DirPagePre
@@ -1123,9 +1114,9 @@ function DirPageLeave
 IfFileExists $INSTDIR +1 next
   ${GetFileAttributes} $INSTDIR DIRECTORY $0
   intcmp $0 1 +1 +3
-    MessageBox MB_YESNO "The specified folder exists, which most likely means that ${ScriptName} is already installed.  If you want to install over the current installation choose Yes." IDYES next
+    MessageBox MB_YESNO "$(InstallFolderExists)" IDYES next
     abort
-  MessageBox MB_OK "$INSTDIR exists and it is not a folder!" /SD IDOK
+  MessageBox MB_OK "$(InstDirNotFolder)" /SD IDOK
   abort
 next:
 FunctionEnd
@@ -1139,22 +1130,22 @@ ${StrRep}
 !EndIf
 
 function PageInstConfirmPre
-!insertmacro MUI_HEADER_TEXT "Confirm Installation Settings" "The following summarizes the actions that will be performed by this install.  Click Back to change settings.  Click Install (Alt+i) to continue."
+!insertmacro MUI_HEADER_TEXT "$(InstConfirmHdr)" "$(InstConfirmText)"
 ${StrRep} $1 "$SELECTEDJAWSVERSIONS" "|" ", "
 
 ;!ifdef JAWSALLOWALLUSERS
 ; These messages (added to $2) need to have a trailing space.
 ${If} $JAWSSHELLCONTEXT == "current"
-  strcpy $2 "the current user "
+  strcpy $2 "$(InstConfirmCurrentUser) "
 ${Else}
-  strcpy $2 "all users "
+  strcpy $2 "$(InstConfirmAllUsers) "
 ${EndIf}
 ;!Else
-;strcpy $2 "the current user "
+;strcpy $2 "$(InstConfirmCurrentUser) "
 ;!EndIf
 
 ;$2 contains the trailing space if nonempty.
-strcpy $0 "The scripts will be installed for $2in the following JAWS versions:$\r$\n$1.$\r$\n"
+strcpy $0 "$(InstConfirmVersions)"
 ;See if any of the selected JAWS versions contain files for this app.
 strcpy $1 "" ;versions containing files
 ${ForJawsVersions}
@@ -1169,22 +1160,23 @@ ${ForJawsVersionsEnd}
 ${If} $1 != ""
   ; Remove final comma and space.
   strcpy $1 $1 -2
-  strcpy $0 "$0The following JAWS versions contain files for this application (files that match ${ScriptApp}.*): $1$\r$\nThese files may be overwritten during installation.$\r$\n"
+  strcpy $0 "$(InstConfirmHaveFiles)"
 ${EndIf} ; if versions
 
 ;getcurinsttype $2 ; debug
 ;messagebox MB_OK "PageInstConfirmPRE: inst type $2" ; debug
 ${If} ${SectionIsSelected} $JAWSSecUninstaller
-  strcpy $0 "$0Installation folder: $INSTDIR.$\r$\nThis installation should be uninstalled via Add/Remove Programs.$\r$\n"
+  strcpy $0 "$(InstConfirmUninstAddRemovePrograms)"
   ${If} ${FileExists} "$INSTDIR\*.*"
-    strcpy $0 "$0There is an existing installation of ${ScriptName} on this machine.$\r$\n"
+    strcpy $0 "$(InstConfirmExistingInstall)"
   ${EndIf} ; $INSTDIR exists
   ${If} ${SectionIsSelected} $JAWSSecInstSrc ; SecInstSrc
-    strcpy $0 "$0The installer source will be installed in $INSTDIR\${JAWSINSTALLERSRC}."
+    strcpy $0 "$(InstConfirmInstallerSrc)"
   ${EndIf} ; installer source
 ${Else}
-  strcpy $0 "$0This installation cannot be uninstalled via Add/Remove Programs."
+  strcpy $0 "$(InstConfirmNotInstalled)"
 ${EndIf} ; else uninstaller section not selected
+
 
 nsDialogs::create 1018
 pop $2
@@ -1225,7 +1217,7 @@ function JAWSOnInit
 strCpy $0 0 ; index into registry keys
 EnumRegkey $1 hklm "software\Freedom Scientific\Jaws" $0
 ${If} $1 == ""
-  MessageBox MB_ICONINFORMATION|MB_OK "Setup cannot start because the Jaws program is not installed on your system." /SD IDOK
+  MessageBox MB_ICONINFORMATION|MB_OK "$(JawsNotInstalled)" /SD IDOK
   quit
 ${EndIf} ; if JAWS not installed
 
@@ -1261,7 +1253,7 @@ pop $2
 ;StrCpy $JAWSSCRIPTDEST $2
 ;messagebox MB_OK "CheckScriptExists: checking $2\${ScriptApp}.*" ; debug
 IfFileExists "$2\${ScriptApp}.*" 0 end
-MessageBox MB_YESNO "There are scripts for ${ScriptName} in $2.  Do you want to overwrite them?" IDYES +2
+MessageBox MB_YESNO "$(OverwriteScriptsQuery)" IDYES +2
 strcpy $1 1 ; no
 End:
 pop $2
@@ -1467,7 +1459,7 @@ GoTo End
 NoCompile:
 /*
 ;$R0 isn't compiler here!
-MessageBox MB_OK "Could not find JAWS script compiler $R0.  You will need to compile it with JAWS Script Manager to use it."
+MessageBox MB_OK "$(CouldNotFindCompiler)"
 */
 End:
 pop $R1
@@ -1527,11 +1519,15 @@ SectionEnd
 !endif ;first ifdef VERSION
 !echo "VERSION='${VERSION}'"
 
+;Language string files.  They are here because they have to come after the definition of ${VERSION}.
+!include "JFW_lang_enu.nsh" ;English language strings for this file
+
+
 ;The registry key in HKLM where the uninstall information is stored.
 !define UNINSTALLKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
 ShowInstDetails Show ; debug
-AutoCloseWindow False ; debug
+AutoCloseWindow False ; debug;
 ;Name shown to user, also name of installer file
 Name "${ScriptName}"
 ;The executable file to write
@@ -1540,7 +1536,7 @@ OutFile "${ScriptName}.exe"
 InstallDir "$programfiles\${scriptName}" 
 ;In case it is already installed.
 installdirregkey HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"
-BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
+BrandingText "$(BrandingText)"
 
   !define MUI_ABORTWARNING
   !define MUI_UNABORTWARNING
@@ -1549,7 +1545,7 @@ BrandingText "${ScriptName} (packaged by Dang Manh Cuong)"
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
 !define MUI_FINISHPAGE_SHOWREADME "$JAWSREADME"
 !EndIf
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "View README file"
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "$(ViewReadmeFile)"
 !EndIf ;ifndef JAWSNoReadme
 !define MUI_FINISHPAGE_TEXT_LARGE
 
@@ -1600,14 +1596,14 @@ ${ElseIf} ${FileExists} "$programfiles64\$0"
 ${Else}
   ; couldn't find one.
   DetailPrint "Couldn't find the folder $0 in either $programfiles or $programfiles64."
-  messagebox MB_OK "Couldn't find the folder $0 in either $programfiles or $programfiles64.  The install can continue, but you might have to compile the scripts yourself."
+  messagebox MB_OK "$(CantFindJawsProgDir)"
 ${EndIf}
 pop $0
 
 ;See if the program is already installed
 readregstr $0 HKLM "${UNINSTALLKEY}\${ScriptName}" "UninstallString"
 iferrors notinstalled
-  messagebox MB_YESNOCANCEL "${ScriptName} is already installed on this computer.  It is strongly recommended that you uninstall it before continuing.  Do you wish to uninstall?" /SD IDCANCEL IDNO notinstalled IDYES +2
+  messagebox MB_YESNOCANCEL "$(AlreadyInstalled)" /SD IDCANCEL IDNO notinstalled IDYES +2
     abort ; cancel
   DetailPrint "Uninstalling $0"
   CopyFiles /silent $INSTDIR\${uninstaller} $TEMP
@@ -1616,7 +1612,7 @@ iferrors notinstalled
   pop $1
   DetailPrint "Uninstall returned exit code $1"
   intcmp $1 0 +3
-    messagebox MB_OKCANCEL|MB_DEFBUTTON2 "The uninstall was unsuccessful, exit code $1.  Choose OK to install anyway, Cancel to quit." IDOK +2
+    messagebox MB_OKCANCEL|MB_DEFBUTTON2 "$(UninstallUnsuccessful)" IDOK +2
     abort
 notinstalled:
 
@@ -1778,7 +1774,7 @@ FunctionEnd ;DumpLog
 ;-----
 ;Uninstaller function and Section
 Function un.onInit
-MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" /SD IDYES IDYES +2
+MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(SureYouWantToUninstall)" /SD IDYES IDYES +2
   Abort
 call un.JAWSRestoreInstallInfo
 ${If} $JAWSSHELLCONTEXT == "all"
@@ -1793,10 +1789,10 @@ Function un.OnUninstSuccess
   ;!Insertmacro RemoveTempFile
   HideWindow
   IfFileExists "$INSTDIR" +1 instdirgone
-    MessageBox MB_ICONEXCLAMATION|MB_OK "Warning: the install folder $INSTDIR was not removed.  It probably contains undeleted files." /SD IDOK
+    MessageBox MB_ICONEXCLAMATION|MB_OK "$(InstallFolderNotRemoved)" /SD IDOK
     return
   instdirgone:
-  MessageBox MB_ICONINFORMATION|MB_OK "${ScriptName}  has been successfully removed from your computer." /SD IDOK
+  MessageBox MB_ICONINFORMATION|MB_OK "$(SuccessfullyRemoved)" /SD IDOK
 FunctionEnd
 
 !insertmacro JAWSSectionRemoveScript

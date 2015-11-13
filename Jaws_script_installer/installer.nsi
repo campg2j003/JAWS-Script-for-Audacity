@@ -11,13 +11,15 @@ Features:
 . Checks for a Jaws installation before starting setup. If Jaws is not installed, displays a warning message and quits.
 . contains macros for extracting, compiling, deleting, and modifying scripts, so user can create a package containing multiple scripts quickly and easily.
 ;. Macro to copy script from all user to current user.
-Limitations:
-. This installer works with English versions only.
+
 Date created: Wednesday, July 11, 2012
-Last updated: Fri Jul 25 2014
+Last updated: Thu Nov 12 2015
 
 Modifications:
 
+11/12/15 Converted to use language strings.  
+11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
+11/9/11 Moved jsd file to lang-specific section.
 11/1/15 Added constructs for languages, and Spanish language message files.
 7/25/14 Added QuickSettings files.
 */
@@ -45,6 +47,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 */
 
 ;Start of code
+!include "installer_lang_enu.nsh" ; this needs to be fixed!
 ;!define JAWSDEBUG ; debug
 ;User defined constants
 ;Name of script (displayed on screens, install folder, etc.) here
@@ -59,15 +62,15 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 !Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source directory ${JAWSSrcDir}.
 
 ;Will be omitted if not defined.
-!define LegalCopyright "Copyright 2012 Gary Campbell and Dang Manh Cuong.  All rights reserved.  This is free software distributed under the terms of the GNU General Public License."
+!define LegalCopyright "$(CopyrightMsg)"
 ;The file name of the license file in ${JAWSSrcDir}.  If not defined, no license page will be included.
-!define JAWSLicenseFile "COPYING.TXT"
+;!define JAWSLicenseFile "COPYING.TXT" ; defined in language file
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${ScriptApp}_readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
-!define MUI_FINISHPAGE_LINK "Go to author's project page"
+!define MUI_FINISHPAGE_LINK "$(GoToAuthorsPage)"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
 ;SetCompressor is outside the header because including uninstlog.nsh produces code.  setOverWriteDefault should not be in code used to add JAWS to another installer, although we probably want it in the default installer macro.
@@ -78,7 +81,7 @@ SetOverwrite on ;always overwrite files
 
 ;Remove the ; from the following line and matching close comment to cause the default JAWSInstallScriptItems macro to be used.
 ;/*
-; The following would appear in the user's file before including the header.
+; The following appears in the user's file before including the JFW.nsh header.
 !include "uninstlog.nsh"
 !macro JAWSInstallScriptItems
 ;Contains the instructions to install the scripts in each version of JAWS.  If not defined, the installer will use a default version that tries to install every type of JAWS script file for an application I know of.
