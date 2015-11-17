@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 10/5/15 19:45UTC"
+Const CS_SCRIPT_VERSION = "2.0 11/17/15  23:34UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -33,6 +33,10 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 EndMessages
 
 ;Modifications:
+;11/16/15 Corrected function CheckAudacityVersion.
+;11/14/15 Previous saved to HG changeset:   205:0ece616eea78.
+    ;10/28/15 Merged br_labels to default.
+    ;10/6/15 Merged multilanguage support from default:
 ;10/5/15 In AdjustJawsVerbosity replaced strListOfOptions with the version from AdjustJawsOptions.  This adds a couple of options that were overlooked.  This is for support of JAWS versions prior to 9.0 and is not tested.
 ;Moved JAWS options help messages to after the other JAWS options constants.
 ;10/5/15 Previous saved to HG 192:4152c0d30b00.
@@ -2254,10 +2258,17 @@ EndIf
 Let fRes = True
 Let iCounter = 1
 While fRes && iCounter <= iMax
-	Let fRes = StringToInt(StringSegment(sVersion, ",", iCounter)) >= StringToInt(StringSegment(sCheckVer, ",", iCounter))
+	Let iTemp = StringToInt(StringSegment(sVersion, ",", iCounter))
+	Let iTemp2 = StringToInt(StringSegment(sCheckVer, ",", iCounter))
+	If iTemp > iTemp2 Then
+		Return True
+	ElIf iTemp < iTemp2 Then
+		Return False
+	EndIf
+	;Equal
 	Let iCounter = iCounter + 1
 EndWhile
-Return fRes
+Return True
 EndFunction ; CheckAudacityVersion
 
 Script test ()
