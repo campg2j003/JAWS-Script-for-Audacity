@@ -1,13 +1,14 @@
-# to build audacity JAWS script installer:
-# make -f audacity.mak install
+# To prepare the build folder:
+# make -f audacity.mak preparebuild
+# to build audacity JAWS script installer (need to preparebuild first):
+# make -f audacity.mak installer
 # To see what needs to be built (-n is dry run):
-# make -f audacity.mak -n install 
+# make -f audacity.mak -n installer 
 #
 # other targets:
-# audacity.html - update documentation file.
-# audacity.txt - make audacity.txt from audacity.t2t.
-# audacity.exe - build audacity.exe.
-# all - rebuild audacity.exe and audacity.html.
+## audacity.html - update documentation file.
+## audacity.txt - make audacity.txt from audacity.t2t.
+## all - rebuild audacity.exe and audacity.html.
 
 # Modification history:
 
@@ -58,8 +59,9 @@ INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSR
 #$(SRCDIR)$(PROD).exe: $(au3src) $(myau3libs) $(myau3dbg)
 
 
-installer: all $(INSTALLSRC)
-	$(MAKENSIS) "/DMYNSIS=$(MYNSISLIBDIR)\" "$(INSTALLSRCDIR)installer.nsi"
+#installer: all $(INSTALLSRC)
+installer:
+	$(MAKENSIS) "/DMYNSIS=$(MYNSISLIBDIR)\" "$(BUILDDIR)installer.nsi"
 
 preparebuild: $(SCRIPTSRC) $(INSTALLSRC) $(MISCSRC)
 	IF NOT EXIST "$(BUILDDIR)" MKDIR "$(BUILDDIR)"
