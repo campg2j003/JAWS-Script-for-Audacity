@@ -36,7 +36,6 @@ EndMessages
 ;11/16/15 Corrected function CheckAudacityVersion.
 ;11/14/15 Previous saved to HG changeset:   205:0ece616eea78.
     ;10/28/15 Merged br_labels to default.
-    ;10/6/15 Merged multilanguage support from default:
 ;10/5/15 In AdjustJawsVerbosity replaced strListOfOptions with the version from AdjustJawsOptions.  This adds a couple of options that were overlooked.  This is for support of JAWS versions prior to 9.0 and is not tested.
 ;Moved JAWS options help messages to after the other JAWS options constants.
 ;10/5/15 Previous saved to HG 192:4152c0d30b00.
