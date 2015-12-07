@@ -1,4 +1,4 @@
-12/7/2015  JAWS script for Audacity V2.0 (for script version 2.0 10/6/15  22:55UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+12/7/2015  JAWS script for Audacity V2.0 (for script version 2.0 11/17/15  23:34UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -77,12 +77,7 @@ If you redefine the numpad ENTER key and set JAWS to treat extended keys separat
 The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, and 2.1.1 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13-16 on a laptop running Windows 7, 8.1, and 10.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.  Recent development has been done with JAWS 16 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 # Multiple Language Support
-Messages and string constants for the script are in audacity.jsm facilitating translation.  Fernando Gregoire has contributed a Spanish translation.  Gracias!
-
-This version of the installer framework contains the first cut of support for installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.
-Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.
-
-The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  The only language currently supported is English.
+Messages and string constants are in audacity.jsm facilitating translation.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 

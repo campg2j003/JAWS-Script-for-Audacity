@@ -34,18 +34,9 @@ EndMessages
 
     
 ;Modifications:
-;12/1/15 HandleCustomAppWindows now just returns True.  Moved test for previewing to HandleCustomRealWindows.  Added test for Previewing and Preparing preview.
-;Made constants for previewing strings and stop button.  Made test for Stop button use window name in addition to control ID.  Tested several times in Noise Reduction and Amplify without problems.
-;12/1/15 Added check for gfSilencePreview in HandleCustomAppWindows.
-;11/28/15 Removed debugging stuff.
-;11/28/15 Added NewTextEventShouldBeSilent to suppress speech in Silence Preview.  Didn't work, but a good idea anyway.  The selected text of the Amplify focused edit control is being read (twice!) by SayHighlightedText before HandleCustomApp is called to silence previewing.  I think this happens before the first focus change.  This can be silenced by moving focus away from the edit box or by unselecting the text.  The new method of handling Silence Preview doesn't work in Audacity 2.1.1 (but the 2.1.1 code is still there so it still works on 2.1.1).
-;Added function SayHighlightedText for debugging.
-;Added gfAudacityAutostarted to deal with switching from another app when focus is in a dialog.  This triggered the Silence Preview logic.  It is cleared at the start of HandleCustomWindows.
-;11/27/15 Contains fix for Silence Preview for 2.1.2RC1, and debugging stuff.
-;11/17/15 Previous saved to HG changeset:   207:f3355cb85045
-	;11/16/15 Corrected function CheckAudacityVersion.
-;10/28/15 Merged br_labels to default.
-;10/6/15 Merged multilanguage support from default:
+;11/16/15 Corrected function CheckAudacityVersion.
+;11/14/15 Previous saved to HG changeset:   205:0ece616eea78.
+    ;10/28/15 Merged br_labels to default.
 ;10/5/15 In AdjustJawsVerbosity replaced strListOfOptions with the version from AdjustJawsOptions.  This adds a couple of options that were overlooked.  This is for support of JAWS versions prior to 9.0 and is not tested.
 ;Moved JAWS options help messages to after the other JAWS options constants.
 ;10/5/15 Previous saved to HG 192:4152c0d30b00.
