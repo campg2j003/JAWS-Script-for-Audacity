@@ -1,6 +1,5 @@
 (This file last updated 12/7/2015)
 
-<<<<<<< local
 - The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  The only language currently supported is English.
 - The installer framework now supports  installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.
 - Letter keys now speak while writing a label.  This feature may be somewhat problematic.  Since we can't detect the track type, the feature is enabled when commands are executed that write a label.  It is deactivated by commands that end the label (ENTER) or move out of the label track, and when focus moves out of the track panel.  If you move into a label track with the arrow keys, the feature is not activated.  It can be deactivated by moving to the toolbar or selection bar and back.  When this feature is active while playing or recording ENTER terminates the label (and therefore exits label mode) rather than pausing.
