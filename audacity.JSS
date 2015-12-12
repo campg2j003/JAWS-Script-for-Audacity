@@ -3,8 +3,11 @@
 ;Modified: Dang Manh Cuong
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
+;The following line makes JAWS 17 to use the old localization model. Although the scripts stored in Settings\Language folder seem to work without adding this, international characters of messages in Audacity.jsm are not processed correctly.
+;#pragma usePoFile 0
+
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 12/03/15  21:15UTC"
+Const CS_SCRIPT_VERSION = "2.0 12/05/15  21:15UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -35,6 +38,7 @@ EndMessages
 
     
 ;Modifications:
+;12/05/15 Added a line to make JAWS 17 to use the old localization model, to fix a problem with international characters.
 ;12/3/15 Merged from br_212rc1.
 ;12/1/15 HandleCustomAppWindows now just returns True.  Moved test for previewing to HandleCustomRealWindows.  Added test for Previewing and Preparing preview.
 ;Made constants for previewing strings and stop button.  Made test for Stop button use window name in addition to control ID.  Tested several times in Noise Reduction and Amplify without problems.
@@ -522,7 +526,11 @@ Let sFirst = GetWindowName(GetFirstChild(hReal))
 ;DebugString("Enter HandleReal " + sFirst) ; debug
 ;SayString("Enter HandleReal") ; debug
 If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutoStarted && (sFirst == WN_PREPARING_PREVIEW || sFirst == WN_PREVIEWING) Then
+<<<<<<< Updated upstream
 	;DebugString("GetWindowName of RealWindow: " + GetWindowName(hReal))
+=======
+;	DebugString("GetWindowName of RealWindow: " + GetWindowName(hReal))
+>>>>>>> Stashed changes
 	Let gfSilence = True
 	;DebugString("Exit HandleReal, starting previewing") ; debug
 	Return True
@@ -1871,8 +1879,7 @@ If !FocusInTrackPanel () Then
 	TypeCurrentScriptKey ()
 	Return
 EndIf
-Let o = GetFocusObject(0)
-If o.accFocus == 1 Then
+Let o = GetFocusObject(0) If o.accFocus == 1 Then
 	Return
 EndIf
 Let s = o.accName (o.accFocus - 1)

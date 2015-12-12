@@ -1,3 +1,5 @@
+:script for
+
 :function AnnounceOn
 :Returns int True if messages should be spoken
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
@@ -70,17 +72,19 @@
 :Description Verbaliza la posición del final o la longitud de la selección. También verbaliza si está seleccionado Final o Longitud.  Si se pulsa dos veces rápidamente, mueve el foco a él.
 
 :script SayActiveCursor
-:Synopsis Verbalizar el valor de Posición de audio
+:Synopsis Verbaliza el valor de Posición de audio
 :Description Si está activo el cursor del PC, verbaliza el valor del control Posición de audio. Si se presiona dos veces rápidamente o no está activo el cursor del PC, verbaliza la posición del cursor.
 
 :script ScriptFileName
-
+	
 :script AudacityScriptKeyHelp
 :Synopsis Muestra la ayuda de teclas rápidas de JAWS para Audacity en el visualizador virtual.
 :Description Pulse dos veces rápidamente para mostrar la ayuda de teclas rápidas de JAWS predeterminada.
 
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
+
+:function IsWinKeyHelp
 
 :script AudacityKeysHelp
 :Synopsis Muestra métodos abreviados de teclado de Audacity en el visualizador virtual.
@@ -150,7 +154,7 @@
 :Synopsis Borra el audio seleccionado.
 
 :script JAWSDelete
-:Synopsis En el panel de pista elimina el audio seleccionado, de lo contrario realiza una supresión normal.
+:Synopsis En el panel de pista borra el audio seleccionado, de lo contrario realiza una supresión normal.
 :Description Si el foco está en la ventana principal, existe un proyecto y hay audio seleccionado, la tecla SUPR lo eliminará. En tal caso, efectuamos el script DeleteSelectedAudio. De lo contrario, efectuamos el script predeterminado.
 
 :script JAWSBackspace
@@ -170,8 +174,12 @@
 :script DeselectAll
 :Synopsis Deselecciona todo el audio del proyecto abierto actual
 
+:function RefreshFocus
+:Description Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
+:Returns Void
+
 :script CloseFocusTrack
-:Synopsis Cierra la pista que tiene actualmente el foco
+:Synopsis Cierra la pista activa actual
 
 :script AnnounceOnOff
 :Synopsis Activa y desactiva el anuncio de mensajes de Audacity
@@ -194,6 +202,49 @@
 
 :script CtrlEnter
 :Synopsis Cuando está en la ventana principal y no está detenido, envía ENTER (si la opción "ENTER pausa al reproducir/grabar" está activada).
+
+:script OpenListBox
+:Synopsis Si el foco está en el panel de pista, envía la tecla a la aplicación.
+
+:script CloseListBox
+:Synopsis Si el foco está en el panel de pista, envía la tecla a la aplicación.
+
+:Function NavigateTrackPanel
+:Synopsis In the track panel moves to the specified track.
+:Description Sends keystrokes to move to the specified track.  Assumes focus is in the track panel.  If sDest contains characters other than blanks, digits, +, or - silently returns without taking any action.
+:Returns void no return description
+:Param string/sDest a number optionally preceded by + or -.  If preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.  If it would move beyond the first or last track its value is adjusted acordingly.
+:Param string/sUpKey string containing name of key to move up (to lower numbered tracks).
+:Param string/sDownKeystring containing name of key to move down (to higher numbered tracks).
+
+:script GoToTrack
+:Synopsis Va a una pista por su número.
+:Description Pide un número y mueve el foco a esa pista. Si el número especificado contiene caracteres distintos de espacios en blanco, dígitos, + o -, regresa en silencio sin realizar ninguna acción. Si el número va precedido por + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va por - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+
+:script MarkTrack
+:Synopsis Recuerda la pista activa.
+
+:script GoToMarkedTrack
+:Synopsis Va a la pista marcada.
+
+:script ExchangeWithMark
+:Synopsis Va a la pista marcada y marca la pista que estaba activa.
+
+:script MoveCurrentTrackTo
+:Synopsis Mueve la pista actual al número de pista especificado.
+:Description Pide un número y mueve la pista actual a esa posición en la lista de pistas. Si el número especificado contiene caracteres distintos de espacios en blanco, dígitos, + o -, regresa en silencio sin realizar ninguna acción. Si el número va precedido por + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va por - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa hacia arriba y Control+Shift+FlechaAbajo a Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+
+:script MoveCurrentTrackToMark
+:Synopsis Mueve la pista actual a la posición de la pista marcada.
+:Description Mueve la pista actual a la posición de la pista marcada. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa hacia arriba y Control+Shift+FlechaAbajo a Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+
+:script MoveTrackUp
+:Synopsis Mueve la pista actual una pista hacia arriba.
+:Description Mueve la pista activa hacia arriba y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa hacia arriba. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a CloseListBox, este script no se ejecutará.
+
+:script MoveTrackDown
+:Synopsis Mueve la pista actual una pista hacia abajo.
+:Description Mueve la pista activa hacia abajo y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a OpenListBox, este script no se ejecutará.
 
 :function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
@@ -286,3 +337,32 @@
 :Returns int True if the version of Audacity is <= the specified version.
 :Description Varify that current audacity version is equal to or higher than a given version.
 :param String/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
+
+:script test
+
+:function loadNonJCFOptions
+
+:script AddAudacityJawsGuide
+:Synopsis Permite añadir o cambiar el enlace a la Guía de Audacity con JAWS
+:Category Script
+
+:Script Record
+:Synopsis Silencia la tecla que inicia las funciones de grabación.
+:Description Silencia la tecla que inicia las funciones de grabación. Este script pulsa la tecla a la que esté asignado. Si no se está en un diálogo o un menú, no lee la etiqueta de la tecla.
+
+:Function ClearSilence
+:Synopsis Clears the gfSilence flag used to silence speaking of focus changes.
+:Description This function can be scheduled with ScheduleFunction to terminate silencing of speech in the future.  It is used to reactivate speech after starting a recording.
+
+:function SayActiveLabel ()
+:Description Speak the text of the active label if any.  Assumes focus in track panel.  Uses the invisible cursor.
+:Returns Void
+
+:script AddLabelAtSelection
+:Synopsis Añade una etiqueta en la región seleccionada.
+:Description La funcionalidad de voz para Audacity se cancela hasta que se pulsen ENTER o SayNext/PriorLine, o el foco se salga de la ventana.
+
+:script AddLabelAtPlayPosition
+:Synopsis Añade una etiqueta en la posición de reproducción o grabación actual.
+:Description La funcionalidad de voz para Audacity se cancela hasta que se pulsen ENTER o SayNext/PriorLine, o el foco se salga de la ventana.
+

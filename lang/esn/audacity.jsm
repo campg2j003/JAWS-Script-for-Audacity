@@ -1,5 +1,5 @@
-;10/5/15 by Gary Campbell: moved UO_*Hlp messages to the same place in the current English file.
-; Spanish messages for Audacity 2.0.0 script by Gary Campbell, translated by Fernando Gregoire last updated 14/9/2013.
+; Spanish messages for Audacity 2.0.0 script by Gary Campbell last updated 12/11/2015.
+;Translation based on English version dated ??/??/????.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -29,7 +29,10 @@ Const
 	WN_TRACKPANEL = "Panel de pista", ; window name of track table
 	WN_SELECTION = "Selección", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Reproducción", ; window name of Transport toolbar
-	WN_EDIT_CHAINS = "Editar secuencias de comandos" ; name of the Edit Chains dialog
+	WN_EDIT_CHAINS = "Editar secuencias de comandos", ; name of the Edit Chains dialog
+	WN_PREPARING_PREVIEW = "Preparando vista previa", ;appears in effect dialogs briefly when starting previewing
+	WN_PREVIEWING = "Mostrando vista previa", ;appears in progress dialog while previewing effects
+	WN_STOP_BTN = "Detener" ;name of Stop button to stop previewing
 
 Const
 	; These are used to announce different areas of the main window.  They should be translated.
@@ -41,7 +44,9 @@ Const
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Anunciar los mensajes de Audacity",
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Anunciar las barras de herramientas",
-	UO_ENTER_PAUSE = "UOEnterPause:ENTER pausa al reproducir/grabar"
+	UO_ENTER_PAUSE = "UOEnterPause:ENTER pausa al reproducir/grabar",
+	UO_SILENCE_PREVIEW = "UOSilencePreview:Silenciar en vista previa",
+	UO_SILENCE_RECORD = "UOSilenceRecord:Silenciar al grabar"
 
 Messages
 ; For user options.
@@ -57,6 +62,12 @@ SI se activa, lee el nombre de las barras de herramientas cuando el foco se muev
 @msgUO_EnterPauseHlp
 Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
 @@
+@msgUO_SilencePreviewHlp
+Si se activa, desactiva la voz mientras se previsualiza un efecto.
+@@
+@msgUO_SilenceRecordHlp
+Si se activa, silencia la voz que tenga lugar cuando se haya empezado a grabar.
+@@
 EndMessages
 
 ;These are used to strip leading zeros from audio positions.
@@ -66,7 +77,7 @@ Const
 	;The word following the days in a position.
 	csDays = "días",
 	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
-	csPositionHHMMFmt = "00h00m00s",
+	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = ".", ; thousands separator character
 	csDecimal = "," ; decimal point
 
@@ -77,7 +88,7 @@ Const
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.4-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Guía de Audacity 2.0.4 (en inglés)", 
+CS_JawsGuide_Title = "Guía de Audacity 2.1.0 (en inglés)", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
 
@@ -99,11 +110,19 @@ Para verbalizar la posición final de la selección o la longitud, pulse %keyfor(S
 Para mover el foco a estos controles, pulse la tecla dos veces rápidamente.
 Para verbalizar el valor de posición del audio, pulse %keyfor(SayActiveCursor).
 Para verbalizar el cursor activo mientras esté activo el del PC, pulse %keyfor(SayActiveCursor) dos veces rápidamente.
-Para aumentar la ganancia de la pista que tiene el foco, pulse %keyfor (MouseUp).
-Para reducir la ganancia de la pista que tiene el foco, pulse %keyfor (MouseDown).
+Para aumentar la ganancia de la pista activa, pulse %keyfor (MouseUp).
+Para reducir la ganancia de la pista activa, pulse %keyfor (MouseDown).
 Para ajustar el posicionamiento estéreo hacia la izquierda, pulse %keyfor (MouseLeft).
 Para ajustar el posicionamiento estéreo hacia la derecha, pulse %keyfor (MouseRight).
 Mientras el foco está en la ventana principal, las cuatro últimas teclas reemplazan los scripts de JAWS predeterminados para mover el ratón. Si desea activar la funcionalidad original mientras esté en la ventana principal, active el cursor de JAWS.
+
+Para ir a una pista por su número, pulse %KeyFor(GoToTrack).
+Para mover la pista actual a una posición de pista por su número, pulse %KeyFor(MoveCurrentTrackTo).
+Para marcar la pista actual, pulse %KeyFor(MarkTrack).
+Para ir a la pista marcada, pulse %KeyFor(GoToMarkedTrack).
+Para ir a la pista marcada y marcar la pista de partida, pulse %KeyFor(ExchangeWithMark).
+Para mover la pista actual a la posición de la pista marcada y fijar la marca en la pista actual, pulse %KeyFor(MoveCurrentTrackToMark).
+
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
 Para más info, vea el archivo whats new.txt.
@@ -122,8 +141,11 @@ Para llevar el foco al control de predefinidos, pulse %keyfor (VSTPreset).
 Para cargar una predefinición existente, pulse %keyfor (VSTLoadPreset).
 Para guardar la configuración actual como predefinición, pulse %keyfor (VSTSavePreset).
 
+Si Silenciar en Vista Previa está activado y aprieta el botón Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocará pérdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo después.
+
 Para cambiar la configuración de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions).
 
+Para cambiar la URL de la Guía de JAWS para Audacity, pulse %keyfor (AddAudacityJawsGuide)
 @@
 @msgPresetHotkeyHelp
 Para llevar el foco a la opción predefinidos, pulse %keyfor (VSTPreset).
@@ -146,7 +168,7 @@ Guía para JAWS
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Combinaciones de teclas predeterminadas para Audacity v2.0.4 (de la %1, por %2). Acceda a la guía (en inglés) en
+Combinaciones de teclas predeterminadas para Audacity v2.1.0 (de la %1, por %2). Acceda a la guía (en inglés) en
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
@@ -181,20 +203,20 @@ Tabla de pistas
 Comando Combinación de teclas 
 Moverse a pista anterior Flecha Arriba 
 Moverse a pista siguiente Flecha Abajo 
-Alternar selección de pista con el foco Enter 
+Alternar selección de pista activa Enter 
 Seleccionar todas las pistas (y todo el audio) Ctrl + A 
 Deseleccionar todas las pistas (y todos los rangos de tiempo) Ctrl + Shift + A 
-Abrir el menú de la pista que posee el foco Tecla Aplicaciones o Shift + M 
-Cerrar (Eliminar) la pista con el foco Shift + C 
+Abrir el menú de la pista activa Tecla Aplicaciones o Shift + M 
+Cerrar (Eliminar) la pista activa Shift + C 
 
 Pista de audio
 Comando Combinación de teclas 
-Cambiar ganancia de pista con el foco Shift + G 
-Cambiar posicionamiento estéreo de pista con el foco Shift + P 
-Silenciar/Desactivar silencio en la pista con el foco Shift + U 
+Cambiar ganancia de pista activa Shift + G 
+Cambiar posicionamiento estéreo de pista activa Shift + P 
+Silenciar/Desactivar silencio en la pista activa Shift + U 
 Silenciar todas las pistas Ctrl + U 
 Desactivar silencio en todas las pistas Ctrl + Shift + U 
-Solo/Desactivar solo en la pista con el foco Shift + S 
+Solo/Desactivar solo en la pista activa Shift + S 
 
 Movimiento del cursor
 Comando Combinación de teclas 
@@ -233,7 +255,8 @@ Cortar audio seleccionado Ctrl + X
 Copiar audio seleccionado Ctrl + C 
 Pegar Ctrl + V 
 Reemplazar audio seleccionado por silencio Ctrl + L 
-Cerrar (Eliminar) pista con el foco Shift + C 
+Cerrar (Eliminar) pista activa Shift + C 
+Encontrar cruces en cero Z
 
 Grabación
 Comando Combinación de teclas 
@@ -242,8 +265,7 @@ Añadir grabación Shift + R
 Pausa/reanudar P 
 Detener Barra Espaciadora 
 Diálogo Servidor de audio Shift + H 
-Diálogo Dispositivo de entrada Shift + I 
-Diálogo de cantidad de canales Shift + N 
+
 @@
 
 @msg_App_Start
@@ -284,13 +306,14 @@ Mover %1 de selección a la %2
 @@
 
 @MsgNoProject_l
-No hay ningún proyecto abierto.
+No hay pistas en el proyecto.
 @@
 
 @msgNoProject_s
-Sin proyecto
+Sin pistas
 @@
 
+;Used??
 @msgSelection
 selección
 @@
@@ -299,6 +322,7 @@ selección
 pista
 @@
 
+;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 todo el audio
 @@
@@ -312,17 +336,9 @@ pistas seleccionadas
 Moverse al %1 de %2
 @@
 
-; %1 = where we are selectiog to, like start or end.
-@MSGSelectedTo
-Seleccionado hasta el %1
-@@
-
-@MsgStartOfFile
-Seleccionado desde el principio del archivo.
-@@
-
-@MSgEndOfFile
-Seleccionado hasta el final del archivo.
+; %1 = where we are selecting to, like start or end, %2 is of what, e.g. track or selection..
+@msgSelectTo
+Seleccionar hasta el %1 de la %2
 @@
 
 @MSGDelete_l
@@ -356,7 +372,7 @@ Seleccionadas todas las pistas
 @@
 
 @msgCloseFocusedTrack
-cerrar pista con el foco
+cerrar pista activa
 @@
 
 @msgNotStopped_l
@@ -396,8 +412,11 @@ Para utilizar esta función, debe habilitar la barra de herramientas de selección
 @msg_Script_Version
 Versión de los scripts para JAWS %1, para Audacity 2.0.0 o posterior.
 @@
-@MsgNoTrackSelected
-Para utilizar esta función, debe seleccionar la pista actual antes. Pulse enter para seleccionarla.
+@MsgNoTrackSelected_L
+Para utilizar esta función, antes debe seleccionar por lo menos una pista. Para seleccionar una pista, pulse ENTER.
+@@
+@msgNoTrackSelected_S
+No hay pistas seleccionadas.
 @@
 
 ;messages for warning dialog when import uncompress audio
@@ -406,7 +425,7 @@ Hacer una copia de los archivos antes de editar (más seguro)
 @@
 
 @msgDirectEdit
-Leer %los archivos directamente desde el original (más rápido)
+Leer %%los archivos directamente desde el original (más rápido)
 @@
 
 @msgDoNotWarn
@@ -419,5 +438,51 @@ Secuencias de comandos
 @@
 @msgChainCommands
 Secuencia de comandos
+@@
+
+
+;for changing Jaws guide's link
+@msgNoChange_l
+No se han efectuado cambios.
+@@
+@msgNoChange_s
+Sin cambios.
+@@
+@MSGNewURL
+La URL se ha cambiado a %1
+@@
+@MSGJawsGuideDialog
+Escriba la nueva URL a la Guía de Audacity con JAWS.
+@@
+
+;Used to speak the field value along with the slider value in the Compressor effect.
+;%1 percentage value of the slider (without percent), %2 value of the field (the static after the slider).
+@msgCompressorSlider
+%1%%%2
+@@
+
+; Prompt for the input boxes in the GoToTrack and MoveCurrentTrackTo scripts.
+@msgTrackNumber
+Número de pista:
+@@
+
+; Title of the input box in the  GoToTrack script.
+@msgGoToTrackTitle
+Ir a
+@@
+
+;Title of the input box in the MoveCurrentTrackTo script.
+@msgMoveTrackToTitle
+Mover a
+@@
+
+
+;%1 = track number
+@msgTrackMarked
+Pista %1 marcada
+@@
+
+@msgNoTrackMarked
+sin marcas
 @@
 EndMessages
