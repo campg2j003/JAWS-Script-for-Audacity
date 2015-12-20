@@ -39,6 +39,7 @@ F6=SwitchChainsList
 ctrl+JAWSKey+z=test
 Alt+[=SaySelectionStart
 Alt+]=SaySelectionEnd
+Shift+JAWSKey+S=MuteSynthesizer
 Shift+Insert+S=MuteSynthesizer
 Shift+Control+J=AddAudacityJawsGuide
 r=Record
