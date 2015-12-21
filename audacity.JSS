@@ -2280,12 +2280,8 @@ EndScript ;AddAudacityJawsGuide
 
 Script Record ()
 ;Don't speak Record or Record-Append keys.
-If DialogActive () ||MenusActive () Then
-	;A dialog is open, pass key to application and speak its label.
-=======
 If DialogActive () ||MenusActive () || gfInLabel Then
 	;A dialog is open or we are writing a label, pass key to application and speak its label.
->>>>>>> Partial label track support.
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 Else

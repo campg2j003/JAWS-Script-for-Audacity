@@ -58,5 +58,7 @@ JAWSKey+a&Shift+m=MoveCurrentTrackToMark
 Insert+a&Shift+m=MoveCurrentTrackToMark
 Control+Shift+UpArrow=MoveTrackUp
 Control+Shift+DownArrow=MoveTrackDown
+Control+B=AddLabelAtSelection
+Control+m=AddLabelAtPlayPosition
 
 [Laptop Keys]
