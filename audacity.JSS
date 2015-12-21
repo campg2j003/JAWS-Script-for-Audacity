@@ -3,9 +3,6 @@
 ;Modified: Dang Manh Cuong
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
-;The following line makes JAWS 17 to use the old localization model. Although the scripts stored in Settings\Language folder seem to work without adding this, international characters of messages in Audacity.jsm are not processed correctly.
-;#pragma usePoFile 0
-
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.0 12/05/15  21:15UTC"
 
@@ -191,6 +188,9 @@ Include "audacity.jsm"
 Include "msaaconst.jsh"
 ;include "debugstring.jsh" ; debug
 ;use "debugstring.jsb" ; debug
+
+;The following line makes JAWS 17 to use the old localization model. Although the scripts stored in Settings\Language folder seem to work without adding this, international characters of messages in Audacity.jsm are not processed correctly.
+;#pragma usePoFile 0
 
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
