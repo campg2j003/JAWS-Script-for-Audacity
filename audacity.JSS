@@ -100,6 +100,7 @@ Globals
 	Int gfPreviewing,
 	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
+	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
 	Int giScheduleClearSilence, ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
 	String gsGoTrackUpKey, ;key that moves focus to the prior (lower numbered) track
 	String gsGoTrackDownKey, ;key that moves focus to the next (higher numbered) track
