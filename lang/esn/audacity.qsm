@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- 10/5/15 The text from the 9/2014 Spanis JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.  Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
+<!-- 10/5/15 The text from the 9/2014 Spanish JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.
+
+Translation Based on English version dated ??/??/????.
+
+Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
-		<DisplayName ID="Audacity Options" Text="Audacity Settings">
+		<DisplayName ID="Audacity Options" Text="Configuración de Audacity">
 			<HelpMsg>
 Opciones específicas para Audacity.</HelpMsg>
 		</DisplayName>
@@ -21,15 +25,14 @@ SI se activa, lee el nombre de las barras de herramientas cuando el foco se muev
 Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
 			</HelpMsg>
 		</DisplayName>
-<!-- ***** Not translated -->
-		<DisplayName ID="Audacity Options.Silence Preview" Text="Silence Preview">
+		<DisplayName ID="Audacity Options.Silence Preview" Text="Silenciar en vista previa">
 			<HelpMsg>
-If on, Turns speech off while previewing an effect.
+Si se activa, desactiva la voz mientras se previsualiza un efecto.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.Silence Record" Text="Silence Record">
+		<DisplayName ID="Audacity Options.Silence Record" Text="Silenciar al grabar">
 			<HelpMsg>
-If on, silences speech that occurs when starting to record.
+Si se activa, silencia la voz que tenga lugar cuando se haya empezado a grabar.
 			</HelpMsg>
 		</DisplayName>
 </DisplayNameDefinitions>
