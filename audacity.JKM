@@ -6,7 +6,7 @@ Insert+w=AudacityKeysHelp
 JAWSKey+delete=SayAudacityState
 Insert+delete=SayAudacityState
 shift+control+rightarrow=StartMarkerRight
-;control+]=
+;  control+]=
 control+k=DeleteSelectedAudio
 shift+control+leftarrow=FinishMarkerLeft
 shift+j=SelectToBeginning
@@ -20,7 +20,7 @@ control+c=Copy
 shift+rightarrow=FinishMarkerRight
 shift+control+a=DeselectAll
 shift+c=CloseFocusTrack
-;control+[=
+;  control+[=
 Control+`=AnnounceOnOff
 ENTER=Enter
 NumPadEnter=Enter
@@ -57,6 +57,5 @@ JAWSKey+a&Shift+m=MoveCurrentTrackToMark
 Insert+a&Shift+m=MoveCurrentTrackToMark
 Control+Shift+UpArrow=MoveTrackUp
 Control+Shift+DownArrow=MoveTrackDown
-Control+B=AddLabelAtSelection
-Control+m=AddLabelAtPlayPosition
+
 [Laptop Keys]

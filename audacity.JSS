@@ -526,11 +526,7 @@ Let sFirst = GetWindowName(GetFirstChild(hReal))
 ;DebugString("Enter HandleReal " + sFirst) ; debug
 ;SayString("Enter HandleReal") ; debug
 If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutoStarted && (sFirst == WN_PREPARING_PREVIEW || sFirst == WN_PREVIEWING) Then
-<<<<<<< Updated upstream
 	;DebugString("GetWindowName of RealWindow: " + GetWindowName(hReal))
-=======
-;	DebugString("GetWindowName of RealWindow: " + GetWindowName(hReal))
->>>>>>> Stashed changes
 	Let gfSilence = True
 	;DebugString("Exit HandleReal, starting previewing") ; debug
 	Return True
@@ -1879,7 +1875,8 @@ If !FocusInTrackPanel () Then
 	TypeCurrentScriptKey ()
 	Return
 EndIf
-Let o = GetFocusObject(0) If o.accFocus == 1 Then
+Let o = GetFocusObject(0)
+If o.accFocus == 1 Then
 	Return
 EndIf
 Let s = o.accName (o.accFocus - 1)
