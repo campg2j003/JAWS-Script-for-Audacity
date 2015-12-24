@@ -13,10 +13,11 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: Thu Nov 12 2015
+Last updated: Tuesday December 22 2015
 
 Modifications:
 
+12/22/15 Added Spanish language strings.
 11/12/15 Converted to use language strings.  
 11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
 11/9/11 Moved jsd file to lang-specific section.
@@ -47,7 +48,8 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 */
 
 ;Start of code
-!include "installer_lang_enu.nsh" ; this needs to be fixed!
+!include "installer_lang_enu.nsh"
+!include "installer_lang_esn.nsh"
 ;!define JAWSDEBUG ; debug
 ;User defined constants
 ;Name of script (displayed on screens, install folder, etc.) here
@@ -64,7 +66,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
 ;The file name of the license file in ${JAWSSrcDir}.  If not defined, no license page will be included.
-;!define JAWSLicenseFile "COPYING.TXT" ; defined in language file
+;!define JAWSLicenseFile "copying.txt" ; defined in language file
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
@@ -130,7 +132,7 @@ StrCpy $JAWSREADME "$InstDir\${ScriptApp}_readme.txt"
 ${File} "${JAWSSrcDir}" "${ScriptApp}_readme_vi.txt" ; Vietnamese README file
 ${File} "${JAWSSrcDir}" "What's new.txt"
 !ifdef JAWSLicenseFile
-${File} "${JAWSSrcDir}" "${JAWSLicenseFile}"
+${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 !EndIf ; if JAWSLicenseFile
 !macroend ;JAWSInstallFullItems
 ;*/

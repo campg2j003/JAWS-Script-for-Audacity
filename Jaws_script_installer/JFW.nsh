@@ -14,9 +14,10 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Thursday,  November 12, 2015
+Last updated: Tuesday,  December 22, 2015
 
 Modifications:
+12/22/15 Added Spanish language strings.
 11/12/15 Converted to use language strings.  
 11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
 11/11/15 Now does not dump log file for just scripts install.
@@ -1521,6 +1522,7 @@ SectionEnd
 
 ;Language string files.  They are here because they have to come after the definition of ${VERSION}.
 !include "JFW_lang_enu.nsh" ;English language strings for this file
+!include "JFW_lang_esn.nsh" ;Spanish language strings for this file
 
 
 ;The registry key in HKLM where the uninstall information is stored.
@@ -1554,7 +1556,7 @@ BrandingText "$(BrandingText)"
 
 !ifdef JAWSLicenseFile
 ;JAWSSrcDir is empty or contains a trailing backslash.
-!insertmacro MUI_PAGE_LICENSE "${JAWSSrcDir}${JAWSLicenseFile}"
+!insertmacro MUI_PAGE_LICENSE "${JAWSSrcDir}$(JAWSLicenseFile)"
 !EndIf
 
 !insertmacro JAWSComponentsPage
@@ -1584,8 +1586,10 @@ FunctionEnd ; InstFilesLeave
 ;  !insertmacro MUI_UNPAGE_COMPONENTS
   !insertmacro MUI_UNPAGE_INSTFILES
   !insertmacro MUI_LANGUAGE "English"
+  !insertmacro MUI_LANGUAGE "Spanish"
 
-Function .OnInit
+  Function .OnInit
+  !insertmacro MUI_LANGDLL_DISPLAY
   ;Find where the JAWS program files are located.
 push $0
 strcpy $0 "Freedom Scientific\JAWS"
