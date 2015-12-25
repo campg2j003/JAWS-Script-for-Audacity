@@ -13,10 +13,12 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: Tuesday December 22 2015
+Last updated: Thursday December 24 2015
 
 Modifications:
 
+12/24/15 Language strings work.
+12/23/15 Added language-specific processing in Just Scripts and Full Install.
 12/22/15 Added Spanish language strings.
 11/12/15 Converted to use language strings.  
 11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
@@ -48,8 +50,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 */
 
 ;Start of code
-!include "installer_lang_enu.nsh"
-!include "installer_lang_esn.nsh"
+SetCompressor /solid lzma ;create the smallest file
 ;!define JAWSDEBUG ; debug
 ;User defined constants
 ;Name of script (displayed on screens, install folder, etc.) here
@@ -61,7 +62,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
-!Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source directory ${JAWSSrcDir}.
+!Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
 
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
@@ -76,7 +77,6 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
 
 ;SetCompressor is outside the header because including uninstlog.nsh produces code.  setOverWriteDefault should not be in code used to add JAWS to another installer, although we probably want it in the default installer macro.
-SetCompressor /solid lzma ;create the smallest file
 SetOverwrite on ;always overwrite files
 ;Allows us to change overwrite and set it back to the default.
 !define SetOverwriteDefault "on"
@@ -85,23 +85,27 @@ SetOverwrite on ;always overwrite files
 ;/*
 ; The following appears in the user's file before including the JFW.nsh header.
 !include "uninstlog.nsh"
+!ifndef StrLoc_INCLUDED
+${StrLoc}
+!endif
 !macro JAWSInstallScriptItems
 ;Contains the instructions to install the scripts in each version of JAWS.  If not defined, the installer will use a default version that tries to install every type of JAWS script file for an application I know of.
 ;Assumes uninstlog is open when called.
 ;Version in $0, lang in $1.
 ${FileDated} "${JAWSSrcDir}" "audacity.jdf"
-${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jss"
 ${FileDated} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
 ${Case} "esn"
+${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
 ${Break}
 ${Default}
+${FileDated} "${JAWSSrcDir}" "audacity.jkm"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsd"
 ${FileDated} "${JAWSSrcDir}" "audacity.jsm"
 ${FileDated} "${JAWSSrcDir}" "audacity.qsm"
@@ -113,12 +117,20 @@ GetCurInstType $0
 IntOp $0 $0 + 1 ;make it like SectionIn
 ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
   ;We're not logging.
+${Switch} $1
+${Case} "esn"
+  File "${JAWSSrcDir}lang\esn\${ScriptApp}_readme.txt"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
+${Break}
+${Default}
   File "${JAWSSrcDir}${ScriptApp}_README.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
+${Break}
+${EndSwitch}
   ${If} $JAWSREADME == ""
     ;no README location for the Finish page, set it to the first version we install.
     StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_README.txt"
   ${EndIf} ;$JAWSREADME not yet set
-  File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
 ${EndIf} ;if just scripts
 pop $0
 !macroend ;JAWSInstallScriptItems
@@ -126,11 +138,56 @@ pop $0
 ;/*
 ;Items to be placed in the installation folder in a full install.
 !macro JAWSInstallFullItems
-${File} "${JAWSSrcDir}" "${ScriptApp}_readme.txt"
+push $0
+push $1
+push $2
+push $3
+push $4
+StrCpy $3 "enu|${JAWSScriptLangs}"
+${Do}
+${StrLoc} $0 $3 "|" "<"
+${If} $0 > 0
+;We found a |
+IntOp $2 $0  - 1
+StrCpy $1 $3 $2
+IntOp $2 $2 + 2 ;after the |
+StrCpy $3 $3 "" $2 ;Chop off the first element and its |
+${Else}
+;Last element.
+StrCpy $1 $3
+StrCpy $3 ""
+${EndIf}
+; $1 is JAWS language abbreviation (folder in ${JAWSScriptSrc}lang).
+;$4 is either folder containing lang folders with trailing backslash or "" for default (enu).
+StrCpy $4 "lang\"
+;Don't think we can use registers with ${File} etc.
+${Switch} $1
+${Case} "esn"
+${AddItem} "${ScriptApp}_readme_esn.txt"
+File "/oname=${ScriptApp}_readme_esn.txt" "${JAWSSrcDir}lang\esn\${ScriptApp}_readme.txt"
+;${AddItem} "What's new_esn.txt"
+;File "/oname=What's new_esn.txt" "${JAWSSrcDir}lang\esn\" "What's new.txt"
+${Break}
+${Default}
+${AddItem} "${ScriptApp}_readme_enu.txt"
+File "/oname=${ScriptApp}_readme_enu.txt" "${JAWSSrcDir}${ScriptApp}_readme.txt"
+${AddItem} "What's new_enu.txt"
+File "/oname=What's new_enu.txt" "${JAWSSrcDir}What's new.txt"
+${Break}
+${EndSwitch}
 ;Set the location of the README file for the Finish page.
-StrCpy $JAWSREADME "$InstDir\${ScriptApp}_readme.txt"
+${If} $JAWSREADME == ""
+  ;no README location for the Finish page, set it to the first version we install.
+  StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme_$1.txt"
+${EndIf} ;$JAWSREADME not yet set
+${LoopUntil} $3 == ""
+pop $4
+pop $3
+pop $2
+pop $1
+pop $0
+
 ${File} "${JAWSSrcDir}" "${ScriptApp}_readme_vi.txt" ; Vietnamese README file
-${File} "${JAWSSrcDir}" "What's new.txt"
 !ifdef JAWSLicenseFile
 ${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 !EndIf ; if JAWSLicenseFile
@@ -140,7 +197,11 @@ ${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 ;*/
 
 ;-----
+!include "mui2.nsh"
 
 !include "jfw.nsh"
 
 !insertmacro JAWSScriptInstaller
+;Strange though it seems, the language file includes must follow the invocation of JAWSScriptInstaller.
+!include "installer_lang_enu.nsh"
+!include "installer_lang_esn.nsh"
