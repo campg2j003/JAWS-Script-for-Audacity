@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: Thursday December 24 2015
+Last updated: Monday December 28 2015
 
 Modifications:
 
@@ -123,13 +123,13 @@ ${Case} "esn"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
 ${Break}
 ${Default}
-  File "${JAWSSrcDir}${ScriptApp}_README.txt"
+  File "${JAWSSrcDir}${ScriptApp}_readme.txt"
   File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
 ${Break}
 ${EndSwitch}
   ${If} $JAWSREADME == ""
     ;no README location for the Finish page, set it to the first version we install.
-    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_README.txt"
+    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.txt"
   ${EndIf} ;$JAWSREADME not yet set
 ${EndIf} ;if just scripts
 pop $0
