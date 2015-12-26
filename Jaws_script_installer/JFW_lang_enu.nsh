@@ -49,8 +49,16 @@ LangString AlreadyInstalled ${LANG_ENGLISH} "${ScriptName} is already installed 
 ;e.g. V2.0 ...
 LangString VersionMsg ${LANG_ENGLISH} "V${VERSION}"
 
+;Messages in the Install Type combo box.
+LangString InstTypeFull ${LANG_ENGLISH} "Full"
+LangString InstTypeJustScripts ${LANG_ENGLISH} "Just Scripts"
+
+;Text at the top of the Components page.
 LangString InstTypeFullMsg ${LANG_ENGLISH} "Full allows you to uninstall using Add or Remove Programs.  $\n\
 Just Scripts installs scripts and README, can't be uninstalled from Add or Remove Programs."
+
+;Name of the Installer Sourse section (the Install Source custom component)
+LangString SecInstallerSource ${LANG_ENGLISH} "Installer Source"
 
 LangString WelcomePageTitle ${LANG_ENGLISH} "Setup for ${ScriptName}"
 
@@ -68,7 +76,16 @@ This wizard will guide you through the installation of ${ScriptName}.$\n"
 !undef _VERSIONMSG
 
 ;list view
+;Text at the top of the Select JAWS Versions/Languages dialog.
 LangString SelectJawsVersions ${LANG_ENGLISH} "Select JAWS versions/languages to which to install scripts:"
+
+;JAWS versions/languages list view caption
+LangString LVLangVersionCaption ${LANG_ENGLISH} "JAWS Versions/Languagess"
+
+;Install for All/Current user group box ($JAWSGB)
+LangString GBInstallForCaption ${LANG_ENGLISH} "Install for"
+LangString RBCurrentUser ${LANG_ENGLISH} "&Current user" ;$JAWSRB1
+LangString RBAllUsers ${LANG_ENGLISH} "&All users" ;$JAWSRB2
 
 LangString DirPageText ${LANG_ENGLISH} "Choose the folder in which to store ${ScriptName}'s installation files, such as uninstaller, help or other files. $\n\
 Setup will store ${ScriptName}'s installation in the following folder. To install in a different folder, click Browse and select another folder."

@@ -14,9 +14,11 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, September 20, 2012
-Last updated: Tuesday,  December 22, 2015
+Last updated: Friday,  December 25, 2015
 
 Modifications:
+12/25/15 Added more language strings.
+12/24/15 Language strings work.
 12/22/15 Added Spanish language strings.
 11/12/15 Converted to use language strings.  
 11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
@@ -577,8 +579,8 @@ pop $0
 
 !macro JAWSComponentsPage
 ;The order of the insstype commands is important.
-insttype "Full"
-insttype "JustScripts"
+insttype "$(InstTypeFull)"
+insttype "$(InstTypeJustScripts)"
 ;insttype /NOCUSTOM
 insttype /COMPONENTSONLYONCUSTOM
 !define INST_FULL 1
@@ -913,11 +915,11 @@ nsDialogs::Create 1018
 pop $JAWSDLG
 ;The versions do not include those installed that are outside JAWSMINVRSION and JAWSMAXVERSION.
 ${NSD_CreateLabel} 0 0 100% 10u "$(SelectJawsVersions)"
-Pop $0
+Pop $0 ; label handle not needed
 ;math::script 'r0 = ${__NSD_ListView_EXSTYLE}' ; debug
 ;IntFmt $0 "%x" $0 ; debug
 ;messagebox MB_OK "Before creating list view ex style = 0x$0, defined is '${__NSD_ListView_EXSTYLE}'" ; debug
-${NSD_CreateListView} 3u 12u 55u 100u "JAWS Version/Languagess"
+${NSD_CreateListView} 3u 12u 55u 100u "$(LVLangVersionCaption)"
 Pop $JAWSLV
 math::script 'r0 = ${__NSD_ListView_EXSTYLE}'
 SendMessage $JAWSLV ${LVM_SetExtendedListViewStyle} 0 $0 $1
@@ -983,12 +985,12 @@ ${If} $INSTALLEDJAWSVERSIONCOUNT = 1
 ${LVCheckItem} 0 1
 ${EndIf}
 ; Install for group box
-${NSD_CreateGroupBox} 55u 12u 60u 40u "Install for"
+${NSD_CreateGroupBox} 55u 12u 60u 40u "$(GBInstallForCaption)"
 pop $JAWSGB
-${NSD_CreateRadioButton} 60u 22u 55u 10u "&Current user"
+${NSD_CreateRadioButton} 60u 22u 55u 10u "$(RBCurrentUser)"
 pop $JAWSRB1
 ${NSD_AddStyle} $JAWSRB1 ${BS_AUTORADIOBUTTON}
-${NSD_CreateRadioButton} 60u 35u 55u 10u "&All users"
+${NSD_CreateRadioButton} 60u 35u 55u 10u "$(RBAllUsers)"
 pop $JAWSRB2
 ${NSD_AddStyle} $JAWSRB2 ${BS_AUTORADIOBUTTON}
 ${If} $JAWSSHELLCONTEXT == "current"
@@ -1680,14 +1682,18 @@ SetOverwrite on ;Always overwrite
 SetOverwrite ${SetOverwriteDefault}
 SectionEnd ;Install JAWS scripts
 
-section "Installer Source" SecInstSrc
+section "$(SecInstallerSource)" SecInstSrc
 ;SectionIn ${INST_FULL}
 !insertmacro JAWSLOG_OPENINSTALL
 ${CreateDirectory} "$INSTDIR\${JAWSINSTALLERSRC}"
 SetOutPath  "$INSTDIR\Installer Source"
 ${File} "" "uninstlog.nsh"
 ${File} "" "installer.nsi"
+${File} "" "installer_lang_enu.nsh"
+${File} "" "installer_lang_esn.nsh"
 ${File} "" "jfw.nsh"
+${File} "" "jfw_lang_enu.nsh"
+${File} "" "jfw_lang_esn.nsh"
 SetOutPath $INSTDIR
 !insertmacro JAWSLOG_CLOSEINSTALL
 SectionEnd
