@@ -236,15 +236,15 @@
 
 :script MoveCurrentTrackToMark
 :Synopsis Mueve la pista actual a la posición de la pista marcada.
-:Description Mueve la pista actual a la posición de la pista marcada. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa hacia arriba y Control+Shift+FlechaAbajo a Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+:Description Mueve la pista actual a la posición de la pista marcada. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa arriba y Control+Shift+FlechaAbajo a Mover la pista activa abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
 
 :script MoveTrackUp
 :Synopsis Mueve la pista actual una pista hacia arriba.
-:Description Mueve la pista activa hacia arriba y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa hacia arriba. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a CloseListBox, este script no se ejecutará.
+:Description Mueve la pista activa hacia arriba y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa arriba. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a CloseListBox, este script no se ejecutará.
 
 :script MoveTrackDown
 :Synopsis Mueve la pista actual una pista hacia abajo.
-:Description Mueve la pista activa hacia abajo y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a OpenListBox, este script no se ejecutará.
+:Description Mueve la pista activa hacia abajo y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a OpenListBox, este script no se ejecutará.
 
 :function GetObjState
 :Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
