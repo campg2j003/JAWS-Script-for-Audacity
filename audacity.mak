@@ -43,7 +43,7 @@ WBIN:=c:/progra~2/mingw_sylvan/win32/wbin/
 
 BUILDDIR=$(SRCDIR)build\$(NULL)
 # source files
-SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SRCDIR)audacity.jsm $(SRCDIR)audacity.jss $(SRCDIR)audacity.qs $(SRCDIR)audacity.qsm
+SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SRCDIR)audacity.jsm $(SRCDIR)audacity.jss $(SRCDIR)audacity.qs $(SRCDIR)audacity.qsm $(SRCDIR)audacity_readme.txt $(SRCDIR)audacity_readme_vi.txt $(SRCDIR)copying.txt
 INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)JFW.nsh $(MYNSISLIBS)
 
 %.html: %.t2t
@@ -68,4 +68,6 @@ preparebuild: $(SCRIPTSRC) $(INSTALLSRC) $(MISCSRC)
 	$(WBIN)cp $(INSTALLSRC) $(BUILDDIR)
 	-mkdir $(BUILDDIR)script $(BUILDDIR)script\lang
 	$(WBIN)cp $(SCRIPTSRC) $(BUILDDIR)script
+	REM What's new.txt doesn't work as part of $(SCRIPTSRC) won't work with blanks in file names, so we include it explicitly.  
+	$(WBIN)cp $(SCRIPTSRC) "$(SRCDIR)What's new.txt" $(BUILDDIR)script
 	$(WBIN)cp -R $(SRCDIR)lang $(BUILDDIR)script

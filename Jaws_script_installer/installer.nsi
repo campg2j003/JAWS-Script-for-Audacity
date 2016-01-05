@@ -94,10 +94,10 @@ GetCurInstType $0
 IntOp $0 $0 + 1 ;make it like SectionIn
 ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
   ;We're not logging.
-  File "${JAWSSrcDir}${ScriptApp}_README.txt"
+  File "${JAWSSrcDir}${ScriptApp}_readme.txt"
   ${If} $JAWSREADME == ""
     ;no README location for the Finish page, set it to the first version we install.
-    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_README.txt"
+    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.txt"
   ${EndIf} ;$JAWSREADME not yet set
   File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
 ${EndIf} ;if just scripts
