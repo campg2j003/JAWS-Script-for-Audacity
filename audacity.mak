@@ -27,7 +27,7 @@ NULL=
 DEV:=$(dev)\$(NULL)
 
 # Set these variables to null to get all source files from the current working directory.  Note that if they are not empty they need to end with backslash.
-SRCDIR := $(DEV)Audacity\$(NULL)
+SRCDIR := $(NULL)
 INSTALLSRCDIR:=$(SRCDIR)Jaws_script_installer\$(NULL)
 MYNSISLIBDIR:=$(DEV)nsis\$(NULL)
 MYNSISLIBS:=$(MYNSISLIBDIR)uninstlog.nsh
@@ -52,7 +52,7 @@ INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSR
 %.txt: %.t2t
 	$(TXT2TAGS) --target=txt "$<"
 
-.PHONY: all install
+.PHONY: all installer
 
 #all: $(SRCDIR)$(PROD).exe $(SRCDIR)$(PROD).html
 

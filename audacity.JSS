@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.0 12/29/15  04:35UTC"
+Const CS_SCRIPT_VERSION = "2.0 1/5/16  00:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -28,158 +28,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
     
-
     See the file copying.txt for details.
 @@
 EndMessages
 
     
 ;Modifications:
-;12/05/15 Added a line to make JAWS 17 to use the old localization model, to fix a problem with international characters.
-;12/3/15 Merged from br_212rc1.
-;12/1/15 HandleCustomAppWindows now just returns True.  Moved test for previewing to HandleCustomRealWindows.  Added test for Previewing and Preparing preview.
-;Made constants for previewing strings and stop button.  Made test for Stop button use window name in addition to control ID.  Tested several times in Noise Reduction and Amplify without problems.
-;12/1/15 Added check for gfSilencePreview in HandleCustomAppWindows.
-;11/28/15 Removed debugging stuff.
-;11/28/15 Added NewTextEventShouldBeSilent to suppress speech in Silence Preview.  Didn't work, but a good idea anyway.  The selected text of the Amplify focused edit control is being read (twice!) by SayHighlightedText before HandleCustomApp is called to silence previewing.  I think this happens before the first focus change.  This can be silenced by moving focus away from the edit box or by unselecting the text.  The new method of handling Silence Preview doesn't work in Audacity 2.1.1 (but the 2.1.1 code is still there so it still works on 2.1.1).
-;Added function SayHighlightedText for debugging.
-;Added gfAudacityAutostarted to deal with switching from another app when focus is in a dialog.  This triggered the Silence Preview logic.  It is cleared at the start of HandleCustomWindows.
-;11/27/15 Contains fix for Silence Preview for 2.1.2RC1, and debugging stuff.
-;11/17/15 Previous (pretty much) saved to HG changeset:   208:96e31247af96.
-	;11/17/15 Merged correction of CheckAudacityVersion from default.
-	;11/17/15 Previous saved to HG changeset:   207:f3355cb85045
-;11/16/15 Corrected function CheckAudacityVersion.
-;10/28/15 Merged br_labels to default.
-;10/6/15 Merged multilanguage support from default:
-;10/5/15 In AdjustJawsVerbosity replaced strListOfOptions with the version from AdjustJawsOptions.  This adds a couple of options that were overlooked.  This is for support of JAWS versions prior to 9.0 and is not tested.
-;Moved JAWS options help messages to after the other JAWS options constants.
-;10/5/15 Previous saved to HG 192:4152c0d30b00.
-;9/29/15 Changed Alt+Up/DownArrow to Control+Shift+Up/DownArrow.
-;9/28/15 Previous saved to HG changeset:   188:6a035d4cd476.
-;9/28/15 Added mark, web site change, and RefreshFocus to What's New.
-; end merge
-;9/29/15 Merged from default: Changed gsMoveTrackUp/DownKey to Control+Shift+Up/DownArrow.  Changed binding of scripts MoveTrackUp/Down.  Updated What's New.
-;9/29/15 Previous saved to HG changeset:   191:7410c37118cb.
-;9/28/15 Merged from default: Added mark, web site change, and RefreshFocus to What's New.
-;9/26/15 Merged RefreshFocus from default.
-;9/26/15 Added code to refresh track panel after CloseFocusTrack.  Added function RefreshFocus.
-;9/23/15 Previous saved to HG changeset:   182:dc6e89354c2c.
-;9/23/15 Merged out from default:
-;9/23/15 Changed Audacity web site to http://audacityteam.org.
-;9/22/15 Merged out from default:
-;9/22/15 Previous saved to HG changeset:   180:eb23d14b240.
-;9/22/15 Added code to MoveTrackUp, MoveTrackDown, GoToTrack and MoveCurrentTrackTo to send key to app if not in track panel.
-;Added global variables gsGoTrackUpKey, gsGoTrackDownKey for the keys that move focus to prior/next track, and gsMoveTrackUpKey and gsMoveTrackDownKey for keys that move a track.  This will make it easier to allow the user to specify these keys if desired.
-;Added scripts MarkTrack, GoToMarkedTrack, ExchangeWithMark, and MoveCurrentTrackToMark.  Added keys in JKM.  
-;Changed NavigateTrackPanel so that it clamps the values if they are outside the track table.
-;Added new keys to script key help.
-;Reorganized script key help and added blank lines between sections.
-;9/22/15 Previous saved to HG changeset:   179:81aefb85958a.
-;9/20/15 Added code to allow keys to speak while writing a label.
-;TAB and Shift+TAB now attempt to speak the active label while in the track pannel.
-;9/19/15 Added ActiveItemChangedEvent to speak when called, does not work in Audacity track panel.  Commented out.
-;9/18/15 Previous saved to HG changeset:   178:04e0202a6328.
-;9/18/15 Previous saved to HG changeset:   178:04e0202a6328.
-;9/18/15 Finished scripts GoToTrack and MoveCurrentTrackTo.  Added associated messages to jsm.  Wrote scripts MoveTrackUp and MoveTrackDown, currently assigned to Alt+Up/DownArrow.  These assignments should probably not be released.
-;9/17/15 Added functions NavigateTrackPanel and IsDigits, and scripts GoToTrack and MoveCurrentTrackTo.  GoToTrack is partially written.  The functions are written.  Wrote JSD entry for NavigateTrackPanel.  Added key JAWSKey+a&g for GoToTrack.  Consider renaming NavigateTrackPanel to NavigateToTrack.
-;Works.
-;9/17/15 Previous saved to HG changeset:   177:38ea73ad4564.
-;9/17/15 Added Open/CloseListBox.
-;5/11/15 Previous saved to HG changeset:   176:fa11e2d464b0.
-;5/11/15 Added AdjustJawsOptions support for SilencePreview and SilenceRecord options.
-;Added constants CI_UO_ON and CI_UO_OFF to support boolean settings so they don't need their own on and off constants.
-;Added a comment near the AdjustJawsOptions code explaining how to add a new option.  
-;Compiled but not tested.
-;5/11/15 Previous saved to HG changeset:   175:afeeb7b2d893.
-;5/7/15 jsm: updated guide URL and version msg.
-;Updated copyright date in jsm.
-;In JAWS hotkey help added a paragraph about turning Preview Silence off.
-;README: Deleted issue about correctly identifying play state.
-;Added paragraph about turning silence preview off.
-;3/31/15 Previous saved to HG changeset:   174:fa732fae52b5.
-;3/30/15 Added scripts Tab and ShiftTab to cause JAWS to update label display info (in alpha version from Robert Hanggi).  Added MSAARefresh() in AnnounceKeyMessage to make JAWS read updated values after keys like j, k, etc.  (Observed it not working for C.)
-;3/30/15 Previous saved to HG changeset:   173:b29b44afdd42.
-;3/29/15 Added ProgressBarChangedEvent that obeys gfSilence.
-;3/28/15 Previous saved to HG changeset:   172:32ae2fb7b7ca.
-;3/28/15 Added code in SayFocusedObject to return if gfSilence is set.  This suppresses speaking of the creation of the first track in the project.  Something odd about this-- the first time after you change the associated setting it hasn't updated yet.
-;3/28/15 Previous saved to HG changeset:   171:3e12c08f2ec3.
-;3/28/15 Updated copyright message.
-;Added ability to silence the speech that occurs when starting to record.
-;3/28/15 Previous saved to HG changeset:   170:3ab850c030e6.
-;3/28/15 Added code to silence speech during previewing.  The flags associated with this (gfSilence and gfPreviewing) are cleared by AutoStartEvent every time it runs, so if they aren't turned off when previewing is over switching focus away from Audacity and back will clear them.  However, have not been able to get this implementation stuck.
-;Implemented a flag to suppress the next tutor message.  This is currently not used.
-;Changed 1 to symbolic constants in code that writes default settings entries and the default value of code that reads settings.
-;3/28/15 Previous saved to HG changeset:   169:3d20f4e12301.
-;3/27/15 Changed back to using the globals used before.  (The only one is gfEnterPause.)  Uncommented the global declarations, their initialization in AutoStartEvent, and LoadNonJCFOptions.  In AutoStartEvent made loading of JAWS guide link only execute for pre JAWS 13, and added initialization for it in LoadNonJCFOptions.
-;Added new globals gsIniFile and gsIniSection.  For pre JAWS 13 gsIniFile is the old CS_Ini_File, for 13 and later it is "Audacity.jcf".  gsIniSection is "Settings" and "NonJCFOptions", respectively.  Removed constant Settings, which was replaced by gsIniSection.  Most existing code that only executes pre JAWS 13 still uses CS_Ini_File.  These changes should allow AddAudacityJAWSGuide to work.
-;In script AddAudacityJawsGuide now initializes URL to default if not in file.
-;In Audacity.qsm corrected case of ID for the root node.  The root node text and help text are now correctly displayed.
-;3/25/15 Changed AnnounceOn to GetQuickSetting.  It now uses the JSI file for JAWS prior to 13.0 and GetNonJCFOption for 13.0 and later.  Converted references to globals representing settings to calls to GetQuickSetting.
-;Commented out LoadNonJCFOptions because no globals need to be initialized.
-;Note that globals can be used for option values since LoadNonJCFOptions is called when the QuickSettings dialog finishes, so it was not necessary to change the globals to calls to GetQuickSetting.
-;Decided that for JAWS 13 or later we use QuickSettings and NonJCFOptions, and we don't attempt to transfer settings from a JSI file.  For prior to JAWS 13 we continue to use JSI file.
-;3/11/15 Previous saved to HG rev 165.
-;3/11/15 Merged changes from repo audacity_cuong changeset 53:cfe6956ccc18.  This contains a partial implementation of silencing speech during previewing which doesn't work.
-;12/04/14 by Dang Manh Cuong (merge parent changeset:   155:3a7120b2adb7):
-;Modified script record. Now user has ability to turn jaws speech off when pressing the record or record append key in the quick setting.
-;7/25/14 Previous saved to HG changeset:   160:28d0b01c49b7.
-;7/25/14 Now speaks the field value after the slider percentage in the compressor dialog.  May want to include this behavior in SayLine.  SayCharacter?
-;7/25/14 Previous saved to HG rev 159.
-;7/25/14 Added Record script to silence the key that starts recording.  Should this be controlled by a user option?
-;7/25/14 Previous saved to HG rev 158.
-;7/25/14 Removed HandleCustomWindows entry from audacity.jsd.  It had no arguments, whereas the version in JAWS 10 and JAWS 15 has one argument.  It appears it has been with us since the beginning.
-;Updated messages in jsm file.
-;Script AddAudacityJAWSGuide now updates the global containing the URL so its effect is immediately available.
-;Added .qs and .qsm files to installer.  Updated What's New and English README files.
-;7/16/14 Previous saved to HG rev 154 (same as 156 except that 156 contains correct version of audacity.jsm).
-;7/16/14 Merged changes from repo audacity_cuong changeset:   51:2fdf46c42638.
-;5/15/14 by Dang Manh Cuong:
-; Wrote script Preview: turn Jaws speech off when hitting the preview button in some effect dialog.
-;Issue: cannot turn Jaws speech on when finish previewing
-;Updated comments
-;3/22/14 by Dang Man Cuong
-;Script AddAudacityJawsGuide now returns user doesn't type anything to the box.
-;Updated messages and comments.
-;3/20/14 by Dang Manh Cuong
-;Script AddAudacityJawsGuide now returns if new and current URL are the same.
-;Updated message and documentation for the script above.
-;3/19/14 by Dang Manh Cuong:
-;Added script AddAudacityJawsGuide for changing Jaws guide link.
-;3/17/14 by Dang Manh Cuong
-;Modified function HandleCustomWindows. Jaws now reads the checkbox and button in the quick settings dialog when navigated to these by the tab key.
-;Make the settings section in the JSI file at a contans for easier to change if needed, and modified all relatest scripts.
-;3/16/14 by DangManh Cuong
-;Commented out keystroke: Jawskey+V for testing the quick settings script.
-;Wrote xml files for the QuickSetting (Similar to script adjust Jaws options). This use on Jaws 13 or later.
-;Wrote function LoadNonJCF Options to get info from JCF file, and write to Audacity>JSI file. This for script QuickSettings
-;Modified Hotkey Help message. Now the hotkey Insert+v displays in all Jaws version. Although, it removed from JKM file
-;3/14/14 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   49:b3b6b02544ec.
-;And fixed a couple more typos.
-;1/27/14 by Dang Manh Cuong: 
-;Updated comments.  Corrected some misspellings.
-;10/30/13 by Gary Campbell:
-;Corrected referenced changeset in modification comments of 148.
-;10/30/13 Previous saved to HG rev 148.
-;10/30/13 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00 (correction: 48:b3ac8e4ba038).
-;10/23/13 by Dang Manh Cuong:
-;Uncommented script Paste from clipboard. Remove the check for no project in this script.
-;Updated comment
-;Previous saved to HG rev 147.
-;10/23/13 by Gary Campbell:
-;Merged changes from repo audacity_cuong changeset:   47:ea1a0a992a00, other minor comment fix.
-;10/16/13 by Dang Manh Cuong:
-;Modified the script swichChainsList due to the control ID for swiching to Chain CMD changed in Audacity 2.0.4
-;Commented out script Paste from clipboard because it does not allow pasting into a blank project.
-;10/16/13: Modified the script swichChangeList due to the control ID for swiching to Change CMD changed in Audacity 2.0.4
-
-;Commented out script Paste from clipboard
-;9/27/13 Changed scripts SelectToStart/EndOfLine to use msgSelectedTo so that they say "select to start/end of all audio".  This makes msgStartOfFile and msgEndOfFile unused.
-;Changed JawsHome to say "all audio" instead of "track", making it consistent with JawsEnd.
-    ;Changed msgSelectedTo to msgSelectTo.
-;9/26/13 Changed msgNoTracksSelected to msgNoTrackSelected_L, added msgNoTrackSelected_S, changed content of msgNoTrackSelected_L.  Changed Say to SayMessage for this message.
-;9/15/13 Previous saved to HG rev 142, tagged with rel2.0_0915.
 
 Include "hjconst.jsh"
 Include "hjglobal.jsh"
@@ -220,6 +74,7 @@ Const
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
 	ID_Chain_Cmds_List2=7002 ;Audacity 2.0.4 or higher
+
 	
 /*
 Const
@@ -1890,6 +1745,7 @@ Var
 	Object o,
 	String s
 
+;SayCurrentScriptKeyLabel ()
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2374,6 +2230,7 @@ Else
 	PerformScript PasteFromClipboard ()
 EndIf 
 EndScript ; PasteFromClipboard
+
 
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)

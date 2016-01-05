@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<<<<<<< HEAD
-<!-- 10/5/15 The text from the 9/2014 Spanish JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.
-
-Translation Based on English version dated ??/??/????.
-
-Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
-<LocalizableDefinitions File="Audacity.qs">
-	<DisplayNameDefinitions>
-		<DisplayName ID="Audacity Options" Text="Configuración de Audacity">
-=======
 <!-- 10/5/15 The text from the 9/2014 Spanis JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.  Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
 		<DisplayName ID="Audacity Options" Text="Audacity Settings">
->>>>>>> 2b62cddad122e44b75da3d72bb845383d63bc7b1
 			<HelpMsg>
 Opciones específicas para Audacity.</HelpMsg>
 		</DisplayName>
