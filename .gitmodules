@@ -1,0 +1,3 @@
+[submodule "uninstlog"]
+	path = Jaws_script_installer/uninstlog
+	url = ../uninstlog

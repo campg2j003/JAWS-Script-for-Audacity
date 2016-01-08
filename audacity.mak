@@ -44,7 +44,7 @@ WBIN:=c:/progra~2/mingw_sylvan/win32/wbin/
 BUILDDIR=$(SRCDIR)build\$(NULL)
 # source files
 SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SRCDIR)audacity.jsm $(SRCDIR)audacity.jss $(SRCDIR)audacity.qs $(SRCDIR)audacity.qsm $(SRCDIR)audacity_readme.txt $(SRCDIR)audacity_readme_vi.txt $(SRCDIR)copying.txt
-INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)JFW.nsh $(INSTALLSRCDIR)installer_lang_enu.nsh $(INSTALLSRCDIR)JFW_lang_enu.nsh $(INSTALLSRCDIR)installer_lang_esn.nsh $(INSTALLSRCDIR)JFW_lang_esn.nsh $(MYNSISLIBS)
+INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)JFW.nsh $(INSTALLSRCDIR)installer_lang_enu.nsh $(INSTALLSRCDIR)JFW_lang_enu.nsh $(INSTALLSRCDIR)installer_lang_esn.nsh $(INSTALLSRCDIR)JFW_lang_esn.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh
 
 %.html: %.t2t
 	$(TXT2TAGS) --target=html "$<"
@@ -61,7 +61,7 @@ INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSR
 
 #installer: all $(INSTALLSRC)
 installer:
-	$(MAKENSIS) "/DMYNSIS=$(MYNSISLIBDIR)\" "$(BUILDDIR)installer.nsi"
+	$(MAKENSIS) "$(BUILDDIR)installer.nsi"
 
 preparebuild: $(SCRIPTSRC) $(INSTALLSRC) $(MISCSRC)
 	IF NOT EXIST "$(BUILDDIR)" MKDIR "$(BUILDDIR)"
