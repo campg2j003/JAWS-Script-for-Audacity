@@ -1,3 +1,7 @@
 [submodule "uninstlog"]
 	path = Jaws_script_installer/uninstlog
 	url = ../uninstlog
+[submodule "jfw_nsh"]
+	path = Jaws_script_installer/jfw_nsh
+	url = ../jfw_nsh
+	branch = installer_multilang
