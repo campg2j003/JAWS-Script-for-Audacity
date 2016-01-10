@@ -44,7 +44,9 @@ WBIN:=c:/progra~2/mingw_sylvan/win32/wbin/
 BUILDDIR=$(SRCDIR)build\$(NULL)
 # source files
 SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SRCDIR)audacity.jsm $(SRCDIR)audacity.jss $(SRCDIR)audacity.qs $(SRCDIR)audacity.qsm $(SRCDIR)audacity_readme.txt $(SRCDIR)audacity_readme_vi.txt $(SRCDIR)copying.txt
-INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)JFW.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_enu.nsh
+
+# Does not use uninstlog from the jfw_nsh submodule, uses only the uninstlog submodule.
+INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)jfw_nsh\JFW.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_enu.nsh
 
 %.html: %.t2t
 	$(TXT2TAGS) --target=html "$<"
