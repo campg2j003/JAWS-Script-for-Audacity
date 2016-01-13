@@ -84,6 +84,7 @@ SetOverwrite on ;always overwrite files
 ;Remove the ; from the following line and matching close comment to cause the default JAWSInstallScriptItems macro to be used.
 ;/*
 ; The following appears in the user's file before including the JFW.nsh header.
+;We include langstring header after the MUI_LANGUAGE macro.
 !include "uninstlog.nsh"
 !ifndef StrLoc_INCLUDED
 ${StrLoc}
@@ -208,5 +209,7 @@ ${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 
 !insertmacro JAWSScriptInstaller
 ;Strange though it seems, the language file includes must follow the invocation of JAWSScriptInstaller.
+  !include "uninstlog_enu.nsh"
+  !include "uninstlog_esn.nsh"
 !include "installer_lang_enu.nsh"
 !include "installer_lang_esn.nsh"
