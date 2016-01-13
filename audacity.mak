@@ -45,7 +45,7 @@ BUILDDIR=$(SRCDIR)build\$(NULL)
 # source files
 SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SRCDIR)audacity.jsm $(SRCDIR)audacity.jss $(SRCDIR)audacity.qs $(SRCDIR)audacity.qsm $(SRCDIR)audacity_readme.txt $(SRCDIR)audacity_readme_vi.txt $(SRCDIR)copying.txt
 # Does not use uninstlog from the jfw_nsh submodule, uses only the uninstlog submodule.
-INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)jfw_nsh\JFW.nsh $(INSTALLSRCDIR)installer_lang_enu.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_enu.nsh $(INSTALLSRCDIR)installer_lang_esn.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_esn.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_enu.nsh
+INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)jfw_nsh\JFW.nsh $(INSTALLSRCDIR)installer_lang_enu.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_enu.nsh $(INSTALLSRCDIR)installer_lang_esn.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_esn.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_enu.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_esn.nsh
 
 %.html: %.t2t
 	$(TXT2TAGS) --target=html "$<"
