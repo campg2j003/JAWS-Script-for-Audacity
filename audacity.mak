@@ -6,20 +6,9 @@
 # make -f audacity.mak -n installer 
 #
 # other targets:
-## audacity.html - update documentation file.
-## audacity.txt - make audacity.txt from audacity.t2t.
-## all - rebuild audacity.exe and audacity.html.
-
 # Modification history:
 
 # 10/7/15 Copied from ccousins make file and converted to Audacity.
-# 1/25/12 Previous saved to %dev%\ccousins\ HG repo rev 35 as file ccousins.mak.
-# 7/25/11 Changed variables that point into the DEV folder structure to end with backslash.  This is so they can be made to be null so that the makefile can be made to run from the source folder created by the installer.
-# 7/20/11 For my system added variable to define DEV=dev since dev on my system is lower case.
-# 7/19/11 Made targets all and install PHONY.
-# 7/14/11 Added DEV variable for Jerry's system
-
-# The following variables are used as targets or prerequisites.  Files contained in them cannot contain spaces: $(SRCDIR) $(PROD) $(DEV) $(SCRIPTSRC) $(MYNSISLIBDIR) $(INSTALLSRCDIR) $(INSTALLSRC)
 
 # Empty string, so we can put \ at end of line without it being a continuation character.
 NULL=
@@ -36,8 +25,6 @@ PROD:=audacity
 
 # for some tools
 PROG:=$(ProgramFiles)
-PYTHON:="c:\python27\python.exe"
-TXT2TAGS:=$(PYTHON) "$(TXT2TAGSDIR)txt2tags.py"
 MAKENSIS="$(PROG)\nsis\makensis.exe"
 WBIN:=c:/progra~2/mingw_sylvan/win32/wbin/
 
@@ -47,18 +34,9 @@ SCRIPTSRC=$(SRCDIR)audacity.jdf $(SRCDIR)audacity.jkm $(SRCDIR)audacity.jsd $(SR
 # Does not use uninstlog from the jfw_nsh submodule, uses only the uninstlog submodule.
 INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSRCDIR)jfw_nsh\JFW.nsh $(INSTALLSRCDIR)installer_lang_enu.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_enu.nsh $(INSTALLSRCDIR)installer_lang_esn.nsh $(INSTALLSRCDIR)jfw_nsh\JFW_lang_esn.nsh $(INSTALLSRCDIR)uninstlog\uninstlog.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_enu.nsh $(INSTALLSRCDIR)uninstlog\uninstlog_esn.nsh
 
-%.html: %.t2t
-	$(TXT2TAGS) --target=html "$<"
-
-%.txt: %.t2t
-	$(TXT2TAGS) --target=txt "$<"
-
 .PHONY: all installer
 
 #all: $(SRCDIR)$(PROD).exe $(SRCDIR)$(PROD).html
-
-#$(SRCDIR)$(PROD).exe: $(au3src) $(myau3libs) $(myau3dbg)
-
 
 #installer: all $(INSTALLSRC)
 installer:
