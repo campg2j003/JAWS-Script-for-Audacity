@@ -13,18 +13,10 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: Tuesday January 5 2016
+Last updated: Wednesday January 13 2016
 
 Modifications:
 
-12/24/15 Language strings work.
-12/23/15 Added language-specific processing in Just Scripts and Full Install.
-12/22/15 Added Spanish language strings.
-11/12/15 Converted to use language strings.  
-11/11/15 Previous saved to HG changeset:   203:3395f730d20d.
-11/9/11 Moved jsd file to lang-specific section.
-11/1/15 Added constructs for languages, and Spanish language message files.
-7/25/14 Added QuickSettings files.
 */
 
 /*
