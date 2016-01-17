@@ -192,7 +192,17 @@ ${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 !macroend ;JAWSInstallFullItems
 ;*/
 
-;*/
+
+!macro JAWSInstallerSrc
+!InsertMacro JAWSJFWNSHInstallerSrc
+${File} "" "uninstlog.nsh"
+${File} "" "uninstlog_enu.nsh"
+${File} "" "uninstlog_esn.nsh"
+${File} "" "installer.nsi"
+${File} "" "installer_lang_enu.nsh"
+${File} "" "installer_lang_esn.nsh"
+!MacroEnd ;JAWSInstallerSrc
+
 
 ;-----
 !include "mui2.nsh"
