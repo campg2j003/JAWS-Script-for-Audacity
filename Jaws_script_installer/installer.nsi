@@ -14,11 +14,10 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Fri Jul 25 2014
+Last updated: Saturday January 16 2016
 
 Modifications:
 
-7/25/14 Added QuickSettings files.
 */
 
 /*
@@ -118,7 +117,14 @@ ${File} "${JAWSSrcDir}" "${JAWSLicenseFile}"
 !macroend ;JAWSInstallFullItems
 ;*/
 
-;*/
+!macro JAWSInstallerSrc
+!InsertMacro JAWSJFWNSHInstallerSrc
+${File} "" "uninstlog.nsh"
+${File} "" "uninstlog_enu.nsh"
+${File} "" "uninstlog_esn.nsh"
+${File} "" "installer.nsi"
+!MacroEnd ;JAWSInstallerSrc
+
 
 ;-----
 

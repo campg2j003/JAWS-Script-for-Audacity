@@ -41,7 +41,7 @@ INSTALLSRC=$(INSTALLSRCDIR)installer.nsi $(INSTALLSRCDIR)install.ini $(INSTALLSR
 #all: $(SRCDIR)$(PROD).exe $(SRCDIR)$(PROD).html
 
 installer:
-	$(MAKENSIS) "/DMYNSIS=$(MYNSISLIBDIR)\" "$(BUILDDIR)installer.nsi"
+	$(MAKENSIS) "$(BUILDDIR)installer.nsi"
 
 preparebuild: $(SCRIPTSRC) $(INSTALLSRC) $(MISCSRC)
 	IF NOT EXIST "$(BUILDDIR)" MKDIR "$(BUILDDIR)"
