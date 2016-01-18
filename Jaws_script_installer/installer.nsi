@@ -14,7 +14,7 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: Saturday January 16 2016
+Last updated: 1/18/16
 
 Modifications:
 
@@ -131,3 +131,4 @@ ${File} "" "installer.nsi"
 !include "jfw.nsh"
 
 !insertmacro JAWSScriptInstaller
+!include "uninstlog_enu.nsh"
