@@ -44,10 +44,9 @@ installer:
 	$(MAKENSIS) "$(BUILDDIR)installer.nsi"
 
 preparebuild: $(SCRIPTSRC) $(INSTALLSRC) $(MISCSRC)
-	IF NOT EXIST "$(BUILDDIR)" MKDIR "$(BUILDDIR)"
+	-$(WBIN)rm -rf $(BUILDDIR)
+	MKDIR "$(BUILDDIR)" $(BUILDDIR)script $(BUILDDIR)script\lang
 	$(WBIN)cp $(INSTALLSRC) $(BUILDDIR)
-	-mkdir $(BUILDDIR)script $(BUILDDIR)script\lang
-	$(WBIN)cp $(SCRIPTSRC) $(BUILDDIR)script
 	REM What's new.txt doesn't work as part of $(SCRIPTSRC) won't work with blanks in file names, so we include it explicitly.  
 	$(WBIN)cp $(SCRIPTSRC) "$(SRCDIR)What's new.txt" $(BUILDDIR)script
 	$(WBIN)cp -R $(SRCDIR)lang $(BUILDDIR)script
