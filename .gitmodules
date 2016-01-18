@@ -4,4 +4,4 @@
 [submodule "jfw_nsh"]
 	path = Jaws_script_installer/jfw_nsh
 	url = ../jfw_nsh
-	branch = installer_multilang
+	branch = installer_ml
