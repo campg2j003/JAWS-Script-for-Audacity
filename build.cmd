@@ -19,6 +19,7 @@ if not "%1"=="" goto loop
 echo usage: build opt...
 echo where opt is:
 echo b - remove and make build folder structure
+echo c - remove build folder
 echo i - make the installer
 echo t - copy script files to the JAWS script folder overwriting existing files
 echo f - copy the script sources from the JAWS script folder to this folder overwriting existing files
@@ -27,6 +28,7 @@ goto done
 :loop
 if "%1"=="" goto done
 if "%1"=="b" goto build
+if "%1"=="c" goto clean
 if "%1"=="i" goto installer
 if "%1"=="t" goto tojaws
 if "%1"=="f" goto fromjaws
