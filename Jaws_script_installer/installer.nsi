@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 1/13/16
+Last updated: 1/20/16
 
 Modifications:
 
@@ -63,7 +63,7 @@ SetCompressor /solid lzma ;create the smallest file
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
-;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${ScriptApp}_readme.txt"
+;!define MUI_FINISHPAGE_SHOWREADME "$instdir\readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "$(GoToAuthorsPage)"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
@@ -112,11 +112,11 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
   ;We're not logging.
 ${Switch} $1
 ${Case} "esn"
-  File "${JAWSSrcDir}lang\esn\${ScriptApp}_readme.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}lang\esn\readme.txt"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
 ${Break}
 ${Default}
-  File "${JAWSSrcDir}${ScriptApp}_readme.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}readme.txt"
   File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
 ${Break}
 ${EndSwitch}
@@ -160,14 +160,14 @@ StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
 ${Case} "esn"
-${AddItem} "$OUTDIR\${ScriptApp}_readme_esn.txt"
-File "/oname=${ScriptApp}_readme_esn.txt" "${JAWSSrcDir}lang\esn\${ScriptApp}_readme.txt"
+${AddItem} "$OUTDIR\readme_esn.txt"
+File "/oname=readme_esn.txt" "${JAWSSrcDir}lang\esn\readme.txt"
 ;${AddItem} "What's new_esn.txt"
 ;File "/oname=What's new_esn.txt" "${JAWSSrcDir}lang\esn\" "What's new.txt"
 ${Break}
 ${Default}
-${AddItem} "$OUTDIR\${ScriptApp}_readme_enu.txt"
-File "/oname=${ScriptApp}_readme_enu.txt" "${JAWSSrcDir}${ScriptApp}_readme.txt"
+${AddItem} "$OUTDIR\readme_enu.txt"
+File "/oname=readme_enu.txt" "${JAWSSrcDir}readme.txt"
 ${AddItem} "$OUTDIR\What's new_enu.txt"
 File "/oname=What's new_enu.txt" "${JAWSSrcDir}What's new.txt"
 ${Break}
@@ -175,7 +175,7 @@ ${EndSwitch}
 ;Set the location of the README file for the Finish page.
 ${If} $JAWSREADME == ""
   ;no README location for the Finish page, set it to the first version we install.
-  StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme_$1.txt"
+  StrCpy $JAWSREADME "$OUTDIR\readme_$1.txt"
 DetailPrint "JAWSInstallFullItems: setting $$JAWSREADME (for lang $1) to $JAWSREADME" ; debug
 ${EndIf} ;$JAWSREADME not yet set
 ${LoopUntil} $3 == ""
@@ -185,7 +185,7 @@ pop $2
 pop $1
 pop $0
 
-${File} "${JAWSSrcDir}" "${ScriptApp}_readme_vi.txt" ; Vietnamese README file
+${File} "${JAWSSrcDir}" "readme_vi.txt" ; Vietnamese README file
 !ifdef JAWSLicenseFile
 ${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
 !EndIf ; if JAWSLicenseFile
