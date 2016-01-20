@@ -14,7 +14,7 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: 1/18/16
+Last updated: 1/20/16
 
 Modifications:
 
@@ -62,7 +62,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
-;!define MUI_FINISHPAGE_SHOWREADME "$instdir\${SCriptApp}_readme.txt"
+;!define MUI_FINISHPAGE_SHOWREADME "$instdir\readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "Go to author's project page"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
@@ -93,7 +93,7 @@ GetCurInstType $0
 IntOp $0 $0 + 1 ;make it like SectionIn
 ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
   ;We're not logging.
-  File "${JAWSSrcDir}${ScriptApp}_readme.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}readme.txt"
   ${If} $JAWSREADME == ""
     ;no README location for the Finish page, set it to the first version we install.
     StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.txt"
@@ -106,10 +106,10 @@ pop $0
 ;/*
 ;Items to be placed in the installation folder in a full install.
 !macro JAWSInstallFullItems
-${File} "${JAWSSrcDir}" "${ScriptApp}_readme.txt"
+${File} "${JAWSSrcDir}" "readme.txt"
 ;Set the location of the README file for the Finish page.
-StrCpy $JAWSREADME "$InstDir\${ScriptApp}_readme.txt"
-${File} "${JAWSSrcDir}" "${ScriptApp}_readme_vi.txt" ; Vietnamese README file
+StrCpy $JAWSREADME "$InstDir\readme.txt"
+${File} "${JAWSSrcDir}" "readme_vi.txt" ; Vietnamese README file
 ${File} "${JAWSSrcDir}" "What's new.txt"
 !ifdef JAWSLicenseFile
 ${File} "${JAWSSrcDir}" "${JAWSLicenseFile}"
