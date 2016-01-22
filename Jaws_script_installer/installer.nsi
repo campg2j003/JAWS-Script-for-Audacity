@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 1/20/16
+Last updated: 1/22/16
 
 Modifications:
 
@@ -59,7 +59,7 @@ SetCompressor /solid lzma ;create the smallest file
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
 ;The file name of the license file in ${JAWSSrcDir}.  If not defined, no license page will be included.
-;!define JAWSLicenseFile "copying.txt" ; defined in language file
+!define JAWSLicenseFile ; defined in language file, this is a flag to include it
 
 ;Optional installer finish page features
 ;Assigns default if not defined.
@@ -187,7 +187,7 @@ pop $0
 
 ${File} "${JAWSSrcDir}" "readme_vi.txt" ; Vietnamese README file
 !ifdef JAWSLicenseFile
-${File} "${JAWSSrcDir}" "$(JAWSLicenseFile)"
+${File} "${JAWSSrcDir}" "copying.txt"
 !EndIf ; if JAWSLicenseFile
 !macroend ;JAWSInstallFullItems
 ;*/
