@@ -1,6 +1,6 @@
 [submodule "uninstlog"]
 	path = Jaws_script_installer/uninstlog
-	url = ../uninstlog
+	url = https://github.com/campg2j003/uninstlog
 [submodule "jfw_nsh"]
 	path = Jaws_script_installer/jfw_nsh
-	url = ../jfw_nsh
+	url = https://github.com/campg2j003/jfw_nsh
