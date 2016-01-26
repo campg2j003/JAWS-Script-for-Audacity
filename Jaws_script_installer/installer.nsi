@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 1/22/16
+Last updated: 1/26/16
 
 Modifications:
 
@@ -22,7 +22,7 @@ Modifications:
 /*
 Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

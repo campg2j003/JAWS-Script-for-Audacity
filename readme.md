@@ -1,4 +1,4 @@
-12/7/2015  JAWS script for Audacity V2.0 (for script version 2.1.0-beta2 1/21/16  22:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+1/26/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta2 1/21/16  22:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -64,7 +64,7 @@ If you want to use different keys you will have to change the assignments in aud
 
 This version of the scripts adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
 
-The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, and 16.
+The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.
 
 A side effect of ENTER pausing during record and play is that you can't use ENTER to select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the ENTER key adds "p" in a label instead of terminating it.  Use Control+ENTER to send ENTER in this case.
 
@@ -74,22 +74,46 @@ When focus is in a label track pressing TAB will try to speak the "current" labe
 
 If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
 
-The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, and 2.1.1 and JAWS 10.0.1178u on Windows XP SP3, and JAWS 13-16 on a laptop running Windows 7, 8.1, and 10.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good.  Recent development has been done with JAWS 16 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
+The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2RC2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that a used function was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 # Multiple Language Support
-Messages and string constants for the script are in audacity.jsm facilitating translation.  Fernando Gregoire has contributed a Spanish translation.  Gracias!
+Messages and string constants for the JAWS script are in audacity.jsm and audacity.qsm facilitating translation.  Fernando Gregoire has contributed a Spanish translation.  Gracias!
 
 This version of the installer framework contains the first cut of support for installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.
-Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.
 
-The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  The only language currently supported is English.
+Although the installer installs and compiles the scripts into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the scripts.
 
+# Notes for script developers
+This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.
+
+To build the installer you will also need [NSIS](http://nsis.sf.net).  The release is made by V2.46.
+
+There is a [build.cmd](build.cmd) script in the repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, and runs the installer.  You may have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
+
+The `b` option produces the following structure in the root of the repo:
+```
+build\
+  script\
+    lang\
+      esn\
+        Spanish-specific JAWS script files
+    script files (non-language specific and English)
+  installer files
+```
+
+The contents of the lang folder in the top level of the repo, including all subfolders, is copied to the build\script\lang folder.  Each script file in the top level of the repo is also copied to the script folder.  Note that since specific files are copied to the script folder, other files that may be in the repo will not be copied, but *all* files in the lang folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from Jaws_script_installer, Jaws_script_installer\uninstlog, and Jaws_script_installer\jfw_nsh, to build.  The readme and other text files are also copied to scripts, and readme.md is renamed to readme.txt.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
+
+Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.  For this reason the scripts are compiled using `#pragma usePoFile 0`.
+
+The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.
+
+# Conclusion
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
 # Here is the text of the JAWS hot key help:
 
 ```
-JAWS keystrokes for script version 2.0 10/6/15  22:55UTC, for Audacity 2.0.0 or later:
+JAWS keystrokes for script version 2.1.0-beta2 1/21/16  22:30UTC, for Audacity 2.0.0 or later:
 To say the selection start position, press Alt+[.
 To say the selection end position or length, press Alt+].
 To move focus to these controls, press the key twice quickly.
@@ -139,8 +163,6 @@ To change settings for the Audacity script, press   JAWSKey+V.
 
 To Change the URL for the Audacity Jaws Guide, press Shift+Control+J
 
-List JAWS Hot Keys
-Press ESCAPE to close this message. 
 ```
 
 Enjoy!
