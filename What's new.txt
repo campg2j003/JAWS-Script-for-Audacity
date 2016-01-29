@@ -1,6 +1,7 @@
-(This file last updated 1/26/2016)
+(This file last updated 1/29/2016)
 
-- The package has a new home.  It is now hosted at https://github.com/campg2j003/JAWS-Script-for-Audacity.
+- The package has a new home.  It is now hosted at https://github.com/campg2j003/JAWS-Script-for-Audacity.  The source is now available there.  (You can submit changes by forking the repository, making a topic branch for your change, and submitting a pull request.  You will also need the jfw_nsh and uninstlog repositories if you want to work with the installer.)
+- Some parts of the installer have been broken out into separate packages so that they can be used in other projects.  These are jfw_nsh and uninstlog.
 - The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.
 - The installer framework now supports  installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.
 - Letter keys now speak while writing a label.  This feature may be somewhat problematic.  Since we can't detect the track type, the feature is enabled when commands are executed that write a label.  It is deactivated by commands that end the label (ENTER) or move out of the label track, and when focus moves out of the track panel.  If you move into a label track with the arrow keys, the feature is not activated.  It can be deactivated by moving to the toolbar or selection bar and back.  When this feature is active while playing or recording ENTER terminates the label (and therefore exits label mode) rather than pausing.
