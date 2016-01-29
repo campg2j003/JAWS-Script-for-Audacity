@@ -1,4 +1,4 @@
-1/26/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta2 1/21/16  22:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+1/28/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta3 1/21/16  22:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -84,7 +84,7 @@ This version of the installer framework contains the first cut of support for in
 Although the installer installs and compiles the scripts into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the scripts.
 
 # Notes for script developers
-This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.
+This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.  You also need to run `git submodule update --remote` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the JAWS-Script-for-Audacity repo from GitHub as a zip file, the submodule folders will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  The file .gitmodules in the top-level folder may be of help in determining the right branch.)
 
 To build the installer you will also need [NSIS](http://nsis.sf.net).  The release is made by V2.46.
 
