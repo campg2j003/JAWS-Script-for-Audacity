@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta2 1/27/16  08:00UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta3 1/31/16  03:40UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2155,18 +2155,30 @@ If IsWarningDialog () && IsPCCursor () && Not UserBufferIsActive () && !CheckAud
 	SayWindowTypeAndText (GetFocus ())
 Else
 	; Not at this dialog, performs default funtionality
+	If NoProject () Then
+		SayNoProject ()
+		Return
+	EndIf ; if no project
 	PerformScript SayLine()
 EndIf
 EndScript ; SayLine
 
 Script SayPriorLine ()
 Let gfInLabel = False
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
 PerformScript SayPriorLine ()
 EndScript ;SayPriorLine
 
 
 Script SayNextLine ()
 Let gfInLabel = False
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
 PerformScript SayNextLine ()
 EndScript ;SayNextLine
 
