@@ -14,7 +14,7 @@ Features:
 Limitations:
 . This installer works with English versions only.
 Date created: Wednesday, July 11, 2012
-Last updated: 1/20/16
+Last updated: 2/2/16
 
 Modifications:
 
@@ -65,7 +65,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "Go to author's project page"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://github.com/campg2j003/JAWS-Script-For-Audacity"
 
 ;SetCompressor is outside the header because including uninstlog.nsh produces code.  setOverWriteDefault should not be in code used to add JAWS to another installer, although we probably want it in the default installer macro.
 SetCompressor /solid lzma ;create the smallest file
