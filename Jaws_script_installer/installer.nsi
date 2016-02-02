@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 1/26/16
+Last updated: 2/2/16
 
 Modifications:
 
@@ -66,7 +66,7 @@ SetCompressor /solid lzma ;create the smallest file
 ;!define MUI_FINISHPAGE_SHOWREADME "$instdir\readme.txt"
 ;!define JAWSNoReadme ;uncomment if you don't have a README.
 !define MUI_FINISHPAGE_LINK "$(GoToAuthorsPage)"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://code.google.com/p/dangmanhcuong"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://github.com/campg2j003/JAWS-Script-For-Audacity"
 
 ;SetCompressor is outside the header because including uninstlog.nsh produces code.  setOverWriteDefault should not be in code used to add JAWS to another installer, although we probably want it in the default installer macro.
 SetOverwrite on ;always overwrite files
