@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2/2/16
+Last updated: 2/6/16
 
 Modifications:
 
@@ -42,6 +42,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 */
 
 ;Start of code
+RequestExecutionLevel highest
 SetCompressor /solid lzma ;create the smallest file
 ;!define JAWSDEBUG ; debug
 ;User defined constants
@@ -205,7 +206,8 @@ ${File} "" "installer_lang_esn.nsh"
 
 
 ;-----
-!include "mui2.nsh"
+;Doesn't need to be here-- in jfw.nsh.
+;!include "mui2.nsh"
 
 !include "jfw.nsh"
 
