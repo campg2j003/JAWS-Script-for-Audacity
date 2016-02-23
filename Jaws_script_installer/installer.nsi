@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2/6/16
+Last updated: 2/21/16
 
 Modifications:
 
@@ -86,23 +86,23 @@ ${StrLoc}
 ;Contains the instructions to install the scripts in each version of JAWS.  If not defined, the installer will use a default version that tries to install every type of JAWS script file for an application I know of.
 ;Assumes uninstlog is open when called.
 ;Version in $0, lang in $1.
-${FileDated} "${JAWSSrcDir}" "audacity.jdf"
-${FileDated} "${JAWSSrcDir}" "audacity.jss"
-${FileDated} "${JAWSSrcDir}" "audacity.qs"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jdf"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jss"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
 ${Case} "esn"
-${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
-${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
-${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
-${FileDated} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
 ${Break}
 ${Default}
-${FileDated} "${JAWSSrcDir}" "audacity.jkm"
-${FileDated} "${JAWSSrcDir}" "audacity.jsd"
-${FileDated} "${JAWSSrcDir}" "audacity.jsm"
-${FileDated} "${JAWSSrcDir}" "audacity.qsm"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.qsm"
 ${Break}
 ${EndSwitch}
 ;If it is a Just Scripts installation, install text files into the script folder.
@@ -111,6 +111,8 @@ GetCurInstType $0
 IntOp $0 $0 + 1 ;make it like SectionIn
 ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
   ;We're not logging.
+;Set the location for these files the same as JSD files-- for shared scripts in JAWS 17 this is Scripts\<lang>.
+${JawsScriptSetPath} jsd
 ${Switch} $1
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}lang\esn\readme.txt"
