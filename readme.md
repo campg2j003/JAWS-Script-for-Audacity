@@ -1,4 +1,4 @@
-1/28/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta3 1/21/16  22:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2/23/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta4 2/23/16  17:32UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -17,10 +17,11 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 - Keystrokes that extend or contract the selection speak the new position (or length).
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
-- There is a Vietnamese translation of the README file.  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
+- There is a Vietnamese translation of the README file (for V2.0 9/15/2013).  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
 - You can go to a track by number.  You can also move a track to a specific position by number.  You can also set a "mark" on a track and later return there, or move a track there.
 - Feedback is provided when moving a track via the keyboard.  (See below.)
 - The installer now supports multiple languages.
+- The installer can now install for all users or the current user.  All user installs can install in the shared scripts, including for JAWS 17.
 - When playing or recording the ENTER key executes pause/resume.  In this case, pressing CTRL+ENTER sends ENTER.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  this can be turned off with an option in Adjust JAWS Options.  Try it out and let us know if it works for you and if you like it.  
  
 The script version can be obtained by pressing JAWSKey+CTRL+V (twice quickly to display it in the virtual viewer), and also appears in JAWS hot key help.
@@ -31,10 +32,14 @@ The URL for accessing the Audacity Guide for JAWS users can be modified via the 
 1. Place the installer in a folder on your machine.
 2. Run it to install the files.
 
-It also allows you to choose which JAWS versions to install into and whether to install for the current user or all users.  If you choose the full install type, you will be able to remove it via Add or Remove Programs, and it will make a folder in your Program Files folder to store the uninstaller.  If you choose the Just Scripts install type, it will not be removable from Add or Remove Programs, and it will not create a folder in your Program Files folder or any registry entries.  
+(This section needs work!  If you want to help and get to it before I do, submit a pull request!)
+
+It also allows you to choose whether to install Just Scripts or a Full install.  If you choose the full install type, you will be able to remove it via Add or Remove Programs, and it will make a folder in your Program Files (or Application Data) folder to store the uninstaller.  If you choose the Just Scripts install type, it will not be removable from Add or Remove Programs, and it will not create a folder in your Program Files folder or any registry entries.  
 If you choose the Just Scripts install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and What's new.txt will be called audacity_whatsnew.txt.  (The Vietnamese README file will not be installed in a Just Scripts install.)
 
-The installer will compile the script package in each JAWS version.
+If you have administrator privileges, the installer displays a page that allows you to choose whether to install for all users or the current user.  If you choose to install for the current user, the uninstaller and documentation files are placed in the local application data folder for the current user.  Otherwise they are placed in the program files folder.  For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  Using these settings it is possible to place the uninstaller in Program Files but install the scripts for the current user.
+
+The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that that the script will only be properly compiled for the language of the currently running JAWS.
 
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
