@@ -28,16 +28,23 @@ The script version can be obtained by pressing JAWSKey+CTRL+V (twice quickly to 
 
 The URL for accessing the Audacity Guide for JAWS users can be modified via the script by pressing Control+Shift+j.  This opens a dialog with an edit box containing the URL.  Update or replace it and press OK.
 
-# To install: 
+# To install:
+(This section still needs work!  If you want to help and get to it before I do, submit a pull request or send me your changes!)
 1. Place the installer in a folder on your machine.
 2. Run it to install the files.
 
-(This section needs work!  If you want to help and get to it before I do, submit a pull request!)
+Three install types are supported:
+- Just Scripts: installs the scripts but does not install uninstall information or make a folder in %ProgramFiles%.
+- Full: installs scripts in the script folder for the selected versions/languages, creates a folder in %programfiles% (%localappdata% for current user install) wich contains an uninstaller and optional additional files such as README, etc.
+- Custom: like Full but allows installation of the installer source.
 
-It also allows you to choose whether to install Just Scripts or a Full install.  If you choose the full install type, you will be able to remove it via Add or Remove Programs, and it will make a folder in your Program Files (or Application Data) folder to store the uninstaller.  If you choose the Just Scripts install type, it will not be removable from Add or Remove Programs, and it will not create a folder in your Program Files folder or any registry entries.  
+For full or custom installations for all users the uninstaller and README files are installed in %programfiles%.  For current user installations they are installed in %localappdata%.
+
+If the user's priveleges allow for installing for all users, an all user install is performed.  Otherwise a current user install is performed.  If privileges allow for all user installation, current user installation can be forced by adding the /currentuser command line switch.
+
 If you choose the Just Scripts install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and What's new.txt will be called audacity_whatsnew.txt.  (The Vietnamese README file will not be installed in a Just Scripts install.)
 
-If you have administrator privileges, the installer displays a page that allows you to choose whether to install for all users or the current user.  If you choose to install for the current user, the uninstaller and documentation files are placed in the local application data folder for the current user.  Otherwise they are placed in the program files folder.  For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  Using these settings it is possible to place the uninstaller in Program Files but install the scripts for the current user.
+For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  Using these settings it is possible to place the uninstaller in Program Files but install the scripts for the current user.
 
 The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that that the script will only be properly compiled for the language of the currently running JAWS.
 
