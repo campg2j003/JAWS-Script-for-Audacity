@@ -1,4 +1,4 @@
-2/23/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta4 2/23/16  17:32UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2/26/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.5 2/26/16  22:45UTC (ML)) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -12,9 +12,9 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 - When focus is in the toolbars pressing CTRL+TAB and Shift+CTRL+TAB move to the first control on the next toolbar and the last control on the previous toolbar, respectively.
 - JAWSKey+Delete speaks the current program state: stop, play, play pause, record, or record pause.
 - Speaks cursor position when left/right arrows are pressed and Audacity is stopped when focus is in the track panel.
+- Keystrokes that extend or contract the selection speak the new position (or length).
 - Indicates when no project is open (no tracks in track panel) for many operations.
 - Track gain and pan controls now are passed to the application when the PC cursor is active and focus is in the main window.  Otherwise they execute their default mouse movement functions.
-- Keystrokes that extend or contract the selection speak the new position (or length).
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
 - There is a Vietnamese translation of the README file (for V2.0 9/15/2013).  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
@@ -44,7 +44,7 @@ If the user's priveleges allow for installing for all users, an all user install
 
 If you choose the Just Scripts install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and What's new.txt will be called audacity_whatsnew.txt.  (The Vietnamese README file will not be installed in a Just Scripts install.)
 
-For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  Using these settings it is possible to place the uninstaller in Program Files but install the scripts for the current user.
+For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  
 
 The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that that the script will only be properly compiled for the language of the currently running JAWS.
 
@@ -53,7 +53,7 @@ If you want to modify the installer, or are just curious how it works, you can i
 
 # Script Options
 
-The script has several options that control some of its features which can be accessed by pressing JAWSKey+v.  For JAWS versions prior to 13 these settings are stored in file audacity.jsi in the PersonalSettings folder of the JAWS installation.  For versions after 13 they are stored in audacity.jcf in the NonJCFOptions section.  If you upgrade from a version of JAWS before 13 to 13 or later the settings are not transferred from audacity.jsi, so you will have to set them again.
+The script has several options that control some of its features which can be accessed by pressing JAWSKey+v.  For JAWS versions prior to 13 these settings are stored in file audacity.jsi in the PersonalSettings folder of the JAWS installation.  For version 13 and later they are stored in audacity.jcf in the NonJCFOptions section.  If you upgrade from a version of JAWS before 13 to 13 or later the settings are not transferred from audacity.jsi, so you will have to set them again.
 
 
 # Going to and Moving Tracks
@@ -82,11 +82,11 @@ A side effect of ENTER pausing during record and play is that you can't use ENTE
 
 When entering a label in a label track JAWS used to speak the Audacity functions for letter keys even though the letters were being entered into the label.  We now suppress this behavior if you use the standard methods for creating a label.  This feature is activated by the Control+b and Control+m keystrokes and is deactivated when ENTER is pressed.  (It is also deactivated if you arrow to another track or if focus moves out of the track panel.)  It will not activate if you arrow to the label track and start writing.  If you change the standard key assignments for these commands you will also need to change audacity.jkm accordingly.
 
-When focus is in a label track pressing TAB will try to speak the "current" label.  This is done by searching for text on a white background.  This is intended to give feedback when tabbing to labels in a label track.  This doesn't always work, particularly with a lot of labels.  Actually this ability is active anytime focus is in the track panel.
+When focus is in a label track pressing TAB will try to speak the "current" label.  This is done by searching for text with a white background.    This doesn't always work, particularly with a lot of labels.  Actually this ability is active anytime focus is in the track panel.
 
-If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  
+If you redefine the numpad ENTER key and set JAWS to treat extended keys separately, both ENTER keys will be mapped to the typing keys ENTER.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for ENTER, NumPadEnter, and Control+ENTER in audacity.jkm and removing semicolons on the lines containing /* and */ before and after scripts Enter and CtrlEnter in audacity.jss.  If you modify audacity.jss, please change the date in the version constant so we'll know it is a modified version if you communicate with us about it.
 
-The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2RC2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that a used function was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
+The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that a used function was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 # Multiple Language Support
 Messages and string constants for the JAWS script are in audacity.jsm and audacity.qsm facilitating translation.  Fernando Gregoire has contributed a Spanish translation.  Gracias!
@@ -125,7 +125,7 @@ I would be interested in feedback on the script and suggestions for improvement,
 # Here is the text of the JAWS hot key help:
 
 ```
-JAWS keystrokes for script version 2.1.0-beta2 1/21/16  22:30UTC, for Audacity 2.0.0 or later:
+JAWS keystrokes for script version 2.1.0-beta.5 2/25/16  17:05UTC (ML), for Audacity 2.0.0 or later:
 To say the selection start position, press Alt+[.
 To say the selection end position or length, press Alt+].
 To move focus to these controls, press the key twice quickly.

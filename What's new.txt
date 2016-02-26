@@ -1,7 +1,11 @@
-(This file last updated 2/22/2016)
+(This file last updated 2/26/2016)
+
+# New in V2.1.0-beta.5
+- The check for an existing installation has been moved to after the Versions/Languages selection screen.  This allows the current/all users choice before checking for an existing installation.
+- The radio buttons on the Select Versions/Languages page control both where the scripts are installed and the folder where the uninstaller and other supporting files are placed.
 
 # New in V2.1.0-beta4
-- The installer can now install for all users or the current user.  (For all user installs the uninstaller and supporting files are stored in %programfiles% as before.  For current user installs they are placed in %localappdata%.)  If the user has higher than standard user privileges a new page allows choosing installation for all users or the current user.
+- The installer can now install for all users or the current user.  (For all user installs the uninstaller and supporting files are stored in %programfiles% as before.  For current user installs they are placed in %localappdata%.)  If the user has higher than standard user privileges a command line option allows forcing installation for the current user.
 - The installer can now install into the shared scripts folder of JAWS 17.0.
 - For current user installs the Install for current user or all users radio buttons on the Versions/Languages selection page do not appear.
 - SayLine, SayPriorLine, and SayNextLine now report no project if there are no tracks in the project.  (issue #1)
