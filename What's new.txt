@@ -1,6 +1,7 @@
 (This file last updated 2/26/2016)
 
 # New in V2.1.0-beta.5
+- The check for existing scripts now ignores .jcf file so saved settings do not trigger the warning.
 - The check for an existing installation has been moved to after the Versions/Languages selection screen.  This allows the current/all users choice before checking for an existing installation.
 - The radio buttons on the Select Versions/Languages page control both where the scripts are installed and the folder where the uninstaller and other supporting files are placed.
 
