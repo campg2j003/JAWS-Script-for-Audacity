@@ -1,4 +1,4 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 10/5/2015.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 12/1/2015.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -27,7 +27,10 @@ Const
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
 	WN_SELECTION = "Selection", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Transport", ; window name of Transport toolbar
-	WN_EDIT_CHAINS = "Edit Chains" ; name of the Edit Chains dialog
+	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog
+	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
+	WN_PREVIEWING = "Previewing", ;appears in progress dialog while previewing effects
+	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing
 
 Const
 	; These are used to announce different areas of the main window.  They should be translated.

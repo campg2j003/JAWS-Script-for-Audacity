@@ -11,7 +11,7 @@ set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss a
 set OTHERSRC=readme_vi.txt copying.txt "What's new.txt"
 REM These are basenames of .md files that should be staged as .txt files.
 set markdownsrc=readme
-set INSTALLSRC=installer.nsi install.ini jfw_nsh\JFW.nsh uninstlog\uninstlog.nsh uninstlog\uninstlog_enu.nsh uninstlog\uninstlog_esn.nsh
+set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh install.ini jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh uninstlog\uninstlog.nsh uninstlog\uninstlog_enu.nsh uninstlog\uninstlog_esn.nsh
 if "%1"=="/?" goto help
 if "%1"=="-?" goto help
 if "%1"=="-h" goto help

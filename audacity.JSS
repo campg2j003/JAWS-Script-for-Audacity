@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2/12/16  00:45UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.5 3/1/16  19:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -32,6 +32,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
 @@
 EndMessages
 
+    
 ;Modifications:
 
 Include "hjconst.jsh"
@@ -39,6 +40,11 @@ Include "hjglobal.jsh"
 Include "common.jsm"
 Include "audacity.jsm"
 Include "msaaconst.jsh"
+;include "debugstring.jsh" ; debug
+;use "debugstring.jsb" ; debug
+
+;The following line makes JAWS 17 to use the old localization model. Although the scripts stored in Settings\Language folder seem to work without adding this, international characters of messages in Audacity.jsm are not processed correctly.
+;#pragma usePoFile 0
 
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
@@ -82,6 +88,7 @@ Const
 
 Globals
 	Int App_FirstTime,
+	Int gfAudacityAutostarted, ;Set in AutoStartEvent, cleared in HandleCustomWindows and HandleCustomApp.
 	String gsIniFile, ; CS_Ini_File for pre JAWS 13, the JCF file for 13 and later.
 	String gsIniSection, ;"Settings" for pre JAWS 13, "NonJCFOptions" for 13 and later
 	;For adjust Jaws options and quick settings script
@@ -247,6 +254,9 @@ Var
 	String sTemp,
 	Int iTemp
 	
+;DebugString("AutoStart") ; debug
+;gfAudacityAutoStarted prevents activation of Silence Preview when switching from another app while focus is in a dialog.
+Let gfAudacityAutostarted = True
 ;We reset these two flags in case they get stuck on.
 Let gfSilence = False
 Let gfPreviewing = False
@@ -296,13 +306,24 @@ EndIf ; if first time
 EndFunction ; AutoStartEvent
 
 Void Function SayNonHighlightedText (Handle hwnd, String buffer)
-;If we are monitoring an edit associated with a slider, speak it.
+;SayString("Enter SayNonHighlighted") ; debug
+	;If we are monitoring an edit associated with a slider, speak it.
 If ghSliderEdit && hWnd == ghSliderEdit Then
 	Say (buffer, OT_NONHIGHLIGHTED_SCREEN_TEXT)
 EndIf
 SayNonhighlightedText (hWnd, buffer)
+;SayString("Exit SayNonHighlighted") ; debug
 EndFunction ; SayNonHighlightedText
 
+int function NewTextEventShouldBeSilent(handle hFocus, handle hwnd, string buffer, int nAttributes,
+	int nTextColor, int nBackgroundColor, int nEcho, string sFrameName)
+Var
+	Int iRtn
+Let iRtn = gfSilence || NewTextEventShouldBeSilent(hFocus, hwnd, buffer, nAttributes,
+	nTextColor, nBackgroundColor, nEcho, sFrameName)
+Return iRtn
+EndFunction ;NewTextEventShouldBeSilent
+	
 Globals Handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
 
@@ -334,20 +355,83 @@ ActiveItemChangedEvent (curHwnd, curObjectId, curChildId, prevHwnd, prevObjectId
 EndFunction
 */
 
+Int Function HandleCustomAppWindows(Handle hWnd)
+	Var
+	Int iRtn
+
+If True Then Return True EndIf ; test what happens if we disable app window.
+;DebugString("Enter HandleApp") ; debug
+If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutoStarted Then
+	;DebugString("GetWindowName of appWindow: " + GetWindowName(hWnd))
+	Let gfSilence = True
+	;DebugString("Exit HandleApp, starting previewing") ; debug
+	Return True
+EndIf ;2.1.2 or later
+Let iRtn = HandleCustomAppWindows(hWnd)
+;DebugString("Exit HandleApp") ; debug
+Return iRtn
+EndFunction ;HandleCustomAppWindows
+
 Int Function HandleCustomRealWindows(Handle hReal)
 ;Suppress speech for preview.
-var int iRtn ; debug
+var int iRtn, ; debug
+	String sFirst
 
-;DebugString("Enter HandleReal" + GetWindowName(hReal)) ; debug
+Let sFirst = GetWindowName(GetFirstChild(hReal))
+;DebugString("Enter HandleReal " + sFirst) ; debug
+;SayString("Enter HandleReal") ; debug
+If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutoStarted && (sFirst == WN_PREPARING_PREVIEW || sFirst == WN_PREVIEWING) Then
+	;DebugString("GetWindowName of RealWindow: " + GetWindowName(hReal))
+	Let gfSilence = True
+	;DebugString("Exit HandleReal, starting previewing") ; debug
+	Return True
+EndIf ;2.1.2 or later
 If gfSilence Then
 	;DebugString("HandleCustomReal: speech suppressed") ; debug
 	Return True
 EndIf ; if gfSilence
 Let iRtn = HandleCustomRealWindows(hReal)
+;SayString("Exit HandleReal") ; debug
 ;DebugString("Exit HandleReal") ; debug
 return iRtn
 EndFunction ; HandleCustomRealWindows
 
+/* Debugging functions
+void function ProcessSayAppWindowOnFocusChange(handle AppWindow, handle FocusWindow)
+Var
+	Int OldDebugSay = DebugSay
+;DebugString("Enter ProcessSayAppWindowOnFocusChange: App=" + IntToString(AppWindow) + ", focus=" + IntToString(FocusWindow) + ", dlg=" + IntToString(DialogActive())) ; debug
+Let DebugSay = False
+;DebugString("AppWindow: " + GetTreeInfo(AppWindow))
+Let DebugSay = OldDebugSay
+ProcessSayAppWindowOnFocusChange(AppWindow, FocusWindow)
+;DebugString("Exit ProcessSayAppWindowOnFocusChange") ; debug
+EndFunction ;ProcessSayAppWindowOnFocusChange
+
+void function ProcessSayRealWindowOnFocusChange(handle AppWindow, handle RealWindow, string RealWindowName, handle FocusWindow)
+Var
+	Int OldDebugSay = DebugSay
+;SayString("Enter ProcessReal") ; debug
+;DebugString("Enter ProcessSayRealWindowOnFocusChange: app=" + IntToString(AppWindow) + ", Real=" + IntToString(RealWindow) + ", focus=" + IntToString(FocusWindow) + ", dlg=" + IntToString(DialogActive())) ; debug
+;Let DebugSay = False
+;DebugString("RealWindow: " + GetTreeInfo(RealWindow))
+;Let DebugSay = OldDebugSay
+ProcessSayRealWindowOnFocusChange(AppWindow, RealWindow, RealWindowName, FocusWindow)
+;DebugString("Exit ProcessSayRealWindowOnFocusChange") ; debug
+;SayString("Exit ProcessReal") ; debug
+EndFunction ;ProcessSayRealWindowOnFocusChange
+*/
+
+/*
+void function ProcessSayFocusWindowOnFocusChange(string RealWindowName, handle FocusWindow)
+;SayString("Enter ProcessFocus") ; debug
+;DebugString("enter ProcessSayFocusWindow: " + GetWindowName(FocusWindow) + ", " + IntToString(gfSilence)) ; debug
+ProcessSayFocusWindowOnFocusChange(RealWindowName, FocusWindow)
+;DebugString("Exit ProcessSayFocusWindow") ; debug
+;SayString("Exit ProcessSayFocused") ; debug
+EndFunction ;processsayfocuswindowonfocuschange
+*/
+	
 Int Function HandleCustomWindows (Handle hFocus)
 Var
 	Handle hParent,
@@ -356,8 +440,30 @@ Var
 	Handle hTemp,
 	Handle hTemp2,
 	String sName,
-	Int iMSAA_JCFOpt
+	Int iMSAA_JCFOpt,
+	int iRtn
 
+Let gfAudacityAutoStarted = False
+;See if Stop being spoken in previewing is an invisible window.
+	If !IsWindowVisible(hFocus) Then
+	If GetControlID(hFocus) == ID_STOP_BUTTON Then ; debug
+		;SayString("invisible stop") ; debug
+		Return False ; debug
+	EndIf ; debug
+	Return True
+EndIf ; not visible
+
+	;DebugString("HandleCustom: hFocus=" + IntToString(hFocus) + ", text=" + GetWindowText(hFocus, False) + ", class=" + GetWindowClass(hFocus)) ; debug
+If GetWindowClass(hFocus) == "button" && GetWindowText(hFocus, False) == "" Then ; debug
+;DebugString("WindowName = " + GetWindowName(hFocus) + ", " + CollectWindowInfo(hFocus)) ; debug
+EndIf ; debug
+If IsWindowVisible(hFocus) && GetControlID(hFocus) == 5100 Then ; debug
+	;SayString("got stop button") ; debug
+	;DebugString("GetCustom: hFocus: " + CollectWindowInfo(hFocus) + "Parent: " + CollectWindowInfo(GetParent(hFocus))) ; debug
+	;DebugString("HandleFocused, tree of parent of Stop: " + GetTreeInfo(GetParent(hFocus))) ; debug
+	;DebugString("HandleCustom: 5100, " + GetWindowName(hFocus) + ", first = " + GetWindowName(GetFirstWindow(hFocus))) ; debug
+EndIf ; debug
+;SayString("Enter HandleFocus") ; debug
 If hFocus != GlobalPrevFocus Then
 	;This test keeps this from being executed by SayWindowPromptAndText.
 	Let gfInLabel = False
@@ -403,14 +509,16 @@ Else
 	Let ghSliderEdit = ghNull
 EndIf ;else not slider
 
-If gfSilencePreview && hFocus == GetAppMainWindow(hFocus) Then
+If !CheckAudacityVersion ("2,1,2") && hFocus == GetAppMainWindow(hFocus) Then
+	;Audacity version before 2.1.2.
 	;DebugString("previewing " + IntToString(hFocus)) ; debug
     Let gfSilence = True
 	;DebugString("suppress focus exit say custom") ; debug
 	Return True
 EndIf
 
-If DialogActive() && gfSilence && GetControlId(hFocus) == ID_STOP_BUTTON Then
+If DialogActive() && gfSilence && GetControlId(hFocus) == ID_STOP_BUTTON && GetWindowName (hFocus) == WN_STOP_BTN Then
+	;DebugString("HandleCustom: got stop button " + GetWindowName(hFocus)) ; debug
 	Let gfPreviewing = True
 	Return True
 EndIf ; stop button
@@ -423,6 +531,7 @@ EndIf ; if gfSilence
 ;Announce when focus changes to a different area of the main window.
 If !FocusInMainWindow() Then
 	If DialogActive () && GetWindowName(GetFocus()) == cscNULL Then
+	;SayString("No window name") ; debug
 		Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
 		SetJCFOption (OPT_MSAA_MODE, 2)
 		Let sName = GetObjectName()
@@ -433,12 +542,17 @@ If !FocusInMainWindow() Then
 		"", "",   ; Container name, type
 		"", "",   ; value, position
 		"")   ; dialog text
+		;SayString("Exit HandleFocus null winname") ; debug
 		Return True
 	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") then
 		SayWindowTypeAndText (GetFocus ())
+		;SayString("Exit HandleFocus warning dlg") ; debug
 		Return true
 	EndIf ; no window name
-	Return HandleCustomWindows (hFocus) ; not main window, continue with normal processing
+	;SayString("Calling HandleCustom") ; debug
+	Let iRtn = HandleCustomWindows (hFocus) ; not main window, continue with normal processing
+	;SayString("Exit HandleFocus not main window") ; debug
+	Return iRtn
 EndIf ; if ! focus in main window
 Let hParent = GetParent(hFocus)
 If GetWindowName(hFocus) != WN_TRACKPANEL Then
@@ -470,7 +584,9 @@ If IsToolbar(GetToolbar ()) Then
 		EndIf
 	EndIf ; new toolbar
 EndIf ; If IsToolbar
-Return HandleCustomWindows (hFocus) ; allow others to process
+Let iRtn = HandleCustomWindows (hFocus) ; allow others to process
+;SayString("Exit HandleFocus") ; debug
+Return iRtn
 EndFunction ; HandleCustomWindows
 
 Void Function SayFocusedObject ()
@@ -2083,6 +2199,7 @@ If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
 	Let iCurId = GetControlID (GetFocus ())
 	If iCurId == ID_Chains_List Then
 If CheckAudacityVersion ("2,0,4") then ;The control ID of Change CMD has changed since Audacity 2.0.4. So we add this condition to varify that.
+    ;SayString("Finding chain commands") ; debug
 		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List2)
 Else
 		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
@@ -2092,6 +2209,7 @@ EndIf ;Check Audacity version
 		Let wnd=FindDescendantWindow (hReal, ID_Chains_List)
 		Let sMessage=msgChains ;list of chains in the left list
 	EndIf ; Else neither list.
+	;SayString("Focus to " + IntToString(wnd)) ; debug
 	SetFocus (wnd)
 	;speaks a message when switching between the listss
 	If GetQuickSetting ("AnnounceMessage") Then
@@ -2168,15 +2286,19 @@ EndFunction ; CheckAudacityVersion
 Script test ()
 ;Test CheckAudacityVersion.
 Var String s
-/*Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
-Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) + ", should get True\n"
-Let s = s + "testing 2,0,5, got " + IntToString(CheckAudacityVersion("2,0,5")) + ", should get False\n"
-*/
 /*
-;Let s = "gfSilence = " + IntToString(gfSilence)
-Let s = IntToString(GetJFWVersion())
+Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
+Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) + ", should get True\n"
+Let s = s + "testing 2,0,5, got " + IntToString(CheckAudacityVersion("2,0,5")) + ", should get True\n"
+Let s = s + "testing 2,1,1, got " + IntToString(CheckAudacityVersion("2,1,1")) + ", should get True\n"
+Let s = s + "testing 2,1,5, got " + IntToString(CheckAudacityVersion("2,1,5")) + ", should get false\n"
 SayMessage(OT_USER_BUFFER, s)
 */
+;/*
+Let s = "gfSilence = " + IntToString(gfSilence)
+;Let s = IntToString(GetJFWVersion())
+SayMessage(OT_USER_BUFFER, s)
+;*/
 ;Say number of focused track
 ;SayInteger(GetFocusObject(0).accFocus) ; debug
 If FocusInTrackPanel() Then
@@ -2187,7 +2309,7 @@ If FocusInTrackPanel() Then
 		iNum = StringToInt(s)
 		sUp = "UpArrow"
 		sDown = "DownArrow"
-		SayString("going to " + IntToString(iNum))
+		;SayString("going to " + IntToString(iNum))
 		iCount = abs(iNum)
 		if iNum < 0 Then
 			sKey = sUp
@@ -2217,10 +2339,10 @@ If FocusInTrackPanel() Then
     var object o, int ix, int iYTop, int iWidth, int iHeight
     o = GetFocusObject(0)
     o.accLocation(IntRef(ix), IntRef(iYTop), IntRef(iWidth), IntRef(iHeight), o.accFocus)
-    SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
+    ;SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
     */
 EndIf ; in track panel
-SayString ("MSAAMode = " + IntToString(GetJCFOption(OPT_MSAA_MODE))) ; debug
+;SayString ("FocusInTrackPanel = " + IntToString(FocusInTrackPanel())) ; debug
 EndScript ; test
 
 Void Function loadNonJCFOptions ()
