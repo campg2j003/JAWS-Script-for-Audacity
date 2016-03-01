@@ -1,6 +1,7 @@
 Script version:
 Audacity version:
-OS:
+OS/Platform:
+JAWS version:
 
 Description:
 
