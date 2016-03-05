@@ -1,8 +1,8 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 12/1/2015.
+; English messages for Audacity 2.0.0 script by Gary Campbell last updated 3/4/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2015  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
