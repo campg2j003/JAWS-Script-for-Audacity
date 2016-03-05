@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.5 3/1/16  19:00UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.5 3/5/16  02:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -55,7 +55,8 @@ Const
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
-	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars
+	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars, pre 2.1.2
+	WC_wxWindowClass2 = "wxWindow", ; grabber control on toolbars, 2.1.2
 	CS_INI_FILE="Audacity.jsi",
 	;For VST plugins
 	ID_Load_Preset=11001,
@@ -1370,7 +1371,9 @@ Else
 	EndIf ; last window
 	Let hWnd = GetFirstChild (hNext)
 	;Toolbars start with a grabber control, and some of them have static controls following the grabber.  We skip these to get to the first control.
-	While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) || (GetWindowSubtypeCode (hWnd) == WT_STATIC))
+	While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) ;Pre 2.1.2
+	|| (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass2) == 0)
+	|| (GetWindowSubtypeCode (hWnd) == WT_STATIC))
 		;SayString("class=" + GetWindowClass(hWnd) + ", subtype = " + IntToString(GetWindowSubtypeCode(hWnd))) ; debug
 		Let hWnd = GetNextWindow(hWnd)
 	EndWhile
