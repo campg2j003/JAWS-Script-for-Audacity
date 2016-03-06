@@ -106,6 +106,15 @@
 :Synopsis Pan right or move the mouse pointer/JAWS cursor to the right
 :Description In the Audacity main window you must activate the Jaws cursor to perform the default action.  The number of pixels for mouse movement is determined by the mouse movement variable.  The value of the mouse movement variable is set in default JCF.  It can be modified by using home row utility scripts.  This keystroke is useful for accurately positioning the mouse pointer.
 
+:Function SayPositionField
+:Synopsis Say the specified position field.
+:Description Returns True if a position value was found, False if it could not be gotten, in which case it speaks a corresponding message (unless fSilent is True).
+Respects AnnounceMessage.
+:Returns int True if position field was found, False if toolbar not found.
+:Param int/iPosition CTRL ID of the position field: ID_SELECTION_START or ID_SELECTION_END.
+:Optional
+:Param int/fSilent If True does not speak error message if the selection toolbar could not be found.
+
 :script SelectionStart
 :Synopsis Says the selection start position
 :Description When the [ key is pressed, says the selection start position.
@@ -176,7 +185,7 @@
 
 :function RefreshFocus
 :Description Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
-:Returns Void
+:Returns Void no return description
 
 :script CloseFocusTrack
 :Synopsis Close the currently focused track
@@ -356,7 +365,7 @@
 
 :function SayActiveLabel ()
 :Description Speak the text of the active label if any.  Assumes focus in track panel.  Uses the invisible cursor.
-:Returns Void
+:Returns Void no return description
 
 :script AddLabelAtSelection
 :Synopsis Add a label for the selected region.

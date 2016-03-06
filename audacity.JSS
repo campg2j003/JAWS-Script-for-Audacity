@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.5 3/5/16  02:55UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.6 3/5/16  22:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -137,6 +137,7 @@ Void Function SaySelectionPosition (Int iPosition, String sMessage)
 ;say the selection position field and pass the key to the ap.
 ;iPosition - control ID of the selection position control.
 ;sMessage - Spoken message
+;Designed for use by SelectionStart and SelectionEnd scripts.  Checks to see if Set Selection Boundary dialog appears.
 ;This function now uses the method of saying selection start and end position, from Gary Campbell.
 Var
 	Handle wnd, ;the window containing the selection bar
@@ -153,9 +154,10 @@ ElIf FocusInMainWindow () Then
 	Pause () ;Wait for possible appearance of Boundary Position dialog.
 	If !DialogActive () Then
 		Pause ()
-		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
 		;If the Announce Messages option is on, speak the selection posision.
 		If GetQuickSetting ("AnnounceMessage") Then
+			;Do not use SayPositionField because the message is spoken before the value but only if the value is available.
+			Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
 			Let sValue=GetPositionField (wnd) ;get value of desired control
 			If !sValue Then ;the selection toolbar is turned off
 				Say (MSGNoSelection, OT_Error)
@@ -702,12 +704,39 @@ EndIf ; if decimal
 Return s2
 EndFunction ; GetPositionField
 
+Int Function SayPositionField (Int iPosition, Int fSilent)
+;Say the specified position field.
+;iPosition CTRL ID of the position field: ID_SELECTION_START or ID_SELECTION_END.
+;fSilent -- If True does not speak error message if the selection toolbar could not be found.
+;Returns True if a position value was found, False if it could not be gotten, in which case it speaks a corresponding message (unless fSilent is True).
+;Respects AnnounceMessage.
+var
+	Handle hWnd,
+	String sValue,
+	Int iRtn
+
+;If the Announce Messages option is on, speak the selection posision.
+If GetQuickSetting ("AnnounceMessage") Then
+	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
+	Let sValue=GetPositionField (hWnd) ;get value of desired control
+	If !sValue Then ;the selection toolbar is turned off
+		If !fSilent Then
+			Say (MSGNoSelection, OT_Error)
+		EndIf ;if fSilent
+		Return False
+	Else
+		SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
+	EndIf ;say selection position
+EndIf ; AnnounceOn
+Return True
+EndFunction ;SayPositionField
+
 Script SaySelectionStart ()
 ;Say the value of the Selection Start field.
+;If pressed twice quickly sets focus to it.  (Does not use SayPositionField for this reason.)
 
 Var
 	Handle hWnd,
-	String sName,
 	String sValue
 	;I modified this script to make it work on open project only.
 If NoProject () Then
@@ -726,7 +755,7 @@ Else
 	EndIf ;if IsSameScript
 EndIf ; Else not NoProject()
 Let sValue = GetPositionField(hWnd)
-If !sValue Then ;some time user turn off the selection toolbar, so this condition varify the selection boolbar is turned on or not
+If !sValue Then ;selection toolbar is turned on
 	Say (msgNoSelection, OT_error)
 Else
 	SayMessage (OT_NO_DISABLE, sValue, sValue)
@@ -735,6 +764,7 @@ EndScript ; SaySelectionStart
 
 Script SaySelectionEnd ()
 ;Say the value of the Selection End or Length field.
+;If pressed twice quickly sets focus to it.  (Does not use SayPositionField for this reason.)
 
 Var
 	Handle hRadio,
@@ -918,7 +948,7 @@ EndScript ; SelectionEnd
 Script FinishMarkerRight ()
 ;move the end of the selection to the right by a small amount.
 Var
-	Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
 	
@@ -938,14 +968,15 @@ Let sScriptName="SelectNextCharacter" ;The default script to perform if not in m
 MarkerMovement (sScriptName, sMessage)
 If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 	pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_END, True)
 EndIf
 EndScript ; FinishMarkerRight
 
 Script FinishMarkerLeft ()
 Var
-	Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
 	
@@ -959,14 +990,15 @@ Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
 If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_END, True)
 EndIf
 EndScript ; FinishMarkerLeft
 
 Script StartMarkerRight ()
 Var
-	Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
 	
@@ -980,14 +1012,15 @@ Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
 If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField(ID_SELECTION_START, True)
 EndIf
 EndScript ; StartMarkerRight
 
 Script StartMarkerLeft ()
 Var
-	Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
 	
@@ -1007,8 +1040,9 @@ Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
 If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () Then
 	pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_START, True)
 EndIf
 EndScript ; StartMarkerLeft
 
@@ -1043,6 +1077,7 @@ If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive (
 	EndIf ;!IsStopped
 	JAWSEnd () ; do End without speaking key label
 	SayFormattedMessage (OT_Position, FormatString (msgMoveTo, msgEnd, msgAllAudio))
+	SayPositionField (ID_SELECTION_END, True)
 Else
 	PerformScript JAWSEnd ()
 EndIf
@@ -1058,6 +1093,8 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (FormatString (MSGMoveTo, msgStart, msgSelectedTracks))
+	Pause ()
+	SayPositionField (ID_SELECTION_START, True)
 EndIf
 EndScript ; MoveToStartOfSelectedTracks
 
@@ -1070,6 +1107,8 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (FormatString (MSGMoveTo, msgEnd, msgSelectedTracks))
+	Pause ()
+	SayPositionField (ID_SELECTION_END, True)
 EndIf
 EndScript ; MoveToEndOfSelectedTracks
 
@@ -1083,6 +1122,8 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
+	Pause ()
+	SayPositionField (ID_SELECTION_START, True)
 EndIf
 EndScript ; SelectToBeginning
 
@@ -1096,6 +1137,8 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
+	Pause ()
+	SayPositionField (ID_SELECTION_END, True)
 EndIf
 EndScript ; SelectToEnd
 
@@ -1128,6 +1171,8 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () &&
 	SelectToEndOfLine ()
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_No_Disable, FormatString(msgSelectTo, msgEnd, msgAllAudio))
+		Pause ()
+		SayPositionField (ID_SELECTION_END, True)
 	EndIf
 Else
 	PerformScript SelectToEndOfLine ()
@@ -1186,8 +1231,8 @@ EndIf
 EndScript ; JAWSBackspace
 
 Script SayPriorCharacter ()
-Var
-	Handle hWnd
+;Var
+	;Handle hWnd
 	
 If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
@@ -1196,16 +1241,17 @@ If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor (
 	EndIf ; if no project
 	TypeCurrentScriptKey ()
 	Pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_START, True) ;silence error message
 Else
 	PerformScript SayPriorCharacter ()
 EndIf
 EndScript ; SayPriorCharacter
 
 Script SayNextCharacter ()
-Var
-	Handle hWnd
+;Var
+	;Handle hWnd
 	
 If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
@@ -1214,8 +1260,9 @@ If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor (
 	EndIf ; if no project
 	TypeCurrentScriptKey ()
 	Pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_START, True) ;silence error message
 Else
 	PerformScript SayNextCharacter ()
 EndIf
@@ -2080,8 +2127,8 @@ EndScript ; VSTSavePreset
 Script SayJump ()
 ;For use by short/long jumps (,, ., etc.).  sends the key, if in track panel and AnnounceOn speaks start position, otherwise speaks the key label.
 ;If you want a separate script for each key, turn this into a function and call it from the scripts.
-Var
-	Handle hWnd
+;Var
+	;Handle hWnd
 	
 TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
@@ -2089,8 +2136,9 @@ If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
 	Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	Pause ()
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	SayPositionField (ID_SELECTION_START, True)
 Else
 	SayCurrentScriptKeyLabel ()
 EndIf

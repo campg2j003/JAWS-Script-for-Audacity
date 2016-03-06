@@ -1,4 +1,7 @@
-(This file last updated 2/26/2016)
+(This file last updated 3/5/2016)
+
+# New in 2.1.0-beta.6
+- Some additional motion and selection commands now speak position information.  These include moving to end of all audio, moving to start/end of selected tracks, and Select to Beginning/End of Selected tracks.
 
 # New in V2.1.0-beta.5
 - The check for existing scripts now ignores .jcf file so saved settings do not trigger the warning.
