@@ -1,4 +1,4 @@
-3/1/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.5 3/1/16  19:00UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+3/11/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.6 3/11/16  17:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -46,7 +46,7 @@ If you choose the Just Scripts install type, the README and What's New files wil
 
 For all user installs, on the Versions/Languages page you can choose whether to install the scripts for the current user or for all users.  
 
-The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that that the script will only be properly compiled for the language of the currently running JAWS.
+The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that the script will only be properly compiled for the language of the currently running JAWS.
 
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
