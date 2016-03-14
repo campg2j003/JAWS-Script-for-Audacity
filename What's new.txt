@@ -1,6 +1,22 @@
-(This file last updated 3/5/2016)
+(This file last updated 3/14/2016)
 
 # New in 2.1.0-beta.6
+- More Audacity keystrokes announce their names:
+  - Control+2=ZoomNormal
+  - Control+1=ZoomIn
+  - Control+3=ZoomOut
+  - Control+u=MuteAllTracks
+  - Control+Shift+u=UnmuteAllTracks
+  - Control+l=ReplaceWithSilence
+  - z=ZeroCrossing
+  - Control+Shift+i=ImportAudio
+  - Control+Shift+e=ExportAudio
+  - Control+n=NewWindow
+  - Control+s=SaveProject
+  - Control+p=Preferences
+  - Control+d=Duplicate
+  - Control+t=Trim
+- JAWS MSAA info is refreshed after SelectAll and DeselectAll so JAWS now gives the correct selected information without doing a RefreshScreen.
 - Some additional motion and selection commands now speak position information.  These include moving to end of all audio, moving to start/end of selected tracks, and Select to Beginning/End of Selected tracks.
 
 # New in V2.1.0-beta.5

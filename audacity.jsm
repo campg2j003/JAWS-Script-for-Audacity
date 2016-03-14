@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 3/11/2016.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 3/13/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -520,4 +520,63 @@ Track %1 marked
 @msgNoTrackMarked
 no mark
 @@
+
+    ;Message to announce some Audacity keys
+    @msgZoomNormal
+zoom normal
+@@
+
+@msgZoomIn
+zoom in
+@@
+
+@msgZoomOut
+zoom out
+@@
+
+@msgMuteAllTracks
+mute all tracks
+@@
+
+@msgUnmuteAllTracks
+unmute all tracks
+@@
+
+@msgReplaceWithSilence
+replace with silence
+@@
+
+@msgZeroCrossing
+zero crossing
+@@
+
+@msgImportAudio
+import audio
+@@
+
+@msgExportAudio
+export audio
+@@
+
+@msgNewWindow
+new window
+@@
+
+@msgSaveProject
+save project
+@@
+
+@msgPreferences
+preferences
+@@
+
+@msgDuplicate
+duplicate
+@@
+
+@msgTrim
+trim
+@@
+
+
 EndMessages

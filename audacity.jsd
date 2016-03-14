@@ -375,3 +375,45 @@ Respects AnnounceMessage.
 :Synopsis Add a label at the current play/record position.
 :Description Special audacity speech functionality is cancelled until ENTER is pressed, SayNext/PriorLine is pressed, or focus moves out of the window.
 
+:Script ZoomNormal
+:Synopsis zoom normal
+
+:Script ZoomIn
+:Synopsis zoom in
+
+:Script ZoomOut
+:Synopsis zoom out
+
+:Script MuteAllTracks
+:Synopsis mute all tracks
+
+:Script UnmuteAllTracks
+:Synopsis unmute all tracks
+
+:Script ReplaceWithSilence
+:Synopsis replace with silence
+
+:Script ZeroCrossing
+:Synopsis find zero crossings
+
+:Script ImportAudio
+:Synopsis import audio
+
+:Script ExportAudio
+:Synopsis export audio
+
+:Script NewWindow
+:Synopsis open new project window
+
+:Script SaveProject
+:Synopsis save project
+
+:Script Preferences
+:Synopsis open preferences dialog
+
+:Script Duplicate
+:Synopsis duplicate selection in new track(s)
+
+:Script Trim
+:Synopsis trim: delete audio outside of selection
+

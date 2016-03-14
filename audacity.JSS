@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.6 3/11/16  17:30UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.6 3/14/16  01:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1326,6 +1326,7 @@ If NoProject () Then
 Else
 	AnnounceKeyMessage (msgDeselectAll)
 EndIf
+RefreshFocus ()
 EndScript ; DeselectAll
 
 Void Function RefreshFocus ()
@@ -2075,6 +2076,7 @@ If NoProject () Then
 	Return
 ElIf FocusInMainWindow () && ! NoProject () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
 	SayUsingVoice (VCTX_Message, MsgSelectAll, OT_String)
+	RefreshFocus ()
 EndIf
 EndScript ; SelectAll
 
@@ -2508,4 +2510,147 @@ EndIf ; if not stopped
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 EndScript ; AddLabelAtPlayPosition
+
+;*** testing make-key-script.el
+Script ZoomNormal ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgZoomNormal)
+EndIf
+EndScript ; ZoomNormal
+
+Script ZoomIn ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgZoomIn)
+EndIf
+EndScript ; ZoomIn
+
+Script ZoomOut ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgZoomOut)
+EndIf
+EndScript ; ZoomOut
+
+Script MuteAllTracks ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgMuteAllTracks)
+EndIf
+RefreshFocus ()
+EndScript ; MuteAllTracks
+
+Script UnmuteAllTracks ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgUnmuteAllTracks)
+EndIf
+RefreshFocus ()
+EndScript ; UnmuteAllTracks
+
+Script ReplaceWithSilence ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgReplaceWithSilence)
+EndIf
+EndScript ; ReplaceWithSilence
+
+Script ZeroCrossing ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgZeroCrossing)
+EndIf
+EndScript ; ZeroCrossing
+
+Script ImportAudio ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgImportAudio)
+EndIf
+EndScript ; ImportAudio
+
+Script ExportAudio ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgExportAudio)
+EndIf
+EndScript ; ExportAudio
+
+Script NewWindow ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgNewWindow)
+EndIf
+EndScript ; NewWindow
+
+Script SaveProject ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSaveProject)
+EndIf
+EndScript ; SaveProject
+
+Script Preferences ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgPreferences)
+EndIf
+EndScript ; Preferences
+
+Script Duplicate ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgDuplicate)
+EndIf
+EndScript ; Duplicate
+
+Script Trim ()
+;Unselect all audio
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgTrim)
+EndIf
+EndScript ; Trim
 
