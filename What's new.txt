@@ -18,6 +18,8 @@
   - Control+t=Trim
 - JAWS MSAA info is refreshed after SelectAll and DeselectAll so JAWS now gives the correct selected information without doing a RefreshScreen.
 - Some additional motion and selection commands now speak position information.  These include moving to end of all audio, moving to start/end of selected tracks, and Select to Beginning/End of Selected tracks.
+- Fixed issue #4: In toolbars CTRL+TAB says "grabber".
+- Updated guide link and Audacity keystrokes to 2.1.2.
 
 # New in V2.1.0-beta.5
 - The check for existing scripts now ignores .jcf file so saved settings do not trigger the warning.
