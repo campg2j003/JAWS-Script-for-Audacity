@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.6 3/14/16  01:55UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.7 3/15/16  17:50UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2511,9 +2511,8 @@ EndIf ; if not stopped
 	TypeCurrentScriptKey ()
 EndScript ; AddLabelAtPlayPosition
 
-;*** testing make-key-script.el
+;*** More scripts for Audacity keys
 Script ZoomNormal ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2523,7 +2522,6 @@ EndIf
 EndScript ; ZoomNormal
 
 Script ZoomIn ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2533,7 +2531,6 @@ EndIf
 EndScript ; ZoomIn
 
 Script ZoomOut ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2543,7 +2540,6 @@ EndIf
 EndScript ; ZoomOut
 
 Script MuteAllTracks ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2554,7 +2550,6 @@ RefreshFocus ()
 EndScript ; MuteAllTracks
 
 Script UnmuteAllTracks ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2565,7 +2560,6 @@ RefreshFocus ()
 EndScript ; UnmuteAllTracks
 
 Script ReplaceWithSilence ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2575,7 +2569,6 @@ EndIf
 EndScript ; ReplaceWithSilence
 
 Script ZeroCrossing ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2585,17 +2578,11 @@ EndIf
 EndScript ; ZeroCrossing
 
 Script ImportAudio ()
-;Unselect all audio
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgImportAudio)
-EndIf
+;Import audio
+AnnounceKeyMessage (msgImportAudio)
 EndScript ; ImportAudio
 
 Script ExportAudio ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2605,7 +2592,6 @@ EndIf
 EndScript ; ExportAudio
 
 Script NewWindow ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2615,7 +2601,6 @@ EndIf
 EndScript ; NewWindow
 
 Script SaveProject ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2625,7 +2610,6 @@ EndIf
 EndScript ; SaveProject
 
 Script Preferences ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2635,7 +2619,6 @@ EndIf
 EndScript ; Preferences
 
 Script Duplicate ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -2645,7 +2628,6 @@ EndIf
 EndScript ; Duplicate
 
 Script Trim ()
-;Unselect all audio
 If NoProject () Then
 	SayNoProject ()
 	Return
