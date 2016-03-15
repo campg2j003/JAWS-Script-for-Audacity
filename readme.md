@@ -1,4 +1,4 @@
-3/11/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.6 3/11/16  17:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+3/15/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 3/15/16  17:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -89,13 +89,13 @@ If you redefine the numpad ENTER key and set JAWS to treat extended keys separat
 The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that a used function was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 # Multiple Language Support
-Messages and string constants for the JAWS script are in audacity.jsm and audacity.qsm facilitating translation.  Fernando Gregoire has contributed a Spanish translation.  Gracias!
-
-This version of the installer framework contains the first cut of support for installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.
+This version of the installer framework contains the first cut of support for installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Fernando Gregoire has contributed the Spanish translation.  Gracias!
 
 Although the installer installs and compiles the scripts into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the scripts.
 
 # Notes for script developers
+Messages and string constants for the JAWS script are in audacity.jsm and audacity.qsm facilitating translation.  
+
 This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.  You also need to run `git submodule update --remote` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the JAWS-Script-for-Audacity repo from GitHub as a zip file, the submodule folders will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  The file .gitmodules in the top-level folder may be of help in determining the right branch.)
 
 To build the installer you will also need [NSIS](http://nsis.sf.net).  The release is made by V2.46.
@@ -117,7 +117,7 @@ The contents of the lang folder in the top level of the repo, including all subf
 
 Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.  For this reason the scripts are compiled using `#pragma usePoFile 0`.
 
-The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.
+The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in .nsh header files with names like *_enu.nsh or *_lang_enu.nsh.
 
 # Conclusion
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
