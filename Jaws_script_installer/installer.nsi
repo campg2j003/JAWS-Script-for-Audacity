@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2/21/16
+Last updated: 3/31/16
 
 Modifications:
 
@@ -78,7 +78,8 @@ SetOverwrite on ;always overwrite files
 ;/*
 ; The following appears in the user's file before including the JFW.nsh header.
 ;We include langstring header after the MUI_LANGUAGE macro.
-!include "uninstlog.nsh"
+;!include "uninstlog.nsh"
+!include "strfunc.nsh"
 !ifndef StrLoc_INCLUDED
 ${StrLoc}
 !endif
@@ -215,7 +216,7 @@ ${File} "" "installer_lang_esn.nsh"
 
 !insertmacro JAWSScriptInstaller
 ;Strange though it seems, the language file includes must follow the invocation of JAWSScriptInstaller.
-  !include "uninstlog_enu.nsh"
-  !include "uninstlog_esn.nsh"
+  ;!include "uninstlog_enu.nsh"
+  ;!include "uninstlog_esn.nsh"
 !include "installer_lang_enu.nsh"
 !include "installer_lang_esn.nsh"
