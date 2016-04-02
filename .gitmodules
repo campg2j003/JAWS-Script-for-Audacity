@@ -1,4 +1,3 @@
 [submodule "jfw_nsh"]
 	path = Jaws_script_installer/jfw_nsh
 	url = https://github.com/campg2j003/jfw_nsh
-	branch=uninstaller_log
