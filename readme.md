@@ -1,4 +1,4 @@
-4/5/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/6/16  01:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+4/6/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/6/16  01:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -17,7 +17,7 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 - Track gain and pan controls now are passed to the application when the PC cursor is active and focus is in the main window.  Otherwise they execute their default mouse movement functions.
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
-- There is a Vietnamese translation of the README file (for V2.0 9/15/2013).  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
+- Multilanguage support: English and Spanish are supported.  There is also a Vietnamese translation of the README file (for V2.0 9/15/2013).  Thanks to Nguyen Hoang Giang for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
 - You can go to a track by number.  You can also move a track to a specific position by number.  You can also set a "mark" on a track and later return there, or move a track there.
 - Feedback is provided when moving a track via the keyboard.  (See below.)
 - The installer now supports multiple languages.
@@ -50,10 +50,14 @@ The installer allows you to choose which JAWS versions and languages to install 
 
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
+#To uninstall:
+The package can be uninstalled via Program Features (Add/Remove Programs).  You can also run uninst.exe in the installation folder (`%programfiles(x86)%\Jaws Script for Audacity or `%localappdata%\Jaws Script for Audacity).
+
+If the uninstaller detects that the script files have been modified since they were installed, it asks for confirmation before removing them.  A Yes response will delete all modified files.  A No response will leave them all.  The settings file (audacity.jcf or audacity.jsi) is not removed.
 
 # Script Options
 
-The script has several options that control some of its features which can be accessed by pressing JAWSKey+v.  For JAWS versions prior to 13 these settings are stored in file audacity.jsi in the PersonalSettings folder of the JAWS installation.  For version 13 and later they are stored in audacity.jcf in the NonJCFOptions section.  If you upgrade from a version of JAWS before 13 to 13 or later the settings are not transferred from audacity.jsi, so you will have to set them again.
+The script has several options that control some of its features.  They can be accessed by pressing JAWSKey+v.  For JAWS versions prior to 13 these settings are stored in file audacity.jsi in the PersonalSettings folder of the JAWS installation.  For version 13 and later they are stored in audacity.jcf in the NonJCFOptions section.  If you upgrade from a version of JAWS before 13 to 13 or later the settings are not transferred from audacity.jsi, so you will have to set them again.
 
 
 # Going to and Moving Tracks
@@ -76,7 +80,7 @@ If you want to use different keys you will have to change the assignments in aud
 
 This version of the scripts adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
 
-The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.
+The position fields sometimes are not shortened.  This happens because the JAWS GetWindowText function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.  I have observed that this problem sometimes goes away on its own.
 
 A side effect of ENTER pausing during record and play is that you can't use ENTER to select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the ENTER key adds "p" in a label instead of terminating it.  Use Control+ENTER to send ENTER in this case.
 
@@ -96,7 +100,7 @@ Although the installer installs and compiles the scripts into the selected langu
 # Notes for script developers
 Messages and string constants for the JAWS script are in audacity.jsm and audacity.qsm facilitating translation.  
 
-This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the JAWS-Script-for-Audacity repo from GitHub as a zip file, the submodule folders will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  The file .gitmodules in the top-level folder and the jfw_nsh submodule folder may be of help in determining the right branch.)
+This package is now hosted on GitHub.  The repo is at https://github.com/campg2j003/JAWS-Script-for-Audacity.  If you would like to contribute changes to the script, fork a copy of the repository, create a branch for your changes, and make a pull request.  The installer uses two other submodules: [uninstlog](https://github.com/campg2j003/uninstlog) and [jfw_nsh](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the JAWS-Script-for-Audacity repo on your machine you should add the --recursive switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the JAWS-Script-for-Audacity repo from GitHub as a zip file, the submodule folders will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  Normally you wil be downloading the `master` branch so this is not a problem.  The file .gitmodules in the top-level folder and the jfw_nsh submodule folder may be of help in determining the right branch.)
 
 To build the installer you will also need [NSIS](http://nsis.sf.net).  The release is made by V2.46.
 
@@ -113,7 +117,7 @@ build\
   installer files
 ```
 
-The contents of the lang folder in the top level of the repo, including all subfolders, is copied to the build\script\lang folder.  Each script file in the top level of the repo is also copied to the script folder.  Note that since specific files are copied to the script folder, other files that may be in the repo will not be copied, but *all* files in the lang folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from Jaws_script_installer, Jaws_script_installer\uninstlog, and Jaws_script_installer\jfw_nsh, to build.  The readme and other text files are also copied to scripts, and readme.md is renamed to readme.txt.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
+The contents of the lang folder in the top level of the repo, including all subfolders, is copied to the build\script\lang folder.  Each script file in the top level of the repo is also copied to the script folder.  Note that since specific files are copied to the script folder, other files that may be in the repo will not be copied, but *all* files in the lang folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from Jaws_script_installer, Jaws_script_installer\jfw_nsh, and Jaws_script_installer\jfw_nsh\uninstlog, to build.  The readme and other text files are also copied to scripts, and readme.md is renamed to readme.txt.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
 
 Note that the JAWS 17 localization structure is not currently well-known and therefore may not be supported.  For this reason the scripts are compiled using `#pragma usePoFile 0`.
 
