@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.7 4/6/16  01:40UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.7 4/21/16  16:25UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2579,6 +2579,10 @@ EndScript ; ZeroCrossing
 
 Script ImportAudio ()
 ;Import audio
+If !IsStopped () Then
+	SayNotStopped ()
+	Return
+EndIf ; If not stopped
 AnnounceKeyMessage (msgImportAudio)
 EndScript ; ImportAudio
 
@@ -2587,6 +2591,10 @@ If NoProject () Then
 	SayNoProject ()
 	Return
 Else
+	If !IsStopped () Then
+		SayNotStopped ()
+		Return
+	EndIf ; If not stopped
 	AnnounceKeyMessage (msgExportAudio)
 EndIf
 EndScript ; ExportAudio
