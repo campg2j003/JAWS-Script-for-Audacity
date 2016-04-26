@@ -101,6 +101,8 @@ If you want to use different keys you will have to change the assignments in `au
 
 5.  The JAWS script compiler only compiles for the currently running language.  (See below.)
 
+6.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
+
 
 # Multiple Language Support
 This version of the installer framework contains the first cut of support for installation of the script in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Fernando Gregoire has contributed the Spanish translation.  Gracias!
