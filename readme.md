@@ -102,6 +102,7 @@ If you want to use different keys you will have to change the assignments in `au
 5.  The JAWS script compiler only compiles for the currently running language.  (See below.)
 
 6.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
+# installation
 
 
 # Multiple Language Support
