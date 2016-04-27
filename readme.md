@@ -1,4 +1,4 @@
-4/26/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/6/16  01:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+4/27/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/6/16  01:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -49,13 +49,13 @@ The installer allows you to choose which JAWS versions and languages to install 
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
 ##To uninstall:
-The package can be uninstalled via Program Features (Add/Remove Programs).  You can also run uninst.exe in the installation folder (`%programfiles(x86)%\Jaws Script for Audacity` or `%localappdata%\Jaws Script for Audacity`).
+The package can be uninstalled via Program Features (Add/Remove Programs).  You can also run `uninst.exe` in the installation folder (`%programfiles(x86)%\Jaws Script for Audacity` or `%localappdata%\Jaws Script for Audacity`).
 
 If the uninstaller detects that the script files have been modified since they were installed, it asks for confirmation before removing them.  A Yes response will delete all modified files.  A No response will leave them all.  The settings file (`audacity.jcf` or `audacity.jsi`) is not removed.
 
 # Using the Script
 
-# Basics
+## Basics
 Once installed, the script will speak a welcome message the first time Audacity gains focus.  You can browse the list of keystrokes the script provides by pressing `JAWSKey+h` (`HotKeyHelp`).  You can get a list of Audacity keystrokes by pressing `JAWSKey+w`.  This page also has a link that will open the Audacity Guide for JAWS users, by David Bailes, in your web browser.
 
 You can read the Selection Start and Selection End/Length fields by pressing `Alt+[` and `Alt+]`, respectively.  Pressing these keys twice quickly will move focus to the fields.  Note that `Alt+]` speaks "end" or "length" depending on the setting of the radio buttons.  When the PC cursor is active, pressing `Alt+DEL` speaks the value of the Audio Position field.  (This is useful when playing or recording.)  When pressed twice quickly, the normal JAWS function is performed.  Pressing `JAWSKey+DEL` announces what state Audacity is in currently-- stopped, play, play pause, record, or record pause.  (This information is also available on the status bar in recent versions of Audacity.)
