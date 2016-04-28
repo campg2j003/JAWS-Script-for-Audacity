@@ -2,6 +2,8 @@
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
+[TOC]
+
 # Features:
 - Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
 - Keystrokes to move the focus to the selection start and selection end/length controls.
@@ -102,7 +104,6 @@ If you want to use different keys you will have to change the assignments in `au
 5.  The JAWS script compiler only compiles for the currently running language.  (See below.)
 
 6.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
-# installation
 
 
 # Multiple Language Support
