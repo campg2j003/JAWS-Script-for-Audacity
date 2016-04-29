@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-beta.7 4/21/16  16:25UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-beta.7 4/29/16  16:50UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2215,6 +2215,9 @@ Else
 		Return
 	EndIf ; if no project
 	PerformScript SayLine()
+	If !UserBufferIsActive () && IsPCCursor () && FocusInTrackPanel () Then
+		Say (FormatString (msgTrackPosition, IntToString (GetFocusObject (0).accFocus), IntToString (GetFocusObject (0).accChildCount)), OT_POSITION)
+	EndIf
 EndIf
 EndScript ; SayLine
 

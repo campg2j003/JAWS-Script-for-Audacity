@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 3/13/2016.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 4/29/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -360,6 +360,11 @@ selection
 track
 @@
 
+;Used to say track number.  %1 -- number of current track, %2 -- total number of tracks.
+@msgTrackPosition
+%1 of %2
+@@
+    
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 all audio

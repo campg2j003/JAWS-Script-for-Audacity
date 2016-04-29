@@ -1,4 +1,4 @@
-4/27/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/6/16  01:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+4/29/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/29/16  16:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -88,6 +88,7 @@ It is possible to go to a track by number, move a track to a position by number,
 
 If you want to use different keys you will have to change the assignments in `audacity.jkm`.
 
+Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script prompts for a number.  You can enter a number to go to that track.  Prefix the number with `+` to move down (to higher track numbers) that many tracks, or `-` to move up.  You can move a track with `JAWSKey+a,m`.  You can mark the current track with `JAWSKey+a,k`.  Then you can return to the marked track with `JAWSKey+a,Shift+g` and move the current track to the marked position with `JAWSKey+a,Shift+m`.  Note that this mark simply remembers a track number, so if you add or delete tracks above it, it will point to the wrong track.  `SayLine` (`JAWSKey+Numpad5`) speaks the number of the current track and the total number of tracks when focus is in the track panel.
 
 # Issues:
 
