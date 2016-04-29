@@ -1,4 +1,4 @@
-4/29/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/29/16  16:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+4/30/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/29/16  16:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -23,7 +23,7 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 - The installer can now install for all users or the current user.  All user installs can install in the shared scripts, including for JAWS 17.
 - When playing or recording the `ENTER` key executes pause/resume.  In this case, pressing `CTRL+ENTER` sends `ENTER`.  I like this because the numpad ENTER key is easier to find than "p" if your hands are off the keyboard.  this can be turned off with an option in Adjust JAWS Options.  Try it out and let us know if it works for you and if you like it.  
  
-# Installing and Uninstalling the Scripts
+# Installing and Uninstalling the Script
 
 ## To install:
 
@@ -32,8 +32,8 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 
 Three install types are supported:
 
-- Just Scripts: installs the scripts but does not install uninstall information or make a folder in %ProgramFiles%.
-- Full: installs scripts in the script folder for the selected versions/languages, creates a folder in `%programfiles%` (`%localappdata%` for current user install) (the installation folder) wich contains an uninstaller and optional additional files such as README, etc.
+- Just Scripts: installs the script but does not install uninstall information or make a folder in %ProgramFiles%.
+- Full: installs the script in the script folder for the selected versions/languages, creates a folder in `%programfiles%` (`%localappdata%` for current user install) (the installation folder) wich contains an uninstaller and optional additional files such as README, etc.
 - Custom: like Full but allows installation of the installer source.
 
 For full or custom installations for all users the uninstaller and README files are installed in the installation folder.  
@@ -88,11 +88,11 @@ It is possible to go to a track by number, move a track to a position by number,
 
 If you want to use different keys you will have to change the assignments in `audacity.jkm`.
 
-Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script prompts for a number.  You can enter a number to go to that track.  Prefix the number with `+` to move down (to higher track numbers) that many tracks, or `-` to move up.  You can move a track with `JAWSKey+a,m`.  You can mark the current track with `JAWSKey+a,k`.  Then you can return to the marked track with `JAWSKey+a,Shift+g` and move the current track to the marked position with `JAWSKey+a,Shift+m`.  Note that this mark simply remembers a track number, so if you add or delete tracks above it, it will point to the wrong track.  `SayLine` (`JAWSKey+Numpad5`) speaks the number of the current track and the total number of tracks when focus is in the track panel.
+Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script prompts for a number.  You can enter a number to go to that track.  Prefix the number with `+` to move down (to higher track numbers) that many tracks, or `-` to move up.  You can move a track with `JAWSKey+a,m`.  You can mark the current track with `JAWSKey+a,k`.  Then you can return to the marked track with `JAWSKey+a,Shift+g` and move the current track to the marked position with `JAWSKey+a,Shift+m`.  Note that this mark simply remembers a track number, so if you add or delete tracks above it, it will point to the wrong track.  `SayLine` (`JAWSKey+Numpad5`) speaks the number of the current track and the total number of tracks when focus is in the track panel.  (Some of you may be thinking, "but Audacity already says track numbers."  It does when you create a track, but not if you rename it, or if it is the result of importing a file.)
 
 # Issues:
 
-1.  This version of the scripts adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
+1.  This version of the script adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.
 
 2.  The position fields sometimes are not shortened.  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.  I have observed that this problem sometimes goes away on its own.
 
@@ -108,7 +108,7 @@ Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script pr
 # Multiple Language Support
 This version of the installer framework contains the first cut of support for installation of the script in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Fernando Gregoire has contributed the Spanish translation.  Gracias!
 
-Although the installer installs and compiles the script into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the scripts.
+Although the installer installs and compiles the script into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the script.
 
 # Notes for script developers
 If you modify the script files, please update the version constant near the beginning of `audacity.jss`.  This is particularly important if you distribute the script.  Even if you just modify it for your own use, this will make sure we know it is a modified version if you communicate with us about it.
@@ -132,7 +132,7 @@ build\
   installer files
 ```
 
-The contents of the `lang` folder in the top level of the repo, including all subfolders, is copied to the `build\script\lang` folder.  Each script file in the top level of the repo is also copied to the `script` folder.  Note that since specific files are copied to the `script` folder, other files that may be in the repo will not be copied, but *all* files in the `lang` folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from `Jaws_script_installer`, `Jaws_script_installer\jfw_nsh`, and `Jaws_script_installer\jfw_nsh\uninstlog`, to `build`.  The readme and other text files are also copied to `scripts`, and `readme.md` is renamed to `readme.txt`.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
+The contents of the `lang` folder in the top level of the repo, including all subfolders, is copied to the `build\script\lang` folder.  Each script file in the top level of the repo is also copied to the `script` folder.  Note that since specific files are copied to the `script` folder, other files that may be in the repo will not be copied, but *all* files in the `lang` folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from `Jaws_script_installer`, `Jaws_script_installer\jfw_nsh`, and `Jaws_script_installer\jfw_nsh\uninstlog`, to `build`.  The readme and other text files are also copied to `script`, and `readme.md` is renamed to `readme.txt`.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
 
 Note that the script is compiled using `#pragma usePoFile 0`.
 
