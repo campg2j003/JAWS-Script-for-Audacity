@@ -32,13 +32,13 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 
 Three install types are supported:
 
-- Just Scripts: installs the script but does not install uninstall information or make a folder in %ProgramFiles%.
+- Just Script: installs the script but does not install uninstall information or make a folder in %ProgramFiles%.
 - Full: installs the script in the script folder for the selected versions/languages, creates a folder in `%programfiles%` (`%localappdata%` for current user install) (the installation folder) wich contains an uninstaller and optional additional files such as README, etc.
 - Custom: like Full but allows installation of the installer source.
 
 For full or custom installations for all users the uninstaller and README files are installed in the installation folder.  
 
-If you choose the Just Scripts install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and `What's new.txt` will be called `audacity_whatsnew.txt`.  (The Vietnamese README file will not be installed in a Just Scripts install.)
+If you choose the Just Script install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and `What's new.txt` will be called `audacity_whatsnew.txt`.  (The Vietnamese README file will not be installed in a Just Script install.)
 
 If the user's priveleges allow for installing for all users, an all user install is performed.  Otherwise a current user install is performed.  If privileges allow for all user installation, current user installation can be forced by adding the `/currentuser` command line switch.
 
