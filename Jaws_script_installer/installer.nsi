@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 3/31/16
+Last updated: 5/5/16
 
 Modifications:
 
@@ -120,13 +120,13 @@ ${Case} "esn"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
 ${Break}
 ${Default}
-  File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}readme.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
   File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
 ${Break}
 ${EndSwitch}
   ${If} $JAWSREADME == ""
     ;no README location for the Finish page, set it to the first version we install.
-    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.txt"
+    StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.html"
 DetailPrint "JAWSInstallScriptItems: JustScripts for $0/$1 setting $$JAWSREADME to $JAWSREADME" ; debug
   ${EndIf} ;$JAWSREADME not yet set
 ${EndIf} ;if just scripts
@@ -164,14 +164,14 @@ StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
 ${Case} "esn"
-${AddItem} "$OUTDIR\readme_esn.txt"
+${AddItem} "$OUTDIR\readme_esn.t"
 File "/oname=readme_esn.txt" "${JAWSSrcDir}lang\esn\readme.txt"
 ;${AddItem} "What's new_esn.txt"
 ;File "/oname=What's new_esn.txt" "${JAWSSrcDir}lang\esn\" "What's new.txt"
 ${Break}
 ${Default}
-${AddItem} "$OUTDIR\readme_enu.txt"
-File "/oname=readme_enu.txt" "${JAWSSrcDir}readme.txt"
+${AddItem} "$OUTDIR\readme_enu.html"
+File "/oname=readme_enu.html" "${JAWSSrcDir}readme.html"
 ${AddItem} "$OUTDIR\What's new_enu.txt"
 File "/oname=What's new_enu.txt" "${JAWSSrcDir}What's new.txt"
 ${Break}
@@ -179,7 +179,7 @@ ${EndSwitch}
 ;Set the location of the README file for the Finish page.
 ${If} $JAWSREADME == ""
   ;no README location for the Finish page, set it to the first version we install.
-  StrCpy $JAWSREADME "$OUTDIR\readme_$1.txt"
+  StrCpy $JAWSREADME "$OUTDIR\readme_$1.html"
 DetailPrint "JAWSInstallFullItems: setting $$JAWSREADME (for lang $1) to $JAWSREADME" ; debug
 ${EndIf} ;$JAWSREADME not yet set
 ${LoopUntil} $3 == ""

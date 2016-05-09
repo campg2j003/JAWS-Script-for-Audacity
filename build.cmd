@@ -6,10 +6,11 @@ set PROD=audacity
 
 set BUILDDIR=build\
 set JAWSDIR=%appdata%\Freedom Scientific\JAWS\17.0\settings\enu
+set MD2HTML=..\md2html\dist\md2html.exe
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm
 set OTHERSRC=readme_vi.txt copying.txt "What's new.txt"
-REM These are basenames of .md files that should be staged as .txt files.
+REM These are basenames of .md files that should be converted to HTML files.
 set markdownsrc=readme
 set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh jfw_nsh\readme.md jfw_nsh\uninstlog\uninstlog.nsh jfw_nsh\uninstlog\uninstlog_enu.nsh jfw_nsh\uninstlog\uninstlog_esn.nsh jfw_nsh\uninstlog\logging.nsh
 if "%1"=="/?" goto help
@@ -47,7 +48,7 @@ mkdir %BUILDDIR% %BUILDDIR%\script
 for %%i in (%INSTALLSRC%) do copy %INSTALLSRCDIR%\%%i %BUILDDIR%
 for %%i in (%SCRIPTSRC% %OTHERSRC%) do copy %%i %BUILDDIR%script
 xcopy lang %BUILDDIR%\script\lang /s/q/i
-for %%i in (%markdownsrc%) do copy %%i.md %BUILDDIR%script\%%i.txt
+for %%i in (%markdownsrc%) do %MD2HTML% -c %%i.md > %BUILDDIR%script\%%i.html
 goto next
 :installer
 if not exist "%programfiles(x86)%" goto installer32
