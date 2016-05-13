@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 5/5/16
+Last updated: 5/13/16
 
 Modifications:
 
@@ -116,7 +116,7 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
 ${JawsScriptSetPath} jsd
 ${Switch} $1
 ${Case} "esn"
-  File "/oname=$OUTDIR\${ScriptApp}_readme.txt" "${JAWSSrcDir}lang\esn\readme.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
 ${Break}
 ${Default}
@@ -164,8 +164,8 @@ StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
 ${Case} "esn"
-${AddItem} "$OUTDIR\readme_esn.t"
-File "/oname=readme_esn.txt" "${JAWSSrcDir}lang\esn\readme.txt"
+${AddItem} "$OUTDIR\readme_esn.html"
+File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.txt"
 ;File "/oname=What's new_esn.txt" "${JAWSSrcDir}lang\esn\" "What's new.txt"
 ${Break}

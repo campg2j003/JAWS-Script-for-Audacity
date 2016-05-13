@@ -1,4 +1,4 @@
-4/30/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/29/16  16:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+5/13/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-beta.7 4/29/16  16:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -115,28 +115,15 @@ If you modify the script files, please update the version constant near the begi
 
 Messages and string constants for the JAWS script are in `audacity.jsm` and `audacity.qsm`.  
 
-This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, [fork a copy of the repository](https://help.github.com/articles/fork-a-repo), [create a branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository) for your changes, and [create a pull request](https://help.github.com/articles/creating-a-pull-request).  The installer uses two other submodules: [`uninstlog`](https://github.com/campg2j003/uninstlog) and [`jfw_nsh`](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the `JAWS-Script-for-Audacity` repo on your machine you should add the `--recursive` switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the `JAWS-Script-for-Audacity` repo from GitHub as a zip file, the submodule folders (`jfw_nsh` and `jfw_nsh\uninstlog`) will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  Normally you wil be downloading the `master` branch so this is not a problem.  The file `.gitmodules` in the top-level folder and the` jfw_nsh` submodule folder may be of help in determining the right branch.)
+The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.
 
-To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.46.
+This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md][] in the repository.
+[CONTRIBUTING.md]: https://github.com/campg2j003/JAWS-Script-for-Audacity/CONTRIBUTING.md
 
-There is a [`build.cmd`](build.cmd) script in the repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, and runs the installer.  You may have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
-
-The `b` option produces the following structure in the root of the repo:
-```
-build\
-  script\
-    lang\
-      esn\
-        Spanish-specific JAWS script files
-    script files (non-language specific and English)
-  installer files
-```
-
-The contents of the `lang` folder in the top level of the repo, including all subfolders, is copied to the `build\script\lang` folder.  Each script file in the top level of the repo is also copied to the `script` folder.  Note that since specific files are copied to the `script` folder, other files that may be in the repo will not be copied, but *all* files in the `lang` folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from `Jaws_script_installer`, `Jaws_script_installer\jfw_nsh`, and `Jaws_script_installer\jfw_nsh\uninstlog`, to `build`.  The readme and other text files are also copied to `script`, and `readme.md` is renamed to `readme.txt`.  This is so that GitHub will recognize it as containing markdown but it will still be opened by the installer if requested.
+# Notes for Translators
+Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md][] for more information.
 
 Note that the script is compiled using `#pragma usePoFile 0`.
-
-The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.
 
 # Conclusion
 The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
