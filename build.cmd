@@ -6,7 +6,8 @@ set PROD=audacity
 
 set BUILDDIR=build\
 set JAWSDIR=%appdata%\Freedom Scientific\JAWS\17.0\settings\enu
-set MD2HTML=..\md2html\dist\md2html.exe
+REM Absolute path to md2html.
+set MD2HTML=%dev%\audacity_git\md2html\dist\md2html.exe
 REM %MD2HTML% -V
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm
@@ -25,7 +26,6 @@ echo where opt is:
 echo b - remove and make build folder structure
 echo c - remove build folder
 echo i - make the installer
-echo m - convert markdown to HTML in lang folders
 echo t - copy script files to the JAWS script folder overwriting existing files
 echo f - copy the script sources from the JAWS script folder to this folder overwriting existing files
 goto done
@@ -35,7 +35,6 @@ if "%1"=="" goto done
 if "%1"=="b" goto build
 if "%1"=="c" goto clean
 if "%1"=="i" goto installer
-if "%1"=="m" goto markdown
 if "%1"=="t" goto tojaws
 if "%1"=="f" goto fromjaws
 echo invalid option "%1"
@@ -50,8 +49,17 @@ if exist %BUILDDIR% rd /q /s %BUILDDIR%
 mkdir %BUILDDIR% %BUILDDIR%\script
 for %%i in (%INSTALLSRC%) do copy %INSTALLSRCDIR%\%%i %BUILDDIR%
 for %%i in (%SCRIPTSRC% %OTHERSRC%) do copy %%i %BUILDDIR%script
-xcopy lang %BUILDDIR%\script\lang /s/q/i
-for %%i in (%MARKDOWNSRC%) do %MD2HTML% -c %%i.md > %BUILDDIR%script\%%i.html
+for %%i in (%MARKDOWNSRC%) do %MD2HTML% -c %%i.md %BUILDDIR%script\%%i.html
+if errorlevel 1 goto done
+md %BUILDDIR%script\lang
+REM /d makes the fileset consist only of folders
+for /d %%i in (lang\*) do (
+REM %%i is something like lang\esn
+md %BUILDDIR%script\%%i
+for %%j in (%SCRIPTSRC%) do if exist %%i\%%j copy %%i\%%j %BUILDDIR%script\%%i\%%j
+for %%j in (%MARKDOWNSRC%) do if exist %%i\%%j.md %MD2HTML% -c %%i\%%j.md %BUILDDIR%script\%%i\%%j.html
+if errorlevel 1 goto done
+)
 goto next
 :installer
 if not exist "%programfiles(x86)%" goto installer32
@@ -59,14 +67,6 @@ if not exist "%programfiles(x86)%" goto installer32
 goto next
 :installer32
 "%programfiles%\nsis\makensis" "%BUILDDIR%\installer.nsi"
-goto next
-:markdown
-REM convert Markdown files in %BUILDDIR%script\lang folders, replacing the .md files with .html files.
-REM /r executes the for in lang and each of its subfolders.  We test for existence to avoid trying to process the lang dir itself.
-for /r %BUILDDIR%script\lang %%i in (%MARKDOWNSRC%) do if exist %%i.md (
-%MD2HTML% -c %%i.md > %%i.html
-del %%i.md
-)
 goto next
 :tojaws
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
