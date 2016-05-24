@@ -1,11 +1,11 @@
-(Last updated 5/23/16)
+(Last updated 5/24/16)
 
 Thank you for your interest in contributing to the JAWS Script for Audacity!
 
 # Contributing
 If you would like to contribute changes to the script, [fork a copy of the repository](https://help.github.com/articles/fork-a-repo), [create a branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository) for your changes, and [create a pull request](https://help.github.com/articles/creating-a-pull-request).  The installer uses two other submodules: [`uninstlog`](https://github.com/campg2j003/uninstlog) and [`jfw_nsh`](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the `JAWS-Script-for-Audacity` repo on your machine you should add the `--recursive` switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the `JAWS-Script-for-Audacity` repo from GitHub as a zip file, the submodule folders (`jfw_nsh` and `jfw_nsh\uninstlog`) will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  Normally you wil be downloading the `master` branch so this is not a problem.  The file `.gitmodules` in the top-level folder and the` jfw_nsh` submodule folder may be of help in determining the right branch.)
 
-To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.46.
+To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.51.
 
 You will also need [`md2html`][md2html] or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable][md2htmlexe] so you don't have to have Python installed.  To use it, place `md2html.exe` in a folder on your machine.  (If this folder is not on your execution path you will need to set the MD2HTML environment variable in `build.cmd` to it.)
 [md2html]: https://github.com/campg2j003/md2html
