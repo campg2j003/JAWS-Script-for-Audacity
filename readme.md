@@ -118,7 +118,7 @@ Messages and string constants for the JAWS script are in `audacity.jsm` and `aud
 The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.
 
 This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md][] in the repository.
-[CONTRIBUTING.md]: https://github.com/campg2j003/JAWS-Script-for-Audacity/CONTRIBUTING.md
+[CONTRIBUTING.md]: https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md
 
 # Notes for Translators
 Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md][] for more information.
