@@ -6,8 +6,8 @@ set PROD=audacity
 
 set BUILDDIR=build\
 set JAWSDIR=%appdata%\Freedom Scientific\JAWS\17.0\settings\enu
-REM Absolute path to md2html.
-set MD2HTML=%dev%\audacity_git\md2html\dist\md2html.exe
+REM Name of md2html (on execution path or absolute path).
+set MD2HTML=md2html
 REM %MD2HTML% -V
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm

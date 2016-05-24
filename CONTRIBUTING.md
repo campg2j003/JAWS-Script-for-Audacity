@@ -1,4 +1,4 @@
-(Last updated 5/14/16)
+(Last updated 5/23/16)
 
 Thank you for your interest in contributing to the JAWS Script for Audacity!
 
@@ -7,9 +7,9 @@ If you would like to contribute changes to the script, [fork a copy of the repos
 
 To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.46.
 
-You will also need [`md2html`][md2html] or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable][md2htmlexe] so you don't have to have Python installed.
+You will also need [`md2html`][md2html] or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable][md2htmlexe] so you don't have to have Python installed.  To use it, unzip `md2html.zip` in a folder.  (If this folder is not on your execution path you will need to set the MD2HTML environment variable in `build.cmd` to it.)
 [md2html]: https://github.com/campg2j003/md2html
-[md2htmlexe]: md2html.exe
+[md2htmlexe]: https://github.com/campg2j003/md2html/releases/download/v1.0.3/md2html.exe
 
 There is a [`build.cmd`](build.cmd) script in the repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, converts Markdown files to HTML, and runs the installer.  You will probably have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
 
@@ -24,7 +24,7 @@ build\
   installer files
 ```
 
-The contents of the `lang` folder in the top level of the repo, including all subfolders, is copied to the `build\script\lang` folder.  Each script file in the top level of the repo is also copied to the `script` folder.  Note that since specific files are copied to the `script` folder, other files that may be in the repo will not be copied, but *all* files in the `lang` folder structure will be copied, so you should make sure that no extra files exist there.  The required installer files are copied from `Jaws_script_installer`, `Jaws_script_installer\jfw_nsh`, and `Jaws_script_installer\jfw_nsh\uninstlog`, to `build`.  The text files are also copied to `script`, and `readme.md` is converted from Markdown to HTML and stored in `readme.html`.  This is so that GitHub will recognize it as containing markdown but it will still be displayed by the installer if requested.
+The contents of the `lang` folder in the top level of the repo, including all subfolders, is copied to the `build\script\lang` folder.  Each script file in the top level of the repo is also copied to the `script` folder.  Note that since specific files are copied to the `script` folder, other files that may be in the repo will not be copied.  The required installer files are copied from `Jaws_script_installer`, `Jaws_script_installer\jfw_nsh`, and `Jaws_script_installer\jfw_nsh\uninstlog`, to `build`.  The text files are also copied to `script`, and `readme.md` is converted from Markdown to HTML and stored in `readme.html`.  This is so that GitHub will recognize it as containing markdown but it will still be displayed by the installer if requested.
 
 You can, therefore, create an installer by running:
 
