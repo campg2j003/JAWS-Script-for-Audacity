@@ -1,8 +1,10 @@
-(This file last updated 5/15/2016)
+(This file last updated 5/28/2016)
 
 # New in 2.1.0-rc.1
-- README is now HTML.  (The source is Markdown and it is converted to HTML in the build process.
+- The installer executable is now built with NSIS 2.51.  (The files are still compatible with 2.46.)
+- The README is now HTML.  (The source is Markdown and it is converted to HTML in the build process.
 - Information related to working with GitHub and the Git repository has been moved from readme.md to CONTRIBUTING.md, which only appears in the Git repository.
+- Added additional usage information to the README.
 - SayLine now says track number and number of tracks in the track panel.
 - Fixed a bug in the uninstaller portion of uninstlog that caused files to not be uninstalled if the user chose to delete files that were modified since installation.
 - The uninstaller now asks to delete the first file modified since installation and then processes all of them acording to the user's response.

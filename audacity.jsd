@@ -363,7 +363,7 @@ Respects AnnounceMessage.
 :Synopsis Clears the gfSilence flag used to silence speaking of focus changes.
 :Description This function can be scheduled with ScheduleFunction to terminate silencing of speech in the future.  It is used to reactivate speech after starting a recording.
 
-:function SayActiveLabel ()
+:function SayActiveLabel
 :Description Speak the text of the active label if any.  Assumes focus in track panel.  Uses the invisible cursor.
 :Returns Void no return description
 
