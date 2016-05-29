@@ -183,6 +183,9 @@ Respects AnnounceMessage.
 :script DeselectAll
 :Synopsis Deselects all audio in current open project
 
+:script SelectInAllTracks
+:Synopsis Selects current time range in all tracks.
+
 :function RefreshFocus
 :Description Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
 :Returns Void no return description

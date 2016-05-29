@@ -19,6 +19,7 @@ j=MoveToStartOfSelectedTracks
 control+c=Copy
 shift+rightarrow=FinishMarkerRight
 shift+control+a=DeselectAll
+shift+control+k=SelectInAllTracks
 shift+c=CloseFocusTrack
 ;  control+[=
 ;Translation Note: In the following script, the ` (grave accent) symbol itself was replaced with a reference to it, GraveAccent. This is because the grave accent in Spanish keyboards is just at the right of the P letter instead of abobe the TAB key. So, in order to get JAWS to show a masculine ordinal (º) —which is the symbol the key abobe TAB and just at the left of the one number represents in the Spanish keyboard layout—, we must include the grave accent in the way provided in the Translated Key Names section, which is not present on English JAWS versions, of Default.jkm, specifically at line 6687.

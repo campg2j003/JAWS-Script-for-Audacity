@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.1 5/28/16  08:10UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.1 5/29/16  20:50UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2079,6 +2079,17 @@ ElIf FocusInMainWindow () && ! NoProject () && !gfInLabel && GetQuickSetting ("A
 	RefreshFocus ()
 EndIf
 EndScript ; SelectAll
+
+Script SelectInAllTracks ()
+;Perform the Audacity Select In All Tracks keystroke.  (This command selects the current time range in all tracks.)
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSelectInAllTracks)
+EndIf
+RefreshFocus ()
+EndScript ; SelectInAllTracks
 
 ; Cuong's with modification
 Void Function ProcessVST (Int iControlID)

@@ -19,6 +19,7 @@ j=MoveToStartOfSelectedTracks
 control+c=Copy
 shift+rightarrow=FinishMarkerRight
 shift+control+a=DeselectAll
+shift+control+k=SelectInAllTracks
 shift+c=CloseFocusTrack
 ;control+[=
 Control+`=AnnounceOnOff
