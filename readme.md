@@ -1,4 +1,4 @@
-5/23/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-rc.1 5/23/16  00:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+5/31/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-rc.1 5/29/16  20:50UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -54,6 +54,8 @@ The package can be uninstalled via Program Features (Add/Remove Programs).  You 
 If the uninstaller detects that the script files have been modified since they were installed, it asks for confirmation before removing them.  A Yes response will delete all modified files.  A No response will leave them all.  The settings file (`audacity.jcf` or `audacity.jsi`) is not removed.
 
 # Using the Script
+
+Note: The script speaks names for some Audacity keystrokes, and uses others for performing some of its operations.  If you reassign these keys in Audacity, you must also change their assignments in `audacity.jkm` if you want the script to continue to function properly.
 
 ## Basics
 Once installed, the script will speak a welcome message the first time Audacity gains focus.  You can browse the list of keystrokes the script provides by pressing `JAWSKey+h` (`HotKeyHelp`).  You can get a list of Audacity keystrokes by pressing `JAWSKey+w`.  This page also has a link that will open the Audacity Guide for JAWS users, by David Bailes, in your web browser.
