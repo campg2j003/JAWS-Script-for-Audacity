@@ -55,7 +55,7 @@ If the uninstaller detects that the script files have been modified since they w
 
 # Using the Script
 
-Note: The script speaks names for some Audacity keystrokes, and uses others for performing some of its operations.  If you reassign these keys in Audacity, you must also change their assignments in `audacity.jkm` if you want the script to continue to function properly.
+Note: The script speaks names for some Audacity keystrokes, and uses others for performing some of its operations.  If you reassign these keys in Preferences > Keyboard, you must also change their assignments in `audacity.jkm` if you want the script to continue to function properly.
 
 ## Basics
 Once installed, the script will speak a welcome message the first time Audacity gains focus.  You can browse the list of keystrokes the script provides by pressing `JAWSKey+h` (`HotKeyHelp`).  You can get a list of Audacity keystrokes by pressing `JAWSKey+w`.  This page also has a link that will open the Audacity Guide for JAWS users, by David Bailes, in your web browser.
