@@ -1,17 +1,17 @@
-(Last updated 5/24/16)
+(Last updated 6/1/16)
 
 Thank you for your interest in contributing to the JAWS Script for Audacity!
 
 # Contributing
-If you would like to contribute changes to the script, [fork a copy of the repository](https://help.github.com/articles/fork-a-repo), [create a branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository) for your changes, and [create a pull request](https://help.github.com/articles/creating-a-pull-request).  The installer uses two other submodules: [`uninstlog`](https://github.com/campg2j003/uninstlog) and [`jfw_nsh`](https://github.com/campg2j003/jfw_nsh).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the `JAWS-Script-for-Audacity` repo on your machine you should add the `--recursive` switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the `JAWS-Script-for-Audacity` repo from GitHub as a zip file, the submodule folders (`jfw_nsh` and `jfw_nsh\uninstlog`) will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  Normally you wil be downloading the `master` branch so this is not a problem.  The file `.gitmodules` in the top-level folder and the` jfw_nsh` submodule folder may be of help in determining the right branch.)
+If you would like to contribute changes to the script, [fork a copy of the repository](https://help.github.com/articles/fork-a-repo), [create a branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository) for your changes, and [create a pull request](https://help.github.com/articles/creating-a-pull-request).  The installer uses two other submodules: [`uninstlog`](https://github.com/campg2j003/uninstlog) and [`jfw_nsh`](https://github.com/campg2j003/jfw_nshr).  If you want to make changes in those files it is probably best to fork them as well and make your changes in them.  A consequence of using submodules is that if you make a clone of the `JAWS-Script-for-Audacity` repo on your machine you should add the `--recursive` switch to the git clone command.  You also need to run `git submodule update --remote --recursive` after checking out a new branch or pulling new work from GitHub.  Also note that if you download the `JAWS-Script-for-Audacity` repo from GitHub as a zip file, the submodule folders (`jfw_nsh` and `jfw_nsh\uninstlog`) will be empty.  You will have to download the other repos and put the files in these subfolders.  (You also must make sure that you download the proper branch.  Normally you wil be downloading the `master` branch so this is not a problem.  The file `.gitmodules` in the top-level folder and the` jfw_nsh` submodule folder may be of help in determining the right branch.)
 
-To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.51.
+To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.51, but the files are completely compatible with v2.46.
 
 You will also need [`md2html`][md2html] or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable][md2htmlexe] so you don't have to have Python installed.  To use it, place `md2html.exe` in a folder on your machine.  (If this folder is not on your execution path you will need to set the MD2HTML environment variable in `build.cmd` to it.)
 [md2html]: https://github.com/campg2j003/md2html
 [md2htmlexe]: https://github.com/campg2j003/md2html/releases/download/v1.0.3/md2html.exe
 
-There is a [`build.cmd`](build.cmd) script in the repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, converts Markdown files to HTML, and runs the installer.  You will probably have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
+There is a [`build.cmd`](build.cmd) script in the main repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, converts Markdown files to HTML, and runs the installer.  You will probably have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
 
 The `b` option produces the following structure in the root of the repo:
 ```
@@ -55,3 +55,32 @@ In addition, the following files require translation:
 
 The README file is written in the GitHub Markdown format and converted to HTML in the build process.  See [Writing on GitHub][] for more information.  You can check the conversion process by running `md2html -c readme.md readme.html` on your translation.    The file `md2html.cfg` provides text for titles in the HTML files produced by `md2html`.  The `title` option is the text placed in the HTML `<title>` element of the page.  The `toctitle` option is the text placed in a `<span>` element just before the table of contents.  All Markdown (`.md`) files, `md2html.cfg` and the resulting HTML file are UTF-8.
 
+To add a new language:
+- Add a new folder in the `lang` folder of the main repo.  It should be the same name as the JAWS folder for the language.
+- Copy the `.jsm` and `qsm` files from the main folder to the new language folder and translate the messages, noting the comments about what should and should not be translated. Also copy and translate `readme.md`.
+- Copy and translate `md2html.cfg`.  You will probably only need to translate the text of the `toctitle` and `title` options.  (These are currently the only options in the file, and the only file supported is `readme.md`.  There can also be a `toclocation` option, but this is currently not used.)
+- Copy and translate the message text in the `:script` entries of the `jsd` file.  
+- If you need to change script key assignments, copy  and modify the `jkm` file as well.
+- In `Jaws_script_installer`, copy `installer_lang_enu.nsh` to a new file in the same folder, replacing "enu" with the same name as your new folder in the `lang` folder.  Replace the comment block at the top of the file with one something like this:at the top of the file to reflect the file being translated.
+```
+/*
+Spanish messages for installer.nsi (updated 1/22/2016)
+Translation of file installer_lang_enu.nsh last updated 1/22/2016.
+This file last updated 1/22/2016.
+Translated by Fernando Gregoire.
+*/
+```
+
+- Check in your changes and submit a pull request for your branch.
+
+- Do the same in the `jfw_nsh` and `uninstlog` repos.
+
+
+Files should either be in US ASCII or UTF-8 encoding.
+
+At this point the JAWS script is complete.  In order for the installer to use the new files they need to be added to the installer.  This involves:
+- Add includes for the new language file in the appropriate installer files (the `uninstlog` language file is included in `JFW.nsh`.).
+- Add  the appropriate `MUI2_LANGUAGE` macro in `JFW.nsh`.
+- Add the new files to the appropriate places in `installer.nsi` where it installs the source files.  (Searching for '${Case} "esn"' should find them.)
+
+See [`readme.md`](https://github.com/campg2j003/jfw_nsh/readme.md) in `jfw_nsh` for more information on modifying the installer.
