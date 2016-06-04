@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/4/16  04:15UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/4/16  21:40UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2972,38 +2972,18 @@ EndIf
 EndScript ; TrackMoveBottom
 
 Script InputDevice ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgInputDevice)
-EndIf
+AnnounceKeyMessage (msgInputDevice)
 EndScript ; InputDevice
 
 Script OutputDevice ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgOutputDevice)
-EndIf
+AnnounceKeyMessage (msgOutputDevice)
 EndScript ; OutputDevice
 
 Script AudioHost ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgAudioHost)
-EndIf
+AnnounceKeyMessage (msgAudioHost)
 EndScript ; AudioHost
 
 Script InputChannels ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgInputChannels)
-EndIf
+AnnounceKeyMessage (msgInputChannels)
 EndScript ; InputChannels
 
