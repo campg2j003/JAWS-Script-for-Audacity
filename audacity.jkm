@@ -77,4 +77,47 @@ Control+p=Preferences
 Control+d=Duplicate
 Control+t=Trim
 
+Ctrl+Shift+L=ExportMultiple
+Ctrl+Alt+X=SplitCut
+Ctrl+Alt+K=SplitDelete
+Ctrl+Alt+V=PasteNewLabel
+Ctrl+I=Split
+Ctrl+Alt+I=SplitNew
+Ctrl+J=Join
+Ctrl+Alt+J=Disjoin
+Alt+X=CutLabels
+Alt+K=DeleteLabels
+Alt+Shift+X=SplitCutLabels
+Alt+Shift+K=SplitDeleteLabels
+Alt+L=SilenceLabels
+Alt+Shift+C=CopyLabels
+Alt+I=SplitLabels
+Alt+J=JoinLabels
+Alt+Shift+J=DisjoinLabels
+Q=ToggleSpectralSelection
+Ctrl+Shift+Y=SelSyncLockTracks
+Ctrl+E=ZoomSel
+Ctrl+F=FitInWindow
+Ctrl+Shift+F=FitV
+Ctrl+[=GoSelStart
+Ctrl+]=GoSelEnd
+Ctrl+Shift+C=CollapseAllTracks
+Ctrl+Shift+X=ExpandAllTracks
+Shift+Space=PlayLooped
+Ctrl+Shift+N=NewMonoTrack
+Ctrl+Shift+M=MixAndRenderToNewTrack
+Ctrl+B=AddLabel
+Ctrl+M=AddLabelPlaying
+Ctrl+R=RepeatLastEffect
+Ctrl+Home=FirstTrack
+Ctrl+End=LastTrack
+Shift+P=TrackPan
+;These are my own assignments that got into my automated generation of the support for these keys.  The scripts remain but I have commented them out here because they are not part of the default key assignments.
+;Alt+NUMPAD_HOME=TrackMoveTop
+;Alt+NUMPAD_END=TrackMoveBottom
+Shift+I=InputDevice
+Shift+O=OutputDevice
+Shift+H=AudioHost
+Shift+N=InputChannels
+
 [Laptop Keys]

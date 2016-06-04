@@ -587,5 +587,169 @@ duplicate
 trim
 @@
 
+@msgExportMultiple
+Export Multiple
+@@
+
+@msgSplitCut
+Split Cut
+@@
+
+@msgSplitDelete
+Split Delete
+@@
+
+@msgPasteNewLabel
+Paste Text to New Label
+@@
+
+@msgSplit
+Split
+@@
+
+@msgSplitNew
+Split New
+@@
+
+@msgJoin
+Join
+@@
+
+@msgDisjoin
+Detach at Silences
+@@
+
+@msgCutLabels
+Cut labels
+@@
+
+@msgDeleteLabels
+Delete labels
+@@
+
+@msgSplitCutLabels
+Split Cut labels
+@@
+
+@msgSplitDeleteLabels
+Split Delete labels
+@@
+
+@msgSilenceLabels
+Silence labels
+@@
+
+@msgCopyLabels
+Copy labels
+@@
+
+@msgSplitLabels
+Split labels
+@@
+
+@msgJoinLabels
+Join labels
+@@
+
+@msgDisjoinLabels
+Detach at Silences labels
+@@
+
+@msgToggleSpectralSelection
+Toggle spectral selection
+@@
+
+@msgSelSyncLockTracks
+select In All Sync-Locked Tracks
+@@
+
+@msgZoomSel
+Zoom to Selection
+@@
+
+@msgFitInWindow
+Fit in Window
+@@
+
+@msgFitV
+Fit Vertically
+@@
+
+@msgGoSelStart
+Go to Selection Start
+@@
+
+@msgGoSelEnd
+Go to Selection End
+@@
+
+@msgCollapseAllTracks
+Collapse All Tracks
+@@
+
+@msgExpandAllTracks
+Expand All Tracks
+@@
+
+@msgPlayLooped
+Loop Play
+@@
+
+@msgNewMonoTrack
+Mono Track
+@@
+
+@msgMixAndRenderToNewTrack
+Mix and Render to New Track
+@@
+
+@msgAddLabel
+Add Label At Selection
+@@
+
+@msgAddLabelPlaying
+Add Label At Playback Position
+@@
+
+@msgRepeatLastEffect
+Repeat last effect
+@@
+
+@msgFirstTrack
+First Track
+@@
+
+@msgLastTrack
+Last Track
+@@
+
+@msgTrackPan
+Change pan
+@@
+
+@msgTrackMoveTop
+Move focused track to top
+@@
+
+@msgTrackMoveBottom
+Move focused track to bottom
+@@
+
+@msgInputDevice
+Change recording device
+@@
+
+@msgOutputDevice
+Change playback device
+@@
+
+@msgAudioHost
+Change audio host
+@@
+
+@msgInputChannels
+Change recording channels
+@@
+
 
 EndMessages

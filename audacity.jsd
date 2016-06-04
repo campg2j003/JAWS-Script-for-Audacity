@@ -420,3 +420,126 @@ Respects AnnounceMessage.
 :Script Trim
 :Synopsis trim: delete audio outside of selection
 
+:script ExportMultiple
+:Synopsis Export Multiple
+
+:script SplitCut
+:Synopsis Split Cut
+
+:script SplitDelete
+:Synopsis Split Delete
+
+:script PasteNewLabel
+:Synopsis Paste Text to New Label
+
+:script Split
+:Synopsis Split
+
+:script SplitNew
+:Synopsis Split New
+
+:script Join
+:Synopsis Join
+
+:script Disjoin
+:Synopsis Detach at Silences
+
+:script CutLabels
+:Synopsis Cut labels
+
+:script DeleteLabels
+:Synopsis Delete labels
+
+:script SplitCutLabels
+:Synopsis Split Cut labels
+
+:script SplitDeleteLabels
+:Synopsis Split Delete labels
+
+:script SilenceLabels
+:Synopsis Silence labels
+
+:script CopyLabels
+:Synopsis Copy labels
+
+:script SplitLabels
+:Synopsis Split labels
+
+:script JoinLabels
+:Synopsis Join labels
+
+:script DisjoinLabels
+:Synopsis Detach at Silences labels
+
+:script ToggleSpectralSelection
+:Synopsis Toggle spectral selection
+
+:script SelSyncLockTracks
+:Synopsis select In All Sync-Locked Tracks
+
+:script ZoomSel
+:Synopsis Zoom to Selection
+
+:script FitInWindow
+:Synopsis Fit in Window
+
+:script FitV
+:Synopsis Fit Vertically
+
+:script GoSelStart
+:Synopsis Go to Selection Start
+
+:script GoSelEnd
+:Synopsis Go to Selection End
+
+:script CollapseAllTracks
+:Synopsis Collapse All Tracks
+
+:script ExpandAllTracks
+:Synopsis Expand All Tracks
+
+:script PlayLooped
+:Synopsis Loop Play
+
+:script NewMonoTrack
+:Synopsis Mono Track
+
+:script MixAndRenderToNewTrack
+:Synopsis Mix and Render to New Track
+
+:script AddLabel
+:Synopsis Add Label At Selection
+
+:script AddLabelPlaying
+:Synopsis Add Label At Playback Position
+
+:script RepeatLastEffect
+:Synopsis Repeat last effect
+
+:script FirstTrack
+:Synopsis First Track
+
+:script LastTrack
+:Synopsis Last Track
+
+:script TrackPan
+:Synopsis Change pan
+
+:script TrackMoveTop
+:Synopsis Move focused track to top
+
+:script TrackMoveBottom
+:Synopsis Move focused track to bottom
+
+:script InputDevice
+:Synopsis Change recording device
+
+:script OutputDevice
+:Synopsis Change playback device
+
+:script AudioHost
+:Synopsis Change audio host
+
+:script InputChannels
+:Synopsis Change recording channels
+

@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.1 5/29/16  20:50UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/4/16  04:15UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2652,4 +2652,358 @@ Else
 	AnnounceKeyMessage (msgTrim)
 EndIf
 EndScript ; Trim
+
+Script ExportMultiple ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgExportMultiple)
+EndIf
+EndScript ; ExportMultiple
+
+Script SplitCut ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitCut)
+EndIf
+EndScript ; SplitCut
+
+Script SplitDelete ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitDelete)
+EndIf
+EndScript ; SplitDelete
+
+Script PasteNewLabel ()
+AnnounceKeyMessage (msgPasteNewLabel)
+EndScript ; PasteNewLabel
+
+Script Split ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplit)
+EndIf
+EndScript ; Split
+
+Script SplitNew ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitNew)
+EndIf
+EndScript ; SplitNew
+
+Script Join ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgJoin)
+EndIf
+EndScript ; Join
+
+Script Disjoin ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgDisjoin)
+EndIf
+EndScript ; Disjoin
+
+Script CutLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgCutLabels)
+EndIf
+EndScript ; CutLabels
+
+Script DeleteLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgDeleteLabels)
+EndIf
+EndScript ; DeleteLabels
+
+Script SplitCutLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitCutLabels)
+EndIf
+EndScript ; SplitCutLabels
+
+Script SplitDeleteLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitDeleteLabels)
+EndIf
+EndScript ; SplitDeleteLabels
+
+Script SilenceLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSilenceLabels)
+EndIf
+EndScript ; SilenceLabels
+
+Script CopyLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgCopyLabels)
+EndIf
+EndScript ; CopyLabels
+
+Script SplitLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSplitLabels)
+EndIf
+EndScript ; SplitLabels
+
+Script JoinLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgJoinLabels)
+EndIf
+EndScript ; JoinLabels
+
+Script DisjoinLabels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgDisjoinLabels)
+EndIf
+EndScript ; DisjoinLabels
+
+Script ToggleSpectralSelection ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgToggleSpectralSelection)
+EndIf
+EndScript ; ToggleSpectralSelection
+
+Script SelSyncLockTracks ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgSelSyncLockTracks)
+EndIf
+EndScript ; SelSyncLockTracks
+
+Script ZoomSel ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgZoomSel)
+EndIf
+EndScript ; ZoomSel
+
+Script FitInWindow ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgFitInWindow)
+EndIf
+EndScript ; FitInWindow
+
+Script FitV ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgFitV)
+EndIf
+EndScript ; FitV
+
+Script GoSelStart ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgGoSelStart)
+EndIf
+EndScript ; GoSelStart
+
+Script GoSelEnd ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgGoSelEnd)
+EndIf
+EndScript ; GoSelEnd
+
+Script CollapseAllTracks ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgCollapseAllTracks)
+EndIf
+EndScript ; CollapseAllTracks
+
+Script ExpandAllTracks ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgExpandAllTracks)
+EndIf
+EndScript ; ExpandAllTracks
+
+Script PlayLooped ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgPlayLooped)
+EndIf
+EndScript ; PlayLooped
+
+Script NewMonoTrack ()
+AnnounceKeyMessage (msgNewMonoTrack)
+EndScript ; NewMonoTrack
+
+Script MixAndRenderToNewTrack ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgMixAndRenderToNewTrack)
+EndIf
+EndScript ; MixAndRenderToNewTrack
+
+Script AddLabel ()
+AnnounceKeyMessage (msgAddLabel)
+EndScript ; AddLabel
+
+Script AddLabelPlaying ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgAddLabelPlaying)
+EndIf
+EndScript ; AddLabelPlaying
+
+Script RepeatLastEffect ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgRepeatLastEffect)
+EndIf
+EndScript ; RepeatLastEffect
+
+Script FirstTrack ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgFirstTrack)
+EndIf
+EndScript ; FirstTrack
+
+Script LastTrack ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgLastTrack)
+EndIf
+EndScript ; LastTrack
+
+Script TrackPan ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgTrackPan)
+EndIf
+EndScript ; TrackPan
+
+Script TrackMoveTop ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgTrackMoveTop)
+EndIf
+EndScript ; TrackMoveTop
+
+Script TrackMoveBottom ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgTrackMoveBottom)
+EndIf
+EndScript ; TrackMoveBottom
+
+Script InputDevice ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgInputDevice)
+EndIf
+EndScript ; InputDevice
+
+Script OutputDevice ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgOutputDevice)
+EndIf
+EndScript ; OutputDevice
+
+Script AudioHost ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgAudioHost)
+EndIf
+EndScript ; AudioHost
+
+Script InputChannels ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+Else
+	AnnounceKeyMessage (msgInputChannels)
+EndIf
+EndScript ; InputChannels
 
