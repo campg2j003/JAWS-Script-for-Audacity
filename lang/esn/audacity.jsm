@@ -1,10 +1,10 @@
-; Spanish messages for Audacity 2.0.0 script by Gary Campbell last updated 12/11/2015.
-;Translation based on English version dated ??/??/????.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 5/6/2016.
+;Translation based on English version dated 29/4/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012, 2013  Gary Campbell and Dang Manh Cuong.  All rights reserved.
-    Copyright (C) 2014 Fernando Gregoire, for the Spanish translation. All rights reserved.
+    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2014-2016 Fernando Gregoire, for the Spanish translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ Const
 
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const
-	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Anunciar los mensajes de Audacity",
+	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Anunciar los mensajes de Audacity",  ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Anunciar las barras de herramientas",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pausa al reproducir/grabar",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silenciar en vista previa",
@@ -57,7 +57,7 @@ Opciones específicas para Audacity
 Si se activa, lee mensajes para las operaciones con audio en Audacity.
 @@
 @msgUO_AnnounceToolbarsHlp
-SI se activa, lee el nombre de las barras de herramientas cuando el foco se mueve de una barra de herramientas a otra.
+SI se activa, lee el nombre de las barras de herramientas cuando el foco se desplaza de una barra de herramientas a otra.
 @@
 @msgUO_EnterPauseHlp
 Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
@@ -86,9 +86,9 @@ Const
 	csPauseKey="p"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.0.4-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.2-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Guía de Audacity 2.1.0 (en inglés)", 
+CS_JawsGuide_Title = "Guía de Audacity 2.1.2 (en inglés)", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
 
@@ -126,11 +126,14 @@ Para mover la pista actual a la posición de la pista marcada y fijar la marca en
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
 Para más info, vea el archivo whats new.txt.
+
 En una barra de herramientas, pulse %KeyFor (NextDocumentWindow) para moverse a la siguiente
 En una barra de herramientas, pulse %KeyFor (PreviousDocumentWindow) para moverse a la anterior
+
 Para leer el estado del programa (reproduciendo/pausado/grabando/detenido), pulse %KeyFor(SayAudacityState)
 Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse %keyfor (ResetConfig)
 Para conmutar entre las dos listas del diálogo Editar secuencias de comandos, pulse %keyfor (SwitchChainsList).
+
 Para obtener ayuda sobre las teclas rápidas de Audacity, pulse %keyfor(AudacityKeysHelp).
 Para obtener la ayuda predeterminada sobre teclas rápidas de Windows, pulse %keyfor(AudacityKeysHelp) dos veces rápidamente.
 
@@ -143,7 +146,7 @@ Para guardar la configuración actual como predefinición, pulse %keyfor (VSTSaveP
 
 Si Silenciar en Vista Previa está activado y aprieta el botón Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocará pérdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo después.
 
-Para cambiar la configuración de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions).
+Para cambiar la configuración de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 Para cambiar la URL de la Guía de JAWS para Audacity, pulse %keyfor (AddAudacityJawsGuide)
 @@
@@ -234,7 +237,10 @@ Cursor un poquito a la izquierda Flecha Izquierda
 Cursor un poquito a la derecha Flecha Derecha 
 
 Selección de un rango de tiempo
+
+
 Comando Combinación de teclas 
+
 Seleccionar un rango de tiempo que incluya todo el audio y seleccionar todas las pistas Ctrl + A 
 Comienzo de selección al principio de las pistas (tiempo 0) Shift + Inicio 
 Final de selección al final de todo el audio Shift + Fin 
@@ -247,7 +253,10 @@ Para mover el comienzo de la selección un poquito a la derecha Ctrl + Shift + Fl
 Para mover el comienzo de la selección un poquito a la izquierda Shift + Flecha Izquierda 
 
 Edición
+
+
 Comando Combinación de teclas 
+
 Deshacer Ctrl + Z 
 Rehacer Ctrl + Y 
 Borrar audio seleccionado Suprimir 
@@ -259,12 +268,17 @@ Cerrar (Eliminar) pista activa Shift + C
 Encontrar cruces en cero Z
 
 Grabación
+
+
 Comando Combinación de teclas 
+
 Grabar R 
 Añadir grabación Shift + R 
 Pausa/reanudar P 
 Detener Barra Espaciadora 
 Diálogo Servidor de audio Shift + H 
+Diálogo Dispositivo de grabación Shift + I 
+Diálogo Canales de grabación Shift + N 
 
 @@
 
@@ -322,6 +336,11 @@ selección
 pista
 @@
 
+;Used to say track number.  %1 -- number of current track, %2 -- total number of tracks.
+@msgTrackPosition
+%1 de %2
+@@
+    
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 todo el audio
@@ -365,6 +384,10 @@ grabando
 
 @msgDeselectAll
 deseleccionar todo
+@@
+
+@msgSelectInAllTracks
+seleccionar en todas las pistas
 @@
 
 @MSGSelectAll
@@ -439,8 +462,6 @@ Secuencias de comandos
 @msgChainCommands
 Secuencia de comandos
 @@
-
-
 ;for changing Jaws guide's link
 @msgNoChange_l
 No se han efectuado cambios.
@@ -485,4 +506,228 @@ Pista %1 marcada
 @msgNoTrackMarked
 sin marcas
 @@
+
+    ;Message to announce some Audacity keys
+    @msgZoomNormal
+ampliación normal
+@@
+
+@msgZoomIn
+ampliar
+@@
+
+@msgZoomOut
+reducir
+@@
+
+@msgMuteAllTracks
+silenciar todas las pistas
+@@
+
+@msgUnmuteAllTracks
+desactivar silencio en todas las pistas
+@@
+
+@msgReplaceWithSilence
+reemplazar con silencio
+@@
+
+@msgZeroCrossing
+cruces en cero
+@@
+
+@msgImportAudio
+importar audio
+@@
+
+@msgExportAudio
+exportar audio
+@@
+
+@msgNewWindow
+nueva ventana
+@@
+
+@msgSaveProject
+guardar proyecto
+@@
+
+@msgPreferences
+preferencias
+@@
+
+@msgDuplicate
+duplicar
+@@
+
+@msgTrim
+recortar
+@@
+
+@msgExportMultiple
+Exportar múltiple
+@@
+
+@msgSplitCut
+Dividir y cortar
+@@
+
+@msgSplitDelete
+Dividir y borrar
+@@
+
+@msgPasteNewLabel
+Pegar texto como una nueva etiqueta
+@@
+
+@msgSplit
+Dividir
+@@
+
+@msgSplitNew
+Dividir y nueva
+@@
+
+@msgJoin
+Unir
+@@
+
+@msgDisjoin
+Desunir en los silencios
+@@
+
+@msgCutLabels
+Cortar etiquetas
+@@
+
+@msgDeleteLabels
+Borrar etiquetas
+@@
+
+@msgSplitCutLabels
+Dividir y cortar etiquetas
+@@
+
+@msgSplitDeleteLabels
+Dividir y borrar etiquetas
+@@
+
+@msgSilenceLabels
+Silenciar etiquetas
+@@
+
+@msgCopyLabels
+Copiar etiquetas
+@@
+
+@msgSplitLabels
+Dividir etiquetas
+@@
+
+@msgJoinLabels
+Unir etiquetas
+@@
+
+@msgDisjoinLabels
+Desunir etiquetas en los silencios
+@@
+
+@msgToggleSpectralSelection
+Cambiar la selección de espectro
+@@
+
+@msgSelSyncLockTracks
+seleccionar en todas las pistas enlazadas
+@@
+
+@msgZoomSel
+Ampliar la selección
+@@
+
+@msgFitInWindow
+Ajustar a la ventana
+@@
+
+@msgFitV
+Ajustar verticalmente
+@@
+
+@msgGoSelStart
+Ir al comienzo de la selección
+@@
+
+@msgGoSelEnd
+Ir al final de la selección
+@@
+
+@msgCollapseAllTracks
+Contraer todas las pistas
+@@
+
+@msgExpandAllTracks
+Expandir todas las pistas
+@@
+
+@msgPlayLooped
+Reproducir cíclicamente
+@@
+
+@msgNewMonoTrack
+Pista mono
+@@
+
+@msgMixAndRenderToNewTrack
+Mezclar y generar en pista nueva
+@@
+
+@msgAddLabel
+Añadir etiqueta en la selección
+@@
+
+@msgAddLabelPlaying
+Agregar etiqueta en posición de reproducción
+@@
+
+@msgRepeatLastEffect
+Repetir el último efecto
+@@
+
+@msgFirstTrack
+Primera pista
+@@
+
+@msgLastTrack
+Última pista
+@@
+
+@msgTrackPan
+Cambiar posicionamiento
+@@
+
+@msgTrackMoveTop
+Desplazar pista activa a la parte superior
+@@
+
+@msgTrackMoveBottom
+Desplazar pista activa a la parte inferior
+@@
+
+@msgInputDevice
+Cambiar dispositivo de grabación
+@@
+
+@msgOutputDevice
+Cambiar dispositivo de reproducción
+@@
+
+@msgAudioHost
+Cambiar servidor de audio
+@@
+
+@msgInputChannels
+Cambiar canales de grabación
+@@
+
+
 EndMessages
+
