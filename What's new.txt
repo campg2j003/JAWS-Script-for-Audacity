@@ -1,4 +1,7 @@
-(This file last updated 5/28/2016)
+(This file last updated 6/5/2016)
+
+# New since 2.1.0-rc.1 release
+- Added more messages for keys.
 
 # New in 2.1.0-rc.1
 - The installer executable is now built with NSIS 2.51.  (The files are still compatible with 2.46.)

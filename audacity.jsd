@@ -507,12 +507,6 @@ Respects AnnounceMessage.
 :script MixAndRenderToNewTrack
 :Synopsis Mix and Render to New Track
 
-:script AddLabel
-:Synopsis Add Label At Selection
-
-:script AddLabelPlaying
-:Synopsis Add Label At Playback Position
-
 :script RepeatLastEffect
 :Synopsis Repeat last effect
 

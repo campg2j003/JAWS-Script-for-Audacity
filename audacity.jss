@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/5/16  02:55UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/5/16  19:45UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2511,6 +2511,8 @@ Script AddLabelAtSelection ()
 Let gfInLabel = True
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
+;The following types key, says label, and speaks message.  Comment out last 2 lines if you use it.
+;AnnounceKeyMessage (msgAddLabel)
 EndScript ; AddLabelAtSelection
 
 Script AddLabelAtPlayPosition ()
@@ -2521,8 +2523,10 @@ EndIf ;No project
 If !IsStopped () Then
 	Let gfInLabel = True
 EndIf ; if not stopped
-	SayCurrentScriptKeyLabel ()
-	TypeCurrentScriptKey ()
+SayCurrentScriptKeyLabel ()
+TypeCurrentScriptKey ()
+;The following types key, says label, and speaks message.  Comment out last 2 lines if you use it.
+;AnnounceKeyMessage (msgAddLabelPlaying)
 EndScript ; AddLabelAtPlayPosition
 
 ;*** More scripts for Audacity keys
@@ -2898,19 +2902,6 @@ Else
 	AnnounceKeyMessage (msgMixAndRenderToNewTrack)
 EndIf
 EndScript ; MixAndRenderToNewTrack
-
-Script AddLabel ()
-AnnounceKeyMessage (msgAddLabel)
-EndScript ; AddLabel
-
-Script AddLabelPlaying ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgAddLabelPlaying)
-EndIf
-EndScript ; AddLabelPlaying
 
 Script RepeatLastEffect ()
 If NoProject () Then
