@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/4/16  21:40UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.1 6/5/16  02:55UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2221,7 +2221,7 @@ If IsWarningDialog () && IsPCCursor () && Not UserBufferIsActive () && !CheckAud
 	SayWindowTypeAndText (GetFocus ())
 Else
 	; Not at this dialog, performs default funtionality
-	If IsPCCursor () && NoProject () Then
+	If IsPCCursor () && NoProject () && FocusInTrackPanel () Then
 		SayNoProject ()
 		Return
 	EndIf ; if no project
@@ -2614,12 +2614,7 @@ EndIf
 EndScript ; ExportAudio
 
 Script NewWindow ()
-If NoProject () Then
-	SayNoProject ()
-	Return
-Else
-	AnnounceKeyMessage (msgNewWindow)
-EndIf
+AnnounceKeyMessage (msgNewWindow)
 EndScript ; NewWindow
 
 Script SaveProject ()
