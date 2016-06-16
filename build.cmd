@@ -6,12 +6,15 @@ set PROD=audacity
 
 set BUILDDIR=build\
 set JAWSDIR=%appdata%\Freedom Scientific\JAWS\17.0\settings\enu
+REM Name of md2html (on execution path or absolute path).
+set MD2HTML=md2html
+REM %MD2HTML% -V
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm
 set OTHERSRC=readme_vi.txt copying.txt "What's new.txt"
-REM These are basenames of .md files that should be staged as .txt files.
-set markdownsrc=readme
-set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh install.ini jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh uninstlog\uninstlog.nsh uninstlog\uninstlog_enu.nsh uninstlog\uninstlog_esn.nsh
+REM These are basenames of .md files that should be converted to HTML files.
+set MARKDOWNSRC=readme
+set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh jfw_nsh\readme.md jfw_nsh\uninstlog\uninstlog.nsh jfw_nsh\uninstlog\uninstlog_enu.nsh jfw_nsh\uninstlog\uninstlog_esn.nsh jfw_nsh\uninstlog\logging.nsh
 if "%1"=="/?" goto help
 if "%1"=="-?" goto help
 if "%1"=="-h" goto help
@@ -46,8 +49,17 @@ if exist %BUILDDIR% rd /q /s %BUILDDIR%
 mkdir %BUILDDIR% %BUILDDIR%\script
 for %%i in (%INSTALLSRC%) do copy %INSTALLSRCDIR%\%%i %BUILDDIR%
 for %%i in (%SCRIPTSRC% %OTHERSRC%) do copy %%i %BUILDDIR%script
-xcopy lang %BUILDDIR%\script\lang /s/q/i
-for %%i in (%markdownsrc%) do copy %%i.md %BUILDDIR%script\%%i.txt
+for %%i in (%MARKDOWNSRC%) do %MD2HTML% -c %%i.md %BUILDDIR%script\%%i.html
+if errorlevel 1 goto done
+md %BUILDDIR%script\lang
+REM /d makes the fileset consist only of folders
+for /d %%i in (lang\*) do (
+REM %%i is something like lang\esn
+md %BUILDDIR%script\%%i
+for %%j in (%SCRIPTSRC%) do if exist %%i\%%j copy %%i\%%j %BUILDDIR%script\%%i\%%j
+for %%j in (%MARKDOWNSRC%) do if exist %%i\%%j.md %MD2HTML% -c %%i\%%j.md %BUILDDIR%script\%%i\%%j.html
+if errorlevel 1 goto done
+)
 goto next
 :installer
 if not exist "%programfiles(x86)%" goto installer32

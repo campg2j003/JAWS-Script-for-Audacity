@@ -1,8 +1,8 @@
-; English messages for Audacity 2.0.0 script by Gary Campbell last updated 12/1/2015.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 4/29/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2015  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -84,9 +84,9 @@ Const
 	csPauseKey="p"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.0-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.2-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Audacity 2.1.0 Guide", 
+CS_JawsGuide_Title = "Audacity 2.1.2 Guide", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
@@ -170,7 +170,7 @@ JAWS Guide
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.1.0 (from %1, by %2).  Access the guide at
+Default keystrokes for Audacity v2.1.2 (from %1, by %2).  Access the guide at
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
@@ -206,9 +206,15 @@ Seek backward short period during playback Left Arrow
 Seek forward short period during playback Right Arrow 
 Seek backward long period during playback Shift + Left Arrow 
 Seek forward long period during playback Shift + Right Arrow 
-Play cut/delete preview C 
 Play looped Shift + Spacebar 
 Select Playback Device dialog Shift + O 
+Play cut/delete preview C 
+Play short period before selection start Shift + F5 
+Play short period after selection start Shift + F6 
+Play short period before selection end Shift + F7 
+Play short period after selection end Shift + F8 
+Play short period before and after selection start Ctrl + Shift + F5 
+Play short period before and after selection start Ctrl + Shift + F7 
 
 Track table
 
@@ -217,6 +223,8 @@ Command Keystroke
 
 Move to previous track Up Arrow 
 Move to next track Down Arrow 
+Move to first track Ctrl + Home 
+Move to last track Ctrl + End 
 Toggle selection of focused track Enter 
 Select all the tracks (and all the audio) Ctrl + A 
 Deselect all the tracks (and any time-range) Ctrl + Shift + A 
@@ -294,7 +302,8 @@ Append Record Shift + R
 Pause/resume P 
 Stop Spacebar 
 Select Audio Host dialog Shift + H 
- 
+Select Recording Device dialog Shift + I 
+Select Recording Channels dialog Shift + N 
 @@
 
 @msg_App_Start
@@ -351,6 +360,11 @@ selection
 track
 @@
 
+;Used to say track number.  %1 -- number of current track, %2 -- total number of tracks.
+@msgTrackPosition
+%1 of %2
+@@
+    
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 all audio
@@ -394,6 +408,10 @@ record
 
 @msgDeselectAll
 deselect all
+@@
+
+@msgSelectInAllTracks
+select in all tracks
 @@
 
 @MSGSelectAll
@@ -511,4 +529,227 @@ Track %1 marked
 @msgNoTrackMarked
 no mark
 @@
+
+    ;Message to announce some Audacity keys
+    @msgZoomNormal
+zoom normal
+@@
+
+@msgZoomIn
+zoom in
+@@
+
+@msgZoomOut
+zoom out
+@@
+
+@msgMuteAllTracks
+mute all tracks
+@@
+
+@msgUnmuteAllTracks
+unmute all tracks
+@@
+
+@msgReplaceWithSilence
+replace with silence
+@@
+
+@msgZeroCrossing
+zero crossing
+@@
+
+@msgImportAudio
+import audio
+@@
+
+@msgExportAudio
+export audio
+@@
+
+@msgNewWindow
+new window
+@@
+
+@msgSaveProject
+save project
+@@
+
+@msgPreferences
+preferences
+@@
+
+@msgDuplicate
+duplicate
+@@
+
+@msgTrim
+trim
+@@
+
+@msgExportMultiple
+Export Multiple
+@@
+
+@msgSplitCut
+Split Cut
+@@
+
+@msgSplitDelete
+Split Delete
+@@
+
+@msgPasteNewLabel
+Paste Text to New Label
+@@
+
+@msgSplit
+Split
+@@
+
+@msgSplitNew
+Split New
+@@
+
+@msgJoin
+Join
+@@
+
+@msgDisjoin
+Detach at Silences
+@@
+
+@msgCutLabels
+Cut labels
+@@
+
+@msgDeleteLabels
+Delete labels
+@@
+
+@msgSplitCutLabels
+Split Cut labels
+@@
+
+@msgSplitDeleteLabels
+Split Delete labels
+@@
+
+@msgSilenceLabels
+Silence labels
+@@
+
+@msgCopyLabels
+Copy labels
+@@
+
+@msgSplitLabels
+Split labels
+@@
+
+@msgJoinLabels
+Join labels
+@@
+
+@msgDisjoinLabels
+Detach at Silences labels
+@@
+
+@msgToggleSpectralSelection
+Toggle spectral selection
+@@
+
+@msgSelSyncLockTracks
+select In All Sync-Locked Tracks
+@@
+
+@msgZoomSel
+Zoom to Selection
+@@
+
+@msgFitInWindow
+Fit in Window
+@@
+
+@msgFitV
+Fit Vertically
+@@
+
+@msgGoSelStart
+Go to Selection Start
+@@
+
+@msgGoSelEnd
+Go to Selection End
+@@
+
+@msgCollapseAllTracks
+Collapse All Tracks
+@@
+
+@msgExpandAllTracks
+Expand All Tracks
+@@
+
+@msgPlayLooped
+Loop Play
+@@
+
+@msgNewMonoTrack
+Mono Track
+@@
+
+@msgMixAndRenderToNewTrack
+Mix and Render to New Track
+@@
+
+@msgAddLabel
+Add Label At Selection
+@@
+
+@msgAddLabelPlaying
+Add Label At Playback Position
+@@
+
+@msgRepeatLastEffect
+Repeat last effect
+@@
+
+@msgFirstTrack
+First Track
+@@
+
+@msgLastTrack
+Last Track
+@@
+
+@msgTrackPan
+Change pan
+@@
+
+@msgTrackMoveTop
+Move focused track to top
+@@
+
+@msgTrackMoveBottom
+Move focused track to bottom
+@@
+
+@msgInputDevice
+Change recording device
+@@
+
+@msgOutputDevice
+Change playback device
+@@
+
+@msgAudioHost
+Change audio host
+@@
+
+@msgInputChannels
+Change recording channels
+@@
+
+
 EndMessages
