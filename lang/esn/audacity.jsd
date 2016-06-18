@@ -1,67 +1,67 @@
 :script for
 
 :function AnnounceOn
-:Returns int True if messages should be spoken
-:Synopsis Indicate whether messages related to certain Audacity operations should be spoken
-:Param string/sKey No Description
+:Synopsis Indica si se han de verbalizar mensajes en relación con ciertas operaciones de Audacity
+:Returns int True si se han de verbalizar los mensajes
+:Param string/sKey Sin descripción
 
 :function FocusInTrackPanel
-:Returns int True if focus is in the track panel
-:Description Indicates if the focus is in the track panel.
+:Description Indica si el foco está en el panel de pista.
+:Returns int True si el foco está en el panel de pista
 
 :function SaySelectionPosition
-:Description Says the selection start or end position
+:Description Verbaliza la posición del comienzo o final de selección
+:Param int/iPosition El identificador de las posiciones de comienzo o final de la selección
+:Param string/sMessage Mensaje verbalizado
 :Category Positioning
-:Param int/iPosition The ID of the start or end selection position
-:Param string/sMessage Spoken message
 
 :function MarkerMovement
-:Param string/sScript The script to be performed.
-:Param string/sAlert The alert message to be spoken
+:Param string/sScript El script a ejecutar.
+:Param string/sAlert El mensaje de aviso a verbalizar
 
 :function MouseMovement
-:Description Used to bypass scripts such as MouseLeft, MouseRight etc. that are assigned to Audacity keys while in the main window.
-:Param string/sScript The script to perform.
+:Description Se utiliza para soslayar scripts como MouseLeft, MouseRight etc. asignados a teclas de Audacity cuando se está en la ventana principal.
+:Param string/sScript El script a ejecutar.
 
 :function AnnounceKeyMessage
-:Description Speak a message for an Audacity hotkey if appropriate and send the key to Audacity.
-:Param string/Message The message to speak
+:Description Verbaliza un mensaje para una tecla rápida de Audacity si corresponde, y envía la tecla a Audacity.
+:Param string/Message El mensaje a verbalizar
 
 :function SayNotStopped
 
 :function SayNoProject
-:Description Speaks a message when no project is open. For example, pressing the [ key will speak this message, and the script will exit.
+:Description Verbaliza un mensaje al no haber ningún proyecto abierto. Por ejemplo, verbalizará este mensaje pulsar la tecla ` y se saldrá del script.
 :Category Say
 
 :function NoProject
-:Returns int True if no project is open
-:Description This function indicates that no project is open (there are no tracks in track panel).
+:Description Esta función indica que no hay ningún proyecto abierto (no hay pistas en el panel de pista).
+:Returns int True si no hay ningún proyecto abierto
 
 :function AutoStartEvent
 
-:function HandleCustomWindows
-:Returns int No Return Description
-:Synopsis Announce when focus changes to a different area of the main window.
+:function SayNonHighlightedText
+:Param handle/hwnd Sin descripción
+:Param string/buffer Sin descripción
 
 :function SayFocusedObject
 
 :function IsToolbar
-:Returns int True if window hWnd is a toolbar, False otherwise
-:Synopsis Return True if hWnd is one of the toolbars.
-:Description Return True if hWnd is one of the toolbars. The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock. Assumes focus is in the main window.
-:Param handle/hWnd handle of toolbar
+:Synopsis Devuelve True si hWnd es alguna de las barras de herramientas.
+:Description Devuelve True si hWnd es alguna de las barras de herramientas. Las barras de herramientas están en una ventana con nombre Bloqueo de Herramientas, bajo la ventana de la aplicación. Es la segunda ventana, dentro de la ventana que le sigue está asimismo la barra de selección, también con nombre Bloqueo de Herramientas. Supone que el foco está en la ventana principal.
+:Returns int True si la ventana en hWnd es una barra de herramientas, de lo contrario False
+:Param handle/hWnd handle de la barra de herramientas
 
 :function GetToolbar
-:Returns handle toolbar containing the current control
-:Description When focus is on a toolbar control returns the handle of the toolbar containing the control
+:Description Cuando el foco está en un control de una barra de herramientas, devuelve el handle de la barra de herramientas contenedora del control
+:Returns handle barra de herramientas que contiene al control actual
 
 :function FocusInMainWindow
-:Returns int No Return Description
+:Returns int Sin descripción de lo devuelto
 
 :function GetPositionField
-:Returns string Value of field
-:Description Get the value of one of the selection fields
-:Param handle/hWnd Handle of position control
+:Description Obtiene el valor de alguno de los campos de selección
+:Returns string Valor del campo
+:Param handle/hWnd Handle del control de posición
 
 :script SaySelectionStart
 :Synopsis Verbaliza el valor del control Comienzo de la selección
@@ -76,13 +76,13 @@
 :Description Si está activo el cursor del PC, verbaliza el valor del control Posición de audio. Si se presiona dos veces rápidamente o no está activo el cursor del PC, verbaliza la posición del cursor.
 
 :script ScriptFileName
-	
+
 :script AudacityScriptKeyHelp
 :Synopsis Muestra la ayuda de teclas rápidas de JAWS para Audacity en el visualizador virtual.
 :Description Pulse dos veces rápidamente para mostrar la ayuda de teclas rápidas de JAWS predeterminada.
 
 :function ShowJawsGuide
-:Description Runs the default web browser to display the Audacity Guide for JAWS web page.
+:Description Ejecuta el explorador web predeterminado para mostrar la página web de la Guía de Audacity con JAWS.
 
 :function IsWinKeyHelp
 
@@ -106,14 +106,23 @@
 :Synopsis posiciona el sonido en el campo estéreo o mueve el puntero del ratón/cursor de JAWS a la derecha
 :Description En la ventana principal de Audacity, debe activar el cursor de JAWS para efectuar la acción predeterminada. El número de píxeles para el movimiento del ratón lo determina la variable de movimiento del ratón. El valor de la variable de movimiento del ratón se establece en default JCF.  Se puede modificar utilizando los scripts del teclado alternativo.  Esta combinación de teclas es útil para posicionar el puntero del ratón de forma eficiente.
 
+:Function SayPositionField
+:Synopsis Verbaliza el campo de posición especificado.
+:Description Devuelve True si se encontró un valor de posición, False si no se pudo obtener, en cuyo caso verbaliza el mensaje correspondiente (salvo que fSilent sea True).
+Respeta AnnounceMessage.
+:Returns int True si se encontró el campo de posición, False si no se encuentra la barra de herramientas.
+:Param int/iPosition ID de CTRL del campo de posición: ID_SELECTION_START o ID_SELECTION_END.
+:Optional
+:Param int/fSilent Si es True no verbaliza un mensaje de error si no se encuentra la barra de herramientas.
+
 :script SelectionStart
-:Synopsis Verbaliza la posición inicial de la selección
-:Description Cuando se pulsa la tecla, verbaliza la posición inicial de la selección.
+:Synopsis Verbaliza el valor del control Comienzo de la selección
+:Description Verbaliza el valor del control Comienzo de la selección.  Si se pulsa dos veces rápidamente, mueve el foco a él.
 :Category Positioning
 
 :script SelectionEnd
-:Synopsis Verbaliza la posición final de la selección
-:Description Cuando se pulsa la tecla, verbaliza la posición final de la selección.
+:Synopsis Verbaliza la posición del final o la longitud de la selección
+:Description Verbaliza la posición del final o la longitud de la selección. También verbaliza si está seleccionado Final o Longitud.  Si se pulsa dos veces rápidamente, mueve el foco a él.
 :Category Positioning
 
 :script FinishMarkerRight
@@ -126,7 +135,7 @@
 :Synopsis Mueve el comienzo de la selección un poquito a la derecha
 
 :script StartMarkerLeft
-:Synopsis Mueve el comienzo de la selección un poquito a la izquierda
+:Synopsis Mueve el comienzo de la selección un poquito a la derecha
 
 :script JAWSHome
 
@@ -174,9 +183,12 @@
 :script DeselectAll
 :Synopsis Deselecciona todo el audio del proyecto abierto actual
 
+:script SelectInAllTracks
+:Synopsis Selecciona el rango de tiempo actual en todas las pistas.
+
 :function RefreshFocus
-:Description Refresh the focused window.  Intended for refreshing the track panel after changes that JAWS does not pick up until after refreshing the screen.
-:Returns Void
+:Description Actualiza la ventana que tiene el foco. Se pensó para actualizar el panel de pista después de cambios que JAWS no recoge hasta refrescada la pantalla.
+:Returns Void sin descripción de lo devuelto
 
 :script CloseFocusTrack
 :Synopsis Cierra la pista activa actual
@@ -191,8 +203,8 @@
 :Synopsis En las barras de herramientas se mueve a la anterior.
 
 :function GetAudacityState
-:Returns int a bit mask of the ST_ state constants, or 0 if the Transport toolbar cannot be found
-:Synopsis returns the current program state-- play, record, pause
+:Synopsis devuelve el estado actual del programa-- reproduciendo, grabando, pausado
+:Returns int una máscara de bits de las constantes ST_ state, o 0 si no se encuentra la barra de herramientas de Reproducción
 
 :script SayAudacityState
 :Synopsis Verbaliza el estado actual del programa-- reproduciendo, grabando, pausado
@@ -210,16 +222,16 @@
 :Synopsis Si el foco está en el panel de pista, envía la tecla a la aplicación.
 
 :Function NavigateTrackPanel
-:Synopsis In the track panel moves to the specified track.
-:Description Sends keystrokes to move to the specified track.  Assumes focus is in the track panel.  If sDest contains characters other than blanks, digits, +, or - silently returns without taking any action.
-:Returns void no return description
-:Param string/sDest a number optionally preceded by + or -.  If preceded by + move down (to higher track number) that many tracks, if by - move up that many.  Otherwise moves to the specified absolute track number.  If it would move beyond the first or last track its value is adjusted acordingly.
-:Param string/sUpKey string containing name of key to move up (to lower numbered tracks).
-:Param string/sDownKeystring containing name of key to move down (to higher numbered tracks).
+:Synopsis En el panel de pista se mueve a la pista especificada.
+:Description Envía combinaciones de teclas para moverse a la pista especificada. Supone que el foco está en el panel de pista. Si sDest contiene caracteres distintos de espacios en blanco, números, + o - devuelve en silencio sin realizar ninguna acción.
+:Returns void sin descripción de lo devuelto
+:Param string/sDest un número precedido opcionalmente por + o -. Si va precedido de + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si por - se mueve tal cantidad hacia arriba. De lo contrario, se mueve al número de pista absoluto especificado. Si se movería más allá de la primera o última pista, se ajusta su valor en consecuencia.
+:Param string/sUpKey cadena que contiene el nombre de la clave para moverse hacia arriba (a pistas con números más bajos).
+:Param string/sDownKey cadena que contiene el nombre de la clave para moverse hacia abajo (a pistas con números más altos).
 
 :script GoToTrack
 :Synopsis Va a una pista por su número.
-:Description Pide un número y mueve el foco a esa pista. Si el número especificado contiene caracteres distintos de espacios en blanco, dígitos, + o -, regresa en silencio sin realizar ninguna acción. Si el número va precedido por + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va por - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+:Description Pide un número y mueve el foco a esa pista. Si el número especificado contiene caracteres distintos de espacios en blanco, números, + o -, devuelve en silencio sin realizar ninguna acción. Si el número va precedido de + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va de - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
 
 :script MarkTrack
 :Synopsis Recuerda la pista activa.
@@ -232,7 +244,7 @@
 
 :script MoveCurrentTrackTo
 :Synopsis Mueve la pista actual al número de pista especificado.
-:Description Pide un número y mueve la pista actual a esa posición en la lista de pistas. Si el número especificado contiene caracteres distintos de espacios en blanco, dígitos, + o -, regresa en silencio sin realizar ninguna acción. Si el número va precedido por + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va por - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa hacia arriba y Control+Shift+FlechaAbajo a Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
+:Description Pide un número y mueve la pista actual a esa posición en la lista de pistas. Si el número especificado contiene caracteres distintos de espacios en blanco, números, + o -, devuelve en silencio sin realizar ninguna acción. Si el número va precedido de + se mueve hacia abajo (a un número de pista más alto) dicha cantidad de pistas, si va de - se mueve tal cantidad hacia arriba. De lo contrario, se mueve a la pista cuyo número absoluto especifique. Supone que Control+Shift+FlechaArriba está asignado a Mover la pista activa hacia arriba y Control+Shift+FlechaAbajo a Mover la pista activa hacia abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación.
 
 :script MoveCurrentTrackToMark
 :Synopsis Mueve la pista actual a la posición de la pista marcada.
@@ -247,47 +259,47 @@
 :Description Mueve la pista activa hacia abajo y lee el nombre de la pista a cuya posición se movió. Supone que esta tecla está asignada al comando de Audacity Mover la pista activa abajo. Si el foco no está en el panel de pista, envía la combinación de teclas a la aplicación. Tenga en cuenta que, si supedita este script a la tecla asignada a OpenListBox, este script no se ejecutará.
 
 :function GetObjState
-:Returns int object state.  Use CTRL constants from hjconst.jsh to interpret, not state constants from msaaconst.jsh
-:Synopsis Returns the object state of the object in the window
-:Description Works for windows whose object name is the same as the window name
-:Param handle/hWnd window to inspect
+:Synopsis Devuelve el estado de objeto del objeto de la ventana
+:Description Funciona en ventanas cuyo nombre de objeto es el mismo que el de la ventana
+:Returns int estado del objeto. Utilice constantes CTRL de hjconst.jshpara interpretarlo, no constantes state de msaaconst.jsh
+:Param handle/hWnd ventana a inspeccionar
 
 :function IsStopped
-:Returns int TRUE if currently stopped or the Transport toolbar cannot be found.  Returns False otherwise.
-:Synopsis Determines if Audacity is currently stopped
-:Description Determines if Audacity is currently stopped.  Returns TRUE if stopped or the Transport toolbar cannot be found.  This is used to keep cursor position from being spoken unless Audacity is stopped.
+:Synopsis Determina si actualmente Audacity está detenido
+:Description Determina si actualmente Audacity está detenido. Devuelve TRUE si está detenido o no se encuentra la barra de herramientas de Reproducción. Se utiliza para evitar que se verbalice la posición del cursor salvo cuando Audacity esté detenido.
+:Returns int TRUE si actualmente está detenido o no se encuentra la barra de herramientas de Reproducción. De lo contrario devuelve False.
 
 :script AdjustJawsVerbosity
 
 :script AdjustJAWSOptions
 
 :function NodeHlp
-:Returns string No Return Description
-:Param string/sNodeName No Description
+:Returns string Sin descripción de lo devuelto
+:Param string/sNodeName Sin descripción
 
 :function UOAnnounceMessages
-:Returns string No Return Description
-:Param int No Description
+:Returns string Sin descripción de lo devuelto
+:Param int Sin descripción
 
 :function UOAnnounceMessagesHlp
-:Returns string No Return Description
+:Returns string Sin descripción de lo devuelto
 
 :function UOAnnounceToolbars
-:Returns string No Return Description
-:Param int No Description
+:Returns string Sin descripción de lo devuelto
+:Param int Sin descripción
 
 :function UOAnnounceToolbarsHlp
-:Returns string No Return Description
+:Returns string Sin descripción de lo devuelto
 
 :function UOEnterPause
-:Returns string No Return Description
-:Param int No Description
+:Returns string Sin descripción de lo devuelto
+:Param int Sin descripción
 
 :function UOEnterPauseHlp
-:Returns string No Return Description
+:Returns string Sin descripción de lo devuelto
 
 :function AddDefaultConfig
-:Description Sets the JAWS options for Audacity to their default values and writes them to the .jsi file.
+:Description Establece las opciones de JAWS para Audacity en sus valores predeterminados y las escribe en el archivo .jsi.
 
 :script ResetConfig
 :Synopsis Restablece todas las opciones de configuración de los scripts de JAWS para Audacity a sus valores predeterminados.
@@ -297,32 +309,32 @@
 :script SelectAll
 
 :function ProcessVST
-:Description Activates Preset, Load Preset, and Save Preset controls in VST plugin dialogs.
-:Param int/iControlID control to activate
+:Description Activa los controles Predefinición, Cargar Predefinición y Guardar Predefinición en los diálogos de complementos VST.
+:Param int/iControlID control a activar
 
 :script VSTPreset
 :Synopsis Sitúa el foco en el control de predefinidos en los diálogos de VST.
-:Description Añade compatibilidad para una tecla de acceso al control de predefinidos en los diálogos VST.
+:Description Añade compatibilidad para una tecla de acceso que lleve el foco al control de predefinidos en los diálogos VST.
 
 :script VSTLoadPreset
 :Synopsis Activa el botón Cargar para cargar una predefinición en los diálogos de algunos plugins VST
 
 :script VSTSavePreset
-:Synopsis Activa el botón Guardar para guardar una predefinición en algunos diálogos VST
+:Synopsis Activa el botón Guardar para guardar una predefinición en los diálogos de algunos plugins VST
 
 :script SayJump
-:Synopsis Lee la posición tras ejecutar una tecla de salto corto o largo
+:Synopsis Verbaliza la posición tras ejecutar una tecla de salto corto o largo
 
 :function IsTrackSelected
-:Returns int True if current track is selected
-:Description Indicates whether the track is selected
+:Description Indica si la pista está seleccionada
+:Returns int True si la pista actual está seleccionada
 
 :function SayNoTrackSelected
-:Description Warn when the user performs a script that requires the current track to be selected.
+:Description Advierte cuando el usuario ejecuta un script que requiere que esté seleccionada la pista actual.
 
 :function IsWarningDialog
-:Returns int True if focus is in the warning dialog
-:Description Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
+:Description Verifica si el foco está en el diálogo de advertencia que aparece al importar archivos de audio en formatos sin comprimir.
+:Returns int True si el foco está en el diálogo de advertencia
 
 :script SayLine
 
@@ -334,9 +346,9 @@
 :script ShowCopyright
 
 :function CheckAudacityVersion
-:Returns int True if the version of Audacity is <= the specified version.
-:Description Varify that current audacity version is equal to or higher than a given version.
-:param String/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
+:Description Verifica que la versión actual de Audacity sea igual o superior a una versión determinada.
+:Returns int True si la versión de Audacity es <= a la versión especificada.
+:Param string/sCheckver la versión con que comparar en la forma "principal,secundaria,compilación,corrección". Pueden omitirse los segmentos finales, en cuyo caso no se comprueban. Ej.: "2,0,3" para verificar que la versión del programa sea 2.0.3 o superior.
 
 :script test
 
@@ -348,15 +360,15 @@
 
 :Script Record
 :Synopsis Silencia la tecla que inicia las funciones de grabación.
-:Description Silencia la tecla que inicia las funciones de grabación. Este script pulsa la tecla a la que esté asignado. Si no se está en un diálogo o un menú, no lee la etiqueta de la tecla.
+:Description Silencia la tecla que inicia las funciones de grabación. Este script pulsa la tecla a la que esté asignado. Si no se está en un diálogo o un menú, no verbaliza la etiqueta de la tecla.
 
 :Function ClearSilence
-:Synopsis Clears the gfSilence flag used to silence speaking of focus changes.
-:Description This function can be scheduled with ScheduleFunction to terminate silencing of speech in the future.  It is used to reactivate speech after starting a recording.
+:Synopsis Borra la bandera gfSilence que se utiliza para silenciar la verbalización de cambios de foco.
+:Description Esta función puede programarse con ScheduleFunction para dejar de silenciar la voz a futuro. Se utiliza para reactivar la voz tras iniciar una grabación.
 
-:function SayActiveLabel ()
-:Description Speak the text of the active label if any.  Assumes focus in track panel.  Uses the invisible cursor.
-:Returns Void
+:function SayActiveLabel
+:Description Verbaliza el texto de la etiqueta activa, si alguna lo está. Supone foco en el panel de pista. Utiliza el cursor invisible.
+:Returns Void sin descripción de lo devuelto
 
 :script AddLabelAtSelection
 :Synopsis Añade una etiqueta en la región seleccionada.
@@ -365,4 +377,169 @@
 :script AddLabelAtPlayPosition
 :Synopsis Añade una etiqueta en la posición de reproducción o grabación actual.
 :Description La funcionalidad de voz para Audacity se cancela hasta que se pulsen ENTER o SayNext/PriorLine, o el foco se salga de la ventana.
+
+:Script ZoomNormal
+:Synopsis ampliación normal
+
+:Script ZoomIn
+:Synopsis ampliar
+
+:Script ZoomOut
+:Synopsis reducir
+
+:Script MuteAllTracks
+:Synopsis silenciar todas las pistas
+
+:Script UnmuteAllTracks
+:Synopsis desactivar silencio en todas las pistas
+
+:Script ReplaceWithSilence
+:Synopsis reemplazar con silencio
+
+:Script ZeroCrossing
+:Synopsis encontrar cruces en cero
+
+:Script ImportAudio
+:Synopsis importar audio
+
+:Script ExportAudio
+:Synopsis exportar audio
+
+:Script NewWindow
+:Synopsis abre una nueva ventana de proyecto
+
+:Script SaveProject
+:Synopsis guardar proyecto
+
+:Script Preferences
+:Synopsis abre el diálogo de preferencias
+
+:Script Duplicate
+:Synopsis duplica la selección en pista(s) nueva(s)
+
+:Script Trim
+:Synopsis recortar: borra el audio fuera del seleccionado
+
+:script ExportMultiple
+:Synopsis Exportar múltiple
+
+:script SplitCut
+:Synopsis Dividir y cortar
+
+:script SplitDelete
+:Synopsis Dividir y borrar
+
+:script PasteNewLabel
+:Synopsis Pegar texto como una nueva etiqueta
+
+:script Split
+:Synopsis Dividir
+
+:script SplitNew
+:Synopsis Dividir nueva
+
+:script Join
+:Synopsis Unir
+
+:script Disjoin
+:Synopsis Desunir en los silencios
+
+:script CutLabels
+:Synopsis Cortar etiquetas
+
+:script DeleteLabels
+:Synopsis Borrar etiquetas
+
+:script SplitCutLabels
+:Synopsis Dividir y cortar etiquetas
+
+:script SplitDeleteLabels
+:Synopsis Dividir y borrar etiquetas
+
+:script SilenceLabels
+:Synopsis Silenciar etiquetas
+
+:script CopyLabels
+:Synopsis Copiar etiquetas
+
+:script SplitLabels
+:Synopsis Dividir etiquetas
+
+:script JoinLabels
+:Synopsis Unir etiquetas
+
+:script DisjoinLabels
+:Synopsis Desunir etiquetas en los silencios
+
+:script ToggleSpectralSelection
+:Synopsis Cambiar la selección de espectro
+
+:script SelSyncLockTracks
+:Synopsis seleccionar en todas las pistas enlazadas
+
+:script ZoomSel
+:Synopsis Ampliar la selección
+
+:script FitInWindow
+:Synopsis Ajustar a la ventana
+
+:script FitV
+:Synopsis Ajustar verticalmente
+
+:script GoSelStart
+:Synopsis Ir al comienzo de la selección
+
+:script GoSelEnd
+:Synopsis Ir al final de la selección
+
+:script CollapseAllTracks
+:Synopsis Contraer todas las pistas
+
+:script ExpandAllTracks
+:Synopsis Expandir todas las pistas
+
+:script PlayLooped
+:Synopsis Reproducir cíclicamente
+
+:script NewMonoTrack
+:Synopsis Pista mono
+
+:script MixAndRenderToNewTrack
+:Synopsis Mezclar y generar en pista nueva
+
+:script AddLabel
+:Synopsis Añadir etiqueta en selección
+
+:script AddLabelPlaying
+:Synopsis Añadir etiqueta en la posición de reproducción
+
+:script RepeatLastEffect
+:Synopsis Repetir el último efecto
+
+:script FirstTrack
+:Synopsis Primera pista
+
+:script LastTrack
+:Synopsis Última pista
+
+:script TrackPan
+:Synopsis Cambiar posicionamiento
+
+:script TrackMoveTop
+:Synopsis Desplazar pista activa a la parte superior
+
+:script TrackMoveBottom
+:Synopsis Desplazar pista activa a la parte inferior
+
+:script InputDevice
+:Synopsis Cambiar dispositivo de grabación
+
+:script OutputDevice
+:Synopsis Cambiar dispositivo de reproducción
+
+:script AudioHost
+:Synopsis Cambiar servidor de audio
+
+:script InputChannels
+:Synopsis Cambiar canales de grabación
 
