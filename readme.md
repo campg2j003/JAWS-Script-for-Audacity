@@ -1,4 +1,4 @@
-6/18/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-rc.2 6/18/16  20:23UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+6/29/2016  JAWS script for Audacity V2.0 (for script version 2.1.0-rc.3 6/30/16  04:10UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
