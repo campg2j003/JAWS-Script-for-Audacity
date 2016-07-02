@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.3 6/30/16  04:10UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.4 7/2/16  17:14UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -628,7 +628,7 @@ Return GetParent(GetFocus())
 EndFunction ; GetToolbar
 
 Int Function FocusInMainWindow ()
-;Returns True if the focused control is in the main window, False otherwise.
+;Returns True if the focused control is in the main window, False otherwise.  Returns False in dialog, menus or context menu.
 Var
 	Handle hFocus,
 	Handle hWnd
@@ -2351,6 +2351,8 @@ Return True
 EndFunction ; CheckAudacityVersion
 
 Script test ()
+;Test FocusInMainWindow
+SayString("FocusInMainWindow = " + IntToString(FocusInMainWindow ())) ; debug
 ;Test CheckAudacityVersion.
 Var String s
 /*
@@ -2361,11 +2363,11 @@ Let s = s + "testing 2,1,1, got " + IntToString(CheckAudacityVersion("2,1,1")) +
 Let s = s + "testing 2,1,5, got " + IntToString(CheckAudacityVersion("2,1,5")) + ", should get false\n"
 SayMessage(OT_USER_BUFFER, s)
 */
-;/*
+/*
 Let s = "gfSilence = " + IntToString(gfSilence)
 ;Let s = IntToString(GetJFWVersion())
 SayMessage(OT_USER_BUFFER, s)
-;*/
+*/
 ;Say number of focused track
 ;SayInteger(GetFocusObject(0).accFocus) ; debug
 If FocusInTrackPanel() Then
@@ -2508,7 +2510,9 @@ Let gfSilence = False
 EndFunction ;ClearSilence
 
 Script AddLabelAtSelection ()
-Let gfInLabel = True
+If FocusInMainWindow () Then
+	Let gfInLabel = True
+EndIf
 SayCurrentScriptKeyLabel ()
 TypeCurrentScriptKey ()
 ;The following types key, says label, and speaks message.  Comment out last 2 lines if you use it.
@@ -2559,8 +2563,11 @@ EndScript ; ZoomOut
 
 Script MuteAllTracks ()
 If NoProject () Then
+	;This isn't disabled with no project but I can't see that it can do anything.
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
 Else
 	AnnounceKeyMessage (msgMuteAllTracks)
 EndIf
@@ -2569,8 +2576,11 @@ EndScript ; MuteAllTracks
 
 Script UnmuteAllTracks ()
 If NoProject () Then
+	;This isn't disabled with no project but I can't see that it can do anything.
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
 Else
 	AnnounceKeyMessage (msgUnmuteAllTracks)
 EndIf
@@ -2580,6 +2590,11 @@ EndScript ; UnmuteAllTracks
 Script ReplaceWithSilence ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgReplaceWithSilence)
@@ -2618,6 +2633,10 @@ EndIf
 EndScript ; ExportAudio
 
 Script NewWindow ()
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+	Return
+EndIf
 AnnounceKeyMessage (msgNewWindow)
 EndScript ; NewWindow
 
@@ -2625,18 +2644,29 @@ Script SaveProject ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
 Else
 	AnnounceKeyMessage (msgSaveProject)
 EndIf
 EndScript ; SaveProject
 
 Script Preferences ()
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+	Return
+EndIf
 AnnounceKeyMessage (msgPreferences)
 EndScript ; Preferences
 
 Script Duplicate ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgDuplicate)
@@ -2647,6 +2677,11 @@ Script Trim ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgTrim)
 EndIf
@@ -2656,6 +2691,8 @@ Script ExportMultiple ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
 Else
 	AnnounceKeyMessage (msgExportMultiple)
 EndIf
@@ -2664,6 +2701,11 @@ EndScript ; ExportMultiple
 Script SplitCut ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgSplitCut)
@@ -2674,18 +2716,32 @@ Script SplitDelete ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgSplitDelete)
 EndIf
 EndScript ; SplitDelete
 
 Script PasteNewLabel ()
-AnnounceKeyMessage (msgPasteNewLabel)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgPasteNewLabel)
+EndIf
 EndScript ; PasteNewLabel
 
 Script Split ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgSplit)
@@ -2696,6 +2752,11 @@ Script SplitNew ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgSplitNew)
 EndIf
@@ -2704,6 +2765,11 @@ EndScript ; SplitNew
 Script Join ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgJoin)
@@ -2714,6 +2780,11 @@ Script Disjoin ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgDisjoin)
 EndIf
@@ -2722,6 +2793,11 @@ EndScript ; Disjoin
 Script CutLabels ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgCutLabels)
@@ -2732,6 +2808,11 @@ Script DeleteLabels ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgDeleteLabels)
 EndIf
@@ -2740,6 +2821,11 @@ EndScript ; DeleteLabels
 Script SplitCutLabels ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgSplitCutLabels)
@@ -2750,6 +2836,11 @@ Script SplitDeleteLabels ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgSplitDeleteLabels)
 EndIf
@@ -2758,6 +2849,11 @@ EndScript ; SplitDeleteLabels
 Script SilenceLabels ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgSilenceLabels)
@@ -2768,6 +2864,11 @@ Script CopyLabels ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgCopyLabels)
 EndIf
@@ -2776,6 +2877,11 @@ EndScript ; CopyLabels
 Script SplitLabels ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgSplitLabels)
@@ -2786,6 +2892,11 @@ Script JoinLabels ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgJoinLabels)
 EndIf
@@ -2794,6 +2905,11 @@ EndScript ; JoinLabels
 Script DisjoinLabels ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgDisjoinLabels)
@@ -2813,6 +2929,9 @@ Script SelSyncLockTracks ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgSelSyncLockTracks)
 EndIf
@@ -2821,6 +2940,11 @@ EndScript ; SelSyncLockTracks
 Script ZoomSel ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgZoomSel)
@@ -2849,6 +2973,11 @@ Script GoSelStart ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
+	Return
 Else
 	AnnounceKeyMessage (msgGoSelStart)
 EndIf
@@ -2857,6 +2986,11 @@ EndScript ; GoSelStart
 Script GoSelEnd ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgGoSelEnd)
@@ -2885,18 +3019,29 @@ Script PlayLooped ()
 If NoProject () Then
 	SayNoProject ()
 	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
 Else
 	AnnounceKeyMessage (msgPlayLooped)
 EndIf
 EndScript ; PlayLooped
 
 Script NewMonoTrack ()
-AnnounceKeyMessage (msgNewMonoTrack)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgNewMonoTrack)
+EndIf
 EndScript ; NewMonoTrack
 
 Script MixAndRenderToNewTrack ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgMixAndRenderToNewTrack)
@@ -2906,6 +3051,11 @@ EndScript ; MixAndRenderToNewTrack
 Script RepeatLastEffect ()
 If NoProject () Then
 	SayNoProject ()
+	Return
+ElIf FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+ElIf !IsTrackSelected () Then
+	SayNoTrackSelected ()
 	Return
 Else
 	AnnounceKeyMessage (msgRepeatLastEffect)
@@ -2958,18 +3108,34 @@ EndIf
 EndScript ; TrackMoveBottom
 
 Script InputDevice ()
-AnnounceKeyMessage (msgInputDevice)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgInputDevice)
+EndIf
 EndScript ; InputDevice
 
 Script OutputDevice ()
-AnnounceKeyMessage (msgOutputDevice)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgOutputDevice)
+EndIf
 EndScript ; OutputDevice
 
 Script AudioHost ()
-AnnounceKeyMessage (msgAudioHost)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgAudioHost)
+EndIf
 EndScript ; AudioHost
 
 Script InputChannels ()
-AnnounceKeyMessage (msgInputChannels)
+If FocusInMainWindow () && !IsStopped () Then
+	SayNotStopped ()
+Else
+	AnnounceKeyMessage (msgInputChannels)
+EndIf
 EndScript ; InputChannels
 
