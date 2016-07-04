@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0-rc.4 7/2/16  17:14UTC"
+Const CS_SCRIPT_VERSION = "2.1.0-rc.4 7/4/16  16:31UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -3110,6 +3110,9 @@ EndScript ; TrackMoveBottom
 Script InputDevice ()
 If FocusInMainWindow () && !IsStopped () Then
 	SayNotStopped ()
+ElIf !FocusInMainWindow () || gfInLabel Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 Else
 	AnnounceKeyMessage (msgInputDevice)
 EndIf
@@ -3118,6 +3121,9 @@ EndScript ; InputDevice
 Script OutputDevice ()
 If FocusInMainWindow () && !IsStopped () Then
 	SayNotStopped ()
+ElIf !FocusInMainWindow () || gfInLabel Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 Else
 	AnnounceKeyMessage (msgOutputDevice)
 EndIf
@@ -3126,6 +3132,9 @@ EndScript ; OutputDevice
 Script AudioHost ()
 If FocusInMainWindow () && !IsStopped () Then
 	SayNotStopped ()
+ElIf !FocusInMainWindow () || gfInLabel Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 Else
 	AnnounceKeyMessage (msgAudioHost)
 EndIf
@@ -3134,6 +3143,9 @@ EndScript ; AudioHost
 Script InputChannels ()
 If FocusInMainWindow () && !IsStopped () Then
 	SayNotStopped ()
+ElIf !FocusInMainWindow () || gfInLabel Then
+	SayCurrentScriptKeyLabel ()
+	TypeCurrentScriptKey ()
 Else
 	AnnounceKeyMessage (msgInputChannels)
 EndIf
