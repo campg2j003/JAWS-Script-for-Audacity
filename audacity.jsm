@@ -124,7 +124,7 @@ To move the current track to the position of the marked track and set the mark t
 
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See what's new.txt for more info.
+See What's new.md for more info.
 
 In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)

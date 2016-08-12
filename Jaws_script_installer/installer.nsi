@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 5/13/16
+Last updated: 8/12/16
 
 Modifications:
 
@@ -117,11 +117,11 @@ ${JawsScriptSetPath} jsd
 ${Switch} $1
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
-  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}lang\esn\What's new.txt"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
 ${Break}
 ${Default}
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
-  File "/oname=$OUTDIR\${ScriptApp}_whatsnew.txt" "${JAWSSrcDir}What's new.txt"
+  File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}What's new.md"
 ${Break}
 ${EndSwitch}
   ${If} $JAWSREADME == ""
@@ -166,14 +166,14 @@ ${Switch} $1
 ${Case} "esn"
 ${AddItem} "$OUTDIR\readme_esn.html"
 File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
-;${AddItem} "What's new_esn.txt"
-;File "/oname=What's new_esn.txt" "${JAWSSrcDir}lang\esn\" "What's new.txt"
+;${AddItem} "What's new_esn.md"
+;File "/oname=What's new_esn.md" "${JAWSSrcDir}lang\esn\" "What's new.md"
 ${Break}
 ${Default}
 ${AddItem} "$OUTDIR\readme_enu.html"
 File "/oname=readme_enu.html" "${JAWSSrcDir}readme.html"
-${AddItem} "$OUTDIR\What's new_enu.txt"
-File "/oname=What's new_enu.txt" "${JAWSSrcDir}What's new.txt"
+${AddItem} "$OUTDIR\What's new_enu.md"
+File "/oname=What's new_enu.md" "${JAWSSrcDir}What's new.md"
 ${Break}
 ${EndSwitch}
 ;Set the location of the README file for the Finish page.

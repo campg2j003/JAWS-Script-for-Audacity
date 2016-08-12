@@ -1,5 +1,5 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 5/6/2016.
-;Translation based on English version dated 29/4/2016.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 12/8/2016.
+;Translation based on English version dated 12/8/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -125,7 +125,7 @@ Para mover la pista actual a la posición de la pista marcada y fijar la marca en
 
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
-Para más info, vea el archivo whats new.txt.
+Para más info, vea el archivo whats new.md.
 
 En una barra de herramientas, pulse %KeyFor (NextDocumentWindow) para moverse a la siguiente
 En una barra de herramientas, pulse %KeyFor (PreviousDocumentWindow) para moverse a la anterior

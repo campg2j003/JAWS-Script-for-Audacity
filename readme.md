@@ -1,4 +1,4 @@
-7/13/2016  JAWS script for Audacity V2.0 (for script version 2.1.0 7/14/16  05:30UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+8/12/2016  JAWS script for Audacity V2.0 (for script version 2.1.0 8/12/16  18:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -38,7 +38,7 @@ Three install types are supported:
 
 For full or custom installations for all users the uninstaller and README files are installed in the installation folder.  
 
-If you choose the Just Script install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and `What's new.txt` will be called `audacity_whatsnew.txt`.  (The Vietnamese README file will not be installed in a Just Script install.)
+If you choose the Just Script install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and `What's new.md` will be called `audacity_whatsnew.md`.  (The Vietnamese README file will not be installed in a Just Script install.)
 
 If the user's priveleges allow for installing for all users, an all user install is performed.  Otherwise a current user install is performed.  If privileges allow for all user installation, current user installation can be forced by adding the `/currentuser` command line switch.
 
@@ -157,7 +157,7 @@ To move the current track to the position of the marked track and set the mark t
 
 To toggle speech on or off, press Shift+Insert+S.
 To toggle alert messages on or off, press Control+`).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See what's new.txt for more info.
+See what's new.md for more info.
 
 In a toolbar to move to the next toolbar press Control+Tab
 In a toolbar to move to the previous toolbar press Control+Shift+Tab

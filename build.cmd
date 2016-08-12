@@ -11,7 +11,7 @@ set MD2HTML=md2html
 REM %MD2HTML% -V
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm
-set OTHERSRC=readme_vi.txt copying.txt "What's new.txt"
+set OTHERSRC=readme_vi.txt copying.txt "What's new.md"
 REM These are basenames of .md files that should be converted to HTML files.
 set MARKDOWNSRC=readme
 set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh jfw_nsh\readme.md jfw_nsh\uninstlog\uninstlog.nsh jfw_nsh\uninstlog\uninstlog_enu.nsh jfw_nsh\uninstlog\uninstlog_esn.nsh jfw_nsh\uninstlog\logging.nsh

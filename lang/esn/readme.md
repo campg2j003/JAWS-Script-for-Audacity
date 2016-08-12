@@ -1,4 +1,4 @@
-﻿13/7/2016  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 14/7/16  05:30UTC) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿12/8/2016  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 12/8/16  18:40UTC) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores.
 
@@ -39,7 +39,7 @@ Se admiten tres tipos de instalación:
 
 En instalaciones completas o personalizadas para todos los usuarios, los archivos del desinstalador y el LÉAME se instalan en la carpeta de instalación. 
 
-Si elige el tipo de instalación Sólo Scripts, los archivos LÉAME y What's New (novedades) se instalarán en la carpeta de scripts de JAWS de cada versión, y `What's new.txt` se llamará `audacity_whatsnew.txt`.  (El archivo LÉAME en vietnamita no se instalará en una instalación Sólo Scripts.)
+Si elige el tipo de instalación Sólo Scripts, los archivos LÉAME y What's New (novedades) se instalarán en la carpeta de scripts de JAWS de cada versión, y `What's new.md` se llamará `audacity_whatsnew.md`.  (El archivo LÉAME en vietnamita no se instalará en una instalación Sólo Scripts.)
 
 Si los privilegios del usuario permiten instalar para todos los usuarios, se realiza una instalación para todos los usuarios. De lo contrario, se realiza una instalación para el usuario actual. Si los privilegios permiten instalar para todos los usuarios, puede forzarse una instalación para el usuario actual agregando el conmutador de línea de comandos `/currentuser`.
 
@@ -157,7 +157,7 @@ Para mover la pista actual a la posición de la pista marcada y fijar la marca e
 Para activar o desactivar la voz, pulse Mayúscula+Insert+S.
 Para activar o desactivar los mensajes de aviso, pulse Control+OrdinalMasculino.  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste
 de opciones de JAWS.
-Para más info, vea el archivo whats new.txt.
+Para más info, vea el archivo Whats new.md.
 
 En una barra de herramientas, pulse Control+Tab para moverse a la siguiente
 En una barra de herramientas, pulse Control+Mayúscula+Tab para moverse a la anterior
