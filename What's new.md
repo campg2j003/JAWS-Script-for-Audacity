@@ -47,7 +47,6 @@
 - The jfw_nsh README is now installed with the installer source when installing the installer source is requested.
 
 # New in V2.0 (9/15/2013):
-- The URL for the JAWS User's Guide is now read from the config file.  It can't be edited from within the script, but it can be updated with a text editor.
 - Version 2.0.4 of Audacity assigns keys Control+[ and Control+] to Go to Start/End of Selection.  Therefore, we have changed the keys for reading the selection start and end positions to ALT+[ and ALT+].
 - While playing/recording when ENTER pauses, Control+ENTER sends ENTER.
 - Added Vietnamese README file (translation by Nguyen Hoang Giang).
