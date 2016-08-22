@@ -1,4 +1,4 @@
-8/12/2016  JAWS script for Audacity V2.0 (for script version 2.1.0 8/12/16  18:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+8/22/2016  JAWS script for Audacity V2.0 (for script version 2.1.0 8/12/16  18:40UTC) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -98,7 +98,7 @@ Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script pr
 
 2.  The position fields sometimes are not shortened.  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.  I have observed that this problem sometimes goes away on its own.
 
-3.  A side effect of `ENTER` pausing during record and play is that you can't use `ENTER` to select/unselect tracks while playing or recording.  This also affects  entering a label while playing or recording.  In this case the `ENTER` key adds "p" in a label instead of terminating it.  Use `Control+ENTER` to send `ENTER` in this case.
+3.  If the "ENTER Pauses during play/record" feature is on (which is the default), `ENTER` will not select or unselect the current track.  Use `Control+ENTER` instead of `ENTER` in this case.
 
 4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the date in the version constant so we'll know it is a modified version if you communicate with us about it.
 

@@ -1,4 +1,4 @@
-(This file last updated 8/12/2016)
+(This file last updated 8/13/2016)
 
 # New in 2.1.0
 
@@ -22,7 +22,7 @@
 - Added scripts MarkTrack (JAWSKey+a,k), GoToMarkedTrack (JAWSKey+a,Shift+g), ExchangeWithMark (JAWSKey+a,x), and MoveCurrentTrackToMark (JAWSKey+a,Shift+m).  The "mark" remembers the number of the current track. This mark is very simple-minded-- it will become confused if you add, delete, or move tracks.  For MoveCurrentTrackToMark to work, Control+Shift+UpArrow must be assigned to the Move Focused Track Up and Control+Shift+DownArrow must be assigned to the Move Focused Track Down Audacity commands.
 - Improved label track support.  Letter keys now speak while writing a label.  Since we can't detect the track type, the feature is enabled when commands are executed that write a label.  It is deactivated by commands that end the label (ENTER) or move out of the label track, and when focus moves out of the track panel.  If you move into a label track with the arrow keys, the feature is not activated.  It can be deactivated by moving to the toolbar or selection bar and back.  When this feature is active while playing or recording ENTER terminates the label (and therefore exits label mode) rather than pausing.  TAB and Shift+TAB now attempt to speak the active label while in the track pannel.  They do this by searching for text with the background color white.  This doesn't work all the time.  I'm not sure if this is because the label isn't visible, or if the search completes before it has appeared.  It works any time focus is in the track panel.
 - Added the ability to silence the speech that occurs when starting to record.
--Added ability to silence the speech that occurs during the previewing of an effect (a lot of the time!).
+- Added ability to silence the speech that occurs during the previewing of an effect (a lot of the time!).
 - In the track panel the keys Alt+UpArrow and Alt+DownArrow are now sent to the application.  Previously they were not sent through because of a conflict with the OpenListBox and CloseListBox scripts.
 - JAWS MSAA info is refreshed after SelectAll and DeselectAll so JAWS now gives the correct selected information without doing a RefreshScreen.
 - Added code to refresh the track panel after CloseFocusTrack.  This is intended to make JAWS not indicate that the old track is still current.
