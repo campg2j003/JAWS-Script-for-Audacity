@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 4/29/2016.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 8/27/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -455,6 +455,9 @@ Script options reset to default values
 
 @msgNoSelection
 To use this feature you must enable the selection toolbar
+@@
+@msgNoRecordingMeter
+To use this feature you must enable the Recording Meter or Combined Meter toolbar
 @@
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.

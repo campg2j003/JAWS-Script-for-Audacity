@@ -117,5 +117,6 @@ Shift+I=InputDevice
 Shift+O=OutputDevice
 Shift+H=AudioHost
 Shift+N=InputChannels
+g=SayRecordingMeter
 
 [Laptop Keys]

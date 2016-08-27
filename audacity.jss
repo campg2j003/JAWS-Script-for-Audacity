@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 8/12/16  18:40UTC"
+Const CS_SCRIPT_VERSION = "2.1.0 8/27/16  20:40UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -74,7 +74,9 @@ Const
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
-	ID_Chain_Cmds_List2=7002 ;Audacity 2.0.4 or higher
+	ID_Chain_Cmds_List2=7002, ;Audacity 2.0.4 or higher
+	ID_RECORDING_METER = -31987, ;can negative IDs in WXWindows change??
+	ID_RECORDING_METER_COMBINED = -31990
 
 	
 /*
@@ -2312,7 +2314,34 @@ Else
 EndIf 
 EndScript ; PasteFromClipboard
 
-
+Script SayRecordingMeter()
+	var String s,
+	Handle hTemp,
+	Handle hParent
+If DialogActive () || !FocusInMainWindow () Then
+	TypeCurrentScriptKey ()
+	SayCurrentScriptKeyLabel ()
+	Return
+EndIf
+Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+Let hParent = GetNextWindow (hTemp) ; parent of toolbars
+Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER)
+If !hTemp || !IsWindowVisible (hTemp) Then
+	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED)
+EndIf
+If !hTemp || !IsWindowVisible (hTemp) Then
+	Say (MSGNoRecordingMeter, OT_Error)
+	Return
+EndIf ; if no recording meter
+SaveCursor ()
+InvisibleCursor ()
+MoveToWindow(hTemp)
+Pause ()
+Let s = GetObjectName (0)
+RestoreCursor ()
+Say (s, OT_SCREEN_MESSAGE)
+EndScript ;SayRecordingMeter
+	
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
 EndScript ; ShowCopyright
@@ -2352,9 +2381,12 @@ EndFunction ; CheckAudacityVersion
 
 Script test ()
 ;Test FocusInMainWindow
+Var String s,
+	Handle hTemp
+	/*
 SayString("FocusInMainWindow = " + IntToString(FocusInMainWindow ())) ; debug
-;Test CheckAudacityVersion.
-Var String s
+*/
+	;Test CheckAudacityVersion.
 /*
 Let s = "testing 2,0,3, got " + IntToString(CheckAudacityVersion("2,0,3")) + ", should get True\n"
 Let s = s + "testing 2,0,4, got " + IntToString(CheckAudacityVersion("2,0,4")) + ", should get True\n"
@@ -2410,6 +2442,23 @@ If FocusInTrackPanel() Then
     o.accLocation(IntRef(ix), IntRef(iYTop), IntRef(iWidth), IntRef(iHeight), o.accFocus)
     ;SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
     */
+	;Test getting record meter value.
+	Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
+Let hTemp = FindDescendantWindow (hTemp, ID_RECORDING_METER)
+If !hTemp Then
+	SayString("Can't find recording meter")
+	Return ST_NOTOOLBAR
+EndIf ; if no transport toolbar
+	;SayString(GetWindowName(hTemp))
+	SaveCursor ()
+	InvisibleCursor ()
+	MoveToWindow(hTemp)
+	Pause ()
+	Let s = GetObjectName (0)
+	SayString(s)
+	RestoreCursor ()
+
 EndIf ; in track panel
 ;SayString ("FocusInTrackPanel = " + IntToString(FocusInTrackPanel())) ; debug
 EndScript ; test
