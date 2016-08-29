@@ -537,3 +537,7 @@ Respects AnnounceMessage.
 :script InputChannels
 :Synopsis Change recording channels
 
+:script SayRecordingMeter
+:Synopsis Say the level displayed in the recording meter
+:Description Says the level displayed in the recording meter.  If pressed twice quickly, moves focus to it.
+

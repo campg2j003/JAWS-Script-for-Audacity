@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 8/27/16  20:40UTC"
+Const CS_SCRIPT_VERSION = "2.1.0 8/29/16  17:00UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2333,6 +2333,10 @@ If !hTemp || !IsWindowVisible (hTemp) Then
 	Say (MSGNoRecordingMeter, OT_Error)
 	Return
 EndIf ; if no recording meter
+If IsSameScript () Then
+	SetFocus (hTemp)
+	Return
+EndIf
 SaveCursor ()
 InvisibleCursor ()
 MoveToWindow(hTemp)
