@@ -1,4 +1,4 @@
-(This file last updated 8/29/2016)
+(This file last updated 9/1/2016)
 
 # New in 2.1.0
 
@@ -29,7 +29,7 @@
 - Fixed issue #4: In toolbars CTRL+TAB says "grabber".
 - The URL for the JAWS User's Guide can now be updated via the script (Control+Shift+j).
 - Updated guide link and Audacity keystrokes to 2.1.2.
-- The g key speaks the value of the recording meter.  Pressing twice quickly moves focus to the meter.
+- The g key speaks the value of the recording meter.  Pressing twice quickly moves focus to the meter.  When playing, speaks the value of the playback meter.
 
 ## Installer Changes
 - The installer framework now supports  installation of scripts in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  The installer messages are now also localizable.  English and Spanish are currently supported.  

@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 8/29/16  17:00UTC"
+Const CS_SCRIPT_VERSION = "2.1.0 9/1/16  16:50UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -76,7 +76,9 @@ Const
 	ID_Chain_Cmds_List=10002,
 	ID_Chain_Cmds_List2=7002, ;Audacity 2.0.4 or higher
 	ID_RECORDING_METER = -31987, ;can negative IDs in WXWindows change??
-	ID_RECORDING_METER_COMBINED = -31990
+	ID_RECORDING_METER_COMBINED = -31990,
+	ID_PLAYBACK_METER = -31985,
+	ID_PLAYBACK_METER_COMBINED = -31989
 
 	
 /*
@@ -2314,7 +2316,7 @@ Else
 EndIf 
 EndScript ; PasteFromClipboard
 
-Script SayRecordingMeter()
+Script SayMeter()
 	var String s,
 	Handle hTemp,
 	Handle hParent
@@ -2325,14 +2327,27 @@ If DialogActive () || !FocusInMainWindow () Then
 EndIf
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hParent = GetNextWindow (hTemp) ; parent of toolbars
-Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER)
-If !hTemp || !IsWindowVisible (hTemp) Then
-	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED)
-EndIf
-If !hTemp || !IsWindowVisible (hTemp) Then
-	Say (MSGNoRecordingMeter, OT_Error)
-	Return
-EndIf ; if no recording meter
+If GetAudacityState () & ST_PLAY Then
+	;playback
+	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER)
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
+	EndIf
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		Say (msgNoPlaybackMeter, OT_Error)
+		Return
+	EndIf ; if no playback meter
+Else
+	;Recording
+	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER)
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED)
+	EndIf
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		Say (MSGNoRecordingMeter, OT_Error)
+		Return
+	EndIf ; if no recording meter
+EndIf ;else recording meter
 If IsSameScript () Then
 	SetFocus (hTemp)
 	Return
@@ -2344,7 +2359,7 @@ Pause ()
 Let s = GetObjectName (0)
 RestoreCursor ()
 Say (s, OT_SCREEN_MESSAGE)
-EndScript ;SayRecordingMeter
+EndScript ;SayMeter
 	
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)
