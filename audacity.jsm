@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 9/1/2016.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 9/3/2016.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -115,8 +115,10 @@ To adjust pan left, press %keyfor (MouseLeft).
 To adjust pan right, press %keyfor (MouseRight).
 The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while in the main window, turn on the JAWS cursor.
 
-To say the value of the recording meter, press %KeyFor(SayMeter).  If playing, says the value of the playback meter.
-Press twice quickly to move focus to the meter.
+To say the value of the recording meter, press %KeyFor(SayRecordingMeter).
+ Press twice quickly to move focus to the meter.
+To say the value of the playback meter, press %KeyFor(SayPlaybackMeter).
+ Press twice quickly to move focus to the meter.
 
 To go to a track by number, press %KeyFor(GoToTrack).
 To move the current track to a track position by number, press %KeyFor(MoveCurrentTrackTo).

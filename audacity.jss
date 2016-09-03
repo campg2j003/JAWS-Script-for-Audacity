@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 9/1/16  16:50UTC"
+Const CS_SCRIPT_VERSION = "2.1.0 9/3/16  15:20UTC"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2316,7 +2316,7 @@ Else
 EndIf 
 EndScript ; PasteFromClipboard
 
-Script SayMeter()
+Script SayRecordingMeter()
 	var String s,
 	Handle hTemp,
 	Handle hParent
@@ -2360,6 +2360,38 @@ Let s = GetObjectName (0)
 RestoreCursor ()
 Say (s, OT_SCREEN_MESSAGE)
 EndScript ;SayMeter
+	
+Script SayPlaybackMeter()
+	var String s,
+	Handle hTemp,
+	Handle hParent
+If DialogActive () || !FocusInMainWindow () Then
+	TypeCurrentScriptKey ()
+	SayCurrentScriptKeyLabel ()
+	Return
+EndIf
+Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+Let hParent = GetNextWindow (hTemp) ; parent of toolbars
+Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER)
+If !hTemp || !IsWindowVisible (hTemp) Then
+	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
+EndIf
+If !hTemp || !IsWindowVisible (hTemp) Then
+	Say (msgNoPlaybackMeter, OT_Error)
+	Return
+EndIf
+If IsSameScript () Then
+	SetFocus (hTemp)
+	Return
+EndIf
+SaveCursor ()
+InvisibleCursor ()
+MoveToWindow(hTemp)
+Pause ()
+Let s = GetObjectName (0)
+RestoreCursor ()
+Say (s, OT_SCREEN_MESSAGE)
+EndScript ;SayPlaybackMeter
 	
 Script ShowCopyright()
 SayMessage(OT_USER_BUFFER, msgCopyright)

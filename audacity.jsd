@@ -537,7 +537,11 @@ Respects AnnounceMessage.
 :script InputChannels
 :Synopsis Change recording channels
 
-:script SayMeter
-:Synopsis Say the level displayed in the recording or playback meter
-:Description Says the level displayed in the recording meter.  If pressed twice quickly, moves focus to it.  If playing says the value of the playback meter.
+:script SayRecordingMeter
+:Synopsis Say the level displayed in the recording meter
+:Description Says the level displayed in the recording meter.  If pressed twice quickly, moves focus to it.
+
+:script SayPlaybackMeter
+:Synopsis Say the level displayed in the playback meter
+:Description Says the level displayed in the playback meter.  If pressed twice quickly, moves focus to it.
 
