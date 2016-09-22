@@ -1,4 +1,4 @@
-2016-09-08  JAWS script for Audacity V2.0 (for script version 2.1.0 2016-09-04T16:20Z) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2016-09-22  JAWS script for Audacity V2.0 (for script version 2.1.0 2016-09-22T21:00Z) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -14,6 +14,7 @@ This JAWS script package provides support for Audacity 2.0.0 and later.
 - Speaks cursor position when left/right arrows are pressed and Audacity is stopped when focus is in the track panel.
 - Keystrokes that extend or contract the selection speak the new position (or length).
 - Indicates when there are no tracks in the project for many operations.
+- Keystrokes speak (maximum peak) value of recording and playback meters.
 - Track gain and pan controls now are passed to the application when the PC cursor is active and focus is in the main window.  Otherwise they execute their default mouse movement functions.
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
