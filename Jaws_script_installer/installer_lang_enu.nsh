@@ -1,6 +1,6 @@
 /*
-English messages for installer.nsi (updated 1/22/2016)
-This file last updated 1/22/2016.
+English messages for installer.nsi (updated 2016-09-21)
+This file last updated 2016-09-21.
 */
 
 !ifndef __INSTALLER_ENU_INCLUDED

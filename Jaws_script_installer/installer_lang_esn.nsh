@@ -1,7 +1,7 @@
 /*
-Spanish messages for installer.nsi (updated 1/22/2016)
-Translation of file installer_lang_enu.nsh last updated 1/22/2016.
-This file last updated 6/29/2016.
+Spanish messages for installer.nsi (updated 2016-09-21)
+Translation of file installer_lang_enu.nsh last updated 2016-09-21.
+This file last updated 2016-09-21.
 Translated by Fernando Gregoire.
 */
 
