@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 9/3/2016.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2016-09-22.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 

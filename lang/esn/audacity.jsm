@@ -1,5 +1,5 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 12/8/2016.
-;Translation based on English version dated 12/8/2016.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2016-08-12.
+;Translation based on English version dated 2016-08-12.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 

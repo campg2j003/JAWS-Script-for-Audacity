@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 8/12/16
+Last updated: 2016-09-21
 
 Modifications:
 

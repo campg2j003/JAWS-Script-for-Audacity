@@ -1,4 +1,4 @@
-(Last updated 6/1/16)
+(Last updated 2016-09-15)
 
 Thank you for your interest in contributing to the JAWS Script for Audacity!
 
@@ -59,14 +59,14 @@ To add a new language:
 - Add a new folder in the `lang` folder of the main repo.  It should be the same name as the JAWS folder for the language.
 - Copy the `.jsm` and `qsm` files from the main folder to the new language folder and translate the messages, noting the comments about what should and should not be translated. Also copy and translate `readme.md`.
 - Copy and translate `md2html.cfg`.  You will probably only need to translate the text of the `toctitle` and `title` options.  (These are currently the only options in the file, and the only file supported is `readme.md`.  There can also be a `toclocation` option, but this is currently not used.)
-- Copy and translate the message text in the `:script` entries of the `jsd` file.  
+- Copy the `jsd` file and translate the message text in the `:script` entries.  
 - If you need to change script key assignments, copy  and modify the `jkm` file as well.
-- In `Jaws_script_installer`, copy `installer_lang_enu.nsh` to a new file in the same folder, replacing "enu" with the same name as your new folder in the `lang` folder.  Replace the comment block at the top of the file with one something like this:at the top of the file to reflect the file being translated.
+- In `Jaws_script_installer`, copy `installer_lang_enu.nsh` to a new file in the same folder, replacing "enu" with the same name as your new folder in the `lang` folder.  Replace the comment block at the top of the file with one that reflects the file being translated something like this:
 ```
 /*
-Spanish messages for installer.nsi (updated 1/22/2016)
-Translation of file installer_lang_enu.nsh last updated 1/22/2016.
-This file last updated 1/22/2016.
+Spanish messages for installer.nsi (updated 2016-01-22)
+Translation of file installer_lang_enu.nsh last updated 2016-01-22.
+This file last updated 2016-01-22.
 Translated by Fernando Gregoire.
 */
 ```
