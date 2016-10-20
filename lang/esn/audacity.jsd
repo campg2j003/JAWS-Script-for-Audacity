@@ -543,3 +543,11 @@ Respeta AnnounceMessage.
 :script InputChannels
 :Synopsis Cambiar canales de grabación
 
+:script SayRecordingMeter
+:Synopsis Verbalizar el nivel que se muestra en el medidor de grabación
+:Description Verbaliza el nivel que se muestra en el medidor de grabación. Si se pulsa dos veces rápidamente, mueve el foco a éste.
+
+:script SayPlaybackMeter
+:Synopsis Verbalizar el nivel que se muestra en el medidor de reproducción
+:Description Verbaliza el nivel que se muestra en el medidor de reproducción. Si se pulsa dos veces rápidamente, mueve el foco a éste.
+

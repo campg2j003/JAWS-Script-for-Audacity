@@ -1,4 +1,4 @@
-﻿2016-09-08  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 2016-08-12T18:40Z) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2016-09-24  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 2016-08-12T18:40Z) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores.
 
@@ -14,6 +14,7 @@ Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y 
 - Cuando Audacity está detenido y el foco se encuentra en el panel de pista, al pulsar las flechas izquierda y derecha lee la posición del cursor.
 - Las combinaciones de teclas que extienden o contraen la selección leen la posición (o longitud) nueva.
 - Indica cuando no hay pistas en el proyecto para muchas operaciones.
+- Teclas para verbalizar el valor (de pico máximo) de de los medidores de grabación y reproducción.
 - Cuando está activo el cursor del PC y el foco se encuentra en la ventana principal, los controles de ganancia y posicionamiento de las pistas ahora se pasan a la aplicación. De lo contrario, ejecutan sus funciones predeterminadas para mover el ratón.
 - En muchos plugins VST, hay combinaciones de teclas que mueven el foco al control de Predefiniciones y activan los pertinentes para Guardar/Cargar predefiniciones.
 - Se leen los nombres y valores de controles en los diálogos de muchos plugins.  

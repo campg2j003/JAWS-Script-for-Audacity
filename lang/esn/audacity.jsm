@@ -1,5 +1,5 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2016-08-12.
-;Translation based on English version dated 2016-08-12.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2016-09-25.
+;Translation based on English version dated 2016-09-22.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -116,6 +116,11 @@ Para ajustar el posicionamiento estéreo hacia la izquierda, pulse %keyfor (Mouse
 Para ajustar el posicionamiento estéreo hacia la derecha, pulse %keyfor (MouseRight).
 Mientras el foco está en la ventana principal, las cuatro últimas teclas reemplazan los scripts de JAWS predeterminados para mover el ratón. Si desea activar la funcionalidad original mientras esté en la ventana principal, active el cursor de JAWS.
 
+Para verbalizar el valor del medidor de grabación, pulse %KeyFor(SayRecordingMeter).
+ Pulse dos veces rápidamente para mover el foco al medidor.
+Para verbalizar el valor del medidor de reproducción, pulse %KeyFor(SayPlaybackMeter).
+ Pulse dos veces rápidamente para mover el foco al medidor.
+
 Para ir a una pista por su número, pulse %KeyFor(GoToTrack).
 Para mover la pista actual a una posición de pista por su número, pulse %KeyFor(MoveCurrentTrackTo).
 Para marcar la pista actual, pulse %KeyFor(MarkTrack).
@@ -125,7 +130,7 @@ Para mover la pista actual a la posición de la pista marcada y fijar la marca en
 
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
-Para más info, vea el archivo whats new.md.
+Para más info, vea el archivo what's new.md.
 
 En una barra de herramientas, pulse %KeyFor (NextDocumentWindow) para moverse a la siguiente
 En una barra de herramientas, pulse %KeyFor (PreviousDocumentWindow) para moverse a la anterior
@@ -431,6 +436,12 @@ Las opciones de los scripts se restablecieron a sus valores predeterminados
 
 @msgNoSelection
 Para utilizar esta función, debe habilitar la barra de herramientas de selección
+@@
+@msgNoRecordingMeter
+Para utilizar esta función, debe habilitar las barras de herramientas de Medición de Grabación o Medición Combinada
+@@
+@msgNoPlaybackMeter
+Para utilizar esta función, debe habilitar las barras de herramientas de Medición de Reproducción o Medición Combinada
 @@
 @msg_Script_Version
 Versión de los scripts para JAWS %1, para Audacity 2.0.0 o posterior.
