@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2016-10-22T04:05Z"
+Const CS_SCRIPT_VERSION = "2.1.0 2016-11-18T00:45Z"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -280,14 +280,14 @@ If !App_FirstTime Then
 	EndIf ; else V13 or later
 	If GetJFWVersion()<1300000 Then
 		;write default settings of Audacity script if settings file doesn't exist.
-		If !FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
+		If !FileExists (FindJAWSPersonalizedSettingsFile (gsIniFile, True)) Then
 			AddDefaultConfig ()
 		EndIf
 		;Read a value for the JAWS ref guide link, initialize to default.
 		;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 		/*
 		Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
-		Let sTemp = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , CS_INI_FILE))
+		Let sTemp = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK + cScSpace + CS_JawsGuide_TITLE , gsIniFile))
 		Let iTemp = StringContains (sTemp, cScSpace)
 		If iTemp Then
 		;We found a space and it's not the last character.
@@ -299,7 +299,7 @@ If !App_FirstTime Then
 		EndIf ; else no space
 		*/
 
-		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, CS_INI_FILE))
+		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile))
 	EndIf ; if before JAWS 13
 
 	;Set keys that move the focus up and down in the track panel.
@@ -1910,9 +1910,10 @@ EndIf
 EndFunction ; NodeHlp
 
 String Function UOAnnounceMessages (Int iRetCurVal)
+	;This function is also used in script AnnounceOnOff.
 Var
 	Int iVal
-Let iVal = IniReadInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "AnnounceMessage", CI_MESSAGES_OFF, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_MESSAGES_FULL Then
 		Let iVal = CI_MESSAGES_OFF
@@ -1920,7 +1921,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (gsIniSection, "AnnounceMessage", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "AnnounceMessage", iVal, gsIniFile)
 EndIf ; if !iRetCurVal
 If iVal == CI_MESSAGES_OFF Then
 	Return cmsg_Off
@@ -1937,7 +1938,7 @@ String Function UOAnnounceToolbars (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (gsIniSection, "Announcetoolbars", CI_TOOLBARS_OFF, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "Announcetoolbars", CI_TOOLBARS_OFF, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_TOOLBARS_ON Then
 		Let iVal = CI_TOOLBARS_OFF
@@ -1945,7 +1946,7 @@ If !iRetCurVal Then
 		; This paves the way for multiple values.
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (gsIniSection, "Announcetoolbars", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "Announcetoolbars", iVal, gsIniFile)
 EndIf ; if !iRetCurVal
 If iVal == CI_TOOLBARS_OFF Then
 	Return cmsg_Off
@@ -1962,14 +1963,14 @@ String Function UOEnterPause (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_ENTERPAUSE_ON Then
 		Let iVal = CI_ENTERPAUSE_OFF
 	Else
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (gsIniSection, "EnterPause", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "EnterPause", iVal, gsIniFile)
 EndIf ; if !iRetCurVal
 If iVal == CI_ENTERPAUSE_OFF Then
 	Return cmsg_Off
@@ -1986,14 +1987,14 @@ String Function UOSilencePreview (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (gsIniSection, "SilencePreview", CI_UO_ON, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "SilencePreview", CI_UO_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_UO_ON Then
 		Let iVal = CI_UO_OFF
 	Else
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (gsIniSection, "SilencePreview", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "SilencePreview", iVal, gsIniFile)
 EndIf ; if !iRetCurVal
 If iVal == CI_UO_OFF Then
 	Return cmsg_Off
@@ -2010,14 +2011,14 @@ String Function UOSilenceRecord (Int iRetCurVal)
 Var
 	Int iVal
 	
-Let iVal = IniReadInteger (gsIniSection, "SilenceRecord", CI_UO_ON, CS_INI_FILE)
+Let iVal = IniReadInteger (gsIniSection, "SilenceRecord", CI_UO_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_UO_ON Then
 		Let iVal = CI_UO_OFF
 	Else
 		Let iVal = iVal + 1
 	EndIf
-	IniWriteInteger (gsIniSection, "SilenceRecord", iVal, CS_INI_FILE)
+	IniWriteInteger (gsIniSection, "SilenceRecord", iVal, gsIniFile)
 EndIf ; if !iRetCurVal
 If iVal == CI_UO_OFF Then
 	Return cmsg_Off
@@ -2048,11 +2049,11 @@ Var
 	String sMessage
 	
 	;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
-If GetJFWVersion()<1300000 && FileExists (FindJAWSPersonalizedSettingsFile (CS_INI_FILE, True)) Then
+If GetJFWVersion()<1300000 && FileExists (FindJAWSPersonalizedSettingsFile (gsIniFile, True)) Then
 	;Remove obsolete key if it exists.
-	Let sMessage=IniReadString (gsIniSection, "announce", "", CS_INI_FILE) ;the old key "anounce" has been changed to "AnnounceMessage"
+	Let sMessage=IniReadString (gsIniSection, "announce", "", gsIniFile) ;the old key "anounce" has been changed to "AnnounceMessage"
 	If sMessage Then
-		IniRemoveKey (gsIniSection, "announce", CS_INI_FILE, false)
+		IniRemoveKey (gsIniSection, "announce", gsIniFile, false)
 	EndIf ;sMessage
 EndIf ;FileExists
 AddDefaultConfig ()
