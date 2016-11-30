@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2016-11-18T00:45Z"
+Const CS_SCRIPT_VERSION = "2.1.0 2016-11-30T04:10Z"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -207,7 +207,7 @@ EndFunction ; MouseMovement
 Void Function AnnounceKeyMessage (String Message)
 ;This speaks an alert message when the user presses certain Audacity hotkeys, such as j or Shift J when appropriate, and passes the key to Audacity.
 ; Message - message to be spoken.
-If !UserBufferIsActive ()&&FocusInMainWindow () Then
+If !UserBufferIsActive ()&&FocusInMainWindow () && !gfInLabel Then
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayUsingVoice (VCTX_Message, Message, OT_status) ;Speak alert message.
 	EndIf ; if AnnounceOn

@@ -5,7 +5,7 @@ rem base name of program files.
 set PROD=audacity
 
 set BUILDDIR=build\
-set JAWSDIR=%appdata%\Freedom Scientific\JAWS\17.0\settings\enu
+set JAWSDIR=%appdata%\Freedom Scientific\JAWS\18.0\settings\enu
 REM Name of md2html (on execution path or absolute path).
 set MD2HTML=md2html
 REM %MD2HTML% -V
