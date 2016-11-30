@@ -1,4 +1,4 @@
-﻿2016-09-24  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 2016-08-12T18:40Z) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2016-11-29  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 2016-11-30T04:37Z) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores.
 
@@ -18,7 +18,7 @@ Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y 
 - Cuando está activo el cursor del PC y el foco se encuentra en la ventana principal, los controles de ganancia y posicionamiento de las pistas ahora se pasan a la aplicación. De lo contrario, ejecutan sus funciones predeterminadas para mover el ratón.
 - En muchos plugins VST, hay combinaciones de teclas que mueven el foco al control de Predefiniciones y activan los pertinentes para Guardar/Cargar predefiniciones.
 - Se leen los nombres y valores de controles en los diálogos de muchos plugins.  
-- Compatibilidad con varios idiomas: Se admiten español e inglés. Además de ésta al español por Fernando Gregoire, hay una traducción del archivo LÉAME al vietnamita (para V2.0 15/9/2013). Gracias a Nguyen Hoang Giang por proporcionarla. Está en el archivo audacity_readme_vi.txt en la carpeta de instalación en la carpeta de archivos de programa.
+- Compatibilidad con varios idiomas: Se admiten español e inglés. Además de ésta al español por Fernando Gregoire, hay una traducción del archivo LÉAME al vietnamita. Gracias a Nguyen Hoang Giang, Dang Manh Cuong, y Le Thi Theu por proporcionarla. Está en el archivo audacity_readme_vi.txt en la carpeta de instalación en la carpeta de archivos de programa.
 - Puede ir a una pista por su número. También puede mover una pista a una posición específica por un número. También puede fijar una "marca" en una pista y volver allí más tarde, o mover una pista allí.
 - Al mover una pista mediante el teclado se proporciona respuesta de voz. (Consulte más abajo).
 - El instalador ahora puede instalar para el usuario actual o para todos los usuarios. Las instalaciones para todos los usuarios pueden realizarse en la carpeta de scripts compartida, aun para JAWS 17.
