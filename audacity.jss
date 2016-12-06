@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2016-11-30T04:10Z"
+Const CS_SCRIPT_VERSION = "2.1.0 2016-12-02T18:10Z V2_1_3"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -76,9 +76,13 @@ Const
 	ID_Chain_Cmds_List=10002,
 	ID_Chain_Cmds_List2=7002, ;Audacity 2.0.4 or higher
 	ID_RECORDING_METER = -31987, ;can negative IDs in WXWindows change??
+	ID_RECORDING_METER2 = -31986, ;V2.1.3
 	ID_RECORDING_METER_COMBINED = -31990,
+	ID_RECORDING_METER_COMBINED2 = -31989, ;v2.1.3
 	ID_PLAYBACK_METER = -31985,
-	ID_PLAYBACK_METER_COMBINED = -31989
+	ID_PLAYBACK_METER2 = -31984, ;v2.1.3
+	ID_PLAYBACK_METER_COMBINED = -31989,
+	ID_PLAYBACK_METER_COMBINED2 = -31988 ;v2.1.3
 
 	
 /*
@@ -100,7 +104,7 @@ Globals
 	Int gfEnterPause,
 	Int announceMessage,
 	Int AnnounceToolbars,
-	Int gfSilencePreview,
+	Int gfSilencePreview, ;Silence Preview quick setting
 	Int gfRecordSpeechOff,
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
@@ -620,7 +624,8 @@ If hParent == 0 Then
 	;Make sure we have a window handle, just to be safe.
 	Let hParent = hWnd
 EndIf ; no parent
-If GetWindowName(hParent) == WN_TOOLDOCK && GetWindowHierarchyX(hParent) == 2 Then
+If (GetWindowName(hParent) == WN_TOOLDOCK && GetWindowHierarchyX(hParent) == 2)
+    || (GetWindowName(hParent) == WN_TOOLDOCK && GetWindowHierarchyX(GetParent(hParent)) == 2) Then ;Audacity V2.1.3
 	Return True
 EndIf
 Return False
@@ -1418,12 +1423,16 @@ Else
 	;Is a toolbar.
 	Let hToolbar = GetToolbar ()
 	Let hNext = GetNextWindow (hToolbar)
+	While hNext && (IsWindowDisabled (hNext) || !IsWindowVisible (hNext))
+	    Let hNext = GetNextWindow(hNext)
+	EndWhile
 	If !hNext Then
 		Let hNext = GetFirstWindow (hToolbar)
 	EndIf ; last window
 	Let hWnd = GetFirstChild (hNext)
 	;Toolbars start with a grabber control, and some of them have static controls following the grabber.  We skip these to get to the first control.
-	While hWnd && ( (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) ;Pre 2.1.2
+	While hWnd && ( IsWindowDisabled(hWnd) ; V2.1.3
+	|| (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass) == 0) ;Pre 2.1.2
 	|| (StringCompare(GetWindowClass(hWnd), WC_wxWindowClass2) == 0)
 	|| (GetWindowSubtypeCode (hWnd) == WT_STATIC))
 		;SayString("class=" + GetWindowClass(hWnd) + ", subtype = " + IntToString(GetWindowSubtypeCode(hWnd))) ; debug
@@ -1446,11 +1455,21 @@ Else
 	; Is a toolbar.
 	Let hToolbar = GetToolbar ()
 	Let hPrior = GetPriorWindow (hToolbar)
+	While hPrior && (IsWindowDisabled (hPrior) || !IsWindowVisible (hPrior))
+	    Let hPrior = GetPriorWindow (hPrior)
+	EndWhile
+	;hPrior is previous visible toolbar, or null if none
 	If !hPrior Then
-		Let hPrior = GetLastWindow (hToolbar)
+		Let hPrior = GetLastWindow (hToolbar) ;last toolbar
 	EndIf ; first window
 	Let hWnd = GetLastWindow(GetFirstChild (hPrior))
-	SetFocus (hWnd)
+	While hWnd && IsWindowDisabled (hWnd)
+		Let hWnd = GetPriorWindow (hWnd)
+	EndWhile
+	;If !hWnd then all of the windows on the toolbar are disabled!!!
+	If hWnd Then
+	    SetFocus (hWnd)
+	EndIf
 EndIf ; else is toolbar
 EndScript ; PreviousDocumentWindow
 
@@ -2328,9 +2347,14 @@ If DialogActive () || !FocusInMainWindow () || gfInLabel Then
 EndIf
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hParent = GetNextWindow (hTemp) ; parent of toolbars
+	; hParent is the grandparent on Audacity v2.1.3, but that's okay.
+/*
 If GetAudacityState () & ST_PLAY Then
 	;playback
 	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER)
+	if !hTemp Then
+		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER2)
+	EndIf
 	If !hTemp || !IsWindowVisible (hTemp) Then
 		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
 	EndIf
@@ -2339,16 +2363,31 @@ If GetAudacityState () & ST_PLAY Then
 		Return
 	EndIf ; if no playback meter
 Else
+*/
+If CheckAudacityVersion("2,1,3") Then
+	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER2) ;V2.1.3
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		/*
+		;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
+		Let hTemp = GetAppMainWindow(hParent)
+		Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
+		Let hTemp = FindDescendantWindow (hTemp, ID_RECORDING_METER_COMBINED2)
+		*/
+		Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED2)
+	EndIf
+Else
+	;Pre 2.1.3
 	;Recording
 	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER)
 	If !hTemp || !IsWindowVisible (hTemp) Then
 		Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED)
 	EndIf
+EndIf ; else pre 2.1.3
 	If !hTemp || !IsWindowVisible (hTemp) Then
 		Say (MSGNoRecordingMeter, OT_Error)
 		Return
 	EndIf ; if no recording meter
-EndIf ;else recording meter
+;EndIf ;else recording meter
 If IsSameScript () Then
 	SetFocus (hTemp)
 	Return
@@ -2360,7 +2399,7 @@ Pause ()
 Let s = GetObjectName (0)
 RestoreCursor ()
 Say (s, OT_SCREEN_MESSAGE)
-EndScript ;SayMeter
+EndScript ;SayRecordingMeter
 	
 Script SayPlaybackMeter()
 	var String s,
@@ -2373,10 +2412,23 @@ If DialogActive () || !FocusInMainWindow ()  || gfInLabel Then
 EndIf
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hParent = GetNextWindow (hTemp) ; parent of toolbars
-Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER)
-If !hTemp || !IsWindowVisible (hTemp) Then
-	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
-EndIf
+if CheckAudacityVersion("2,1,3") Then
+	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER2) ; v2.1.3
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		/*
+		;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
+		Let hTemp = GetAppMainWindow(hParent)
+		Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
+		Let hTemp = FindDescendantWindow (hTemp, ID_PLAYBACK_METER_COMBINED2)
+		*/
+		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED2)
+	EndIf ;combined meter
+Else
+	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER) ;pre V2.1.3
+	If !hTemp || !IsWindowVisible (hTemp) Then
+		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
+	EndIf
+EndIf ;else pre 2.1.3
 If !hTemp || !IsWindowVisible (hTemp) Then
 	Say (msgNoPlaybackMeter, OT_Error)
 	Return
@@ -2454,8 +2506,8 @@ SayMessage(OT_USER_BUFFER, s)
 */
 ;Say number of focused track
 ;SayInteger(GetFocusObject(0).accFocus) ; debug
-If FocusInTrackPanel() Then
     /*
+If FocusInTrackPanel() Then
     If InputBox("track number:", "go to", s) Then
 		var object o = GetFocusObject(0), int rtn
 		var int iNum, Int iStart, Int iMove, Int iCount, Int fSilence, String sUp, String sDown, String sKey
@@ -2494,6 +2546,7 @@ If FocusInTrackPanel() Then
     o.accLocation(IntRef(ix), IntRef(iYTop), IntRef(iWidth), IntRef(iHeight), o.accFocus)
     ;SayString("x = " + IntToString(iX) + ", y = " + IntToString(iYTop) + ", width = " + IntToString(iWidth) + ", height = " + IntToString(iHeight))
     */
+    /*
 	;Test getting record meter value.
 	Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
@@ -2513,6 +2566,8 @@ EndIf ; if no transport toolbar
 
 EndIf ; in track panel
 ;SayString ("FocusInTrackPanel = " + IntToString(FocusInTrackPanel())) ; debug
+*/
+    SayString("IsToolBar = " + IntToString(IsToolBar(GetToolBar())))
 EndScript ; test
 
 Void Function loadNonJCFOptions ()
