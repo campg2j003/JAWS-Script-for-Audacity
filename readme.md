@@ -1,4 +1,4 @@
-2016-11-29  JAWS script for Audacity V2.0 (for script version 2.1.0 2016-11-30T04:37Z) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2016-12-08  JAWS script for Audacity V2.0 (for script version 2.1.0 2016-12-02T18:10Z) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -99,7 +99,7 @@ Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script pr
 
 2.  The position fields sometimes are not shortened.  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, and 17.  I have observed that this problem sometimes goes away on its own.
 
-3.  If the "ENTER Pauses during play/record" feature is on (which is the default), `ENTER` will not select or unselect the current track.  Use `Control+ENTER` instead of `ENTER` in this case.
+3.  If the "ENTER Pauses during play/record" feature is on (which is the default), `ENTER` will not select or unselect the current track while playing or recording.  Use `Control+ENTER` instead of `ENTER` in this case.
 
 4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the date in the version constant so we'll know it is a modified version if you communicate with us about it.
 
@@ -129,7 +129,7 @@ Note that `readme.html` is generated from `readme.md`, which is only available f
 Note that the script is compiled using `#pragma usePoFile 0`.
 
 # Conclusion
-The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 on Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
+The script was developed with Audacity 2.0.3, 2.0.4, 2.0.5, 2.1.0, 2.1.1, and 2.1.2.  It has also been tested with 2.1.3 alpha versions.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 and 18 on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
