@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2016-12-02T18:10Z"
+Const CS_SCRIPT_VERSION = "2.1.0 2016-12-19T19:10Z"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1240,39 +1240,49 @@ EndIf
 EndScript ; JAWSBackspace
 
 Script SayPriorCharacter ()
-;Var
-	;Handle hWnd
-	
-If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SayPriorCharacter ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
 	EndIf ; if no project
+	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	SayPositionField (ID_SELECTION_START, True) ;silence error message
+Elif !IsStopped () Then
+	TypeCurrentScriptKey ()
 Else
+	;Stopped, AnnounceMessages off.
 	PerformScript SayPriorCharacter ()
 EndIf
 EndScript ; SayPriorCharacter
 
 Script SayNextCharacter ()
-;Var
-	;Handle hWnd
-	
-If !userBufferIsActive () && GetQuickSetting ("AnnounceMessage") && IsPCCursor () && FocusInTrackPanel () && IsStopped () && !gfInLabel Then
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SayNextCharacter ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	If NoProject () Then
 		SayNoProject ()
 		Return
 	EndIf ; if no project
+	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
-	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	SayPositionField (ID_SELECTION_START, True) ;silence error message
+Elif !IsStopped () Then
+	TypeCurrentScriptKey ()
 Else
+	;Stopped, AnnounceMessages off.
 	PerformScript SayNextCharacter ()
 EndIf
 EndScript ; SayNextCharacter
