@@ -1,11 +1,16 @@
 @echo off
+REM if variable JAWSVER is set, it is used as the JAWS version number in paths such as the scripts folder and compiler.
 setlocal
 set INSTALLSRCDIR=Jaws_script_installer
-rem base name of program files.
+rem base name of program files, used by t option when compiling.
 set PROD=audacity
 
 set BUILDDIR=build\
-set JAWSDIR=%appdata%\Freedom Scientific\JAWS\18.0\settings\enu
+if "%JAWSVER%" == "" set JAWSVER=18.0
+set JAWSDIR=%appdata%\Freedom Scientific\JAWS\%JAWSVER%\settings\enu
+set SCOMPILE=%PROGRAMFILES%\freedom scientific\jaws\%JAWSVER%\scompile.exe
+rem If it doesn't exist try PROGRAMW6432; this works when I run from emacs.
+if not exist "%scompile%" set SCOMPILE=%programw6432%\freedom scientific\jaws\%JAWSVER%\scompile.exe
 REM Name of md2html (on execution path or absolute path).
 set MD2HTML=md2html
 REM %MD2HTML% -V
@@ -26,7 +31,7 @@ echo where opt is:
 echo b - remove and make build folder structure
 echo c - remove build folder
 echo i - make the installer
-echo t - copy script files to the JAWS script folder overwriting existing files
+echo t - copy script files to the JAWS script folder overwriting existing files and compile %PROD%.jss
 echo f - copy the script sources from the JAWS script folder to this folder overwriting existing files
 goto done
 
@@ -70,6 +75,16 @@ goto next
 goto next
 :tojaws
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
+if exist "%SCOMPILE%" (
+"%scompile%" "%PROD%.jss"
+if %errorlevel% == 0 (
+echo Compile finished successfully
+) else (
+echo Compile failed with exit code %errorlevel%.
+)
+) else (
+echo Could not find script compilter %scompile%
+)
 goto next
 :fromjaws
 set curdir=%CD%
