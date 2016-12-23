@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0 2016-12-19T19:10Z"
+Const CS_SCRIPT_VERSION = "2.1.0 2016-12-23T18:10Z"
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -55,22 +55,10 @@ Const
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
-	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars, pre 2.1.2
-	WC_wxWindowClass2 = "wxWindow", ; grabber control on toolbars, 2.1.2
-	CS_INI_FILE="Audacity.jsi",
 	;For VST plugins
 	ID_Load_Preset=11001,
 	ID_Save_Preset=11002,
 	ID_Preset=11000,
-	;For user options.  The first two can be used for options that don't need special on and off values, which is all of them right now.  This is added to make support of future options easier.
-	CI_UO_OFF = 0,
-	CI_UO_ON = 1,
-	CI_MESSAGES_OFF = 0,
-	CI_MESSAGES_FULL = 1, ; announce all messages
-	CI_TOOLBARS_OFF = 0,
-	CI_TOOLBARS_ON = 1, ; announce all toolbars
-	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
-	CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
 	;For the Edit chains dialog
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
@@ -82,19 +70,22 @@ Const
 	ID_PLAYBACK_METER = -31985,
 	ID_PLAYBACK_METER2 = -31984, ;v2.1.3
 	ID_PLAYBACK_METER_COMBINED = -31989,
-	ID_PLAYBACK_METER_COMBINED2 = -31988 ;v2.1.3
+	ID_PLAYBACK_METER_COMBINED2 = -31988, ;v2.1.3
+
+	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars, pre 2.1.2
+	WC_wxWindowClass2 = "wxWindow", ; grabber control on toolbars, 2.1.2
+	CS_INI_FILE="Audacity.jsi",
+	;For user options.  The first two can be used for options that don't need special on and off values, which is all of them right now.  This is added to make support of future options easier.
+	CI_UO_OFF = 0,
+	CI_UO_ON = 1,
+	CI_MESSAGES_OFF = 0,
+	CI_MESSAGES_FULL = 1, ; announce all messages
+	CI_TOOLBARS_OFF = 0,
+	CI_TOOLBARS_ON = 1, ; announce all toolbars
+	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
+	CI_ENTERPAUSE_ON = 1 ; ENTER pauses during play and record
 
 	
-/*
-Const
-	;Names of toolbar button images for use when GetObjectInfoByName doesn't work.  See GetAudacityState.
-	;Each ends with a trailing space.
-	CS_IMGRECORDPRESSED = "graphic 405 ",
-	CS_IMGPLAYPRESSED = "graphic 28 ",
-	CS_IMGPAUSEPRESSED = "graphic 161 "
-*/
-
-
 Globals
 	Int App_FirstTime,
 	Int gfAudacityAutostarted, ;Set in AutoStartEvent, cleared in HandleCustomWindows and HandleCustomApp.
@@ -2286,7 +2277,7 @@ PerformScript SayNextLine ()
 EndScript ;SayNextLine
 
 Script SwitchChainsList ()
-;Switch between the Chains and Chain lists in the Edit Chains dialog.
+;Switch between the Chains and Chain Commands lists in the Edit Chains dialog.
 ;Feature suggested by Dang Manh Cuong
 ;Code given by Gary Campbell
 Var
@@ -2299,12 +2290,13 @@ Let hReal = GetRealWindow (GetFocus ())
 If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
 	Let iCurId = GetControlID (GetFocus ())
 	If iCurId == ID_Chains_List Then
-If CheckAudacityVersion ("2,0,4") then ;The control ID of Change CMD has changed since Audacity 2.0.4. So we add this condition to varify that.
-    ;SayString("Finding chain commands") ; debug
-		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List2)
-Else
-		Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
-EndIf ;Check Audacity version
+		If CheckAudacityVersion ("2,0,4") then ;The control IDs of Chain Commands list changed in Audacity 2.0.4. 
+			;SayString("Finding chain commands") ; debug
+			Let		wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List2)
+		Else
+			;pre 2.0.4
+			Let		wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
+		EndIf ;Check Audacity version
 		Let sMessage=msgChainCommands ;list of commands in the right list
 	Else
 		Let wnd=FindDescendantWindow (hReal, ID_Chains_List)
@@ -2331,13 +2323,6 @@ If DialogActive () || MenusActive () || gfInLabel Then
 	Return
 EndIf
 ;Not in a dialog or menu.
-/*
-This should be removed because we can paste audio without opening a project.
-If NoProject () Then
-	SayNoProject ()
-	Return
-ElIf !IsStopped () Then
-*/
 If !IsStopped () then
 	SayNotStopped ()
 	Return
