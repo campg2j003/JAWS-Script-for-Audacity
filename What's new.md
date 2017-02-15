@@ -1,4 +1,4 @@
-(This file last updated 9/3/2016)
+(This file last updated 2/15/2017)
 
 # New in 2.1.0
 
@@ -28,7 +28,7 @@
 - Added code to refresh the track panel after CloseFocusTrack.  This is intended to make JAWS not indicate that the old track is still current.
 - Fixed issue #4: In toolbars CTRL+TAB says "grabber".
 - The URL for the JAWS User's Guide can now be updated via the script (Control+Shift+j).
-- Updated guide link and Audacity keystrokes to 2.1.2.
+- Updated guide link and Audacity keystrokes to 2.1.3.
 - The g key speaks the value of the recording meter.  Pressing twice quickly moves focus to the meter.  The h key does the same for the playback meter.  If the combined meter toolbar is enabled, it is used instead of the individual meters.
 
 ## Installer Changes
