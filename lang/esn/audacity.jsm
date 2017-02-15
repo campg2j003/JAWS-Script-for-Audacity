@@ -1,4 +1,4 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2016-09-25.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-15.
 ;Translation based on English version dated 2016-09-22.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
@@ -86,9 +86,9 @@ Const
 	csPauseKey="p"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.2-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Guía de Audacity 2.1.2 (en inglés)", 
+CS_JawsGuide_Title = "Guía de Audacity 2.1.3 (en inglés)", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
 
