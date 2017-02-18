@@ -1,8 +1,9 @@
-; English messages for Audacity 2.1.0 sscript by Gary Campbell last updated 2017-02-15.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-18.
 /*
-JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
+JAWS script for Audacity multitrack sound editor V2.0 or later 
+(http://audacityteam.org).
 
-    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -175,7 +176,7 @@ JAWS Guide
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.1.2 (from %1, by %2).  Access the guide at
+Default keystrokes for Audacity v2.1.3 (from %1, by %2).  Access the guide at
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
@@ -219,7 +220,7 @@ Play short period after selection start Shift + F6
 Play short period before selection end Shift + F7 
 Play short period after selection end Shift + F8 
 Play short period before and after selection start Ctrl + Shift + F5 
-Play short period before and after selection start Ctrl + Shift + F7 
+Play short period before and after selection end Ctrl + Shift + F7 
 
 Track table
 

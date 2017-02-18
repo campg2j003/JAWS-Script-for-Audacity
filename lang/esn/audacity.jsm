@@ -1,9 +1,9 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-15.
-;Translation based on English version dated 2016-09-22.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-17.
+;Translation based on English version dated 2017-02-17.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
     Copyright (C) 2014-2016 Fernando Gregoire, for the Spanish translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
@@ -176,13 +176,16 @@ Guía para JAWS
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Combinaciones de teclas predeterminadas para Audacity v2.1.0 (de la %1, por %2). Acceda a la guía (en inglés) en
+Combinaciones de teclas predeterminadas para Audacity v2.1.3 (de la %1, por %2). Acceda a la guía (en inglés) en
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
 
 
-Combinaciones de teclas para comandos generales 
+Generales
+
+
+Comando Combinación de teclas
 Abrir archivo de audio Ctrl + O 
 Importar archivo de audio Ctrl + Shift + I 
 Nuevo proyecto Ctrl + N 
@@ -190,35 +193,55 @@ Guardar proyecto Ctrl + S
 Diálogo de Preferencias Ctrl + P 
 Moverse cíclicamente hacia adelante por Barras de herramientas, Tabla de pistas y Barra de selección Ctrl + F6 
 Moverse cíclicamente hacia atrás por Barras de herramientas, Tabla de pistas y Barra de selección Ctrl + Shift + F6 
+Moverse cíclicamente hacia adelante por la ventana principal de Audacity y todos los diálogos no modales abiertos Alt + F6 
+Moverse cíclicamente hacia atrás por la ventana principal de Audacity y todos los diálogos no modales abiertos Alt + Shift + F6 
 Zoom normal Ctrl + 2 
 Acercar Ctrl + 1 
 Alejar Ctrl + 3 
 
 Reproducción
+
+
 Comando Combinación de teclas 
+
 Iniciar/Detener Barra Espaciadora 
-Iniciar/Detener y mover cursor Shift + A 
+Iniciar/Detener y mover cursor X 
 Pausa/reanudar P 
 Rebobinar período corto durante reproducción Flecha Izquierda 
 Adelantar período corto durante reproducción Flecha Derecha 
 Rebobinar período largo durante reproducción Shift + Flecha Izquierda 
 Adelantar período largo durante reproducción Shift + Flecha Derecha 
-Reproducir vista previa de corte/eliminación C 
 Reproducción en bucle Shift + Barra Espaciadora 
 Diálogo Dispositivo de salida Shift + O 
+Reproducir vista previa de corte/eliminación C 
+Reproducir período corto antes del comienzo de la selección Shift + F5 
+Reproducir período corto después del comienzo de la selección Shift + F6 
+Reproducir período corto antes del final de la selección Shift + F7 
+Reproducir período corto después del final de la selección Shift + F8 
+Reproducir período corto antes y después del comienzo de la selección Ctrl + Shift + F5 
+Reproducir período corto antes y después del final de la selección Ctrl + Shift + F7 
 
 Tabla de pistas
+
+
 Comando Combinación de teclas 
+
 Moverse a pista anterior Flecha Arriba 
 Moverse a pista siguiente Flecha Abajo 
+Moverse a primera pista Ctrl + Inicio 
+Moverse a última pista Ctrl + Fin 
 Alternar selección de pista activa Enter 
-Seleccionar todas las pistas (y todo el audio) Ctrl + A 
+Seleccionar todas las pistas (y un rango de tiempo que incluye todo el audio) Ctrl + A 
 Deseleccionar todas las pistas (y todos los rangos de tiempo) Ctrl + Shift + A 
+Seleccionar todas las pistas Ctrl + Shift + K 
 Abrir el menú de la pista activa Tecla Aplicaciones o Shift + M 
 Cerrar (Eliminar) la pista activa Shift + C 
 
 Pista de audio
+
+
 Comando Combinación de teclas 
+
 Cambiar ganancia de pista activa Shift + G 
 Cambiar posicionamiento estéreo de pista activa Shift + P 
 Silenciar/Desactivar silencio en la pista activa Shift + U 
@@ -227,13 +250,16 @@ Desactivar silencio en todas las pistas Ctrl + Shift + U
 Solo/Desactivar solo en la pista activa Shift + S 
 
 Movimiento del cursor
+
+
 Comando Combinación de teclas 
+
 Moverse al comienzo de las pistas (tiempo cero) Inicio 
 Moverse al final de todo el audio Fin 
 Moverse al comienzo del audio en las pistas seleccionadas J 
 Moverse al final del audio en las pistas seleccionadas K 
 Nueva posición del cursor en posición de reproducción ` 
-Detener reproducción y mover cursor Shift + A 
+Detener reproducción y mover cursor X 
 Rebobinar período corto Coma 
 Adelantar período corto Punto 
 Rebobinar período largo Shift + Coma 
@@ -269,8 +295,19 @@ Cortar audio seleccionado Ctrl + X
 Copiar audio seleccionado Ctrl + C 
 Pegar Ctrl + V 
 Reemplazar audio seleccionado por silencio Ctrl + L 
+Duplicar el audio seleccionado Ctrl + D 
 Cerrar (Eliminar) pista activa Shift + C 
 Encontrar cruces en cero Z
+
+Etiquetas
+
+
+Comando Combinación de teclas
+
+Añadir etiqueta en la selección Ctrl + B 
+Añadir etiqueta en la posición de reproducción Ctrl + M 
+Moverse a la etiqueta siguiente Alt + Flecha Derecha 
+Moverse a la etiqueta anterior Alt + Flecha Izquierda 
 
 Grabación
 
@@ -284,7 +321,6 @@ Detener Barra Espaciadora
 Diálogo Servidor de audio Shift + H 
 Diálogo Dispositivo de grabación Shift + I 
 Diálogo Canales de grabación Shift + N 
-
 @@
 
 @msg_App_Start

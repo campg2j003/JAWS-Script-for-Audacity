@@ -1,4 +1,4 @@
-2016-12-08  JAWS script for Audacity V2.0 (for script version 2.1.0 2016-12-02T18:10Z) by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2017-02-18  JAWS script for Audacity V2.0 (for script version 2.1.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -149,6 +149,11 @@ To adjust pan right, press Alt+Shift+RightArrow.
 The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while
 in the main window, turn on the JAWS cursor.
 
+To say the value of the recording meter, press g.
+ Press twice quickly to move focus to the meter.
+To say the value of the playback meter, press h.
+ Press twice quickly to move focus to the meter.
+
 To go to a track by number, press JAWSKey+a, g.
 To move the current track to a track position by number, press JAWSKey+a, m.
 To mark the current track, press JAWSKey+a, k.
@@ -158,7 +163,7 @@ To move the current track to the position of the marked track and set the mark t
 
 To toggle speech on or off, press Shift+Insert+S.
 To toggle alert messages on or off, press Control+`).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
-See what's new.md for more info.
+See What's new.md for more info.
 
 In a toolbar to move to the next toolbar press Control+Tab
 In a toolbar to move to the previous toolbar press Control+Shift+Tab
@@ -175,7 +180,7 @@ in this situation.
 
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press Alt+P.
-To load an existing preset, press  Alt+L.
+To load an existing preset, press  .
 To save the current settings as a preset, press  Alt+S.
 
 If SilencePreview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result
@@ -184,7 +189,6 @@ in missing speech that occurs as a result of focus changes.  You can fix this by
 To change settings for the Audacity script, press   JAWSKey+V.
 
 To Change the URL for the Audacity Jaws Guide, press Shift+Control+J
-
-```
+ ```
 
 Enjoy!

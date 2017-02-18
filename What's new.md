@@ -1,8 +1,9 @@
-(This file last updated 2/15/2017)
+(This file last updated 2/17/2017)
 
 # New in 2.1.0
 
-- The package has a new home.  It is now hosted at https://github.com/campg2j003/JAWS-Script-for-Audacity.  The source is now available there.  GitHub has an issue tracker which you can use to submit bug reports, enhancement requests, or other suggestions.  It is accessed from the Issues link on the repository page.  The file CONTRIBUTING.md has been added that contains information for script developers on working with the scripts on GitHub.  This file only appears in the Git repository.  
+- The package has a new home.  It is now hosted at https://github.com/campg2j003/JAWS-Script-for-Audacity.  The source is now available there.  GitHub has an issue tracker which you can use to submit bug reports, enhancement requests, or other suggestions.  It is accessed from the Issues link on the repository page.  The file CONTRIBUTING.md has been added that contains information for script developers on working with the scripts on GitHub.  This file only appears in the Git repository.
+- Now supports Audacity V2.1.3.
 - Multiple language support is now provided for the installer and script.  English and Spanish are currently supported.  
 - The README is now HTML.  (The source is Markdown and is converted to HTML in the build process.)  Therefore, it is now displayed in your default web browser instead of in Notepad.
 - Added additional usage information to the README.

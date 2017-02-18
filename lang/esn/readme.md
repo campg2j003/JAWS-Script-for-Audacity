@@ -1,4 +1,4 @@
-﻿2016-11-29  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0 2016-11-30T04:37Z) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-02-18  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores.
 
@@ -135,56 +135,59 @@ Me interesarían comentarios sobre los scripts y sugerencias de mejoras, pero no
 # Aquí va el texto de la ayuda de teclas rápidas de JAWS:
 
 ```
-Para verbalizar la posición inicial de la selección, pulse Alt+AcentoGrave.
-Para verbalizar la posición final de la selección o la longitud, pulse Alt+Más.
+Para verbalizar la posición inicial de la selección, pulse Alt+[.
+Para verbalizar la posición final de la selección o la longitud, pulse Alt+].
 Para mover el foco a estos controles, pulse la tecla dos veces rápidamente.
-Para verbalizar el valor de posición del audio, pulse Alt+Suprimir.
-Para verbalizar el cursor activo mientras esté activo el del PC, pulse Alt+Suprimir dos veces rápidamente.
-
-Para aumentar la ganancia de la pista activa, pulse Alt+Mayúscula+Flecha Arriba.
-Para reducir la ganancia de la pista activa, pulse Alt+Mayúscula+Flecha Abajo.
-Para ajustar el posicionamiento estéreo hacia la izquierda, pulse Alt+Mayúscula+Flecha Izquierda.
-Para ajustar el posicionamiento estéreo hacia la derecha, pulse Alt+Mayúscula+Flecha Derecha.
+Para verbalizar el valor de posición del audio, pulse Alt+Delete.
+Para verbalizar el cursor activo mientras esté activo el del PC, pulse Alt+Delete dos veces rápidamente.
+Para aumentar la ganancia de la pista activa, pulse Alt+Shift+UpArrow.
+Para reducir la ganancia de la pista activa, pulse Alt+Shift+DownArrow.
+Para ajustar el posicionamiento estéreo hacia la izquierda, pulse Alt+Shift+LeftArrow.
+Para ajustar el posicionamiento estéreo hacia la derecha, pulse Alt+Shift+RightArrow.
 Mientras el foco está en la ventana principal, las cuatro últimas teclas reemplazan los scripts de JAWS predeterminados para mover el ratón. Si desea activar
 la funcionalidad original mientras esté en la ventana principal, active el cursor de JAWS.
 
-Para ir a una pista por su número, pulse Tecla JAWS+a, i.
-Para mover la pista actual a una posición de pista por su número, pulse Tecla JAWS+a, m.
-Para marcar la pista actual, pulse Tecla JAWS+a, k.
-Para ir a la pista marcada, pulse Tecla JAWS+a, Mayúscula+i.
-Para ir a la pista marcada y marcar la pista de partida, pulse Tecla JAWS+a, x.
-Para mover la pista actual a la posición de la pista marcada y fijar la marca en la pista actual, pulse Insert+a, Mayúscula+m.
+Para verbalizar el valor del medidor de grabación, pulse g.
+ Pulse dos veces rápidamente para mover el foco al medidor.
+Para verbalizar el valor del medidor de reproducción, pulse h.
+ Pulse dos veces rápidamente para mover el foco al medidor.
 
-Para activar o desactivar la voz, pulse Mayúscula+Insert+S.
-Para activar o desactivar los mensajes de aviso, pulse Control+OrdinalMasculino.  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste
+Para ir a una pista por su número, pulse JAWSKey+a, g.
+Para mover la pista actual a una posición de pista por su número, pulse JAWSKey+a, m.
+Para marcar la pista actual, pulse JAWSKey+a, k.
+Para ir a la pista marcada, pulse JAWSKey+a, Shift+g.
+Para ir a la pista marcada y marcar la pista de partida, pulse JAWSKey+a, x.
+Para mover la pista actual a la posición de la pista marcada y fijar la marca en la pista actual, pulse Insert+a, Shift+m.
+
+Para activar o desactivar la voz, pulse Shift+Insert+S.
+Para activar o desactivar los mensajes de aviso, pulse Control+`).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste
 de opciones de JAWS.
-Para más info, vea el archivo Whats new.md.
+Para más info, vea el archivo what's new.md.
 
 En una barra de herramientas, pulse Control+Tab para moverse a la siguiente
-En una barra de herramientas, pulse Control+Mayúscula+Tab para moverse a la anterior
+En una barra de herramientas, pulse Control+Shift+Tab para moverse a la anterior
 
-Para leer el estado del programa (reproduciendo/pausado/grabando/detenido), pulse Tecla JAWS+Suprimir
-Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse Mayúscula+Control+`
+Para leer el estado del programa (reproduciendo/pausado/grabando/detenido), pulse JAWSKey+delete
+Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse Shift+Control+`
 Para conmutar entre las dos listas del diálogo Editar secuencias de comandos, pulse F6.
 
 Para obtener ayuda sobre las teclas rápidas de Audacity, pulse Insert+w.
 Para obtener la ayuda predeterminada sobre teclas rápidas de Windows, pulse Insert+w dos veces rápidamente.
 
 Si está activada la opción "ENTER pausa al reproducir/grabar", al pulsar Enter en tanto se reproduce o graba, se envía la tecla Pausa. Para ejecutar ENTER
-en esta situación, utilice Control+Enter.
+en esta situación, utilice Control+ENTER.
 
 En algunos plugins VST comunes, como L1V:
 Para llevar el foco al control de predefinidos, pulse Alt+P.
-Para cargar una predefinición existente, pulse Alt+C.
-Para guardar la configuración actual como predefinición, pulse Alt+G.
+Para cargar una predefinición existente, pulse .
+Para guardar la configuración actual como predefinición, pulse Alt+S.
 
 Si Silenciar en Vista Previa está activado y aprieta el botón Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva.
 Esto provocará pérdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo
 después.
 
-Para cambiar la configuración de los scripts para Audacity, pulse TeclaJAWS+V.
+Para cambiar la configuración de los scripts para Audacity, pulse   JAWSKey+V.
 
-Para cambiar la URL de la Guía de JAWS para Audacity, pulse Mayúscula+Control+J
-```
+Para cambiar la URL de la Guía de JAWS para Audacity, pulse Shift+Control+J ```
 
 ¡Disfrute!
