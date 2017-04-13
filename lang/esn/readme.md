@@ -1,4 +1,4 @@
-﻿2017-02-18  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-04-13  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.1.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores.
 
@@ -119,11 +119,10 @@ Los mensajes y constantes de cadenas de los scripts de JAWS para Audacity están
 
 Ahora los mensajes del instalador son traducibles. Ahora el texto de los mensajes se ha separado del código del instalador, de modo que se puedan preparar conjuntos de mensajes para cada idioma. Actualmente se admiten español e inglés. Los mensajes están en archivos de cabeceras `.nsh` con nombres como `*_enu.nsh` o `*_lang_enu.nsh`.
 
-Este paquete ahora se hospeda en GitHub. El repositorio está en <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Si quiere colaborar con cambios en los scripts, por favor consulte [CONTRIBUTING.md][] en el repositorio.
-[CONTRIBUTING.md]: https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md
+Este paquete ahora se hospeda en GitHub. El repositorio está en <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Si quiere colaborar con cambios en los scripts, por favor consulte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) en el repositorio.
 
 # Notas para traductores
-Observe que `readme.html` se genera desde `readme.md`, que sólo está disponible a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md][].
+Observe que `readme.html` se genera desde `readme.md`, que sólo está disponible a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md).
 
 Observe que los scripts se compilan utilizando `#pragma usePoFile 0`.
 

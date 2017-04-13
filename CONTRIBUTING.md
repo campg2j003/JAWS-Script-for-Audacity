@@ -80,4 +80,4 @@ At this point the JAWS script is complete.  In order for the installer to use th
 - Add  the appropriate `MUI2_LANGUAGE` macro in `JFW.nsh`.
 - Add the new files to the appropriate places in `installer.nsi` where it installs the source files.  (Searching for '${Case} "esn"' should find them.)
 
-See [`readme.md`](https://github.com/campg2j003/jfw_nsh/readme.md) in `jfw_nsh` for more information on modifying the installer.
+See [`readme.md`](https://github.com/campg2j003/jfw_nsh/blob/master/readme.md) in `jfw_nsh` for more information on modifying the installer.
