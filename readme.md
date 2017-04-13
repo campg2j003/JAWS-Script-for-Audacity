@@ -1,4 +1,4 @@
-2017-02-18  JAWS script for Audacity V2.0 (for script version 2.1.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+2017-04-13  JAWS script for Audacity V2.0 (for script version 2.1.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later.
 
@@ -120,11 +120,10 @@ Messages and string constants for the JAWS script are in `audacity.jsm` and `aud
 
 The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.
 
-This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md][] in the repository.
-[CONTRIBUTING.md]: https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md
+This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md](CONTRIBUTING.md) in the repository.
 
 # Notes for Translators
-Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md][] for more information.
+Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
 Note that the script is compiled using `#pragma usePoFile 0`.
 

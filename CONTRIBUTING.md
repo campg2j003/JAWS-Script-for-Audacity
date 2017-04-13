@@ -1,4 +1,4 @@
-(Last updated 2017-04-12)
+(Last updated 2017-04-13)
 
 Thank you for your interest in contributing to the JAWS Script for Audacity!
 
@@ -7,9 +7,7 @@ If you would like to contribute changes to the script, [fork a copy of the repos
 
 To build the installer you will also need [NSIS](http://nsis.sf.net).  The package is made by V2.51, but the files are completely compatible with v2.46.
 
-You will also need [`md2html`][md2html] or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable][md2htmlexe] so you don't have to have Python installed.  To use it, place `md2html.exe` in a folder on your machine.  (If this folder is not on your execution path you will need to set the MD2HTML environment variable in `build.cmd` to it.)
-[md2html]: https://github.com/campg2j003/md2html
-[md2htmlexe]: https://github.com/campg2j003/md2html/releases/download/v1.0.3/md2html.exe
+You will also need [`md2html`](https://github.com/campg2j003/md2html) or some other method of converting Markdown to HTML.  Note that `md2html` produces a table of contents and substitutes text from `md2html.cfg`, so you will have to do this yourself if you use another tool.  `md2html` is written in Python, but there is a [MS Windows executable](https://github.com/campg2j003/md2html/releases/download/v1.0.3/md2html.exe) so you don't have to have Python installed.  To use it, place `md2html.exe` in a folder on your machine.  (If this folder is not on your execution path you will need to set the MD2HTML environment variable in `build.cmd` to it.)
 
 There is a [`build.cmd`](build.cmd) script in the main repo to build the installer.  It creates a build folder at the top level of the repo, copies the required files to it, converts Markdown files to HTML, and runs the installer.  You will probably have to customize it based on your environment.  It can also copy the JAWS script files to and from the JAWS scripts folder, since you need them there to develop the script, and you don't want to clone into that folder.  You can run `build` with no arguments for help on using it.
 
@@ -34,8 +32,7 @@ build b i
 
 To work on the JAWS script files, run `build t`, work on the files in your JAWS scripts folder, then run `build f` and commit your changes to your repo.
 
-Note that the README file is written in GitHub Markdown.  See [Writing on GitHub][] for more information.
-[Writing on GitHub]: https://help.github.com/categories/writing-on-github
+Note that the README file is written in GitHub Markdown.  See [Writing on GitHub](https://help.github.com/categories/writing-on-github) for more information.
 
 # Notes for Translators
 The following files in the `JAWS-Script-for-Audacity` repo require translation:
@@ -53,7 +50,7 @@ In addition, the following files require translation:
 - `jfw_nsh_lang_*.nsh` in the `jfw_nsh` repo
 - the `uninstlog_*.nsh` message files in the `uninstlog` repo
 
-The README file is written in the GitHub Markdown format and converted to HTML in the build process.  See [Writing on GitHub][] for more information.  You can check the conversion process by running `md2html -c readme.md readme.html` on your translation.    The file `md2html.cfg` provides text for titles in the HTML files produced by `md2html`.  The `title` option is the text placed in the HTML `<title>` element of the page.  The `toctitle` option is the text placed in a `<span>` element just before the table of contents.  All Markdown (`.md`) files, `md2html.cfg` and the resulting HTML file are UTF-8.
+The README file is written in the GitHub Markdown format and converted to HTML in the build process.  See [Writing on GitHub](https://help.github.com/categories/writing-on-github) for more information.  You can check the conversion process by running `md2html -c readme.md readme.html` on your translation.    The file `md2html.cfg` provides text for titles in the HTML files produced by `md2html`.  The `title` option is the text placed in the HTML `<title>` element of the page.  The `toctitle` option is the text placed in a `<span>` element just before the table of contents.  All Markdown (`.md`) files, `md2html.cfg` and the resulting HTML file are UTF-8.
 
 To add a new language:
 - Add a new folder in the `lang` folder of the main repo.  It should be the same name as the JAWS folder for the language.
