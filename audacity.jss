@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.0"
-;Last updated 2017-02-17T22:10Z
+Const CS_SCRIPT_VERSION = "2.1.1"
+;Last updated 2017-04-18T16:45Z
 ; This puts the copyright in the jsb file.
 Messages
 
@@ -2739,10 +2739,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; UnmuteAllTracks
 	
 	Script ReplaceWithSilence ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2811,10 +2816,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; Preferences
 	
 	Script Duplicate ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2825,10 +2835,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; Duplicate
 	
 	Script Trim ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2850,10 +2865,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; ExportMultiple
 	
 	Script SplitCut ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2864,10 +2884,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SplitCut
 	
 	Script SplitDelete ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2886,10 +2911,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; PasteNewLabel
 	
 	Script Split ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2900,10 +2930,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; Split
 	
 	Script SplitNew ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2914,10 +2949,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SplitNew
 	
 	Script Join ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2928,10 +2968,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; Join
 	
 	Script Disjoin ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2942,10 +2987,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; Disjoin
 	
 	Script CutLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2956,10 +3006,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; CutLabels
 	
 	Script DeleteLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2970,10 +3025,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; DeleteLabels
 	
 	Script SplitCutLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2984,10 +3044,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SplitCutLabels
 	
 	Script SplitDeleteLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -2998,10 +3063,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SplitDeleteLabels
 	
 	Script SilenceLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3012,10 +3082,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SilenceLabels
 	
 	Script CopyLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3026,10 +3101,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; CopyLabels
 	
 	Script SplitLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3040,10 +3120,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SplitLabels
 	
 	Script JoinLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3054,10 +3139,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; JoinLabels
 	
 	Script DisjoinLabels ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3077,6 +3167,11 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; ToggleSpectralSelection
 	
 	Script SelSyncLockTracks ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
@@ -3089,10 +3184,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; SelSyncLockTracks
 	
 	Script ZoomSel ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3121,10 +3221,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; FitV
 	
 	Script GoSelStart ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3135,10 +3240,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; GoSelStart
 	
 	Script GoSelEnd ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3186,10 +3296,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; NewMonoTrack
 	
 	Script MixAndRenderToNewTrack ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3200,10 +3315,15 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; MixAndRenderToNewTrack
 	
 	Script RepeatLastEffect ()
+	if !FocusInMainWindow () Then
+		SayCurrentScriptKeyLabel ()
+		TypeCurrentScriptKey ()
+		Return
+	EndIf
 	If NoProject () Then
 		SayNoProject ()
 		Return
-	ElIf FocusInMainWindow () && !IsStopped () Then
+	ElIf !IsStopped () Then
 		SayNotStopped ()
 	ElIf !IsTrackSelected () Then
 		SayNoTrackSelected ()
@@ -3259,44 +3379,52 @@ If TRUE Then Return TRUE EndIf ; test what happens if we disable app window.
 	EndScript ; TrackMoveBottom
 	
 	Script InputDevice ()
-	If FocusInMainWindow () && !IsStopped () Then
-		SayNotStopped ()
-	ElIf !FocusInMainWindow () || gfInLabel Then
+	If !FocusInMainWindow () || gfInLabel Then
 		SayCurrentScriptKeyLabel ()
 		TypeCurrentScriptKey ()
+		Return
+	EndIf
+	If !IsStopped () Then
+		SayNotStopped ()
 	Else
 		AnnounceKeyMessage (msgInputDevice)
 	EndIf
 	EndScript ; InputDevice
 	
 	Script OutputDevice ()
-	If FocusInMainWindow () && !IsStopped () Then
-		SayNotStopped ()
-	ElIf !FocusInMainWindow () || gfInLabel Then
+	If !FocusInMainWindow () || gfInLabel Then
 		SayCurrentScriptKeyLabel ()
 		TypeCurrentScriptKey ()
+		Return
+	EndIf
+	If !IsStopped () Then
+		SayNotStopped ()
 	Else
 		AnnounceKeyMessage (msgOutputDevice)
 	EndIf
 	EndScript ; OutputDevice
 	
 	Script AudioHost ()
-	If FocusInMainWindow () && !IsStopped () Then
-		SayNotStopped ()
-	ElIf !FocusInMainWindow () || gfInLabel Then
+	If !FocusInMainWindow () || gfInLabel Then
 		SayCurrentScriptKeyLabel ()
 		TypeCurrentScriptKey ()
+		Return
+	EndIf
+	If !IsStopped () Then
+		SayNotStopped ()
 	Else
 		AnnounceKeyMessage (msgAudioHost)
 	EndIf
 	EndScript ; AudioHost
 	
 	Script InputChannels ()
-	If FocusInMainWindow () && !IsStopped () Then
-		SayNotStopped ()
-	ElIf !FocusInMainWindow () || gfInLabel Then
+	If !FocusInMainWindow () || gfInLabel Then
 		SayCurrentScriptKeyLabel ()
 		TypeCurrentScriptKey ()
+		Return
+	EndIf
+	If !IsStopped () Then
+		SayNotStopped ()
 	Else
 		AnnounceKeyMessage (msgInputChannels)
 	EndIf

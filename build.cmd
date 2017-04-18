@@ -76,12 +76,14 @@ goto next
 :tojaws
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
 if exist "%SCOMPILE%" (
+pushd "%JAWSDIR%"
 "%scompile%" "%PROD%.jss"
 if %errorlevel% == 0 (
 echo Compile finished successfully
 ) else (
 echo Compile failed with exit code %errorlevel%.
 )
+popd
 ) else (
 echo Could not find script compilter %scompile%
 )
