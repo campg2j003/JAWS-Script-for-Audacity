@@ -1,4 +1,6 @@
-(This file last updated 2/17/2017)
+(This file last updated 7/10/2017)
+# New in 2.2.0-alpha-2017-07-10
+- Converted code that speaks position fields to work with Audacity 2.2.0-Alpha-09JUL17.
 
 # New in 2.1.0
 

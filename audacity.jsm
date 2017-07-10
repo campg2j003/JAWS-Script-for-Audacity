@@ -345,6 +345,19 @@ start
 end
 @@
 
+@msgLength
+length
+@@
+
+@msgCenter
+center
+@@
+
+;Say a position field.  %1 is field name, %2 is value.
+@msgPositionField
+%1 %2
+@@
+
 @msgLeft
 left
 @@

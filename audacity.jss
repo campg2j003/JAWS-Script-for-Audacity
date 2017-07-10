@@ -4,8 +4,9 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.1.1"
-;Last updated 2017-07-13T16:00Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-07-13"
+;Last updated 2017-07-13T16:40Z
+
 ; This puts the copyright in the jsb file.
 Messages
 
@@ -50,10 +51,20 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 Const
+	;For Audacity 2.1.3 and earlier.
 	ID_SELECTION_START = 2705,
 	ID_SELECTION_END = 2706,   ; selection end or selection length
 	ID_END_RADIO = 2704,
 	ID_LENGTH_RADIO = 2703,
+
+	;For Audacity 2.2.0 and later
+	ID_SELECTION_START_22 = 2719,
+	ID_SELECTION_END_22 = 2722,   ; selection end
+	ID_SELECTION_TYPE_COMBO = 2704,
+	ID_SELECTION_LENGTH = 2720,
+	ID_SELECTION_CENTER = 2721,
+	ID_AUDIO_POSITION = 2723,
+
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	;For VST plugins
 	ID_Load_Preset=11001,
@@ -708,18 +719,48 @@ EndFunction ; GetPositionField
 
 Int Function SayPositionField (Int iPosition, Int fSilent)
 ;Say the specified position field.
-;iPosition CTRL ID of the position field: ID_SELECTION_START or ID_SELECTION_END.
+;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
 ;fSilent -- If True does not speak error message if the selection toolbar could not be found.
 ;Returns True if a position value was found, False if it could not be gotten, in which case it speaks a corresponding message (unless fSilent is True).
 ;Respects AnnounceMessage.
 Var
 	Handle hWnd,
 	String sValue,
+	Int iId,
+	Int iSelectionType,
 	Int iRtn
 	
 	;If the Announce Messages option is on, speak the selection posision.
 If GetQuickSetting ("AnnounceMessage") Then
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
+	If CheckAudacityVersion("2,2,0") Then
+		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+		;1=start end, 2= start length, 3= length end, 4=length center
+		If iPosition == ID_SELECTION_START Then
+			If iSelectionType == 1 Then ; start, end
+				Let iId = ID_SELECTION_START_22
+			ElIf iSelectionType == 2 Then ; start, length
+				Let iId = ID_SELECTION_START_22
+			ElIf iSelectionType == 3 Then ; length, end
+				Let iId = ID_SELECTION_END_22
+			Else ; length, center
+				Let iId = ID_SELECTION_CENTER
+			EndIf ; else length center
+		Else
+			;iPosition = ID_SELECTION_END
+			If iSelectionType == 1 Then ; start, end
+				Let iId = ID_SELECTION_END_22
+			ElIf iSelectionType == 2 Then ; start, length
+				Let iId = ID_SELECTION_LENGTH
+			ElIf iSelectionType == 3 Then ; length, end
+				Let iId = ID_SELECTION_END_22
+			Else ; length, center
+				Let iId = ID_SELECTION_CENTER
+			EndIf ; else length center
+		EndIf ; else ID_SELECTION_END
+	Else
+		Let iId = iPosition
+	EndIf
+	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
 	Let sValue=GetPositionField (hWnd) ;get value of desired control
 	If !sValue Then ;the selection toolbar is turned off
 		If !fSilent Then
@@ -739,7 +780,11 @@ Script SaySelectionStart ()
 
 Var
 	Handle hWnd,
-	String sValue
+	String sValue,
+	String sName,
+	String sMsg,
+	Int iSelectionType,
+	Int iId
 	;I modified this script to make it work on open project only.
 If NoProject () Then
 	SayNoProject ()
@@ -750,18 +795,40 @@ ElIf DialogActive ()||MenusActive () Then
 	TypeCurrentScriptKey ()
 	Return
 Else
-	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
+	;Do it
+	If CheckAudacityVersion("2,2,0") Then
+		;Audacity 2.2.0 and later
+		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+		;1=start end, 2= start length, 3= length end, 4=length center
+		If iSelectionType == 1 Then ; start, end
+			Let iId = ID_SELECTION_START_22
+			Let sName = msgStart
+		ElIf iSelectionType == 2 Then ; start, length
+			Let iId = ID_SELECTION_START_22
+			Let sName = msgStart
+		ElIf iSelectionType == 3 Then ; length, end
+			Let iId = ID_SELECTION_LENGTH
+			Let sName = msgLength
+		Else ; length, center
+			Let iId = ID_SELECTION_LENGTH
+			Let sName = msgLength
+		EndIf ; else length center
+	Else
+		Let iId = ID_SELECTION_START
+	EndIf ; else before 2.2.0
+	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
 	If (IsSameScript()) Then
 		SetFocus(hWnd)
 		Return
 	EndIf ;if IsSameScript
-EndIf ; Else not NoProject()
-Let sValue = GetPositionField(hWnd)
-If !sValue Then ;selection toolbar is turned on
-	Say (msgNoSelection, OT_ERROR)
-Else
-	SayMessage (OT_NO_DISABLE, sValue, sValue)
-EndIf
+	Let sValue = GetPositionField(hWnd)
+	If !sValue Then ;selection toolbar is turned off
+		Say (msgNoSelection, OT_ERROR)
+	Else
+		Let sMsg = FormatString(msgPositionField, sName, sValue)
+		SayMessage (OT_NO_DISABLE, sMsg, sValue)
+	EndIf
+EndIf ; Else do it
 EndScript ; SaySelectionStart
 
 Script SaySelectionEnd ()
@@ -773,6 +840,9 @@ Var
 	Handle hEnd, ; handle of the edit control
 	String sName,
 	String sValue,
+	String sMsg,
+	Int iSelectionType,
+	Int iId,
 	Int bIsSelected
 	
 If NoProject () Then
@@ -783,34 +853,61 @@ ElIf DialogActive () || MenusActive () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
 	Return
-Else ; project open
-	Let hEnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+Else ; do it
+	If CheckAudacityVersion("2,2,0") Then
+		;Audacity 2.2.0 and later
+		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+		;1=start end, 2= start length, 3= length end, 4=length center
+		If iSelectionType == 1 Then ; start, end
+			Let iId = ID_SELECTION_END_22
+			Let sName = msgEnd
+		ElIf iSelectionType == 2 Then ; start, length
+			Let iId = ID_SELECTION_LENGTH
+			Let sName = msgLength
+		ElIf iSelectionType == 3 Then ; length, end
+			Let iId = ID_SELECTION_END_22
+			Let sName = msgEnd
+		Else ; length, center
+			Let iId = ID_SELECTION_CENTER
+			Let		sName = msgCenter
+		EndIf ; else length center
+	Else
+		;Audacity 2.1.3 and earlier
+		Let iId = ID_SELECTION_END
+	EndIf ; Else 2.1.3 and earlier
+	Let hEnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
 	If (IsSameScript()) Then
 		SetFocus(hEnd)
 		Return
 	EndIf ; if IsSameScriqt
 	
-	Let hRadio = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_END_RADIO)
-	SaveCursor()
-	InvisibleCursor()
-	MoveToWindow (hRadio)
-	Pause()
-	Let bIsSelected = ControlIsChecked ()
-	RestoreCursor()
-	
-	If (Not bIsSelected) Then
-		Let hRadio = GetNextWindow (hRadio)
-	EndIf
-	
-	Let sName = GetWindowName (hRadio)
 	
 	Let sValue = GetPositionField(hEnd)
 	If !sValue Then
 		Say (msgNoSelection, OT_ERROR)
 	Else
-		SayMessage (OT_NO_DISABLE, sName + sValue, sValue)
-	EndIf
-EndIf ; else project open
+		If CheckAudacityVersion("2,2,0") Then
+			;Audacity 2.2.0 and later
+		Else
+			;Audacity 2.1.3 and earlier
+			Let hRadio = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_END_RADIO)
+			SaveCursor()
+			InvisibleCursor()
+			MoveToWindow (hRadio)
+			Pause()
+			Let bIsSelected = ControlIsChecked ()
+			RestoreCursor()
+
+			If (Not bIsSelected) Then
+				Let hRadio = GetNextWindow (hRadio)
+			EndIf
+
+			Let sName = GetWindowName (hRadio)
+		EndIf ; else before 2.2.0
+		Let sMsg = FormatString(msgPositionField, sName, sValue)
+		SayMessage (OT_NO_DISABLE, sMsg, sValue)
+	EndIf ; else sValue
+EndIf ; else do it
 EndScript ; SaySelectionEnd
 
 Script SayActiveCursor ()
@@ -823,8 +920,14 @@ If (Not FocusInMainWindow () || IsSameScript () || Not IsPCCursor () || UserBuff
 	PerformScript SayActiveCursor()
 	Return
 EndIf
-Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
-Let hWnd = GetNextWindow(GetNextWindow(hWnd))
+If CheckAudacityVersion("2,2,0") Then
+	;Audacity 2.2.0 and later
+	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_AUDIO_POSITION)
+Else
+	; Audacity 2.1.3 or earlier
+	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
+	Let hWnd = GetNextWindow(GetNextWindow(hWnd))
+EndIf ; else 2.1.3 or earlier
 ;hWnd is Audio Position field.
 Let sValue = GetPositionField(hWnd)
 If !sValue Then
