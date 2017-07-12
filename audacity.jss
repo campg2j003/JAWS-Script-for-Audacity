@@ -167,7 +167,7 @@ ElIf FocusInMainWindow () Then
 		;If the Announce Messages option is on, speak the selection posision.
 		If GetQuickSetting ("AnnounceMessage") Then
 			;Do not use SayPositionField because the message is spoken before the value but only if the value is available.
-			Let wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iPosition)
+			Let wnd=GetPositionFieldHandle (iPosition)
 			Let sValue=GetPositionField (wnd) ;get value of desired control
 			If !sValue Then ;the selection toolbar is turned off
 				Say (msgNoSelection, OT_ERROR)
@@ -717,6 +717,42 @@ EndIf ; if decimal
 Return s2
 EndFunction ; GetPositionField
 
+Handle Function GetPositionFieldHandle(Int iPosition)
+Var
+	Int iSelectionType,
+	Int iId
+If CheckAudacityVersion("2,2,0") Then
+	Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+	;1=start end, 2= start length, 3= length end, 4=length center
+	If iPosition == ID_SELECTION_START Then
+		If iSelectionType == 1 Then ; start, end
+			Let iId = ID_SELECTION_START_22
+		ElIf iSelectionType == 2 Then ; start, length
+			Let iId = ID_SELECTION_START_22
+		ElIf iSelectionType == 3 Then ; length, end
+			Let iId = ID_SELECTION_LENGTH
+		Else ; length, center
+			Let iId = ID_SELECTION_LENGTH
+		EndIf ; else length center
+	Else
+		;iPosition = ID_SELECTION_END
+		If iSelectionType == 1 Then ; start, end
+			Let iId = ID_SELECTION_END_22
+		ElIf iSelectionType == 2 Then ; start, length
+			Let iId = ID_SELECTION_LENGTH
+		ElIf iSelectionType == 3 Then ; length, end
+			Let iId = ID_SELECTION_END_22
+		Else ; length, center
+			Let iId = ID_SELECTION_CENTER
+		EndIf ; else length center
+	EndIf ; else ID_SELECTION_END
+Else
+	;2.1.3 or earlier.
+	Let iId = iPosition
+EndIf
+Return FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
+EndFunction
+	
 Int Function SayPositionField (Int iPosition, Int fSilent)
 ;Say the specified position field.
 ;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
@@ -732,35 +768,7 @@ Var
 	
 	;If the Announce Messages option is on, speak the selection posision.
 If GetQuickSetting ("AnnounceMessage") Then
-	If CheckAudacityVersion("2,2,0") Then
-		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
-		;1=start end, 2= start length, 3= length end, 4=length center
-		If iPosition == ID_SELECTION_START Then
-			If iSelectionType == 1 Then ; start, end
-				Let iId = ID_SELECTION_START_22
-			ElIf iSelectionType == 2 Then ; start, length
-				Let iId = ID_SELECTION_START_22
-			ElIf iSelectionType == 3 Then ; length, end
-				Let iId = ID_SELECTION_END_22
-			Else ; length, center
-				Let iId = ID_SELECTION_CENTER
-			EndIf ; else length center
-		Else
-			;iPosition = ID_SELECTION_END
-			If iSelectionType == 1 Then ; start, end
-				Let iId = ID_SELECTION_END_22
-			ElIf iSelectionType == 2 Then ; start, length
-				Let iId = ID_SELECTION_LENGTH
-			ElIf iSelectionType == 3 Then ; length, end
-				Let iId = ID_SELECTION_END_22
-			Else ; length, center
-				Let iId = ID_SELECTION_CENTER
-			EndIf ; else length center
-		EndIf ; else ID_SELECTION_END
-	Else
-		Let iId = iPosition
-	EndIf
-	Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
+		Let hWnd = GetPositionFieldHandle(iId)
 	Let sValue=GetPositionField (hWnd) ;get value of desired control
 	If !sValue Then ;the selection toolbar is turned off
 		If !fSilent Then
