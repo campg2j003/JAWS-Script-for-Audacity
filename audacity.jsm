@@ -109,6 +109,8 @@ To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
+To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
+To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.
 
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).

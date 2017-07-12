@@ -943,6 +943,23 @@ Else
 EndIf
 EndScript ; SayActiveCursor
 
+Script SaySelectionType ()
+;Say the value of the Selection Type combo.
+Var
+    String sText
+
+Let sText = GetWindowText (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO), 0)
+SayMessage (OT_NO_DISABLE, sText, sText)
+EndScript ;SaySelectionType   
+
+Script SetSelectionType(Int iType)
+;Set the Selection Type combo to the specified value.
+;iType - index (1-4) in combo box of desired setting.
+;Usage: in JKM file key=SetSelectionType(1)
+SetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO), iType)
+Pause ()
+PerformScript SaySelectionType ()
+EndScript ;SetSelectionType
 Script  ScriptFileName ()
 ScriptAndAppNames(msgProgName)
 EndScript ; ScriptFileName
