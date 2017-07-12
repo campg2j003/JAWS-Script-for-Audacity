@@ -762,13 +762,11 @@ Int Function SayPositionField (Int iPosition, Int fSilent)
 Var
 	Handle hWnd,
 	String sValue,
-	Int iId,
-	Int iSelectionType,
 	Int iRtn
 	
 	;If the Announce Messages option is on, speak the selection posision.
 If GetQuickSetting ("AnnounceMessage") Then
-		Let hWnd = GetPositionFieldHandle(iId)
+		Let hWnd = GetPositionFieldHandle(iPosition)
 	Let sValue=GetPositionField (hWnd) ;get value of desired control
 	If !sValue Then ;the selection toolbar is turned off
 		If !fSilent Then
