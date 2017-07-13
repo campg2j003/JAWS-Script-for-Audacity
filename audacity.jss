@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.1.1"
-;Last updated 2017-04-18T18:25Z
+;Last updated 2017-07-13T16:00Z
 ; This puts the copyright in the jsb file.
 Messages
 
@@ -869,6 +869,15 @@ Else
 	PerformScript HotKeyHelp ()
 EndIf ;else not in main window
 EndScript ; AudacityScriptKeyHelp
+
+void function KeymapChangedEvent(int iKeyCode, string sKeyName, int iKeyStatus)
+;Does nothing right now, but we have it in place for the future.
+KeymapChangedEvent(iKeyCode, sKeyName, iKeyStatus)
+endFunction
+
+Script AudacityLayerHelp ()
+Say(msgAudacityLayerHelp, ot_user_requested_information)
+EndScript
 
 Function ShowJawsGuide()
 SayMessage(OT_JAWS_MESSAGE, msgLoadingJawsGuide_L, msgLoadingJawsGuide_S)

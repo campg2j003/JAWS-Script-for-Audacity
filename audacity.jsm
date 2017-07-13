@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-18.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-07-13.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -154,6 +154,14 @@ If SilencePreview is on and you hit the Preview button in an effect, sometimes t
 To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 To Change the URL for the Audacity Jaws Guide, press %keyfor (AddAudacityJawsGuide)
+@@
+@msgAudacityLayerHelp
+Go to a track by number press g.
+Move a track by number press m.
+Mark current track press k.
+Go to marked track press Shift+g.
+Exchange current track with mark press x.
+Move current track to mark press Shift+m.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
