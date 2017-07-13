@@ -960,6 +960,7 @@ SetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_
 Pause ()
 PerformScript SaySelectionType ()
 EndScript ;SetSelectionType
+
 Script  ScriptFileName ()
 ScriptAndAppNames(msgProgName)
 EndScript ; ScriptFileName

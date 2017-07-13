@@ -164,6 +164,7 @@ Mark current track press k.
 Go to marked track press Shift+g.
 Exchange current track with mark press x.
 Move current track to mark press Shift+m.
+Set or say selection type layer press p.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
