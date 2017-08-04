@@ -66,6 +66,8 @@ Control+m=AddLabelAtPlayPosition
 ;For Audacity 2.2.0 selection type combo
 JAWSKey+a&p&p=SaySelectionType
 Insert+a&p&p=SaySelectionType
+JAWSKey+a&p&Shift+/*=PositionLayerHelp
+Insert+a&p&Shift+/*=PositionLayerHelp
 ;If you change the following keys you must also update msgScriptKeyHelp because these keys are "hard-coded".
 JAWSKey+a&p&1=SetSelectionType(1)
 Insert+a&p&1=SetSelectionType(1)

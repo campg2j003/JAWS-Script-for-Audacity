@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-07-13"
-;Last updated 2017-07-13T16:40Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-03"
+;Last updated 2017-08-03T16:45Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -125,7 +125,15 @@ Globals
 	String gsMoveTrackUpKey, ; key that moves a track up in the track panel (to lower-numbered tracks)
 	String gsMoveTrackDownKey, ; key that moves a track down in the track panel (to higher-numbered tracks)
 	Int giTrackMark ;Holds the number of the marked track, 0 if none
-	
+
+;Key layer
+Globals
+	Int giAudacityKeyLayer
+const
+	CI_AUDACITY_NOLAYER = 0,
+	CI_AUDACITY_LAYER = 1,
+	CI_POSITION_LAYER = 2
+
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
 ;For JAWS 13.0 and later gets the setting from the NonJCFOptions section of the JCF file.  For earlier versions gets it from the JSI file.
@@ -997,13 +1005,67 @@ Else
 EndIf ;else not in main window
 EndScript ; AudacityScriptKeyHelp
 
+/*
+To add a new key layer to the JAWSKey+a layer which is introduced with key X and name XName:
+In JKM file:
+add keystrokes for JAWSKey+a&X&Y and Insert+a&X&Y, where Y are the final keys of the new sequences.  If you want to stay in the layer after executing a key add a final *, so it should look like JAWSKey+a&X&Y*.
+Add JAWSKey+a&X&Shift+/*=XNameLayerHelp (and Insert+).
+In JSM file:
+Add constant ksXNameLayer = "X", the letter that starts the layer.
+Add @msgXNameLayer_Start for the name of the layer spoken when it is entered.
+Add @msgXNameLayerHelp with the keys of the layer.  You cannot use %KeyFor.
+Add the key X to @msgAudacityLayerHelp.
+In JSS file:
+add CI_XNAME_LAYER constant.
+Add scripts for the new layer keys.
+Add script XNameLayerHelp which speaks msgXNameLayerHelp.
+In KeymapChangedEvent:
+In branch for KeySequencePending add test for ksXNameLayer and set giAudacityKeyLayer to CI_XNAME_LAYER.
+Speak the message msgXNameLayer_Start.
+*/
+
 void function KeymapChangedEvent(int iKeyCode, string sKeyName, int iKeyStatus)
-;Does nothing right now, but we have it in place for the future.
+;var
+	;string sSoundFile
+;SayString("key " + sKeyName + ", status " + IntToString(iKeyStatus)) ; debug
+if iKeyStatus == KeySequenceStart
+|| iKeyStatus  == KeySequenceRestarted then
+	If StringCompare (sKeyName, ksAudacityLayer1) == 0 || StringCompare (sKeyName, ksAudacityLayer2) == 0 Then
+		let giAudacityKeyLayer = CI_AUDACITY_LAYER
+		Let GlobalActiveLayer = NoLayerActive
+		PlayJCFSoundFile(section_options,hKey_KeyLayerSound)
+		return
+	EndIf ; Audacity layer key
+elif iKeyStatus == KeySequencePending then
+	If giAudacityKeyLayer == CI_AUDACITY_LAYER Then
+		if StringCompare(sKeyname,ksPositionLayer) == 0 then
+			let giAudacityKeyLayer = CI_POSITION_LAYER	
+			SayMessage(ot_status,msgPositionLayer_Start, msgPositionLayer_Start)
+			Return
+		endIf ; position layer
+	EndIf ; Audacity layer
+elif iKeyStatus == KeySequenceComplete Then
+	if giAudacityKeyLayer Then
+		let giAudacityKeyLayer = CI_AUDACITY_NOLAYER
+		Return
+	EndIf
+ElIf iKeyStatus == KeySequenceCanceled
+	if giAudacityKeyLayer Then
+		PlayJCFSoundFile(section_options,hKey_TableLayerExitSound)
+		;SayString("cancel") ; debug
+		let giAudacityKeyLayer = CI_AUDACITY_NOLAYER
+		Return
+	EndIf ; Audacity layer
+EndIf ; elif KeySequenceCanceled
 KeymapChangedEvent(iKeyCode, sKeyName, iKeyStatus)
 endFunction
 
 Script AudacityLayerHelp ()
 Say(msgAudacityLayerHelp, ot_user_requested_information)
+EndScript
+
+Script PositionLayerHelp ()
+Say(msgPositionLayerHelp, ot_user_requested_information)
 EndScript
 
 Function ShowJawsGuide()

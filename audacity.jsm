@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-07-13.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-03.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -84,6 +84,13 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+;Audacity key layer keys, must match keys JAWSKey+a&X where X sytarts a sublayer.
+const
+	;These are the prefix keys for the Audacity layer.  There are two because there are JAWSKey and Insert entries in the JKM for the same key.
+	ksAudacityLayer1 = "JAWSKey+a",
+	ksAudacityLayer2 = "Insert+a",
+	ksPositionLayer = "p"
+
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
@@ -164,7 +171,18 @@ Mark current track press k.
 Go to marked track press Shift+g.
 Exchange current track with mark press x.
 Move current track to mark press Shift+m.
-Set or say selection type layer press p.
+Set or say position display type layer press p.
+@@
+;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
+@msgPositionLayer_start
+position
+@@
+@msgPositionLayerHelp
+start-end press s.
+start-length press l.
+length-end press e.
+length-center press c.
+say position display type press p.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).

@@ -558,6 +558,8 @@ Respects AnnounceMessage.
 
 :Script AudacityLayerHelp
 
+:Script PositionLayerHelp
+
 :Script SaySelectionType
 :Synopsis Say the value of the Selection Type combo.
 
