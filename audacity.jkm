@@ -63,6 +63,24 @@ Control+Shift+DownArrow=MoveTrackDown
 Control+B=AddLabelAtSelection
 Control+m=AddLabelAtPlayPosition
 
+;Keys to send Shift+F5-F8 and Control+Shift+F5, F7 ("short" layer)
+Insert+a&s&Shift+/*=ShortLayerHelp
+JAWSKey+a&s&Shift+/*=ShortLayerHelp
+JAWSKey+a&s&c*=SendKey("c")
+Insert+a&s&c*=SendKey("c")
+JAWSKey+a&s&j*=SendKey("Shift+F5")
+JAWSKey+a&s&k*=SendKey("Shift+F6")
+JAWSKey+a&s&l*=SendKey("Shift+F7")
+JAWSKey+a&s&;*=SendKey("Shift+F8")
+JAWSKey+a&s&Control+j*=SendKey("Control+Shift+F5")
+JAWSKey+a&s&Control+l*=SendKey("Control+Shift+F7")
+Insert+a&s&j*=SendKey("Shift+F5")
+Insert+a&s&k*=SendKey("Shift+F6")
+Insert+a&s&l*=SendKey("Shift+F7")
+Insert+a&s&;*=SendKey("Shift+F8")
+Insert+a&s&Control+j*=SendKey("Control+Shift+F5")
+Insert+a&s&Control+l*=SendKey("Control+Shift+F7")
+
 ;For Audacity 2.2.0 selection type combo
 JAWSKey+a&p&p=SaySelectionType
 Insert+a&p&p=SaySelectionType

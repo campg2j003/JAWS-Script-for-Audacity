@@ -1,4 +1,9 @@
-(This file last updated 7/10/2017)
+(This file last updated 8/5/2017)
+
+# New in 2.2.0-alpha-2017-08-05
+- Added Audacity layer key help.
+- Added Position Display key layer.
+- Added "Short" key layer for speaking Shift+F5-F8 and Shift+Control+F5 and F7from the home row.
 # New in 2.2.0-alpha-2017-07-10
 - Converted code that speaks position fields to work with Audacity 2.2.0-Alpha-09JUL17.
 

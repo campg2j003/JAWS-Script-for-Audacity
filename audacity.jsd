@@ -566,3 +566,8 @@ Respects AnnounceMessage.
 :Script SetSelectionType
 :Synopsis Set the value of the Selection Type combo to start-end (s or 1), start-length (l or 2), length-end (e or 3), or length-center (c or 4).
 
+:Script SendKey
+:Synopsis Allows you to define a key sequence that sends another key sequence to the system.
+:Description Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.  To use it, in the JKM file make an entry like keys=SendKey("newsequence").
+:Param int/sKey Key sequence to send.
+:Category Script

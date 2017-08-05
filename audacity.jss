@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-03"
-;Last updated 2017-08-03T16:45Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-05"
+;Last updated 2017-08-05T15:45	Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -132,7 +132,8 @@ Globals
 const
 	CI_AUDACITY_NOLAYER = 0,
 	CI_AUDACITY_LAYER = 1,
-	CI_POSITION_LAYER = 2
+	CI_POSITION_LAYER = 2,
+	CI_SHORT_LAYER = 3
 
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1042,6 +1043,10 @@ elif iKeyStatus == KeySequencePending then
 			let giAudacityKeyLayer = CI_POSITION_LAYER	
 			SayMessage(ot_status,msgPositionLayer_Start, msgPositionLayer_Start)
 			Return
+		ElIf StringCompare(sKeyname,ksShortLayer) == 0 then
+			let giAudacityKeyLayer = CI_SHORT_LAYER	
+			SayMessage(ot_status,msgShortLayer_Start, msgShortLayer_Start)
+			Return
 		endIf ; position layer
 	EndIf ; Audacity layer
 elif iKeyStatus == KeySequenceComplete Then
@@ -1066,6 +1071,15 @@ EndScript
 
 Script PositionLayerHelp ()
 Say(msgPositionLayerHelp, ot_user_requested_information)
+EndScript
+
+Script ShortLayerHelp ()
+Say(msgShortLayerHelp, ot_user_requested_information)
+EndScript
+
+Script SendKey(String sKey)
+;Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.
+TypeKey(sKey)
 EndScript
 
 Function ShowJawsGuide()

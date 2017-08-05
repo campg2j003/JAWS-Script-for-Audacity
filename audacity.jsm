@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-03.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-05.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -89,7 +89,8 @@ const
 	;These are the prefix keys for the Audacity layer.  There are two because there are JAWSKey and Insert entries in the JKM for the same key.
 	ksAudacityLayer1 = "JAWSKey+a",
 	ksAudacityLayer2 = "Insert+a",
-	ksPositionLayer = "p"
+	ksPositionLayer = "p",
+	ksShortLayer = "s"
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
@@ -171,7 +172,8 @@ Mark current track press k.
 Go to marked track press Shift+g.
 Exchange current track with mark press x.
 Move current track to mark press Shift+m.
-Set or say position display type layer press p.
+Enter layer to set or say position display type layer press p.
+Enter layer to say short audio sections (Shift+F5-F8) press s.
 @@
 ;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
 @msgPositionLayer_start
@@ -183,6 +185,14 @@ start-length press l.
 length-end press e.
 length-center press c.
 say position display type press p.
+@@
+@msgShortLayer_Start
+short
+@@
+@msgShortLayerHelp
+Shift+F5-F8 press j, k, l, ;.
+Shift+Control+F5, F7 press Control+j, Control+;.
+c press c.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
