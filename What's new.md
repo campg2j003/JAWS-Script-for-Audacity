@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 (This file last updated 8/5/2017)
 
 # New in 2.2.0-alpha-2017-08-05
