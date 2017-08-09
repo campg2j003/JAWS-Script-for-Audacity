@@ -163,4 +163,17 @@ Shift+N=InputChannels
 g=SayRecordingMeter
 h=SayPlaybackMeter
 
+
+;Tempo
+JAWSKey+a&t&SPACE*=TempoStartStop
+JAWSKey+a&t&ENTER*=TempoTap
+JAWSKey+a&t&a*=TempoAnnounce
+JAWSKey+a&t&c*=TempoCopy
+JAWSKey+a&t&Shift+/*=TempoLayerHelp
+Insert+a&t&SPACE*=TempoStartStop
+Insert+a&t&ENTER*=TempoTap
+Insert+a&t&a*=TempoAnnounce
+Insert+a&t&c*=TempoCopy
+Insert+a&t&Shift+/*=TempoLayerHelp
+
 [Laptop Keys]

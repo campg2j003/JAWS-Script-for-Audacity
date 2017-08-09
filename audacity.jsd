@@ -557,8 +557,10 @@ Respects AnnounceMessage.
 :Param int/iKeyStatus
 
 :Script AudacityLayerHelp
+:Synopsis Speaks help for the Audacity key layer.
 
 :Script PositionLayerHelp
+:Synopsis Speaks help for the Position key layer.
 
 :Script SaySelectionType
 :Synopsis Say the value of the Selection Type combo.
@@ -579,3 +581,23 @@ Respects AnnounceMessage.
 :Description Get the accessible object of the track panel.
 :Returns object The accessible object of the track panel.
 
+:Script ShortLayerHelp
+:Synopsis Speaks help for the Short key layer.
+:Description The Short key layer provides access to the keys F5-F8 from the home row.
+
+:Script TempoStartStop
+:Synopsis Start or stop finding the tempo.
+:Description Playback is started.  While playing, script TempoTap counts a beat.  When pressed again tempo in beats per minute is spoken.  See script key help for more info.
+
+:Script TempoTap
+:Synopsis Records a beat for finding tempo.
+:Description Press this once for each beat.  The time is counted from the first beat after TempoStartStop until the last beat before TempoStartStop is pressed again.  You need to press only the last key of this key sequence once in the Tempo layer.
+
+:Script TempoAnnounce
+:Synopsis Says the value of the last calculated tempo.
+
+:Script TempoCopy
+:Synopsis Copies the last tempo value to the clipboard.
+
+:Script TempoLayerHelp
+:Synopsis Speaks Tempo layer key help.

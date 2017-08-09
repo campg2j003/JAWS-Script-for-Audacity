@@ -133,7 +133,16 @@ const
 	CI_AUDACITY_NOLAYER = 0,
 	CI_AUDACITY_LAYER = 1,
 	CI_POSITION_LAYER = 2,
-	CI_SHORT_LAYER = 3
+	CI_SHORT_LAYER = 3,
+	CI_TEMPO_LAYER = 4
+
+;Tempo
+Globals
+	Int giTempoStart, ; tick count of first tap
+	Int giTempoLast, ; tick count of last tap
+	String gsTempoBPM,
+	Int giTempoCount,
+	Int gfTempoRunning
 
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1165,6 +1174,11 @@ elif iKeyStatus == KeySequencePending then
 		ElIf StringCompare(sKeyname,ksShortLayer) == 0 then
 			let giAudacityKeyLayer = CI_SHORT_LAYER	
 			SayMessage(ot_status,msgShortLayer_Start, msgShortLayer_Start)
+			Return
+		ElIf StringCompare(sKeyname,ksTempoLayer) == 0 then
+			let giAudacityKeyLayer = CI_TEMPO_LAYER
+			Let gfTempoRunning = False
+			SayMessage(ot_status,msgTempoLayer_Start, msgTempoLayer_Start)
 			Return
 		endIf ; position layer
 	EndIf ; Audacity layer
@@ -3762,3 +3776,74 @@ Else
 	AnnounceKeyMessage (msgInputChannels)
 EndIf
 EndScript ; InputChannels
+
+;*** Tempo
+Script TempoStartStop ()
+var
+	Int iTempoAvg,
+	Int iTemp,
+	String s2
+
+If !gfTempoRunning Then
+	Let gsTempoBPM = ""
+	Let giTempoCount = 0
+	Let giTempoStart = 0
+	Let giTempoLast = 0
+	Let gfTempoRunning = True
+	TypeKey (cksSpace) ;Start playback.
+Else
+	;running, stop if we are playing
+	If GetAudacityState () == ST_PLAY Then
+		TypeKey (cksSpace)
+	EndIf
+	Let gfTempoRunning = False
+	If GiTempoStart && giTempoLast && giTempoCount >= 2 Then
+		Let iTempoAvg = (giTempoLast - giTempoStart)/(giTempoCount - 1) ;ms/beat
+		Let iTemp = 600000/ iTempoAvg
+		;iTemp is 10*BPM.
+		;Division might round or something, so we get the tenths digit with string manipulation.
+		Let gsTempoBPM = IntToString (iTemp)
+		Let s2 = StringRight(gsTempoBPM, 1)
+		Let gsTempoBPM = StringChopRight (gsTempoBPM, 1)
+		if s2 != "0" Then
+			Let gsTempoBPM = gsTempoBPM + "." + s2
+		EndIf
+		PerformScript TempoAnnounce ()
+	Else
+		Say(msgTempoNoBeats, OT_ERROR)
+		Return
+	EndIf ;giTempoStart && giTempoLast
+EndIf ;else running
+EndScript
+
+Script TempoTap ()
+If gfTempoRunning Then
+	Let giTempoLast = GetTickCount ()
+	Let giTempoCount = giTempoCount + 1
+	If !giTempoStart Then
+		Let giTempoStart = giTempoLast
+	EndIf
+EndIf ;If running
+EndScript
+
+Script TempoAnnounce ()
+If gsTempoBPM Then
+	Say(gsTempoBPM, OT_USER_REQUESTED_INFORMATION)
+Else
+	Say(msgTempoNoTempoStored, OT_ERROR)
+EndIf ;else no beats
+EndScript
+
+Script TempoCopy ()
+If !gsTempoBPM Then
+	Say(msgTempoNoTempoStored, OT_ERROR)
+	Return
+EndIf
+CopyToClipboard (gsTempoBPM)
+Say(FormatString(msgTempoCopied, gsTempoBPM), OT_STATUS)
+EndScript
+
+Script TempoLayerHelp ()
+Say(msgTempoLayerHelp, ot_user_requested_information)
+EndScript
+

@@ -90,7 +90,8 @@ const
 	ksAudacityLayer1 = "JAWSKey+a",
 	ksAudacityLayer2 = "Insert+a",
 	ksPositionLayer = "p",
-	ksShortLayer = "s"
+	ksShortLayer = "s",
+	ksTempoLayer = "t"
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
@@ -139,6 +140,8 @@ To go to the marked track, press %KeyFor(GoToMarkedTrack).
 To go to the marked track and mark the starting track, press %KeyFor(ExchangeWithMark).
 To move the current track to the position of the marked track and set the mark to the current track, press %KeyFor(MoveCurrentTrackToMark).
 
+To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you've entered the Tempo layer.)  When you are finished press %KeyFor(TempoStartStop) again.  Playback stops and the tempo in beats per minute is spoken.  After that you can press %KeyFor(TempoAnnounce) to speak the tempo again or %KeyFor(TempoCopy) to copy it to the clipboard.  The value will be retained until %KeyFor(TempoStartStop) is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
+
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
 See What's new.md for more info.
@@ -175,6 +178,7 @@ Exchange current track with mark press x.
 Move current track to mark press Shift+m.
 Enter layer to set or say position display type layer press p.
 Enter layer to say short audio sections (Shift+F5-F8) press s.
+Enter layer to find tempo press t.
 @@
 ;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
 @msgPositionLayer_start
@@ -194,6 +198,24 @@ short
 Shift+F5-F8 press j, k, l, ;.
 Shift+Control+F5, F7 press Control+j, Control+;.
 c press c.
+@@
+@msgTempoLayer_Start
+tempo
+@@
+@msgTempoNoBeats
+no beats
+@@
+@msgTempoNoTempoStored
+No tempo stored
+@@
+;%1=tempo (i.e. 147.8)
+@msgTempoCopied
+Copied %1
+@@
+@msgTempoLayerHelp
+Start/stop press SPACE.
+Announce press a.
+Copy to clipboard press c.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).

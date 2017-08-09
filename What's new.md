@@ -2,6 +2,8 @@
 
 # New in 2.2.0-alpha-2017-08-11
 - SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.
+# New in 2.2.0-alpha-2017-08-09
+- Added ability to find the tempo of a portion of audio.  See Script Key Help for details.
 # New in 2.2.0-alpha-2017-08-05
 - Added Audacity layer key help.
 - Added Position Display key layer.
