@@ -1,6 +1,7 @@
-<<<<<<< HEAD
 (This file last updated 8/5/2017)
 
+# New in 2.2.0-alpha-2017-08-10
+- SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.
 # New in 2.2.0-alpha-2017-08-05
 - Added Audacity layer key help.
 - Added Position Display key layer.

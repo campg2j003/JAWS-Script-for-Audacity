@@ -571,3 +571,11 @@ Respects AnnounceMessage.
 :Description Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.  To use it, in the JKM file make an entry like keys=SendKey("newsequence").
 :Param int/sKey Key sequence to send.
 :Category Script
+
+:Script SaySelectedText
+:Synopsis In the main window says the numbers of the selected tracks.  Otherwise says selected text.
+
+:Function GetTrackPanelObj
+:Description Get the accessible object of the track panel.
+:Returns object The accessible object of the track panel.
+

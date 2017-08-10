@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-05.
+; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-09.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -116,6 +116,7 @@ To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
+In the main window to say the numbers of the selected tracks, press %KeyFor(SaySelectedText).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
 To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
 To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.

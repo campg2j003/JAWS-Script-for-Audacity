@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-05"
-;Last updated 2017-08-05T15:45	Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-10"
+;Last updated 2017-08-10T01:10	Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -152,6 +152,23 @@ Int Function FocusInTrackPanel ()
 Return (FocusInMainWindow () && GetWindowName(GetFocus()) == WN_TRACKPANEL )
 EndFunction ; FocusInTrackPanel
 
+Object Function GetTrackPanelObj ()
+;Get the accessible object of the track panel.
+Var
+	Object obj,
+	Handle hTemp
+
+Let hTemp = GetRealWindow(GetFocus())
+Let hTemp = FindWindow (hTemp, "", WN_TRACKPANEL)
+SaveCursor ()
+InvisibleCursor ()
+MoveToWindow(hTemp)
+Pause ()
+Let obj = GetCurrentObject (0)
+RestoreCursor ()
+Return obj
+EndFunction
+
 Void Function SaySelectionPosition (Int iPosition, String sMessage)
 ;say the selection position field and pass the key to the ap.
 ;iPosition - control ID of the selection position control.
@@ -256,14 +273,7 @@ Var
 	Object obj
 	
 If !UserBufferIsActive () && FocusInMainWindow () Then
-	Let hTemp = GetRealWindow(GetFocus())
-	Let hTemp = FindWindow (hTemp, "", WN_TRACKPANEL)
-	SaveCursor ()
-	InvisibleCursor ()
-	MoveToWindow(hTemp)
-	Pause ()
-	Let obj = GetCurrentObject (0)
-	RestoreCursor ()
+	Let obj = GetTrackPanelObj ()
 	If obj.AccChildCount == 0 Then
 		Return TRUE
 	EndIf ; if no tracks
@@ -924,6 +934,41 @@ Else ; do it
 	EndIf ; else sValue
 EndIf ; else do it
 EndScript ; SaySelectionEnd
+
+Script SaySelectedText ()
+;If in the main window say the selected tracks.
+Var
+	Object oTrackPanel,
+	Int i,
+	Int iTrackCount,
+	Int iState,
+	String sTracks
+
+If FocusInMainWindow () Then
+	Let oTrackPanel = GetTrackPanelObj ()
+	Let iTrackCount = oTrackPanel.accChildCount
+	Let sTracks = ""
+	Let i = 1
+	While i <= iTrackCount
+		Let iState = oTrackPanel.accState(i)
+		;This is a bitwise and, we are testing the bit for the selected state.
+		If iState & STATE_SYSTEM_SELECTED Then
+			If sTracks Then
+				Let sTracks = sTracks + " "
+			EndIf
+			Let sTracks = sTracks + IntToString(i)
+		EndIf ; selected
+		Let i = i + 1
+	EndWhile
+	If sTracks Then
+		Say(sTracks, OT_USER_REQUESTED_INFORMATION)
+	Else
+		SayMessage (ot_error, cmsgNothingSelected)
+	EndIf
+Else
+	PerformScript SaySelectedText ()
+EndIf
+EndScript
 
 Script SayActiveCursor ()
 ; Say audio position field if PC cursor is on, or perform the normal function if pressed twice quickly.
