@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-10"
-;Last updated 2017-08-10T01:10	Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-11"
+;Last updated 2017-08-11T15:30	Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -935,31 +935,74 @@ Else ; do it
 EndIf ; else do it
 EndScript ; SaySelectionEnd
 
-Script SaySelectedText ()
-;If in the main window say the selected tracks.
+Const
+	CS_TRACKS_ITEM_SEP = ",",
+	CS_TRACKS_RANGE_SEP = "-"
+
+String Function GetSelectedTracks ()
 Var
 	Object oTrackPanel,
 	Int i,
 	Int iTrackCount,
 	Int iState,
+	String sTracks,
+	Int iSelCount, ;number of consecutively selected tracks
+	Int iLast ;number of last selected track processed so far
+
+Let iSelCount = 0
+Let iLast = 0
+Let oTrackPanel = GetTrackPanelObj ()
+Let iTrackCount = oTrackPanel.accChildCount
+Let sTracks = ""
+Let i = 1
+While i <= iTrackCount
+	Let iState = oTrackPanel.accState(i)
+	;This is a bitwise and, we are testing the bit for the selected state.
+	If iState & STATE_SYSTEM_SELECTED Then
+		If iSelCount Then
+			Let iSelCount = iSelCount + 1
+			Let iLast = i
+		Else
+			; not iSelCount
+			If sTracks Then
+				Let sTracks = sTracks + CS_TRACKS_ITEM_SEP
+			EndIf
+			Let sTracks = sTracks + IntToString(i)
+			Let iSelCount = iSelCount + 1 ;=1
+		EndIf ;else not iSelCount
+	Else
+		;not selected.  If iSelCount == 1 it is the first number of a possible range and it has been added to the output.
+		If iSelCount > 1 Then
+			If iSelCount == 2 Then
+				Let sTracks = sTracks + CS_TRACKS_ITEM_SEP
+			Else
+				Let sTracks = sTracks + CS_TRACKS_RANGE_SEP
+			EndIf
+			Let sTracks = sTracks + IntToString(iLast)
+			Let iSelCount = 0
+		EndIf ;iSelCount > 1
+	EndIf ; else not selected
+	Let i = i + 1
+EndWhile
+If iSelCount > 1 Then
+	If iSelCount == 2 Then
+		Let sTracks = sTracks + CS_TRACKS_ITEM_SEP
+	Else
+		Let sTracks = sTracks + CS_TRACKS_RANGE_SEP
+	EndIf
+	Let sTracks = sTracks + IntToString(iLast)
+	Let iSelCount = 0
+EndIf ;iSelCount > 1
+Return sTracks
+EndFunction
+
+Script SaySelectedText ()
+;If in the main window say the selected tracks.
+Var
 	String sTracks
 
 If FocusInMainWindow () Then
-	Let oTrackPanel = GetTrackPanelObj ()
-	Let iTrackCount = oTrackPanel.accChildCount
-	Let sTracks = ""
-	Let i = 1
-	While i <= iTrackCount
-		Let iState = oTrackPanel.accState(i)
-		;This is a bitwise and, we are testing the bit for the selected state.
-		If iState & STATE_SYSTEM_SELECTED Then
-			If sTracks Then
-				Let sTracks = sTracks + " "
-			EndIf
-			Let sTracks = sTracks + IntToString(i)
-		EndIf ; selected
-		Let i = i + 1
-	EndWhile
+	Let sTracks = GetSelectedTracks ()
 	If sTracks Then
 		Say(sTracks, OT_USER_REQUESTED_INFORMATION)
 	Else
