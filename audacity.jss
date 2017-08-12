@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-11"
-;Last updated 2017-08-11T15:30	Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-12"
+;Last updated 2017-08-12T17:00	Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1053,8 +1053,39 @@ Script SetSelectionType(Int iType)
 ;Set the Selection Type combo to the specified value.
 ;iType - index (1-4) in combo box of desired setting.
 ;Usage: in JKM file key=SetSelectionType(1)
-SetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO), iType)
+Var
+	Int iStart,
+	Int iCount,
+	Int fSilence,
+	String sKey,
+	Handle hWnd,
+	Handle hFocus
+
+Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO)
+Let iStart = GetCurrentItem (hWnd)
+If iStart == iType Then
+	PerformScript SaySelectionType ()
+	Return
+EndIf
+If iType > iStart Then
+	Let sKey = cksDownArrow
+Else
+	Let sKey = cksUpArrow
+EndIf
+Let iCount = abs (iType - iStart)
+Let hFocus = GetFocus ()
+Let fSilence = gfSilence
+Let gfSilence = True
+SetFocus (hWnd)
 Pause ()
+While iCount
+	TypeKey (sKey)
+	Let iCount = iCount - 1
+EndWhile
+Pause ()
+SetFocus (hFocus)
+Pause ()
+Let gfSilence = fSilence
 PerformScript SaySelectionType ()
 EndScript ;SetSelectionType
 
