@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-12"
-;Last updated 2017-08-12T17:00	Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-12t"
+;Last updated 2017-08-12T17:35Z
 
 ; This puts the copyright in the jsb file.
 Messages
