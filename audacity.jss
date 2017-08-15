@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-12t"
-;Last updated 2017-08-12T17:35Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-15"
+;Last updated 2017-08-15T15:25Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -3778,6 +3778,103 @@ EndIf
 EndScript ; InputChannels
 
 ;*** Tempo
+
+/*
+; Uses arrays -- JAWS 11 update 1 and later.
+Script TempoStartStop ()
+var
+	Int iTempoAvg,
+	Int iTemp,
+	String s2
+
+
+If !gfTempoRunning Then
+	Let gsTempoBPM = ""
+	Let giTempoCount = 0
+	Let giTempoStart = 0
+	Let giTempoLast = 0
+	Let gaiTempoTimes = New IntArray [8]
+	;Let giTempoTimesNext = 1
+	Let giTempoSum = 0
+	Let gfTempoRunning = True
+	;TypeKey (cksSpace) ;Start playback.
+	If GetAudacityState () == ST_STOPPED Then
+		TypeKey (cksSpace)
+	EndIf
+Else
+	;running, stop if we are playing
+	If GetAudacityState () == ST_PLAY Then
+		TypeKey (cksSpace)
+	EndIf
+	Let gfTempoRunning = False
+	If GiTempoStart && giTempoLast && giTempoCount > 1 Then
+		Let iTempoAvg = giTempoSum / giTempoCount - 1
+		Let iTemp = 600000/ iTempoAvg
+		;iTemp is 10*BPM.
+		;Division might round or something, so we get the tenths digit with string manipulation.
+		Let gsTempoBPM = IntToString (iTemp)
+		Let s2 = StringRight(gsTempoBPM, 1)
+		Let gsTempoBPM = StringChopRight (gsTempoBPM, 1)
+		if s2 != "0" Then
+			Let gsTempoBPM = gsTempoBPM + "." + s2
+		EndIf
+		PerformScript TempoAnnounce ()
+	Else
+		Say(msgTempoNoBeats, OT_ERROR)
+		Return
+	EndIf ;giTempoStart && giTempoLast
+EndIf ;else running
+EndScript
+
+Script TempoTap ()
+Var
+	Int iTempoCur
+
+If gfTempoRunning Then
+	Let iTempoCur = GetTickCount ()
+	If !giTempoStart Then
+		Let giTempoCount = 1
+		Let giTempoLast = iTempoCur
+		Let giTempoStart = giTempoLast
+	Else
+		;not first
+		TempoAddTime (iTempoCur - giTempoLast)
+		Let giTempoLast = iTempoCur
+	EndIf ;else not first
+EndIf ;If running
+EndScript
+
+Void Function TempoAddTime (Int iNewTime)
+Var
+	Int i,
+	Int iMax,
+	Int iMaxIdx,
+	Int iTempoAvg
+If giTempoCount < ArrayLength (gaiTempoTimes) Then
+	Let gaiTempoTimes[giTempoCount] = iNewTime
+	Let giTempoCount = giTempoCount + 1 ;count the tap we are adding
+	Let giTempoSum = giTempoSum + iNewTime
+Else
+	;Array full
+	;Find the time that is farthest away from the average
+	Let iTempoAvg = giTempoSum / giTempoCount
+	For i=1 To ArrayLength (gaiTempoTimes)
+		If Abs (iTempoAvg - gaiTempoTimes[i]) > iMax Then
+			Let iMax = Abs (iTempoAvg - gaiTempoTimes[i])
+			Let iMaxIdx = i
+		EndIf
+	EndFor
+	Let giTempoSum = giTempoSum - gaiTempoTimes[iMaxIdx]
+	Let gaiTempoTimes[iMaxIdx] = iNewTime
+	Let giTempoSum = giTempoSum + iNewTime
+EndIf ;else array full
+EndFunction
+
+;End -- JAWS 11 and later.
+*/
+
+;/*
+;This version works in JAWS 10 and later.
 Script TempoStartStop ()
 var
 	Int iTempoAvg,
@@ -3826,6 +3923,7 @@ If gfTempoRunning Then
 EndIf ;If running
 EndScript
 
+;*/
 Script TempoAnnounce ()
 If gsTempoBPM Then
 	Say(gsTempoBPM, OT_USER_REQUESTED_INFORMATION)

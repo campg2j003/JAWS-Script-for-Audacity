@@ -1,5 +1,7 @@
-(This file last updated 8/11/2017)
+(This file last updated 8/15/2017)
 
+# New in 2.2.0-alpha-2017-08-15
+- Added a commented out implementation of tempo based on Robert Hänggi's NVDA add-on which uses arrays and therefore requires JAWS 11 update 1 or later.
 # New in 2.2.0-alpha-2017-08-11
 - SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.
 # New in 2.2.0-alpha-2017-08-09

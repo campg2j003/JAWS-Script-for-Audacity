@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-09.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-15.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -140,7 +140,10 @@ To go to the marked track, press %KeyFor(GoToMarkedTrack).
 To go to the marked track and mark the starting track, press %KeyFor(ExchangeWithMark).
 To move the current track to the position of the marked track and set the mark to the current track, press %KeyFor(MoveCurrentTrackToMark).
 
-To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you've entered the Tempo layer.)  When you are finished press %KeyFor(TempoStartStop) again.  Playback stops and the tempo in beats per minute is spoken.  After that you can press %KeyFor(TempoAnnounce) to speak the tempo again or %KeyFor(TempoCopy) to copy it to the clipboard.  The value will be retained until %KeyFor(TempoStartStop) is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
+To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you've entered the Tempo layer.)  
+When you are finished press %KeyFor(TempoStartStop) again.  Playback stops and the tempo in beats per minute is spoken.  
+After that you can press %KeyFor(TempoAnnounce) to speak the tempo again or %KeyFor(TempoCopy) to copy it to the clipboard.  The value will be retained until %KeyFor(TempoStartStop) is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
+The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
 
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
