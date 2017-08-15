@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-15"
-;Last updated 2017-08-15T15:25Z
+;Last updated 2017-08-15T16:55Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -143,6 +143,14 @@ Globals
 	String gsTempoBPM,
 	Int giTempoCount,
 	Int gfTempoRunning
+
+/*
+;JAWS 11 Update 1 and later, using arrays.
+Globals
+    Int giTempoSum, ;sum of all times in gaiTempoTimes
+    IntArray gaiTempoTimes
+
+*/
 
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1180,7 +1188,7 @@ elif iKeyStatus == KeySequencePending then
 			Let gfTempoRunning = False
 			SayMessage(ot_status,msgTempoLayer_Start, msgTempoLayer_Start)
 			Return
-		endIf ; position layer
+		endIf ; Tempo layer
 	EndIf ; Audacity layer
 elif iKeyStatus == KeySequenceComplete Then
 	if giAudacityKeyLayer Then
@@ -3780,7 +3788,7 @@ EndScript ; InputChannels
 ;*** Tempo
 
 /*
-; Uses arrays -- JAWS 11 update 1 and later.
+; Uses arrays -- JAWS 11 update 1 and later.  Also need to uncomment additional tempo globals above (search for "JAWS 11") and comment out other implementation below.
 Script TempoStartStop ()
 var
 	Int iTempoAvg,
