@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-15"
-;Last updated 2017-08-15T16:55Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-18"
+;Last updated 2017-08-18T15:45Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1030,6 +1030,80 @@ Else
 EndIf
 EndScript
 
+Script DownCell ()
+Var
+	Object o,
+	Int iMax,
+	Int i
+	
+If !IsPCCursor () || UserBufferIsActive () || !FocusInTrackPanel () Then
+	PerformScript DownCell ()
+	Return
+EndIf
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
+Let o = GetFocusObject(0)
+Let iMax = o.AccChildCount
+If iMax == 0 Then
+	Beep ()
+	Return
+EndIf
+Let i = o.accFocus
+If i == iMax Then
+	beep ()
+	Return
+EndIf
+Let i = i + 1
+While i <= iMax && !(o.accState (i) & STATE_SYSTEM_SELECTED)
+	Let i = i + 1
+EndWhile
+If i <= iMax Then
+	NavigateTrackPanel (IntToString (i), gsGoTrackUpKey, gsGoTrackDownKey)
+	Pause ()
+	SayLine ()
+Else
+	Beep ()
+EndIf
+EndScript
+
+Script UpCell ()
+Var
+	Object o,
+	Int i
+	
+If !IsPCCursor () || UserBufferIsActive () || !FocusInTrackPanel () Then
+	PerformScript UpCell ()
+	Return
+EndIf
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
+Let o = GetFocusObject(0)
+If o.AccChildCount == 0 Then
+	Beep ()
+	Return
+EndIf
+Let i = o.accFocus
+If i <= 1 Then
+	Beep ()
+	Return
+EndIf
+Let i = i - 1
+While i > 0 && !(o.accState (i) & STATE_SYSTEM_SELECTED)
+	Let i = i - 1
+EndWhile
+If i > 0 Then
+	Pause ()
+	NavigateTrackPanel (IntToString (i), gsGoTrackUpKey, gsGoTrackDownKey)
+	SayLine ()
+Else
+	Beep ()
+EndIf
+EndScript
+
 Script SayActiveCursor ()
 ; Say audio position field if PC cursor is on, or perform the normal function if pressed twice quickly.
 Var
@@ -2041,6 +2115,7 @@ While iCount > 0
 	EndIf
 	Let iCount = iCount - 1
 EndWhile
+Pause()
 Pause()
 Let gfSilence = fSilence
 

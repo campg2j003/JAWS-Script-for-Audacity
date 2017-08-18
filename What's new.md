@@ -1,5 +1,7 @@
-(This file last updated 8/15/2017)
+(This file last updated 8/18/2017)
 
+# New in 2.2.0-alpha-2017-08-18
+- In the track panel UpCell and DownCell (Alt+Control+Up/DownArrow) move to the prior/next selected track.
 # New in 2.2.0-alpha-2017-08-15
 - Added ability to find the tempo of a portion of audio.  See Script Key Help for details.  There is also a commented out implementation based on Robert Hänggi's NVDA add-on which uses arrays and therefore requires JAWS 11 update 1 or later.
 - SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.

@@ -601,3 +601,10 @@ Respects AnnounceMessage.
 
 :Script TempoLayerHelp
 :Synopsis Speaks Tempo layer key help.
+
+:Script DownCell
+:Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+
+:Script UpCell
+:Synopsis In the track panel moves to the prior selected track.  Otherwise moves up one cell and reads it.
+
