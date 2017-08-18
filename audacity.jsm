@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-15.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-18.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -38,6 +38,17 @@ Const
 	CS_Toolbars="Toolbars",
 	CS_SelectionBar="Selection bar",
 	CS_TrackPanel="Track panel"
+
+;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
+Const
+    CS_SELECT_ON = " Select On",
+    CS_MUTE_ON = " Mute On",
+    CS_SOLO_ON = " Solo On"
+    
+;For announcing selected tracks.
+Const
+	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
+	CS_TRACKS_RANGE_SEP = "-" ;separates first and last track of a track range
 
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const

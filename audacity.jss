@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-18"
-;Last updated 2017-08-18T15:45Z
+;Last updated 2017-08-18T18:10Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -952,17 +952,25 @@ Else ; do it
 EndIf ; else do it
 EndScript ; SaySelectionEnd
 
-Const
-	CS_TRACKS_ITEM_SEP = ",",
-	CS_TRACKS_RANGE_SEP = "-"
+String Function CleanTrackName (String s)
+Var
+	String s2
 
-String Function GetSelectedTracks ()
+Let s2 = s
+Let s2 = StringReplaceSubstrings(s2, CS_SELECT_ON, "")
+Let s2 = StringReplaceSubstrings(s2, CS_MUTE_ON, "")
+Let s2 = StringReplaceSubstrings(s2, CS_SOLO_ON, "")
+Return s2
+EndFunction
+
+String Function GetSelectedTracks (Int fName)
 Var
 	Object oTrackPanel,
 	Int i,
 	Int iTrackCount,
 	Int iState,
 	String sTracks,
+	String sName,
 	Int iSelCount, ;number of consecutively selected tracks
 	Int iLast ;number of last selected track processed so far
 
@@ -984,7 +992,13 @@ While i <= iTrackCount
 			If sTracks Then
 				Let sTracks = sTracks + CS_TRACKS_ITEM_SEP
 			EndIf
-			Let sTracks = sTracks + IntToString(i)
+			If fName Then
+				Let sName = oTrackPanel.accName (i)
+				Let sName = CleanTrackName (sName)
+				Let sTracks = sTracks + sName
+			Else
+				Let sTracks = sTracks + IntToString(i)
+			EndIf ;else not fName
 			Let iSelCount = iSelCount + 1 ;=1
 		EndIf ;else not iSelCount
 	Else
@@ -995,7 +1009,13 @@ While i <= iTrackCount
 			Else
 				Let sTracks = sTracks + CS_TRACKS_RANGE_SEP
 			EndIf
-			Let sTracks = sTracks + IntToString(iLast)
+			If fName Then
+				Let sName = oTrackPanel.accName(iLast)
+				Let sName = CleanTrackName (sName)
+				Let sTracks = sTracks + sName
+			Else
+				Let sTracks = sTracks + IntToString(iLast)
+			EndIf ;else not fName
 			Let iSelCount = 0
 		EndIf ;iSelCount > 1
 	EndIf ; else not selected
@@ -1007,7 +1027,13 @@ If iSelCount > 1 Then
 	Else
 		Let sTracks = sTracks + CS_TRACKS_RANGE_SEP
 	EndIf
-	Let sTracks = sTracks + IntToString(iLast)
+	If fName Then
+		Let sName = oTrackPanel.accName (iLast)
+		Let sName = CleanTrackName (sName)
+		Let sTracks = sTracks + sName
+	Else
+		Let sTracks = sTracks + IntToString(iLast)
+	EndIf ;else not fName
 	Let iSelCount = 0
 EndIf ;iSelCount > 1
 Return sTracks
@@ -1019,7 +1045,7 @@ Var
 	String sTracks
 
 If FocusInMainWindow () Then
-	Let sTracks = GetSelectedTracks ()
+	Let sTracks = GetSelectedTracks (IsSameScript ())
 	If sTracks Then
 		Say(sTracks, OT_USER_REQUESTED_INFORMATION)
 	Else

@@ -575,7 +575,7 @@ Respects AnnounceMessage.
 :Category Script
 
 :Script SaySelectedText
-:Synopsis In the main window says the numbers of the selected tracks.  Otherwise says selected text.
+:Synopsis In the main window says the numbers of the selected tracks.  Otherwise says selected text.  If pressed twice quickly says track names instead.
 
 :Function GetTrackPanelObj
 :Description Get the accessible object of the track panel.
@@ -602,9 +602,24 @@ Respects AnnounceMessage.
 :Script TempoLayerHelp
 :Synopsis Speaks Tempo layer key help.
 
+:Function GetSelectedTracks
+:Returns string :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+
 :Script DownCell
 :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
 
 :Script UpCell
 :Synopsis In the track panel moves to the prior selected track.  Otherwise moves up one cell and reads it.
+
+:Function GetSelectedTracks
+:Description Returns a string containing the selected tracks numbers or names.  Consecutive selected tracks are shown as firsttrack-lasttrack.  Track ranges are separated by ", ".
+:Returns string selected tracks suitable for display.
+:Optional
+:Param int/fName If true track names are returned, otherwise track numbers are returned (default).
+
+
+:Function CleanTrackName
+:Description Removes status information added to track names for accessibility such as "Select On".
+:Returns string track name with status messages removed.
+:Param string/s track name
 
