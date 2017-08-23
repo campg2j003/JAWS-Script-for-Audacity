@@ -1,5 +1,7 @@
-(This file last updated 8/18/2017)
+(This file last updated 8/22/2017)
 
+# New in 2.2.0-alpha-2017-08-21
+Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
 # New in 2.2.0-alpha-2017-08-18
 - In the track panel UpCell and DownCell (Alt+Control+Up/DownArrow) move to the prior/next selected track.
 - If SaySelectedText is pressed twice quickly track names are spoken instead of track numbers.

@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-18.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-20.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -28,6 +28,9 @@ Const
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
 	WN_SELECTION = "Selection", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Transport", ; window name of Transport toolbar
+	WN_RECORDING_METER_TOOLBAR = "Recording Meter", ;window name of Recording Meter toolbar
+	WN_PLAYBACK_METER_TOOLBAR = "Playback Meter", ;window name of Playback Meter toolbar
+	WN_COMBINED_METER_TOOLBAR = "Combined Meter", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog
 	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Previewing", ;appears in progress dialog while previewing effects
@@ -563,11 +566,21 @@ Script options reset to default values
 @msgNoSelection
 To use this feature you must enable the selection toolbar
 @@
-@msgNoRecordingMeter
+;Audacity 2.1.3 and earlier
+@msgNoRecordingMeter 
 To use this feature you must enable the Recording Meter or Combined Meter toolbar
 @@
-@msgNoPlaybackMeter
+; Audacity 2.2.0
+@msgNoRecordingMeter22 
+To use this feature you must enable the Recording Meter
+@@
+;Audacity 2.1.3 and earlier
+@msgNoPlaybackMeter 
 To use this feature you must enable the Playback Meter or Combined Meter toolbar
+@@
+;Audacity 2.2.0
+@msgNoPlaybackMeter22 
+To use this feature you must enable the Playback Meter
 @@
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.

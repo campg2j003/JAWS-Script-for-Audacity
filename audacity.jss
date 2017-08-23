@@ -4,7 +4,7 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-18"
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-21"
 ;Last updated 2017-08-18T18:25Z
 
 ; This puts the copyright in the jsb file.
@@ -2799,43 +2799,29 @@ EndIf
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hParent = GetNextWindow (hTemp) ; parent of toolbars
 ; hParent is the grandparent on Audacity v2.1.3, but that's okay.
-/*
-If GetAudacityState () & ST_PLAY Then
-	;playback
-	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER)
-	if !hTemp Then
-		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER2)
-	EndIf
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
-	EndIf
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		Say (msgNoPlaybackMeter, OT_Error)
-		Return
-	EndIf ; if no playback meter
-Else
-*/
-If CheckAudacityVersion("2,1,3") Then
-	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER2) ;V2.1.3
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		/*
-		;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
-		Let hTemp = GetAppMainWindow(hParent)
-		Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
-		Let hTemp = FindDescendantWindow (hTemp, ID_RECORDING_METER_COMBINED2)
-		*/
-		Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED2)
-	EndIf
-Else
-	;Pre 2.1.3
-	;Recording
-	Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER)
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		Let hTemp = FindDescendantWindow (hParent, ID_RECORDING_METER_COMBINED)
-	EndIf
-EndIf ; else pre 2.1.3
+Let hTemp = FindWindow (hParent, "", WN_RECORDING_METER_TOOLBAR)
+If hTemp Then
+	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
+EndIf 
 If !hTemp || !IsWindowVisible (hTemp) Then
-	Say (msgNoRecordingMeter, OT_ERROR)
+	/*
+	;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
+	Let hTemp = GetAppMainWindow(hParent)
+	Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
+	Let hTemp = FindDescendantWindow (hTemp, ID_RECORDING_METER_COMBINED2)
+	*/
+	Let hTemp = FindWindow (hParent, "", wn_combined_meter_toolbar)
+	If hTemp Then
+		Let hTemp = GetNextWindow (GetFirstChild (hTemp))
+	EndIf
+EndIf
+If !hTemp || !IsWindowVisible (hTemp) Then
+	If CheckAudacityVersion("2,2,0") Then
+		Let s = msgNoRecordingMeter22
+	Else
+		Let s = msgNoRecordingMeter
+	EndIf
+	Say (s, OT_ERROR)
 	Return
 EndIf ; if no recording meter
 ;EndIf ;else recording meter
@@ -2863,25 +2849,29 @@ If DialogActive () || !FocusInMainWindow ()  || gfInLabel Then
 EndIf
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hParent = GetNextWindow (hTemp) ; parent of toolbars
-If CheckAudacityVersion("2,1,3") Then
-	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER2) ; v2.1.3
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		/*
-		;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
-		Let hTemp = GetAppMainWindow(hParent)
-		Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
-		Let hTemp = FindDescendantWindow (hTemp, ID_PLAYBACK_METER_COMBINED2)
-		*/
-		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED2)
-	EndIf ;combined meter
-Else
-	Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER) ;pre V2.1.3
-	If !hTemp || !IsWindowVisible (hTemp) Then
-		Let hTemp = FindDescendantWindow (hParent, ID_PLAYBACK_METER_COMBINED)
-	EndIf
-EndIf ;else pre 2.1.3
+Let hTemp = FindWindow (hParent, "", WN_PLAYBACK_METER_TOOLBAR)
+If hTemp Then
+	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
+EndIf
 If !hTemp || !IsWindowVisible (hTemp) Then
-	Say (msgNoPlaybackMeter, OT_ERROR)
+	/*
+	;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
+	Let hTemp = GetAppMainWindow(hParent)
+	Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
+	Let hTemp = FindDescendantWindow (hTemp, ID_PLAYBACK_METER_COMBINED2)
+	*/
+	Let hTemp = FindWindow (hParent, "", Wn_combined_meter_toolbar)
+	If hTemp Then
+		Let hTemp = GetNextWindow (GetNextWindow (GetFirstChild (hTemp)))
+	EndIf
+EndIf ;combined meter
+If !hTemp || !IsWindowVisible (hTemp) Then
+	If CheckAudacityVersion("2,2,0") Then
+		Let s = msgNoPlaybackMeter22
+	Else
+		Let s = msgNoPlaybackMeter
+	EndIf
+	Say (s, OT_ERROR)
 	Return
 EndIf
 If IsSameScript () Then
@@ -3929,7 +3919,7 @@ Else
 		EndIf
 		PerformScript TempoAnnounce ()
 	Else
-		Say(msgTempoNoBeats, OT_ERROR)
+		Say (msgTempoNoBeats, OT_ERROR)
 		Return
 	EndIf ;giTempoStart && giTempoLast
 EndIf ;else running
