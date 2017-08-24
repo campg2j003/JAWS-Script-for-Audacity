@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-21"
-;Last updated 2017-08-18T18:25Z
+;Last updated 2017-08-24T23:55Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -74,14 +74,6 @@ Const
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
 	ID_Chain_Cmds_List2=7002, ;Audacity 2.0.4 or higher
-	ID_RECORDING_METER = -31987, ;can negative IDs in WXWindows change??
-	ID_RECORDING_METER2 = -31986, ;V2.1.3
-	ID_RECORDING_METER_COMBINED = -31990,
-	ID_RECORDING_METER_COMBINED2 = -31989, ;v2.1.3
-	ID_PLAYBACK_METER = -31985,
-	ID_PLAYBACK_METER2 = -31984, ;v2.1.3
-	ID_PLAYBACK_METER_COMBINED = -31989,
-	ID_PLAYBACK_METER_COMBINED2 = -31988, ;v2.1.3
 	
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars, pre 2.1.2
 	WC_wxWindowClass2 = "wxWindow", ; grabber control on toolbars, 2.1.2
