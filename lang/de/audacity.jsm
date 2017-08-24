@@ -1,7 +1,7 @@
-; German messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-17.
-;Translation based on English version dated 2017-08-12.
+; German messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-23.
+;Translation based on English version dated 2017-02-17.
 /*
-JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
+JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityteam.org).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
     Copyright (C) 2014-2016 Fernando Gregoire, for the Spanish translation. All rights reserved.

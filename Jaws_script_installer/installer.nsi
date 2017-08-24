@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2016-09-21
+Last updated: 2017-08-23
 
 Modifications:
 
@@ -55,7 +55,7 @@ SetCompressor /solid lzma ;create the smallest file
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
-!Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
+!Define JAWSScriptLangs "de|esn" ;Supported languages delimited by | (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
 
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
@@ -93,7 +93,13 @@ ${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
-${Case} "esn"
+${Case} "de" ; German
+${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.qsm"
+${Break}
+${Case} "esn" ; Spanish
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
@@ -115,6 +121,10 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
 ;Set the location for these files the same as JSD files-- for shared scripts in JAWS 17 this is Scripts\<lang>.
 ${JawsScriptSetPath} jsd
 ${Switch} $1
+${Case} "de" ; German
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\de\readme.html"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\de\What's new.md"
+${Break}
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
@@ -143,8 +153,10 @@ push $3
 push $4
 StrCpy $3 "enu|${JAWSScriptLangs}"
 ${Do}
-${StrLoc} $0 $3 "|" "<"
+;${StrLoc} $0 $3 "|" "<" ; why was this from right to left?
+${StrLoc} $0 $3 "|" ">" ; left to right
 ;$0 is position of |
+;DetailPrint "JAWSInstallFullItems: $$3='$3', $$0=$0," ; debug
 ${If} $0 > 0
 ;We found a |
 ;IntOp $2 $0  - 1 ;length of lang abbrev
@@ -160,10 +172,17 @@ ${EndIf}
 ;$3 is remaining lang abbreviations.
 ; $1 is JAWS language abbreviation (folder in ${JAWSScriptSrc}lang).
 ;$4 is either folder containing lang folders with trailing backslash or "" for default (enu).
+;DetailPrint "  $$1='$1'" ; debug
 StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
-${Case} "esn"
+${Case} "de" ; German
+${AddItem} "$OUTDIR\readme_de.html"
+File "/oname=readme_de.html" "${JAWSSrcDir}lang\de\readme.html"
+;${AddItem} "What's new_de.md"
+;File "/oname=What's new_de.md" "${JAWSSrcDir}lang\de\" "What's new.md"
+${Break}
+${Case} "esn" ; Spanish
 ${AddItem} "$OUTDIR\readme_esn.html"
 File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.md"
