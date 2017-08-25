@@ -79,9 +79,9 @@ Translated by <your name>.
 
 In the above:
 
-- (1) The first line contains the date the installer was last updated (from installer.nsi).
-- (2) The second line contains the "updated" date from the English `.nsh` file on which this translation is based.
-- (3) The third line contains the date this file (your translation) was last updated.
++ (1) The first line contains the date the installer was last updated (from installer.nsi).
++ (2) The second line contains the "updated" date from the English `.nsh` file on which this translation is based.
++ (3) The third line contains the date this file (your translation) was last updated.
 
 
 
