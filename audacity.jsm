@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-20.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-24.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -22,7 +22,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later
     See the file copying.txt for details.
 */
 
-; These are window names used to identify windows. (Should they be translated?)
+; These are window names used to identify windows. (Should be translated)
 Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
