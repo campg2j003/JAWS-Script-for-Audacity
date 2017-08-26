@@ -1,5 +1,8 @@
 (This file last updated 8/26/2017)
 
+# New in 2.2.0-alpha-2017-08-26P
+Numpad left/right arrow keys with JAWSKey now preview in the track panel.  In the track panel, scripts SayPrior/NextWord play the preview before/after the start position.  Scripts SelectPrior/NextWord preview before/after the end position.
+
 # New in 2.2.0-alpha-2017-08-25
 Added cursor motion and selection keys to short layer.
 
