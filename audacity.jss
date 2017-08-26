@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-26P"
-;Last updated 2017-08-26T20:50Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-26"
+;Last updated 2017-08-26T21:05Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -109,6 +109,7 @@ Globals
 	Handle ghSliderEdit,
 	Int gfPreviewing,
 	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
+	Int gfSilenceClearOnNext, ;clear gfSilence after next HandleCustomWindows or SayFocusedObject
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
 	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
 	Int giScheduleClearSilence, ;the value returned by ScheduleFunction when silencing speech when starting recording, probably not needed.  It would be used to unschedule the function.
@@ -117,6 +118,13 @@ Globals
 	String gsMoveTrackUpKey, ; key that moves a track up in the track panel (to lower-numbered tracks)
 	String gsMoveTrackDownKey, ; key that moves a track down in the track panel (to higher-numbered tracks)
 	Int giTrackMark ;Holds the number of the marked track, 0 if none
+
+;Keys for playing previews with cursor motion keys.  These are executed after the motion commands so they play what we just moved over.
+Const
+    KS_PREVIEW_START_BACKWARD = "Shift+F6", ;Preview for selection start backward motion
+    KS_PREVIEW_START_FORWARD = "Shift+F5", ;Preview for selection start forward motion
+    KS_PREVIEW_END_BACKWARD = "Shift+F8", ;Preview for selection end backward motion
+    KS_PREVIEW_END_FORWARD = "Shift+F7" ;Preview for selection end forward motion
 
 ;Key layer
 Globals
@@ -305,8 +313,9 @@ Var
 	;DebugString("AutoStart") ; debug
 	;gfAudacityAutoStarted prevents activation of Silence Preview when switching from another app while focus is in a dialog.
 Let gfAudacityAutostarted = TRUE
-;We reset these two flags in case they get stuck on.
+;We reset these flags in case they get stuck on.
 Let gfSilence = FALSE
+Let gfSilenceClearOnNext = False
 Let gfPreviewing = FALSE
 Let gfInLabel = FALSE
 If !App_FirstTime Then
@@ -367,6 +376,7 @@ Int Function NewTextEventShouldBeSilent(Handle hFocus, Handle hwnd, String buffe
 	Int nTextColor, Int nBackgroundColor, Int nEcho, String sFrameName)
 Var
 	Int iRtn
+;SayString ("ShouldBeSilent " + IntToString (gfSilence)) ; debug
 Let iRtn = gfSilence || NewTextEventShouldBeSilent(hFocus, hwnd, buffer, nAttributes,
 	nTextColor, nBackgroundColor, nEcho, sFrameName)
 Return iRtn
@@ -575,72 +585,80 @@ EndIf ; stop button
 
 If gfSilence Then
 	;DebugString("custom suppressing focus") ; debug
+	If gfSilenceClearOnNext Then
+		Let gfSilence = False
+		Let gfSilenceClearOnNext = False
+	EndIf
 	Return TRUE ; we're doing something like previewing and we don't want focus change stuff spoken
 EndIf ; if gfSilence
 
-;Announce when focus changes to a different area of the main window.
-If !FocusInMainWindow() Then
-	If DialogActive () && GetWindowName(GetFocus()) == cscNull Then
-		;SayString("No window name") ; debug
-		Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
-		SetJCFOption (OPT_MSAA_MODE, 2)
-		Let sName = GetObjectName()
-		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
-		SayControlEx(GetFocus (), 
-		sName, "",   ; control name, type
-		"",   ; control state
-		"", "",   ; Container name, type
-		"", "",   ; value, position
-		"")   ; dialog text
-		;SayString("Exit HandleFocus null winname") ; debug
-		Return TRUE
-	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
-		SayWindowTypeAndText (GetFocus ())
-		;SayString("Exit HandleFocus warning dlg") ; debug
-		Return TRUE
-	EndIf ; no window name
-	;SayString("Calling HandleCustom") ; debug
-	Let iRtn = HandleCustomWindows (hFocus) ; not main window, continue with normal processing
-	;SayString("Exit HandleFocus not main window") ; debug
-	Return iRtn
-EndIf ; if ! focus in main window
-Let hParent = GetParent(hFocus)
-If GetWindowName(hFocus) != WN_TRACKPANEL Then
-	Let hParent = GetParent(hParent)
-EndIf ; if not track panel
-; If hFocus is the track panel, hParent is its parent.  Otherwise it is the grandparent of hFocus.
-Let hOld = ghAudacityLastArea
-If hParent != hOld Then
-	Let ghAudacityLastArea = hParent ; new area.
-	; We could use FocusInTrackPanel here but we've already tested most of its conditions.
-	If GetWindowName(hFocus) == WN_TRACKPANEL Then
-		Say (CS_TrackPanel, OT_POSITION)
-		Return HandleCustomWindows (hFocus)
-	EndIf ; if track panel
-	; We could also identify the selection by testing for WindowHierarchyX = 3.
-	If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
-		Say (CS_SelectionBar, OT_POSITION)
-	Else
-		Say (CS_Toolbars, OT_POSITION)
-	EndIf ; else toolbar
-EndIf ; new area
+	    ;Announce when focus changes to a different area of the main window.
+	    If !FocusInMainWindow() Then
+	    If DialogActive () && GetWindowName(GetFocus()) == cscNull Then
+	    ;SayString("No window name") ; debug
+	    Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+	    SetJCFOption (OPT_MSAA_MODE, 2)
+	    Let sName = GetObjectName()
+	    SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
+	    SayControlEx(GetFocus (), 
+	    sName, "",   ; control name, type
+	    "",   ; control state
+	    "", "",   ; Container name, type
+	    "", "",   ; value, position
+	    "")   ; dialog text
+	    ;SayString("Exit HandleFocus null winname") ; debug
+	    Return TRUE
+	    ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
+	    SayWindowTypeAndText (GetFocus ())
+	    ;SayString("Exit HandleFocus warning dlg") ; debug
+	    Return TRUE
+	    EndIf ; no window name
+	    ;SayString("Calling HandleCustom") ; debug
+	    Let iRtn = HandleCustomWindows (hFocus) ; not main window, continue with normal processing
+	    ;SayString("Exit HandleFocus not main window") ; debug
+	    Return iRtn
+	    EndIf ; if ! focus in main window
+	    Let hParent = GetParent(hFocus)
+	    If GetWindowName(hFocus) != WN_TRACKPANEL Then
+	    Let hParent = GetParent(hParent)
+	    EndIf ; if not track panel
+	    ; If hFocus is the track panel, hParent is its parent.  Otherwise it is the grandparent of hFocus.
+	    Let hOld = ghAudacityLastArea
+	    If hParent != hOld Then
+	    Let ghAudacityLastArea = hParent ; new area.
+	    ; We could use FocusInTrackPanel here but we've already tested most of its conditions.
+	    If GetWindowName(hFocus) == WN_TRACKPANEL Then
+	    Say (CS_TrackPanel, OT_POSITION)
+	    Return HandleCustomWindows (hFocus)
+	    EndIf ; if track panel
+	    ; We could also identify the selection by testing for WindowHierarchyX = 3.
+	    If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
+	    Say (CS_SelectionBar, OT_POSITION)
+	    Else
+	    Say (CS_Toolbars, OT_POSITION)
+	    EndIf ; else toolbar
+	    EndIf ; new area
 
-If IsToolbar(GetToolbar ()) Then
-	Let hToolbar = GetToolbar ()
-	If hToolbar != ghAudacityLastToolbar Then
-		Let ghAudacityLastToolbar = hToolbar
-		If GetQuickSetting ("AnnounceToolbars") Then
-			Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
-		EndIf
-	EndIf ; new toolbar
-EndIf ; If IsToolbar
-Let iRtn = HandleCustomWindows (hFocus) ; allow others to process
-;SayString("Exit HandleFocus") ; debug
-Return iRtn
+	    If IsToolbar(GetToolbar ()) Then
+	    Let hToolbar = GetToolbar ()
+	    If hToolbar != ghAudacityLastToolbar Then
+	    Let ghAudacityLastToolbar = hToolbar
+	    If GetQuickSetting ("AnnounceToolbars") Then
+	    Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
+	    EndIf
+	    EndIf ; new toolbar
+	    EndIf ; If IsToolbar
+	    Let iRtn = HandleCustomWindows (hFocus) ; allow others to process
+	    ;SayString("Exit HandleFocus") ; debug
+	    Return iRtn
 EndFunction ; HandleCustomWindows
 
 Void Function SayFocusedObject ()
 If gfSilence Then
+	If gfSilenceClearOnNext Then
+		Let gfSilence = False
+		Let gfSilenceClearOnNext = False
+	EndIf
 	Return
 EndIf
 If FocusInTrackPanel () Then
@@ -752,7 +770,7 @@ EndIf ; if decimal
 Return s2
 EndFunction ; GetPositionField
 
-Handle Function GetPositionFieldHandle(Int iPosition)
+Int Function GetPositionFieldID(Int iPosition)
 Var
 	Int iSelectionType,
 	Int iId
@@ -785,7 +803,11 @@ Else
 	;2.1.3 or earlier.
 	Let iId = iPosition
 EndIf
-Return FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
+Return iId
+EndFunction
+	
+Handle Function GetPositionFieldHandle(Int iPosition)
+Return FindDescendantWindow (GetRealWindow (GetFocus ()), GetPositionFieldID (iPosition))
 EndFunction
 	
 Int Function SayPositionField (Int iPosition, Int fSilent)
@@ -2770,6 +2792,70 @@ If IsPCCursor () && NoProject () Then
 EndIf ; if no project
 PerformScript SayNextLine ()
 EndScript ; SayNextLine
+
+Script SelectPriorLine ()
+;In selection bar edit controls plays a preview after moving the digit.  Note that Shift+UpArrow moves the position forward.
+Var
+	Int iId,
+	Int fOldSilence
+
+If !FocusInMainWindow () || UserBufferIsActive () Then
+	PerformScript SelectPriorLine ()
+	Return
+EndIf
+Let iId = GetControlID (GetFocus ())
+Let fOldSilence = gfSilence
+If iId == GetPositionFieldID (ID_SELECTION_START) Then
+	Let gfSilence = True
+	TypeCurrentScriptKey ()
+	TypeKey (KS_PREVIEW_START_FORWARD)
+	Pause ()
+	Let gfSilence = fOldSilence
+	Return
+EndIf
+If iId == GetPositionFieldID (ID_SELECTION_END) Then
+	Let gfSilence = True
+	TypeCurrentScriptKey ()
+	TypeKey (KS_PREVIEW_END_FORWARD)
+	Pause ()
+	Let gfSilence = fOldSilence
+	Return
+EndIf
+;Catch-all, shouldn't happen.
+PerformScript SelectPriorLine ()
+EndScript
+
+Script SelectNextLine ()
+;In selection bar edit controls plays a preview after changing the digit.  Note that Shift+DownArrow moves the position backward.
+Var
+	Int iId,
+	Int fOldSilence
+
+If !FocusInMainWindow () || UserBufferIsActive () Then
+	PerformScript SelectNextLine ()
+	Return
+EndIf
+Let fOldSilence = gfSilence
+Let iId = GetControlID (GetFocus ())
+If iId == GetPositionFieldID (ID_SELECTION_START) Then
+	Let gfSilence = True
+	TypeCurrentScriptKey ()
+	TypeKey (KS_PREVIEW_START_BACKWARD)
+	Pause ()
+	Let gfSilence = fOldSilence
+	Return
+EndIf
+If iId == GetPositionFieldID (ID_SELECTION_END) Then
+	Let gfSilence = True
+	TypeCurrentScriptKey ()
+	TypeKey (KS_PREVIEW_END_BACKWARD)
+	Pause ()
+	Let gfSilence = fOldSilence
+	Return
+EndIf
+;Catch-all, shouldn't happen.
+PerformScript SelectNextLine ()
+EndScript
 
 Script SwitchChainsList ()
 ;Switch between the Chains and Chain Commands lists in the Edit Chains dialog.

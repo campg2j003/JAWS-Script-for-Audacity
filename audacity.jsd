@@ -634,3 +634,12 @@ Respects AnnounceMessage.
 :Script SelectNextWord
 :Synopsis In the track panel previews after the end position.  Otherwise performs its normal function.
 
+:Function GetPositionFieldID
+:Returns int 
+:Param int/iPosition
+
+:Script SelectPriorLine
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action. 
+
+:Script SelectNextLine
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action. 
