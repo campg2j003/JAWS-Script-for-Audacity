@@ -1,4 +1,7 @@
-(This file last updated 8/22/2017)
+(This file last updated 8/26/2017)
+
+# New in 2.2.0-alpha-2017-08-25
+Added cursor motion and selection keys to short layer.
 
 # New in 2.2.0-alpha-2017-08-21
 Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
