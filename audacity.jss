@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-25"
-;Last updated 2017-08-25T00:10Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-26P"
+;Last updated 2017-08-26T20:50Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -143,6 +143,13 @@ Globals
     IntArray gaiTempoTimes
 
 */
+
+;Keys to send to preview audio at the selection range ends.
+Const
+	KS_PREVIEW_START_BEFORE = "Shift+F5",
+	KS_PREVIEW_START_AFTER = "Shift+F6",
+	KS_PREVIEW_END_BEFORE = "Shift+F7",
+	KS_PREVIEW_END_AFTER = "Shift+F8"
 
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1724,6 +1731,46 @@ Else
 	PerformScript SayNextCharacter ()
 EndIf
 EndScript ; SayNextCharacter
+
+Script SayPriorWord ()
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SayPriorWord ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_START_BEFORE)
+EndScript
+
+Script SayNextWord ()
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SayNextWord ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_START_AFTER)
+EndScript
+
+Script SelectPriorWord ()
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SelectPriorWord ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_END_BEFORE)
+EndScript
+
+Script SelectNextWord ()
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+	PerformScript SelectNextWord ()
+	Return
+EndIf
+
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_END_AFTER)
+EndScript
 
 
 Script Copy ()

@@ -617,9 +617,20 @@ Respects AnnounceMessage.
 :Optional
 :Param int/fName If true track names are returned, otherwise track numbers are returned (default).
 
-
 :Function CleanTrackName
 :Description Removes status information added to track names for accessibility such as "Select On".
 :Returns string track name with status messages removed.
 :Param string/s track name
+
+:Script SayPriorWord
+:Synopsis In the track panel previews before the start position.  Otherwise performs its normal function.
+
+:Script SayNextWord
+:Synopsis In the track panel previews after the start position.  Otherwise performs its normal function.
+
+:Script SelectPriorWord
+:Synopsis In the track panel previews before the end position.  Otherwise performs its normal function.
+
+:Script SelectNextWord
+:Synopsis In the track panel previews after the end position.  Otherwise performs its normal function.
 
