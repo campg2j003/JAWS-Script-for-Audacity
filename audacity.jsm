@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-24.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-26.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -136,6 +136,11 @@ To say the active cursor while the PC cursor is active, press %keyfor(SayActiveC
 To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
 To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.
 
+In the track panel, to preview audio before the selection start, press %KeyFor(SayPriorWord)
+In the track panel, to preview audio after the selection start, press %KeyFor(SayNextWord)
+In the track panel, to preview audio before the selection end, press %KeyFor(SelectPriorWord)
+In the track panel, to preview audio after the selection end, press %KeyFor(SelectNextWord)
+    
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
