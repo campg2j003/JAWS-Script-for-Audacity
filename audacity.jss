@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-26"
-;Last updated 2017-08-26T21:05Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-27"
+;Last updated 2017-08-27T16:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -86,7 +86,10 @@ Const
 	CI_TOOLBARS_OFF = 0,
 	CI_TOOLBARS_ON = 1, ; announce all toolbars
 	CI_ENTERPAUSE_OFF = 0, ; ENTER during play/record sent to ap
-	CI_ENTERPAUSE_ON = 1 ; ENTER pauses during play and record
+	CI_ENTERPAUSE_ON = 1, ; ENTER pauses during play and record
+	CI_SAY_POSITION_NONE = 0, ;say no positions except when explicitly requested
+	CI_SAY_POSITION_NOT_ARROWS = 1, ;say only positions that do not involve previewing
+	CI_SAY_POSITION_ALL = 2 ;say all positions
 	
 	
 Globals
@@ -100,6 +103,8 @@ Globals
 	Int AnnounceToolbars,
 	Int gfSilencePreview, ;Silence Preview quick setting
 	Int gfRecordSpeechOff,
+	Int giSayPosition,
+	Int gfPreviewMotion, ;true plays preview with cursor motions
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -121,10 +126,16 @@ Globals
 
 ;Keys for playing previews with cursor motion keys.  These are executed after the motion commands so they play what we just moved over.
 Const
-    KS_PREVIEW_START_BACKWARD = "Shift+F6", ;Preview for selection start backward motion
-    KS_PREVIEW_START_FORWARD = "Shift+F5", ;Preview for selection start forward motion
-    KS_PREVIEW_END_BACKWARD = "Shift+F8", ;Preview for selection end backward motion
-    KS_PREVIEW_END_FORWARD = "Shift+F7" ;Preview for selection end forward motion
+	KS_PREVIEW_START_BACKWARD = "Shift+F6", ;Preview for selection start backward motion
+	KS_PREVIEW_START_FORWARD = "Shift+F5", ;Preview for selection start forward motion
+	KS_PREVIEW_END_BACKWARD = "Shift+F8", ;Preview for selection end backward motion
+	KS_PREVIEW_END_FORWARD = "Shift+F7", ;Preview for selection end forward motion
+
+;Keys to send to preview audio at the selection range ends.  These are used by the JAWSKey+left/right keys.
+	KS_PREVIEW_START_BEFORE = "Shift+F5",
+	KS_PREVIEW_START_AFTER = "Shift+F6",
+	KS_PREVIEW_END_BEFORE = "Shift+F7",
+	KS_PREVIEW_END_AFTER = "Shift+F8"
 
 ;Key layer
 Globals
@@ -152,12 +163,6 @@ Globals
 
 */
 
-;Keys to send to preview audio at the selection range ends.
-Const
-	KS_PREVIEW_START_BEFORE = "Shift+F5",
-	KS_PREVIEW_START_AFTER = "Shift+F6",
-	KS_PREVIEW_END_BEFORE = "Shift+F7",
-	KS_PREVIEW_END_AFTER = "Shift+F8"
 
 Int Function GetQuickSetting (String sKey)
 ;Get the desired user option.
@@ -1446,7 +1451,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	SayPositionField (ID_SELECTION_END, TRUE)
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; FinishMarkerRight
 
@@ -1468,7 +1475,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	SayPositionField (ID_SELECTION_END, TRUE)
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; FinishMarkerLeft
 
@@ -1490,7 +1499,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	SayPositionField(ID_SELECTION_START, TRUE)
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; StartMarkerRight
 
@@ -1518,7 +1529,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	SayPositionField (ID_SELECTION_START, TRUE)
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; StartMarkerLeft
 
@@ -1553,7 +1566,9 @@ If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive (
 	EndIf ;!IsStopped
 	JawsEnd () ; do End without speaking key label
 	SayFormattedMessage (OT_POSITION, FormatString (msgMoveTo, msgEnd, msgAllAudio))
-	SayPositionField (ID_SELECTION_END, TRUE)
+	If giSayPosition > CI_SAY_POSITION_NONE Then
+		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	EndIf
 Else
 	PerformScript JawsEnd ()
 EndIf
@@ -1570,7 +1585,9 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgStart, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE)
+	If giSayPosition > CI_SAY_POSITION_NONE Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; MoveToStartOfSelectedTracks
 
@@ -1584,7 +1601,9 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE)
+	If giSayPosition > CI_SAY_POSITION_NONE Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; MoveToEndOfSelectedTracks
 
@@ -1599,7 +1618,9 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE)
+	If giSayPosition > CI_SAY_POSITION_NONE Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; SelectToBeginning
 
@@ -1614,7 +1635,9 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_END, TRUE)
+	If giSayPosition > CI_SAY_POSITION_NONE Then
+		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	EndIf
 EndIf
 EndScript ; SelectToEnd
 
@@ -1648,7 +1671,9 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () &&
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_NO_DISABLE, FormatString(msgSelectTo, msgEnd, msgAllAudio))
 		Pause ()
-		SayPositionField (ID_SELECTION_END, TRUE)
+		If giSayPosition > CI_SAY_POSITION_NONE Then
+			SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		EndIf
 	EndIf
 Else
 	PerformScript SelectToEndOfLine ()
@@ -1721,7 +1746,9 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 ElIf !IsStopped () Then
 	TypeCurrentScriptKey ()
 Else
@@ -1745,7 +1772,9 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 ElIf !IsStopped () Then
 	TypeCurrentScriptKey ()
 Else
@@ -2575,6 +2604,8 @@ IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, FALSE)
 IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, FALSE) ; no flush
 IniWriteInteger (gsIniSection, "SilencePreview", CI_UO_ON, gsIniFile, FALSE) ; no flush
 IniWriteInteger (gsIniSection, "SilenceRecord", CI_UO_ON, gsIniFile, FALSE) ; no flush
+IniWriteInteger (gsIniSection, "SayPosition", CI_SAY_POSITION_ALL, gsIniFile, FALSE) ; no flush
+IniWriteInteger (gsIniSection, "PreviewMotion", CI_UO_OFF, gsIniFile, FALSE) ; no flush
 IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, TRUE)
 Let gsJawsGuideLink = CS_JawsGuide_LINK
 ;Let gsJawsGuideTitle = CS_JawsGuide_Title
@@ -2693,7 +2724,9 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetti
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	SayPositionField (ID_SELECTION_START, TRUE)
+	If giSayPosition == CI_SAY_POSITION_ALL Then
+		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
 Else
 	SayCurrentScriptKeyLabel ()
 EndIf
@@ -3148,6 +3181,8 @@ Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", CI_TOOLBARS_ON,
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", CI_ENTERPAUSE_ON, "audacity.jcf")
 Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_UO_ON, "audacity.jcf")
 Let gfRecordSpeechOff=IniReadInteger (NonJCF, "SilenceRecord", CI_UO_ON, "audacity.jcf")
+Let giSayPosition=IniReadInteger (NonJCF, "SayPosition", CI_SAY_POSITION_ALL, "audacity.jcf")
+Let gfPreviewMotion=IniReadInteger (NonJCF, "PreviewMotion", CI_UO_OFF, "audacity.jcf")
 ;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 /*
 Commented the title part of this feature out because it could make the hot key help claim it is for a different version of the guide than it was taken from.
@@ -3168,6 +3203,8 @@ Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JA
 ;Write the info above to Audacity.JSI file
 IniWriteInteger (gsIniSection, "AnnounceMessage", AnnounceMessage, gsIniFile, false)
 IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
+IniWriteInteger (gsIniSection, "SayPosition", giSayPosition, gsIniFile, false)
+IniWriteInteger (gsIniSection, "PreviewMotion", gfPreviewMotion, gsIniFile, false)
 IniWriteInteger (gsIniSection, "SilencePreview", gfSilencePreview, gsIniFile, False)
 IniWriteInteger (gsIniSection, "SilenceRecord", gfRecordSpeechOff, gsIniFile, False)
 IniWriteInteger (gsIniSection, "AnnounceToolbars", AnnounceToolbars, gsIniFile, true)

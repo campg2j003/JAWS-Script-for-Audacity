@@ -30,5 +30,19 @@ If on, Turns speech off while previewing an effect.
 If on, silences speech that occurs when starting to record.
 			</HelpMsg>
 		</DisplayName>
+		<DisplayName ID="Audacity Options.SayPosition" Text="Announce Position">
+			<HelpMsg>
+If none, does not speak cursor position.  If All but Arrows, does not speak position for arrow keys that preview.  If all, speaks all position announcements.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.SayPosition.0" Text="None" />
+		<DisplayName ID="Audacity Options.SayPosition.0" Text="None" />
+		<DisplayName ID="Audacity Options.SayPosition.1" Text="All but arrows" />
+		<DisplayName ID="Audacity Options.SayPosition.2" Text="All" />
+		<DisplayName ID="Audacity Options.PreviewMotion" Text="Preview Motion">
+			<HelpMsg>
+If on, cursor motion keys play a preview of the audio.
+			</HelpMsg>
+		</DisplayName>
 </DisplayNameDefinitions>
 </LocalizableDefinitions>

@@ -21,6 +21,19 @@
  ID="Audacity Options.Silence Record" Type="Boolean">
 				<SettingsFile Section="NonJCFOptions" Name="SilenceRecord" />
 			</Setting>
+			<Setting
+				ID="Audacity Options.SayPosition" Type="List">
+				<Values>
+					<Value ID="Audacity Options.SayPosition.0" /> <!-- none -->
+					<Value ID="Audacity Options.SayPosition.1" /> <!-- all but motion -->
+					<Value ID="Audacity Options.SayPosition.2" /> <!-- all -->
+				</Values>
+				<SettingsFile Section="NonJCFOptions" Name="SayPosition" />
+			</Setting>
+			<Setting
+ ID="Audacity Options.PreviewMotion" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="PreviewMotion" />
+			</Setting>
 		</Category>
 	</QuickSettingsDefinitions>
 </QuickSettings>
