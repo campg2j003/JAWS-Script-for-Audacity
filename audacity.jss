@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-27"
-;Last updated 2017-08-27T16:00Z
+;Last updated 2017-08-27T17:55Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1454,6 +1454,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_END_FORWARD)
+	EndIf
 EndIf
 EndScript ; FinishMarkerRight
 
@@ -1478,6 +1481,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_END_BACKWARD)
+	EndIf
 EndIf
 EndScript ; FinishMarkerLeft
 
@@ -1501,6 +1507,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
 EndIf
 EndScript ; StartMarkerRight
@@ -1531,6 +1540,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_START_BACKWARD)
 	EndIf
 EndIf
 EndScript ; StartMarkerLeft
@@ -1749,6 +1761,9 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_START_BACKWARD)
+	EndIf
 ElIf !IsStopped () Then
 	TypeCurrentScriptKey ()
 Else
@@ -1774,6 +1789,9 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	Pause ()
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	EndIf
+	If gfPreviewMotion Then
+		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
 ElIf !IsStopped () Then
 	TypeCurrentScriptKey ()
@@ -1920,6 +1938,24 @@ Var
 Let sMessage=StringSegment (UO_ANNOUNCE_MESSAGES, ":", 2) + UOAnnounceMessages(0)
 Say (sMessage, OT_STATUS)
 EndScript ; AnnounceOnOff
+
+Script ToggleMotionPreview ()
+Var
+	String sMessage
+	
+;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
+Let sMessage=StringSegment (UO_MOTION_PREVIEW, ":", 2)
+If gfPreviewMotion Then
+	Let gfPreviewMotion = CI_UO_OFF
+	Let sMessage = sMessage + cScSpace + cmsg_off
+	Let giSayPosition = CI_SAY_POSITION_ALL
+Else
+	Let gfPreviewMotion = CI_UO_ON
+	Let sMessage = sMessage + cScSpace + cmsg_on
+	Let giSayPosition = CI_SAY_POSITION_NOT_ARROWS
+EndIf
+Say (sMessage, OT_STATUS)
+EndScript
 
 Void Function SayActiveLabel ()
 ;Speak the text of the active label if any.  Assumes focus in track panel.

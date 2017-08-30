@@ -1,7 +1,9 @@
-(This file last updated 8/27/2017)
+(This file last updated 8/30/2017)
 
 # New in 2.2.0-alpha-2017-08-27
 - Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  Choices are None, All but Arrows, and All.
+- Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
+- Added script ToggleMotionPreview assigned to JAWSKey+p.  This temporarily toggles motion preview on and off and Say Position between All but Arrows and All.
 # New in 2.2.0-alpha-2017-08-26
 - In the start/end selection fields Shift+Up/DownArrow preview audio at the selection end points.
 - Numpad left/right arrow keys with JAWSKey now preview in the track panel.  In the track panel, scripts SayPrior/NextWord play the preview before/after the start position.  Scripts SelectPrior/NextWord preview before/after the end position.

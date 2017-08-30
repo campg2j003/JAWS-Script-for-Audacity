@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-26.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-30.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -59,7 +59,8 @@ Const
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pauses during play/record",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Preview",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record"
+	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
 
 Messages
 ; For user options.
@@ -140,6 +141,9 @@ In the track panel, to preview audio before the selection start, press %KeyFor(S
 In the track panel, to preview audio after the selection start, press %KeyFor(SayNextWord)
 In the track panel, to preview audio before the selection end, press %KeyFor(SelectPriorWord)
 In the track panel, to preview audio after the selection end, press %KeyFor(SelectNextWord)
+
+To switch between playing audio and speaking position time for cursor motion commands, press %KeyFor(ToggleMotionPreview).  
+This is the same as setting Motion Preview on and Announce Position to All but Arrows, or setting  Motion Previewing off and Announce Position to All.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
     
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).

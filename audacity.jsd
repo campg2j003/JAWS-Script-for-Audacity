@@ -635,11 +635,15 @@ Respects AnnounceMessage.
 :Synopsis In the track panel previews after the end position.  Otherwise performs its normal function.
 
 :Function GetPositionFieldID
-:Returns int 
+:Returns int no return description
 :Param int/iPosition
 
 :Script SelectPriorLine
-:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action. 
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
 
 :Script SelectNextLine
-:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action. 
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
+
+:Script ToggleMotionPreview
+:Synopsis Temporarily toggles Motion Previewing on and off.
+:Description When previewing is toggled off, Say Position is set to All.  When toggled on Say Position is set to All but Arrows.  This is a temprary change and will be lost if you enter Quick Settings.
