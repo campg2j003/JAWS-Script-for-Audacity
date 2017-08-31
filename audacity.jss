@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-27"
-;Last updated 2017-08-27T17:55Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-31"
+;Last updated 2017-08-31T17:20Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -51,6 +51,7 @@ Include "msaaconst.jsh"
 ;#pragma StringComparison partial
 
 Const
+	ID_SELECTION_BAR = 10,
 	;For Audacity 2.1.3 and earlier.
 	ID_SELECTION_START = 2705,
 	ID_SELECTION_END = 2706,   ; selection end or selection length
@@ -127,8 +128,8 @@ Globals
 ;Keys for playing previews with cursor motion keys.  These are executed after the motion commands so they play what we just moved over.
 Const
 	KS_PREVIEW_START_BACKWARD = "Shift+F6", ;Preview for selection start backward motion
-	KS_PREVIEW_START_FORWARD = "Shift+F5", ;Preview for selection start forward motion
-	KS_PREVIEW_END_BACKWARD = "Shift+F8", ;Preview for selection end backward motion
+	KS_PREVIEW_START_FORWARD = "Shift+F6", ;Preview for selection start forward motion
+	KS_PREVIEW_END_BACKWARD = "Shift+F7", ;Preview for selection end backward motion
 	KS_PREVIEW_END_FORWARD = "Shift+F7", ;Preview for selection end forward motion
 
 ;Keys to send to preview audio at the selection range ends.  These are used by the JAWSKey+left/right keys.
@@ -180,6 +181,10 @@ Int Function FocusInTrackPanel ()
 ;Indicates that the focus is in the track panel.  It is used to prevent JAWS from speaking messages such as move to start of track etc. in the selection bar or toolbar.
 Return (FocusInMainWindow () && GetWindowName(GetFocus()) == WN_TRACKPANEL )
 EndFunction ; FocusInTrackPanel
+
+Int Function FocusInSelectionBar ()
+Return GetControlID (GetParent (GetFocus ())) == ID_SELECTION_BAR
+EndFunction
 
 Object Function GetTrackPanelObj ()
 ;Get the accessible object of the track panel.
@@ -1802,42 +1807,46 @@ EndIf
 EndScript ; SayNextCharacter
 
 Script SayPriorWord ()
-If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+;inside the start
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !(FocusInTrackPanel () || FocusInSelectionBar ()) || gfInLabel Then
 	PerformScript SayPriorWord ()
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
-TypeKey(KS_PREVIEW_START_BEFORE)
+;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_START_AFTER)
 EndScript
 
 Script SayNextWord ()
-If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+;inside the end
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !(FocusInTrackPanel () || FocusInSelectionBar ()) || gfInLabel Then
 	PerformScript SayNextWord ()
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
-TypeKey(KS_PREVIEW_START_AFTER)
+;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_END_BEFORE)
 EndScript
 
 Script SelectPriorWord ()
-If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+;Outside the start
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !(FocusInTrackPanel () || FocusInSelectionBar ()) || gfInLabel Then
 	PerformScript SelectPriorWord ()
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
-TypeKey(KS_PREVIEW_END_BEFORE)
+;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
+TypeKey(KS_PREVIEW_START_BEFORE)
 EndScript
 
 Script SelectNextWord ()
-If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPanel () || gfInLabel Then
+;outside the end
+If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !(FocusInTrackPanel () || FocusInSelectionBar ()) || gfInLabel Then
 	PerformScript SelectNextWord ()
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
+;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
 TypeKey(KS_PREVIEW_END_AFTER)
 EndScript
 
@@ -2763,6 +2772,10 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetti
 	If giSayPosition == CI_SAY_POSITION_ALL Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
+	If gfPreviewMotion Then
+		;This isn't the same as cursor keys, and it should be.  We could test for ,/< and ./> but that would make them not dependent of keymap.  We could make this a function and have 4 scripts, or we could have a parameter indicating forward or back passed from the keymap.
+		TypeKey (KS_PREVIEW_START_AFTER)
+	EndIf
 Else
 	SayCurrentScriptKeyLabel ()
 EndIf
@@ -3122,6 +3135,9 @@ Script test ()
 ;Test FocusInMainWindow
 Var String s,
 	Handle hTemp
+;/*
+SayString("FocusInSelectionBar = " + IntToString(FocusInSelectionBar ())) ; debug
+;*/
 /*
 SayString("FocusInMainWindow = " + IntToString(FocusInMainWindow ())) ; debug
 */

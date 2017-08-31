@@ -1,18 +1,17 @@
-(This file last updated 8/30/2017)
+(This file last updated 8/31/2017)
 
-# New in 2.2.0-alpha-2017-08-27
+# New in 2.2.0-alpha-2017-08-31
 - Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  Choices are None, All but Arrows, and All.
 - Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
 - Added script ToggleMotionPreview assigned to JAWSKey+p.  This temporarily toggles motion preview on and off and Say Position between All but Arrows and All.
-# New in 2.2.0-alpha-2017-08-26
 - In the start/end selection fields Shift+Up/DownArrow preview audio at the selection end points.
-- Numpad left/right arrow keys with JAWSKey now preview in the track panel.  In the track panel, scripts SayPrior/NextWord play the preview before/after the start position.  Scripts SelectPrior/NextWord preview before/after the end position.
+- Numpad left/right arrow keys with JAWSKey now preview in the track panel and selection bar.  In the track panel and selection bar, scripts SayPrior/NextWord play the preview after the start/before the end position (inside the selection range).  Scripts SelectPrior/NextWord preview before the start/after the end position (outside the selection).
 
-# New in 2.2.0-alpha-2017-08-25
-Added cursor motion and selection keys to short layer.
+Note: The motion previewing capability requires that Audacity is set to the the Full shortcut key binding.
 
-# New in 2.2.0-alpha-2017-08-21
-Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
+
+- Added cursor motion and selection keys to short layer.
+- Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
 # New in 2.2.0-alpha-2017-08-18
 - In the track panel UpCell and DownCell (Alt+Control+Up/DownArrow) move to the prior/next selected track.
 - If SaySelectedText is pressed twice quickly track names are spoken instead of track numbers.

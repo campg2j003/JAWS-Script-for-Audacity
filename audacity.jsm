@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-30.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-31.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -137,10 +137,10 @@ To say the active cursor while the PC cursor is active, press %keyfor(SayActiveC
 To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
 To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.
 
-In the track panel, to preview audio before the selection start, press %KeyFor(SayPriorWord)
-In the track panel, to preview audio after the selection start, press %KeyFor(SayNextWord)
-In the track panel, to preview audio before the selection end, press %KeyFor(SelectPriorWord)
-In the track panel, to preview audio after the selection end, press %KeyFor(SelectNextWord)
+In the track panel and selection bar , to preview audio after (inside) the selection start, press %KeyFor(SayPriorWord)
+In the track panel and selection bar , to preview audio before (inside) the selection end, press %KeyFor(SayNextWord)
+In the track panel and selection bar , to preview audio before (outside) the selection start, press %KeyFor(SelectPriorWord)
+In the track panel and selection bar , to preview audio after (outside) the selection end, press %KeyFor(SelectNextWord)
 
 To switch between playing audio and speaking position time for cursor motion commands, press %KeyFor(ToggleMotionPreview).  
 This is the same as setting Motion Preview on and Announce Position to All but Arrows, or setting  Motion Previewing off and Announce Position to All.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.

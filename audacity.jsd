@@ -9,6 +9,10 @@
 :Description Indicates if the focus is in the track panel.
 :Returns int True if focus is in the track panel
 
+:Function FocusInSelectionBar
+:Description Indicates if the focus is in the selection bar.
+:Returns int True if focus is in the selection bar
+
 :function SaySelectionPosition
 :Description Says the selection start or end position
 :Param int/iPosition The ID of the start or end selection position
@@ -623,16 +627,16 @@ Respects AnnounceMessage.
 :Param string/s track name
 
 :Script SayPriorWord
-:Synopsis In the track panel previews before the start position.  Otherwise performs its normal function.
+:Synopsis In the track panel and selection bar previews after the start position.  Otherwise performs its normal function.
 
 :Script SayNextWord
-:Synopsis In the track panel previews after the start position.  Otherwise performs its normal function.
+:Synopsis In the track panel and selection bar previews before the end position.  Otherwise performs its normal function.
 
 :Script SelectPriorWord
-:Synopsis In the track panel previews before the end position.  Otherwise performs its normal function.
+:Synopsis In the track panel and selection bar previews before the start position.  Otherwise performs its normal function.
 
 :Script SelectNextWord
-:Synopsis In the track panel previews after the end position.  Otherwise performs its normal function.
+:Synopsis In the track panel and selection bar previews after the end position.  Otherwise performs its normal function.
 
 :Function GetPositionFieldID
 :Returns int no return description
@@ -645,5 +649,4 @@ Respects AnnounceMessage.
 :Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
 
 :Script ToggleMotionPreview
-:Synopsis Temporarily toggles Motion Previewing on and off.
-:Description When previewing is toggled off, Say Position is set to All.  When toggled on Say Position is set to All but Arrows.  This is a temprary change and will be lost if you enter Quick Settings.
+
