@@ -104,7 +104,7 @@ Globals
 	Int AnnounceToolbars,
 	Int gfSilencePreview, ;Silence Preview quick setting
 	Int gfRecordSpeechOff,
-	Int giSayPosition,
+	Int gfSayPosition,
 	Int gfPreviewMotion, ;true plays preview with cursor motions
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
@@ -1456,7 +1456,7 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1483,7 +1483,7 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1510,7 +1510,7 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1543,7 +1543,7 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1583,7 +1583,7 @@ If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive (
 	EndIf ;!IsStopped
 	JawsEnd () ; do End without speaking key label
 	SayFormattedMessage (OT_POSITION, FormatString (msgMoveTo, msgEnd, msgAllAudio))
-	If giSayPosition > CI_SAY_POSITION_NONE Then
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
 Else
@@ -1602,7 +1602,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgStart, msgSelectedTracks))
 	Pause ()
-	If giSayPosition > CI_SAY_POSITION_NONE Then
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 EndIf
@@ -1618,7 +1618,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	If giSayPosition > CI_SAY_POSITION_NONE Then
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 EndIf
@@ -1635,7 +1635,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
 	Pause ()
-	If giSayPosition > CI_SAY_POSITION_NONE Then
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 EndIf
@@ -1652,7 +1652,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	If giSayPosition > CI_SAY_POSITION_NONE Then
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 	EndIf
 EndIf
@@ -1688,7 +1688,7 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () &&
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_NO_DISABLE, FormatString(msgSelectTo, msgEnd, msgAllAudio))
 		Pause ()
-		If giSayPosition > CI_SAY_POSITION_NONE Then
+		If gfSayPosition > CI_SAY_POSITION_NONE Then
 			SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 		EndIf
 	EndIf
@@ -1763,7 +1763,7 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1792,7 +1792,7 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	;In track panel, stopped, not entering a label, announcing messages.
 	TypeCurrentScriptKey ()
 	Pause ()
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
@@ -1957,11 +1957,11 @@ Let sMessage=StringSegment (UO_MOTION_PREVIEW, ":", 2)
 If gfPreviewMotion Then
 	Let gfPreviewMotion = CI_UO_OFF
 	Let sMessage = sMessage + cScSpace + cmsg_off
-	Let giSayPosition = CI_SAY_POSITION_ALL
+	Let gfSayPosition = CI_UO_ON
 Else
 	Let gfPreviewMotion = CI_UO_ON
 	Let sMessage = sMessage + cScSpace + cmsg_on
-	Let giSayPosition = CI_SAY_POSITION_NOT_ARROWS
+	Let gfSayPosition = CI_UO_OFF
 EndIf
 Say (sMessage, OT_STATUS)
 EndScript
@@ -2649,7 +2649,7 @@ IniWriteInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile, FALSE)
 IniWriteInteger (gsIniSection, "AnnounceToolbars", CI_TOOLBARS_ON, gsIniFile, FALSE) ; no flush
 IniWriteInteger (gsIniSection, "SilencePreview", CI_UO_ON, gsIniFile, FALSE) ; no flush
 IniWriteInteger (gsIniSection, "SilenceRecord", CI_UO_ON, gsIniFile, FALSE) ; no flush
-IniWriteInteger (gsIniSection, "SayPosition", CI_SAY_POSITION_ALL, gsIniFile, FALSE) ; no flush
+IniWriteInteger (gsIniSection, "SayPosition", CI_UO_ON, gsIniFile, FALSE) ; no flush
 IniWriteInteger (gsIniSection, "PreviewMotion", CI_UO_OFF, gsIniFile, FALSE) ; no flush
 IniWriteString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile, TRUE)
 Let gsJawsGuideLink = CS_JawsGuide_LINK
@@ -2769,11 +2769,10 @@ ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetti
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If giSayPosition == CI_SAY_POSITION_ALL Then
+	If gfSayPosition Then
 		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 	EndIf
 	If gfPreviewMotion Then
-		;This isn't the same as cursor keys, and it should be.  We could test for ,/< and ./> but that would make them not dependent of keymap.  We could make this a function and have 4 scripts, or we could have a parameter indicating forward or back passed from the keymap.
 		TypeKey (KS_PREVIEW_START_AFTER)
 	EndIf
 Else
@@ -3135,9 +3134,13 @@ Script test ()
 ;Test FocusInMainWindow
 Var String s,
 	Handle hTemp
+
 ;/*
-SayString("FocusInSelectionBar = " + IntToString(FocusInSelectionBar ())) ; debug
+SayString("gfSayPosition = " + IntToString(gfSayPosition)) ; debug
 ;*/
+/*
+SayString("FocusInSelectionBar = " + IntToString(FocusInSelectionBar ())) ; debug
+*/
 /*
 SayString("FocusInMainWindow = " + IntToString(FocusInMainWindow ())) ; debug
 */
@@ -3233,7 +3236,7 @@ Let AnnounceToolbars=IniReadInteger (NonJCF, "AnnounceToolbars", CI_TOOLBARS_ON,
 Let gfEnterPause=IniReadInteger (NonJCF, "EnterPause", CI_ENTERPAUSE_ON, "audacity.jcf")
 Let gfSilencePreview = IniReadInteger (NonJCF, "SilencePreview", CI_UO_ON, "audacity.jcf")
 Let gfRecordSpeechOff=IniReadInteger (NonJCF, "SilenceRecord", CI_UO_ON, "audacity.jcf")
-Let giSayPosition=IniReadInteger (NonJCF, "SayPosition", CI_SAY_POSITION_ALL, "audacity.jcf")
+Let gfSayPosition=IniReadInteger (NonJCF, "SayPosition", CI_UO_ON, "audacity.jcf")
 Let gfPreviewMotion=IniReadInteger (NonJCF, "PreviewMotion", CI_UO_OFF, "audacity.jcf")
 ;The disadvantage of storing these in globals is that you have to shut down and restart JAWS to make changes to an externally edited config file take effect.  This could be avoided by reading from the config file when the values are needed.  Because of the complexity of decoding this value, I choose to use globals despite this disadvantage.  One could also decrease the complexity by using a second key for the title.
 /*
@@ -3255,7 +3258,7 @@ Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JA
 ;Write the info above to Audacity.JSI file
 IniWriteInteger (gsIniSection, "AnnounceMessage", AnnounceMessage, gsIniFile, false)
 IniWriteInteger (gsIniSection, "EnterPause", gfEnterPause, gsIniFile, false)
-IniWriteInteger (gsIniSection, "SayPosition", giSayPosition, gsIniFile, false)
+IniWriteInteger (gsIniSection, "SayPosition", gfSayPosition, gsIniFile, false)
 IniWriteInteger (gsIniSection, "PreviewMotion", gfPreviewMotion, gsIniFile, false)
 IniWriteInteger (gsIniSection, "SilencePreview", gfSilencePreview, gsIniFile, False)
 IniWriteInteger (gsIniSection, "SilenceRecord", gfRecordSpeechOff, gsIniFile, False)

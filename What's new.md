@@ -1,7 +1,7 @@
 (This file last updated 8/31/2017)
 
 # New in 2.2.0-alpha-2017-08-31
-- Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  Choices are None, All but Arrows, and All.
+- Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  On functions as before.  Off silences position messages for arrow keys that play audio if Motion Preview is on.
 - Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
 - Added script ToggleMotionPreview assigned to JAWSKey+p.  This temporarily toggles motion preview on and off and Say Position between All but Arrows and All.
 - In the start/end selection fields Shift+Up/DownArrow preview audio at the selection end points.

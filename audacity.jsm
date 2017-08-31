@@ -143,7 +143,7 @@ In the track panel and selection bar , to preview audio before (outside) the sel
 In the track panel and selection bar , to preview audio after (outside) the selection end, press %KeyFor(SelectNextWord)
 
 To switch between playing audio and speaking position time for cursor motion commands, press %KeyFor(ToggleMotionPreview).  
-This is the same as setting Motion Preview on and Announce Position to All but Arrows, or setting  Motion Previewing off and Announce Position to All.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
+This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
     
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
