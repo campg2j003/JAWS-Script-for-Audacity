@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-31.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-01.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -32,6 +32,8 @@ Const
 	WN_PLAYBACK_METER_TOOLBAR = "Playback Meter", ;window name of Playback Meter toolbar
 	WN_COMBINED_METER_TOOLBAR = "Combined Meter", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog
+	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Previewing", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing

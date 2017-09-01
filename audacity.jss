@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-31"
-;Last updated 2017-08-31T17:20Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-01"
+;Last updated 2017-09-01T16:30Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -549,9 +549,22 @@ EndIf ; stop preview silence
 
 ;Make Jaws read the checkbox and button in the quick settings dialog
 Let sName=GetWindowName (GetRealWindow (GetCurrentWindow ()))
-If DialogActive ()&&sName=="QuickSettings - audacity" Then
+If DialogActive ()&&sName==WN_QUICK_SETTINGS Then
 	Return
 EndIf ;quick settings dialog
+
+If DialogActive () && sName == WN_EQUALIZATION && GetWindowSubtypeCode (hFocus) == WT_UPDOWNSLIDER Then
+	Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+	SetJCFOption (OPT_MSAA_MODE, 2)
+	SayControlEx(hFocus, 
+	GetObjectName (), "",   ; control name, type
+	"",   ; control state
+	"", "",   ; Container name, type
+	GetObjectValue (), "",   ; value, position
+	"")   ; dialog text
+	SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
+	Return TRUE
+EndIf
 
 If DialogActive () && GetWindowSubtypeCode (hFocus) == WT_LEFTRIGHTSLIDER && GetWindowSubtypeCode (GetPriorWindow(hFocus)) == WT_EDIT Then
 	Let ghSliderEdit = GetPriorWindow (hFocus)

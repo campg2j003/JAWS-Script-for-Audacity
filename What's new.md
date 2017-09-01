@@ -1,5 +1,7 @@
-(This file last updated 8/31/2017)
+(This file last updated 9/01/2017)
 
+# New in 2.2.0-alpha-2017-09-01
+Sliders in Equalization dialog now speak DB values.
 # New in 2.2.0-alpha-2017-08-31
 - Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  On functions as before.  Off silences position messages for arrow keys that play audio if Motion Preview is on.
 - Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
