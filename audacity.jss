@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-08-31"
-;Last updated 2017-08-31T17:20Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-04"
+;Last updated 2017-09-04T00:35Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1602,9 +1602,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgStart, msgSelectedTracks))
 	Pause ()
-	If gfSayPosition > CI_SAY_POSITION_NONE Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-	EndIf
+	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 EndIf
 EndScript ; MoveToStartOfSelectedTracks
 
@@ -1618,9 +1616,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	If gfSayPosition > CI_SAY_POSITION_NONE Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-	EndIf
+	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 EndIf
 EndScript ; MoveToEndOfSelectedTracks
 
@@ -1635,9 +1631,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
 	Pause ()
-	If gfSayPosition > CI_SAY_POSITION_NONE Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-	EndIf
+	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 EndIf
 EndScript ; SelectToBeginning
 
@@ -1652,9 +1646,7 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	If gfSayPosition > CI_SAY_POSITION_NONE Then
-		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
-	EndIf
+	SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
 EndIf
 EndScript ; SelectToEnd
 
