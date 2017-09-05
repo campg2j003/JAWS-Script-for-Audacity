@@ -13,7 +13,12 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-08-24
+Last updated: 
+2017-09-05
+Modifications by michael vogt:
+Added possibility to install the german translation of the jaws script for audacity package
+
+2017-08-24
 
 Modifications:
 
@@ -99,6 +104,12 @@ ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
 ${Break}
+${Case} "deu"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
+${Break}
 ${Default}
 ${JawsScriptFile} "${JAWSSrcDir}" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}" "audacity.jsd"
@@ -118,6 +129,10 @@ ${Switch} $1
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
+${Break}
+${Case} "deu"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
 ${Default}
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
@@ -170,6 +185,12 @@ File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.md"
 ;File "/oname=What's new_esn.md" "${JAWSSrcDir}lang\esn\" "What's new.md"
 ${Break}
+${Case} "deu"
+${AddItem} "$OUTDIR\readme_deu.html"
+File "/oname=readme_deu.html" "${JAWSSrcDir}lang\deu\readme.html"
+;${AddItem} "What's new_deu.md"
+;File "/oname=What's new_deu.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
+${Break}
 ${Default}
 ${AddItem} "$OUTDIR\readme_enu.html"
 File "/oname=readme_enu.html" "${JAWSSrcDir}readme.html"
@@ -203,9 +224,11 @@ ${File} "${JAWSSrcDir}" "copying.txt"
 ${File} "" "uninstlog.nsh"
 ${File} "" "uninstlog_enu.nsh"
 ${File} "" "uninstlog_esn.nsh"
+${File} "" "uninstlog_deu.nsh"
 ${File} "" "installer.nsi"
 ${File} "" "installer_lang_enu.nsh"
 ${File} "" "installer_lang_esn.nsh"
+${File} "" "installer_lang_deu.nsh"
 !MacroEnd ;JAWSInstallerSrc
 
 
@@ -219,5 +242,7 @@ ${File} "" "installer_lang_esn.nsh"
 ;Strange though it seems, the language file includes must follow the invocation of JAWSScriptInstaller.
   ;!include "uninstlog_enu.nsh"
   ;!include "uninstlog_esn.nsh"
+  ;!include "uninstlog_deu.nsh"
 !include "installer_lang_enu.nsh"
 !include "installer_lang_esn.nsh"
+!include "installer_lang_deu.nsh"
