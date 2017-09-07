@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-04"
-;Last updated 2017-09-04T00:35Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-06"
+;Last updated 2017-09-06T23:50Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -423,14 +423,15 @@ ActiveItemChangedEvent (curHwnd, curObjectId, curChildId, prevHwnd, prevObjectId
 EndFunction
 */
 
-/*
-; This is commented out because it appears to have no effect.  Retaining the code just in case.
-    Int Function HandleCustomAppWindows(Handle hWnd)
+; This is probably where Silence Previewing should have been handled.  We retain the code in HandleCustomRealWindows just in case this isn't called first.
+Int Function HandleCustomAppWindows(Handle hWnd)
 Var
-	Int iRtn
+	Int iRtn,
+	String sFirst
 	
 ;DebugString("Enter HandleApp") ; debug
-If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutostarted Then
+Let sFirst = GetWindowName (GetFirstChild (GetRealWindow(GetFocus ())))
+If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutostarted && (sFirst == WN_PREPARING_PREVIEW || sFirst == WN_PREVIEWING) Then
 	;DebugString("GetWindowName of appWindow: " + GetWindowName(hWnd))
 	Let gfSilence = TRUE
 	;DebugString("Exit HandleApp, starting previewing") ; debug
@@ -440,13 +441,13 @@ Let iRtn = HandleCustomAppWindows(hWnd)
 ;DebugString("Exit HandleApp") ; debug
 Return iRtn
 EndFunction ; HandleCustomAppWindows
-*/
 
 Int Function HandleCustomRealWindows(Handle hReal)
 ;Suppress speech for preview.
 Var Int iRtn, ; debug
 	String sFirst
 	
+;This may no longer be needed because it is handled in HandleCustomAppWindows, but we keep this code just in case.
 Let sFirst = GetWindowName(GetFirstChild(hReal))
 ;DebugString("Enter HandleReal " + sFirst) ; debug
 ;SayString("Enter HandleReal") ; debug
