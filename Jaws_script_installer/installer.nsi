@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-08-23
+Last updated: 2017-09-07
 
 Modifications:
 
@@ -55,7 +55,7 @@ SetCompressor /solid lzma ;create the smallest file
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
-!Define JAWSScriptLangs "de|esn" ;Supported languages delimited by | (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
+!Define JAWSScriptLangs "deu|esn" ;Supported languages delimited by | (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
 
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
@@ -93,7 +93,7 @@ ${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
-${Case} "de" ; German
+${Case} "deu" ; German
 ${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsm"
@@ -121,7 +121,7 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
 ;Set the location for these files the same as JSD files-- for shared scripts in JAWS 17 this is Scripts\<lang>.
 ${JawsScriptSetPath} jsd
 ${Switch} $1
-${Case} "de" ; German
+${Case} "deu" ; German
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\de\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\de\What's new.md"
 ${Break}
@@ -176,7 +176,7 @@ ${EndIf}
 StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
-${Case} "de" ; German
+${Case} "deu" ; German
 ${AddItem} "$OUTDIR\readme_de.html"
 File "/oname=readme_de.html" "${JAWSSrcDir}lang\de\readme.html"
 ;${AddItem} "What's new_de.md"
