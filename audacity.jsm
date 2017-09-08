@@ -1,4 +1,4 @@
-; English messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-18.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-01.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -22,13 +22,18 @@ JAWS script for Audacity multitrack sound editor V2.0 or later
     See the file copying.txt for details.
 */
 
-; These are window names used to identify windows. (Should they be translated?)
+; These are window names used to identify windows. (Should be translated)
 Const
 	WN_TOOLDOCK = "ToolDock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Track Panel", ; window name of track table
 	WN_SELECTION = "Selection", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Transport", ; window name of Transport toolbar
+	WN_RECORDING_METER_TOOLBAR = "Recording Meter", ;window name of Recording Meter toolbar
+	WN_PLAYBACK_METER_TOOLBAR = "Playback Meter", ;window name of Playback Meter toolbar
+	WN_COMBINED_METER_TOOLBAR = "Combined Meter", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog
+	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Previewing", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing
@@ -39,13 +44,25 @@ Const
 	CS_SelectionBar="Selection bar",
 	CS_TrackPanel="Track panel"
 
+;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
+Const
+    CS_SELECT_ON = " Select On",
+    CS_MUTE_ON = " Mute On",
+    CS_SOLO_ON = " Solo On"
+    
+;For announcing selected tracks.
+Const
+	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
+	CS_TRACKS_RANGE_SEP = "-" ;separates first and last track of a track range
+
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages", ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pauses during play/record",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Preview",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record"
+	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
 
 Messages
 ; For user options.
@@ -84,6 +101,15 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+;Audacity key layer keys, must match keys JAWSKey+a&X where X sytarts a sublayer.
+const
+	;These are the prefix keys for the Audacity layer.  There are two because there are JAWSKey and Insert entries in the JKM for the same key.
+	ksAudacityLayer1 = "JAWSKey+a",
+	ksAudacityLayer2 = "Insert+a",
+	ksPositionLayer = "p",
+	ksShortLayer = "s",
+	ksTempoLayer = "t"
+
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
@@ -108,8 +134,19 @@ To say the selection start position, press %keyfor (SaySelectionStart).
 To say the selection end position or length, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
+In the main window to say the numbers of the selected tracks, press %KeyFor(SaySelectedText).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
+To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
+To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.
 
+In the track panel and selection bar , to preview audio after (inside) the selection start, press %KeyFor(SayPriorWord)
+In the track panel and selection bar , to preview audio before (inside) the selection end, press %KeyFor(SayNextWord)
+In the track panel and selection bar , to preview audio before (outside) the selection start, press %KeyFor(SelectPriorWord)
+In the track panel and selection bar , to preview audio after (outside) the selection end, press %KeyFor(SelectNextWord)
+
+To switch between playing audio and speaking position time for cursor motion commands, press %KeyFor(ToggleMotionPreview).  
+This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
+    
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
@@ -127,6 +164,11 @@ To mark the current track, press %KeyFor(MarkTrack).
 To go to the marked track, press %KeyFor(GoToMarkedTrack).
 To go to the marked track and mark the starting track, press %KeyFor(ExchangeWithMark).
 To move the current track to the position of the marked track and set the mark to the current track, press %KeyFor(MoveCurrentTrackToMark).
+
+To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you've entered the Tempo layer.)  
+When you are finished press %KeyFor(TempoStartStop) again.  Playback stops and the tempo in beats per minute is spoken.  
+After that you can press %KeyFor(TempoAnnounce) to speak the tempo again or %KeyFor(TempoCopy) to copy it to the clipboard.  The value will be retained until %KeyFor(TempoStartStop) is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
+The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
 
 To toggle speech on or off, press %keyfor(MuteSynthesizer).
 To toggle alert messages on or off, press %keyfor (AnnounceOnOff)).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
@@ -154,6 +196,54 @@ If SilencePreview is on and you hit the Preview button in an effect, sometimes t
 To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 To Change the URL for the Audacity Jaws Guide, press %keyfor (AddAudacityJawsGuide)
+@@
+@msgAudacityLayerHelp
+Go to a track by number press g.
+Move a track by number press m.
+Mark current track press k.
+Go to marked track press Shift+g.
+Exchange current track with mark press x.
+Move current track to mark press Shift+m.
+Enter layer to set or say position display type layer press p.
+Enter layer to say short audio sections (Shift+F5-F8) press s.
+Enter layer to find tempo press t.
+@@
+;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
+@msgPositionLayer_start
+position
+@@
+@msgPositionLayerHelp
+start-end press s.
+start-length press l.
+length-end press e.
+length-center press c.
+say position display type press p.
+@@
+@msgShortLayer_Start
+short
+@@
+@msgShortLayerHelp
+Shift+F5-F8 press j, k, l, ;.
+Shift+Control+F5, F7 press Control+j, Control+;.
+c press c.
+@@
+@msgTempoLayer_Start
+tempo
+@@
+@msgTempoNoBeats
+no beats
+@@
+@msgTempoNoTempoStored
+No tempo stored
+@@
+;%1=tempo (i.e. 147.8)
+@msgTempoCopied
+Copied %1
+@@
+@msgTempoLayerHelp
+Start/stop press SPACE.
+Announce press a.
+Copy to clipboard press c.
 @@
 @msgPresetHotkeyHelp
 To set focus to the preset option, press %keyfor (VSTPreset).
@@ -337,6 +427,19 @@ start
 end
 @@
 
+@msgLength
+length
+@@
+
+@msgCenter
+center
+@@
+
+;Say a position field.  %1 is field name, %2 is value.
+@msgPositionField
+%1 %2
+@@
+
 @msgLeft
 left
 @@
@@ -474,11 +577,21 @@ Script options reset to default values
 @msgNoSelection
 To use this feature you must enable the selection toolbar
 @@
-@msgNoRecordingMeter
+;Audacity 2.1.3 and earlier
+@msgNoRecordingMeter 
 To use this feature you must enable the Recording Meter or Combined Meter toolbar
 @@
-@msgNoPlaybackMeter
+; Audacity 2.2.0
+@msgNoRecordingMeter22 
+To use this feature you must enable the Recording Meter
+@@
+;Audacity 2.1.3 and earlier
+@msgNoPlaybackMeter 
 To use this feature you must enable the Playback Meter or Combined Meter toolbar
+@@
+;Audacity 2.2.0
+@msgNoPlaybackMeter22 
+To use this feature you must enable the Playback Meter
 @@
 @msg_Script_Version
 Jaws script version %1, for Audacity 2.0.0 or later.

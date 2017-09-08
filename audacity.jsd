@@ -9,6 +9,10 @@
 :Description Indicates if the focus is in the track panel.
 :Returns int True if focus is in the track panel
 
+:Function FocusInSelectionBar
+:Description Indicates if the focus is in the selection bar.
+:Returns int True if focus is in the selection bar
+
 :function SaySelectionPosition
 :Description Says the selection start or end position
 :Param int/iPosition The ID of the start or end selection position
@@ -65,11 +69,11 @@
 
 :script SaySelectionStart
 :Synopsis Says the value of the Selection Start control
-:Description Says the value of the Selection Start control.  If pressed twice quickly, moves focus to it.
+:Description Says the value of the Selection Start control.  If pressed twice quickly, moves focus to it.  For Audacity 2.2.0 and later says the value (and name) of the left selection control.
 
 :script SaySelectionEnd
 :Synopsis Say the end position or length of the selection
-:Description Say the end position or length of the selection.  Also says whether End or Length is selected.  If pressed twice quickly, moves focus to it.
+:Description Say the end position or length of the selection.  Also says whether End or Length is selected.  If pressed twice quickly, moves focus to it.  For Audacity 2.2.0 and later says the value (and name) of the right selection control.
 
 :script SayActiveCursor
 :Synopsis Says the Audio Position value
@@ -111,7 +115,7 @@
 :Description Returns True if a position value was found, False if it could not be gotten, in which case it speaks a corresponding message (unless fSilent is True).
 Respects AnnounceMessage.
 :Returns int True if position field was found, False if toolbar not found.
-:Param int/iPosition CTRL ID of the position field: ID_SELECTION_START or ID_SELECTION_END.
+:Param int/iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
 :Optional
 :Param int/fSilent If True does not speak error message if the selection toolbar could not be found.
 
@@ -544,4 +548,105 @@ Respects AnnounceMessage.
 :script SayPlaybackMeter
 :Synopsis Say the level displayed in the playback meter
 :Description Says the level displayed in the playback meter.  If pressed twice quickly, moves focus to it.
+
+:Function GetPositionFieldHandle
+:Description Determines the proper control based on the version of Audacity and the setting of the Selection Type combo box (in 2.2.0).
+:Returns handle Handle of the position control.
+:Param int/iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
+
+:function KeymapChangedEvent
+:Returns void no return description
+:Param int/iKeyCode
+:Param string/sKeyName
+:Param int/iKeyStatus
+
+:Script AudacityLayerHelp
+:Synopsis Speaks help for the Audacity key layer.
+
+:Script PositionLayerHelp
+:Synopsis Speaks help for the Position key layer.
+
+:Script SaySelectionType
+:Synopsis Say the value of the Selection Type combo.
+
+:Script SetSelectionType
+:Synopsis Set the value of the Selection Type combo to start-end (s or 1), start-length (l or 2), length-end (e or 3), or length-center (c or 4).
+
+:Script SendKey
+:Synopsis Allows you to define a key sequence that sends another key sequence to the system.
+:Description Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.  To use it, in the JKM file make an entry like keys=SendKey("newsequence").
+:Param int/sKey Key sequence to send.
+:Category Script
+
+:Script SaySelectedText
+:Synopsis In the main window says the numbers of the selected tracks.  Otherwise says selected text.  If pressed twice quickly says track names instead.
+
+:Function GetTrackPanelObj
+:Description Get the accessible object of the track panel.
+:Returns object The accessible object of the track panel.
+
+:Script ShortLayerHelp
+:Synopsis Speaks help for the Short key layer.
+:Description The Short key layer provides access to the keys F5-F8 from the home row.
+
+:Script TempoStartStop
+:Synopsis Start or stop finding the tempo.
+:Description Playback is started.  While playing, script TempoTap counts a beat.  When pressed again tempo in beats per minute is spoken.  See script key help for more info.
+
+:Script TempoTap
+:Synopsis Records a beat for finding tempo.
+:Description Press this once for each beat.  The time is counted from the first beat after TempoStartStop until the last beat before TempoStartStop is pressed again.  You need to press only the last key of this key sequence once in the Tempo layer.
+
+:Script TempoAnnounce
+:Synopsis Says the value of the last calculated tempo.
+
+:Script TempoCopy
+:Synopsis Copies the last tempo value to the clipboard.
+
+:Script TempoLayerHelp
+:Synopsis Speaks Tempo layer key help.
+
+:Function GetSelectedTracks
+:Returns string :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+
+:Script DownCell
+:Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+
+:Script UpCell
+:Synopsis In the track panel moves to the prior selected track.  Otherwise moves up one cell and reads it.
+
+:Function GetSelectedTracks
+:Description Returns a string containing the selected tracks numbers or names.  Consecutive selected tracks are shown as firsttrack-lasttrack.  Track ranges are separated by ", ".
+:Returns string selected tracks suitable for display.
+:Optional
+:Param int/fName If true track names are returned, otherwise track numbers are returned (default).
+
+:Function CleanTrackName
+:Description Removes status information added to track names for accessibility such as "Select On".
+:Returns string track name with status messages removed.
+:Param string/s track name
+
+:Script SayPriorWord
+:Synopsis In the track panel and selection bar previews after the start position.  Otherwise performs its normal function.
+
+:Script SayNextWord
+:Synopsis In the track panel and selection bar previews before the end position.  Otherwise performs its normal function.
+
+:Script SelectPriorWord
+:Synopsis In the track panel and selection bar previews before the start position.  Otherwise performs its normal function.
+
+:Script SelectNextWord
+:Synopsis In the track panel and selection bar previews after the end position.  Otherwise performs its normal function.
+
+:Function GetPositionFieldID
+:Returns int no return description
+:Param int/iPosition
+
+:Script SelectPriorLine
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
+
+:Script SelectNextLine
+:Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
+
+:Script ToggleMotionPreview
 

@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-09-07
+Last updated: 2017-09-08
 
 Modifications:
 
@@ -22,7 +22,7 @@ Modifications:
 /*
 Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2016  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,10 +94,10 @@ ${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 ;Language-specific files
 ${Switch} $1
 ${Case} "deu" ; German
-${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jkm"
-${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsd"
-${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.jsm"
-${JawsScriptFile} "${JAWSSrcDir}lang\de\" "audacity.qsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
 ${Break}
 ${Case} "esn" ; Spanish
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
@@ -122,8 +122,8 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
 ${JawsScriptSetPath} jsd
 ${Switch} $1
 ${Case} "deu" ; German
-  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\de\readme.html"
-  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\de\What's new.md"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
@@ -153,8 +153,8 @@ push $3
 push $4
 StrCpy $3 "enu|${JAWSScriptLangs}"
 ${Do}
-;${StrLoc} $0 $3 "|" "<" ; why was this from right to left?
-${StrLoc} $0 $3 "|" ">" ; left to right
+;Why was this previously < (right to left)?
+${StrLoc} $0 $3 "|" ">"
 ;$0 is position of |
 ;DetailPrint "JAWSInstallFullItems: $$3='$3', $$0=$0," ; debug
 ${If} $0 > 0
@@ -178,9 +178,9 @@ StrCpy $4 "lang\"
 ${Switch} $1
 ${Case} "deu" ; German
 ${AddItem} "$OUTDIR\readme_de.html"
-File "/oname=readme_de.html" "${JAWSSrcDir}lang\de\readme.html"
+File "/oname=readme_de.html" "${JAWSSrcDir}lang\deu\readme.html"
 ;${AddItem} "What's new_de.md"
-;File "/oname=What's new_de.md" "${JAWSSrcDir}lang\de\" "What's new.md"
+;File "/oname=What's new_de.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
 ${Break}
 ${Case} "esn" ; Spanish
 ${AddItem} "$OUTDIR\readme_esn.html"

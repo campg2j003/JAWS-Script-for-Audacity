@@ -21,6 +21,14 @@
  ID="Audacity Options.Silence Record" Type="Boolean">
 				<SettingsFile Section="NonJCFOptions" Name="SilenceRecord" />
 			</Setting>
+			<Setting
+				ID="Audacity Options.SayPosition" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="SayPosition" />
+			</Setting>
+			<Setting
+ ID="Audacity Options.PreviewMotion" Type="Boolean">
+				<SettingsFile Section="NonJCFOptions" Name="PreviewMotion" />
+			</Setting>
 		</Category>
 	</QuickSettingsDefinitions>
 </QuickSettings>

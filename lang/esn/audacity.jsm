@@ -1,4 +1,4 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-02-17.
+; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-24.
 ;Translation based on English version dated 2017-02-17.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
@@ -23,7 +23,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
     See the file copying.txt for details.
 */
 
-; These are window names used to identify windows. (Should they be translated?)
+; These are window names used to identify windows. (they Should be translated)
 Const
 	WN_TOOLDOCK = "Bloqueo de herramientas", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Panel de pista", ; window name of track table
