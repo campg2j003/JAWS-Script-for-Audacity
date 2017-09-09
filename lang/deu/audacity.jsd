@@ -9,6 +9,10 @@
 :Description Gibt an, ob der Fokus im Spuren Panel ist.
 :Returns int True Wenn der Fokus im Spuren Panel ist
 
+:Function FocusInSelectionBar
+:Description Gibt an, ob der Fokus in der Selektion Leiste ist.
+:Returns int True Wenn der Fokus in der Selektion Leiste ist
+
 :function SaySelectionPosition
 :Description Spricht die Start oder Ende Position der Selektion.
 :Param int/iPosition Die ID der Start oder Ende Position der Selektion.
@@ -619,7 +623,31 @@ Respects AnnounceMessage.
 :Param int/fName true: Gibt die Spurnamen zurück, false: Gibt die Spurnummern zurück (Standart).
 
 :Function CleanTrackName
-:Description Entfernt dem Spurnamen aufgrund der Zugänglichkeit hinzugefügte Statusinformationen wie "gewählt ein".
+:Description Entfernt der Bezeichnung der Spur aufgrund der Zugänglichkeit hinzugefügte Statusinformationen wie "gewählt ein".
 :Returns string Spurname mit entfernten Statusinformationen.
 :Param string/s Spurname
+
+:Script SayPriorWord
+:Synopsis Audio Vorschau nach der Start Position, wenn im Spuren Panel oder in der Selektion Leiste. Andernfalls wird die normale Funktion ausgeführt  
+
+:Script SayNextWord
+:Synopsis Audio Vorschau vor der Ende Position, wenn im Spuren Panel oder in der Selektion Leiste. Andernfalls wird die normale Funktion ausgeführt
+
+:Script SelectPriorWord
+:Synopsis Audio Vorschau vor der Start Position, wenn im Spuren Panel oder in der Selektion Leiste. Andernfalls wird die normale Funktion ausgeführt
+
+:Script SelectNextWord
+:Synopsis Audio Vorschau nach der Ende Position, wenn im Spuren Panel oder in der Selektion Leiste. Andernfalls wird die normale Funktion ausgeführt
+
+:Function GetPositionFieldID
+:Returns int Keine Beschreibung des Rückgabewerts
+:Param int/iPosition
+
+:Script SelectPriorLine
+:Synopsis Spielt eine Vorschau des übergebenen Audios ab, wenn in den Selektion Start / Ende Steuerelementen. Andernfalls wird die Standard Funktion ausgeführt.
+
+:Script SelectNextLine
+:Synopsis Spielt eine Vorschau des übergebenen Audios ab, wenn in den Selektion Start / Ende Steuerelementen. Andernfalls wird die Standard Funktion ausgeführt.
+
+:Script ToggleMotionPreview
 

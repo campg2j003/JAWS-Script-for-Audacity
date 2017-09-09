@@ -1,5 +1,6 @@
-; German messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-24.
-;Translation based on English version dated 2017-08-29.
+; German messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-01.
+; Translation based on English version dated 2017-09-01.
+; Translated by Michael Vogt last updated 2017-09-09
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -33,6 +34,8 @@ Const
 	WN_PLAYBACK_METER_TOOLBAR = "Wiedergabe-Aussteuerungsanzeige", ;window name of Playback Meter toolbar
 	WN_COMBINED_METER_TOOLBAR = "Kombinierte Aussteuerungsanzeige", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Ketten bearbeiten", ; name of the Edit Chains dialog
+	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_QUICK_SETTINGS = "Schnelleinstellung - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Vorschau erstellen", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Vorschau", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing
@@ -60,7 +63,8 @@ Const
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Werkzeugleisten ansagen",
 	UO_ENTER_PAUSE = "UOEnterPause:Enter unterbricht während Wiedergabe / Aufnahme",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Still während Vorschau",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme"
+	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Audio Vorschau nach Bewegen der Position"
 
 Messages
 ; For user options.
@@ -90,7 +94,7 @@ Const
 	csPositionGroupFmt = "000.00",
 	;The word following the days in a position.
 	csDays = "Tage",
-	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HH MM SS.sss  format, with blanks removed
 	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = "", ; thousands separator character
 	csDecimal = "." ; decimal point
@@ -143,6 +147,15 @@ Länge - Ende: E
 Länge - zentriert: C
 Ebenso können die Zifferntasten 1 bis 4 verwendet werden.
 
+Im Spuren Panel und der Selektion Leiste: 
+Audio Vorschau nach der Start Position innerhalb der Selektion: %KeyFor(SayPriorWord)
+Audio Vorschau vor der Ende Position innerhalb der Selektion: %KeyFor(SayNextWord)
+Audio Vorschau vor der Start Position ausserhalb der Selektion: %KeyFor(SelectPriorWord) 
+Audio Vorschau nach der Ende Position ausserhalb der Selektion: %KeyFor(SelectNextWord)
+
+Umschalten zwischen Audio Vorschau und Ansagen der Position nach Bewegen der Position: %KeyFor(ToggleMotionPreview)
+Diese Funktion ermöglicht ein rasches Umschalten zwischen der Vorschau und der Ansage nach Positionsänderungen und entspricht den Optionen Ansagen der Position und Audio Vorschau nach Bewegen der Position im Schnelleinstellung Dialog. Im Gegensatz zur Konfiguration im Schnelleinstellungen Dialog hat diese Tastenkombination eine temporäre wirkung und ändert die im Schnelleinstellung Dialog vorgenommene Konfiguration nicht. Nach dem vorübergehenden Wechsel in eine andere Anwendung oder dem Schnelleinstellung Dialog wird wieder die im Schnelleinstellung Dialog vorgenommene Konfiguration verwendet.
+    
 Erhöhen der Lautstärke der aktiven Spur: %keyfor (MouseUp)
 Verringern der Lautstärke der aktiven Spur: %keyfor (MouseDown)
 Panorama der aktiven Spur nach links %keyfor (MouseLeft)

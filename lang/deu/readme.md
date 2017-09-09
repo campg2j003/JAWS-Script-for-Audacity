@@ -10,7 +10,7 @@ Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer ein
 - Spricht beim Wechseln zwischen dem Spuren-Panel, der Selektion Leiste und den Werkzeugleisten die Bezeichnung dieser Fensterbereiche.
 - Spricht den Namen der Werkzeugleiste, wenn der Fokus von einer Werkzeugleiste zu einer anderen verschoben wird.
 - Wenn der Fokus in einer Werkzeugleiste ist, kann mit CTRL + Tab zur nächsten und mit CTRL + Shift + Tab zur vorherigen Werkzeugleiste navigiert werden.
-	- Bei gestoppter Wiedergabe kann mit den Pfeil nach links / Pfeil nach rechts Tasten eine Audio Vorschau der Cursor Position wiedergegeben werden.
+- Bei gestoppter Wiedergabe kann mit den Pfeil nach links / Pfeil nach rechts Tasten eine Audio Vorschau der Cursor Position wiedergegeben werden.
 - Mit Pfeil nach links / Pfeil nach rechts kann die Cursor Position angesagt werden.
 - Beim Erweitern oder Reduzieren der Selektion durch Tastenkombinationen kann eine Audio Vorschau  wiedergegeben oder die neue Position angesagt werden.
 - Informiert, wenn keine Spuren in einem Projekt vorhanden sind und deshalb die gewählte Operation nicht angewendet werden kann.
@@ -19,7 +19,7 @@ Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer ein
 - In vielen VST-Plugins kann das Preset Steuerelement mittels Tastenkombination fokussiert und Presets geladen und gespeichert werden.
 - In vielen Plugin Dialogen werden Namen und Werte der Steuerelemente angesagt.
 - Unterstützung mehrere Sprachen: Englisch, Spanisch und Deutsch werden unterstützt. Ebenso ist eine Übersetzung der readme Datei in Vietnamesisch vorhanden. Vielen Dank an Nguyen Hoang Giang, Dang Manh Cuong und Le Thi Theu dies anzubieten. Diese Datei audacity_readme_vi.txt ist im Installationsverzeichnis im Programme Ordner zu finden.
-Spricht die Nummern der aktuell selektierten Spuren durch Drücken von Jaws Taste + Shift + Pfeil nach unten (SaySelectedText). Die Namen der aktuell selektierten Spuren werden durch zwei Mal kurz nacheinander drücken gesprochen.
+- Spricht die Nummern der aktuell selektierten Spuren durch Drücken von Jaws Taste + Shift + Pfeil nach unten (SaySelectedText). Die Namen der aktuell selektierten Spuren werden durch zwei Mal kurz nacheinander drücken gesprochen.
 - Spuren können durch angabe einer Nummer aktiviert oder an eine bestimmte Position verschoben werden. Ebenso kann eine bestimmte Spur "gemerkt" werden, um zu einem späteren Zeitpunkt diese Spur zu aktivieren oder eine andere Spur an diese gemerkte Position zu verschieben.
 - Feedback, wenn eine Spur mit der Tastatur verschoben wird (siehe weiter unten)
 - Der Installer kann die Skripts für alle Benutzer oder für den aktuellen Benutzer installieren. Werden die Skripts für alle Benutzer installiert, werden diese in das gemeinsame Scripts Verzeichnis kopiert, auch für Jaws 17. 
@@ -37,14 +37,20 @@ Drei Installationstypen werden unterstützt:
 - Benutzerdefiniert: Wie vollständig, erlaubt jedoch die Installation der Quelldaten des Installers.
 
 Für die vollständige und die benutzerdefinierte Installation für alle Benutzer werden die Deinstallationsoption und die Readme Datei im Installationsverzeichnis installiert.
+
 Wenn der nur Skripts Typ gewählt wird, werden die readme und die whats new Dateien in den Jaws Scripts Ordner jeder Version installiert, und whatsnew.md wird in audacity_whatsnew.md umbenannt. (die readme Datei in Vietnamesisch wird bei einer nur Skripts Installation nicht kopiert)
+
 Wenn die Berechtigungen des Benutzers die Installation für alle Benutzer erlaubt, wird eine Installation für alle Benutzer ausgeführt, andernfalls wird die Installation für den aktuellen Benutzer ausgeführt. Wenn die Berechtigungen die Installation für alle Benutzer erlaubt, kann mit dem Kommandozeilenparameter /currentuser die Installation für den aktuellen Benutzer erzwungen werden.
+
 Bei der alle Benutzer Installation, auf der Seite Versionen/Sprache, kann zwischen der Installation für alle Benutzer oder der Installation für den aktuellen Benutzer gewählt werden.
+
 Der Installer erlaubt es auszuwählen, in welche Jaws Version und Sprache die Skripts installiert werden. Er kompilliert das Skript Paket für jede Version. Beachte, dass das Skript Paket nur für die Sprache der aktuell laufenden Jaws Version sauber kompilliert werden kann.
+
 Wenn Du den Installer modifizieren möchtest, oder Du betrachten möchtest, wie er funktioniert, kannst Du die Quelldaten des Installers installieren, in dem im benutzerdefinierten Installationstyp die Option Installer Source installieren gewählt wird.
 
 ## Deinstallieren:
 Das Paket kann unter Programme und Features deinstalliert werden (Programme hinzufügen oder entfernen). Alternativ kann die Datei uninst.exe im Installationsverzeichnis ausgeführt werden (%programfiles(x86)%\Jaws Script for Audacity oder %localappdata%\Jaws Script for Audacity).
+
 Wenn der Uninstaller erkennt, dass die Skripts seit der Installation modifiziert wurden, muss das Löschen der Skripts bestätigt werden. Wird ja gewählt, werden alle modifizierten Dateien gelöscht, wird nein gewählt, bleiben alle Skripts unverändert. Die Konfigurationsdatei (audacity.jcf oder audacity.jsi) wird nicht entfernt.
 
 # Verwenden der Skripts
@@ -53,30 +59,42 @@ Hinweis: Das Skript spricht Namen einiger Audacity Tastenkombinationen und verwe
 ## Grundlagen
 Nach der Installation spricht das Skript eine Willkommen Meldung, wenn Audacity erstmals den Fokus erhält. Du kannst eine Liste der vom Skript bereitgestellten Tastenkombinationen anschauen, in dem Du Jaws Taste + H drückst ( Hotkey Hilfe). Eine Liste mit Audacity Tastenkombinationen erhälst Du mit Jaws Taste + W. Diese Seite enthält auch einen Link, mit dem der Audacity Leitfaden für Jaws Anwender von David Bailes im Browser geöffnet werden kann. 
 
-Du kannst die Selektion Start und Selektion Ende Position oder die Selektion Dauer ansagen mit Alt + [ und Alt + ] (ü und Umlaut-Taste deutschsprachiger Tastaturlayouts). Zwei Mal kurz nacheinander gedrückt wird das jeweilige Eingabefeld zur Eingabe der Position fokussiert. Beachte, dass in Audacity Versionen vor v2.2.0 Alt + ] "Ende" oder "Länge" spricht, je nach gewähltem Optionsfeld. 
-Mit Alt + Entfernen wird die Audio Cursor Position angesagt (bei aktiviertem PC-Cursor). Das ist Hilfreich während der Wiedergabe oder Aufnahme. Zwei Mal kurz nacheinander gedrückt wird die normale Jaws Funktion ausgeführt. 
+Du kannst die Selektion Start und Selektion Ende Position oder die Selektion Dauer ansagen mit Alt + [ und Alt + ] (ü und Umlaut-Taste deutschsprachiger Tastaturlayouts). Zwei Mal kurz nacheinander gedrückt wird das jeweilige Eingabefeld zur Eingabe der Position fokussiert. Beachte, dass in Audacity Versionen vor v2.2.0 Alt + ] "Ende" oder "Länge" spricht, je nach gewähltem Optionsfeld.
+ 
+Mit Alt + Entfernen wird die Audio Cursor Position angesagt (bei aktiviertem PC-Cursor). Das ist Hilfreich während der Wiedergabe oder Aufnahme. Zwei Mal kurz nacheinander gedrückt wird die normale Jaws Funktion ausgeführt.
+ 
 Mit Jaws Taste + Entfernen wird der aktuelle Transport Status von Audacity angesagt: gestoppt, Wiedergabe, Wiedergabe Pause, Aufnahme oder Aufnahme Pause (in früheren Versionen von Audacity ist dieser Status in der Statuszeile erreichbar).
 
+
 In Audacity 2.2.0 wurden die Optionsfelder der Selektion Leiste zur Wahl zwischen der Ende Position und Selektion Dauer durch ein Kombinationsfeld mit zusätzlichen Optionen ersetzt. Das Skript bietet Tastenkombinationen, um die aktuell gewählte Option dieses Steuerelements anzusagen oder um eine andere Option auszuwählen.
+
 Die Tastenkombination Ebene "Position" wird initialisiert mit Jaws Taste + A, P
+
  Dann können folgende Tasten verwendet werden:
- Hilfe Text der Tastenkombination Ebene sprechen: ?
- Aktuell gewählte Selektionsart ansagen: P
- Selektionsart wählen:
- Start - Ende: S oder 1
- Start - Länge: L oder 2
- Länge - Ende: E oder 3
- Länge - zentriert: C oder 4
+- Hilfe Text der Tastenkombination Ebene sprechen: ?
+- Aktuell gewählte Selektionsart ansagen: P
+- Selektionsart wählen:
+- Start - Ende: S oder 1
+- Start - Länge: L oder 2
+- Länge - Ende: E oder 3
+- Länge - zentriert: C oder 4
 
 Ansagen des Werts des ersten Selektion Steuerelements: Alt + [ (ü)
+
  Ansagen des Werts des zweiten  Selektion Steuerelements: Alt + Pfeil nach rechts
+
  
 Die Skript Version wird mit Jaws Taste + Ctrl + V angesagt und durch zwei Mal kurz nacheinander drücken im virtuellen Betrachter angezeigt, eben so in der Hotkey Hilfe.
+
 Die URL für den Zugriff zum Audacity Guide für Jaws Anwender kann mit Ctrl + Shift + J geändert werden. Dies öffnet einen Dialog mit einem Textfeld, welches die URL enthält. Editiere oder ersetze diese und wähle ok.
 
-Bei der Eingabe der Bezeichnung einer Textmarke spricht Jaws aus Gewohnheit die Funktionsnamen von Audacity der zugeordneten Buchstabentasten, sobald diese Buchstaben in der Textmarkenbezeichnung eingetippt werden. Wir unterdrücken nun dieses Verhalten wenn die standard Methoden zum Erstellen von Textmarken verwendet werden. 
-Dieses Feature wird mit  Ctrl + B und Ctrl + M aktiviert und durch Drücken von Enter wieder deaktiviert (dies wird auch deaktiviert durch aktivieren einer anderen Spur oder durch Verlassen des Spuren Panel). Durch aktivieren einer Textmarkenspur und lostippen wird dieses Feature nicht aktiviert. 
+
+Bei der Eingabe der Bezeichnung einer Textmarke spricht Jaws aus Gewohnheit die Funktionsnamen von Audacity der zugeordneten Buchstabentasten, sobald diese Buchstaben in der Textmarkenbezeichnung eingetippt werden. Wir unterdrücken nun dieses Verhalten wenn die standard Methoden zum Erstellen von Textmarken verwendet werden.
+ 
+Dieses Feature wird mit  Ctrl + B und Ctrl + M aktiviert und durch Drücken von Enter wieder deaktiviert (dies wird auch deaktiviert durch aktivieren einer anderen Spur oder durch Verlassen des Spuren Panel). Durch aktivieren einer Textmarkenspur und lostippen wird dieses Feature nicht aktiviert.
+ 
 Wenn die Standard Tastenkombinationen dieser Funktionen in Audacity geändert werden, müssen diese auch in audacity.jkm entsprechend angepasst werden.
+
 
 Wenn der Fokus in einer Textmarkenspur ist, wird durch Drücken der Tabulator Taste versucht, die "aktuelle" Textmarke zu sprechen. Dies wird realisiert, in dem Text mit weissem Hintergrund gesucht wird. Das funktioniert nicht immer, besonders bei vielen vorhandenen Textmarken.
  
@@ -84,26 +102,36 @@ Wenn der Fokus in einer Textmarkenspur ist, wird durch Drücken der Tabulator Ta
 Das Skript kann so konfiguriert werden, dass nach Tastenkombinationen zum Bewegen des Cursors  eine Audio Sequenz wiedergegeben wird. Im Schnell Einstellungen Dialog gibt es dafür zwei Optionen.
 - Mit der Option "Ansagen der Position Steuerelemente" kann festgelegt werden, ob die Cursor Position nach Tastenkombinationen zum Bewegen des Cursors gesprochen werden oder nicht.
 - Wenn die Option "Audio Vorschau nach Cursor Bewegen" aktiviert ist, wird nach Tastenkombinationen zum Bewegen des Cursors die Audacity Funktion Audio Vorschau ausgeführt (entspricht den Tastenkombinationen Shift + F6 für die Vorschau der Start Position und Shift + F7 für die Vorschau der Ende Position).
-Das ermöglicht eine kurze Sequenz der Start- oder Ende Position der Selektion zu hören. Dabei kann die Vorschau Sequenz durchaus länger sein als das durch die Cursor Bewegen Funktion übersprungene Audio.  
-Vorübergehend kann zwischen der Audio Vorschau und der Ansage der Position mit Jaws Taste + P umgeschaltet werden. Sobald der Fokus vorübergehend in eine andere Anwendung oder in den Schnell Einstellungen Dialog verschoben wird, wird die im Schnell Einstellungen Dialog definierte Konfiguration wieder verwendet.  
+
+Das ermöglicht eine kurze Sequenz der Start- oder Ende Position der Selektion zu hören. Dabei kann die Vorschau Sequenz durchaus länger sein als das durch die Cursor Bewegen Funktion übersprungene Audio.
+  
+Vorübergehend kann zwischen der Audio Vorschau und der Ansage der Position mit Jaws Taste + P umgeschaltet werden. Sobald der Fokus vorübergehend in eine andere Anwendung oder in den Schnell Einstellungen Dialog verschoben wird, wird die im Schnell Einstellungen Dialog definierte Konfiguration wieder verwendet.
+  
 Wenn der Fokus im Selektion Start oder Selektion Ende Steuerelement ist, kann die fokussierte Ziffer mit Shift + Pfeil nach oben verringert und mit Shift + Pfeil nach unten erhöht werden. Danach wird jeweils die Audio Vorschau gestartet.
 
-Das Skript bietet ein paar Tastenkombinationen, mit denen die Audacity Funktionen der Audio Vorschau besser mit der Tastatur erreicht werden können. 
+
+Das Skript bietet ein paar Tastenkombinationen, mit denen die Audacity Funktionen der Audio Vorschau besser mit der Tastatur erreicht werden können.
+ 
 Im Spuren Panel und der Selektion Leiste wird mit Jaws Taste + Pfeil nach links die Audacity Tastenkombination Shift + F6 und mit Jaws Taste + Pfeil nach rechts die Audacity Tastenkombination Shift + F7 ausgeführt. Diese spielen den Start und das Ende innerhalb der Selektion ab. Wenn zusätzlich die Shift Taste gedrückt wird, wird der Start und das Ende ausserhalb der Selektion wiedergegeben.
 
+
 Mit der Tastenkombination Ebene "Kurztasten (short)" können ebenso die Vorschau Tastenkombinationen von Audacity ausgeführt werden. Dies kann hilfreich sein auf Notebooks, bei denen die FN Taste gedrückt gehalten werden muss, um die Funktionstasten ausführen zu können.
+
 Die Tastenkombination Ebene "short" wird initialisiert mit Jaws Taste + A, S
- Dann können folgende Tasten verwendet werden:
- Hilfe Text der Tastenkombination Ebene sprechen: ?
- Shift + F5: J
- Shift + F6: K
- Shift + F7: L
- Shift + F8: ; (ö)
- Ctrl + Shift + F5: Ctrl + J
- Ctrl + Shift + F7: Ctrl + L
+
+Dann können folgende Tasten verwendet werden:
+- Hilfe Text der Tastenkombination Ebene sprechen: ?
+- Shift + F5: J
+- Shift + F6: K
+- Shift + F7: L
+- Shift + F8: ; (ö)
+- Ctrl + Shift + F5: Ctrl + J
+- Ctrl + Shift + F7: Ctrl + L
 
 Ebenso unterstützt diese Tastenkombinationebene Pfeil nach links / rechts, auch zusammen mit Shift, Ctrl und Ctrl + Shift
+
   Auch die Jaws Standardbefehle SprichZeichen, SprichWort und Sprich Zeile können verwendet werden. Ebenso wird die Audacity Tastenkombination C unterstützt.
+
   
   Verlassen der Tastenkombination Ebene: Escape (oder jede nicht der Tastenkombination Ebene zugeordnete Taste)
      
@@ -123,12 +151,18 @@ Es ist möglich eine Spur durch eingabe einer Zahl zu aktivieren, eine Spur durc
 
 Wenn andere Tastenkombinationen zugeordnet werden, muss die Datei audacity.jkm entsprechend angepasst werden.
 
-Einmal konfiguriert, kann mit der Jaws Taste + A, G eine bestimmte Spur aktiviert werden. 
-Das Skript fragt nach einer Zahl, durch eingeben der Zahl der gewünschten Position in der Spurliste wird die entsprechende Spur aktiviert. Durch voranstellen eines +  um die entsprechende Zahl nach unten (zu höheren Spurnummern), durch Voranstellen eines - nach oben. 
-Mit Jaws Taste + A, M wird die aktive Spur an eine bestimmte Position verschoben. 
+Einmal konfiguriert, kann mit der Jaws Taste + A, G eine bestimmte Spur aktiviert werden.
+ 
+Das Skript fragt nach einer Zahl, durch eingeben der Zahl der gewünschten Position in der Spurliste wird die entsprechende Spur aktiviert. Durch voranstellen eines +  um die entsprechende Zahl nach unten (zu höheren Spurnummern), durch Voranstellen eines - nach oben.
+ 
+Mit Jaws Taste + A, M wird die aktive Spur an eine bestimmte Position verschoben.
+ 
 Die aktive Spur kann mit Jaws Taste + A, K "gemerkt" werden. 
-Danach kann mit Jaws Taste + A, Shift + G jederzeit die gemerkte Spur aktiviert werden oder mit Jaws Taste + A, Shift + M die aktive Spur an die gemerkte Position verschoben werden. 
+
+Danach kann mit Jaws Taste + A, Shift + G jederzeit die gemerkte Spur aktiviert werden oder mit Jaws Taste + A, Shift + M die aktive Spur an die gemerkte Position verschoben werden.
+ 
 Beachte, dass dieses "Merken" lediglich die Position der Spur in der Spurliste "notiert". Wenn davor Spuren eingefügt oder verschoben werden, zeigt der Vermerk auf die falsche Spur.
+
 
 Sprich Zeile (Jaws Taste + Num Pad 5) sagt die aktuelle Spurnummer und die Anzahl  aller Spuren an, wenn der Fokus im Spuren Panel ist. (Einige mögen denken "Aber Audacity sagt bereits Spurnummern". Das stimmt wenn eine Spur erstellt wird, jedoch nicht, wenn sie umbenannt wird. Oder wenn es das Resultat vom Importieren einer Datei ist.)
 
@@ -148,12 +182,16 @@ Obschon der Installer die Skriptdateien in die Ordner der gewählten Sprache ins
 # Hinweise für Skript Entwickler
 Wenn Sie die Skriptdateien modifizieren, aktualisieren Sie bitte die Version Konstante in der Nähe des Anfangs der Datei audacity.jss. Das ist besonders dann wichtig, wenn Sie das Skript Paket weitergeben. Auch wenn Sie die  modifizierten Skript Dateien ausschliesslich selbst verwenden, stellt das Vorgehen sicher, dass wir wissen, dass es sich um eine modifizierte Version handelt, wenn Sie damit mit uns in Kontakt treten.
 
+
 Meldungen und String Konstanten für das Jaws Skript sind in den Dateien audacity.jsm und audacity.qsm.
+
 Die Meldungstexte des Installers sind nun lokalisierbar. Die Meldungstexte wurden nun vom Programmcode getrennt, so dass für jede Sprache separate Message Sets präpariert werden können. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. Meldungstexte sind in .nsh Header Dateien mit Dateinamen wie *_enu.nsh oder *_lang_enu.nsh deklariert.
+
 Dieses Paket wird jetzt auf GitHub gehostet. Das Repository ist unter <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Wenn Sie Änderungen an den Skripts veröffentlichen möchten, llesen Sie bitte [CONTRIBUTING.md](CONTRIBUTING.md) im repository.
 
 # Hinweise für Übersetzer
 Beachte dass readme.html aus readme.md generiert wird, welche nur im GitHub Repository zu finden ist. Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für weitere Informationen.
+
 Beachte, dass das Skript mit #pragma usePoFile 0 kompiliert wird.
  
 # Abschliessende Anmerkungen
@@ -164,57 +202,93 @@ Ich bin  interessiert an Feedback zu dem Skript und Vorschlägen zu Verbesserung
 # Hier ist der Text der Jaws Hotkey Hilfe
 
 Ansagen der Start Position der Selektion: Alt+ü
+
 Ansagen der Ende Position oder der Länge der Selektion: Alt+Plus Taste (Umlaut Taste)
+
 Fokus zum Eingabefeld der Start oder Ende Position der Selektion platzieren: zwei Mal kurz aufeinander drücken.
+
 Ansagen der Position des Audio Cursors: Alt+Entfernen
+
 Bei aktiviertem PC-Cursor: zwei Mal kurz nacheinander drücken.
 
+
 Erhöhen der Lautstärke der aktiven Spur: Alt+Umschalt+Pfeil Rauf
+
 Verringern der Lautstärke der aktiven Spur: Alt+Umschalt+Pfeil Runter
+
 Panorama der aktiven Spur nach links Alt+Umschalt+Pfeil Links
+
 Panorama der aktiven Spur nach rechts: Alt+Umschalt+Pfeil Rechts.
+
 Die letzten vier Tastenkombinationen ersetzen die Standard Jaws Skripts der Steuerung des Mauszeigers, wenn der Fokus im Hauptfenster ist. Durch Aktivieren des Jaws Cursors kann die originale Jaws Maussteuerung im Hauptfenster verwendet werden.
 
+
 Ansagen des Aufnahmepegels: g
+
 Fokus zum Eingabefeld des Aufnahmepegels: zwei Mal kurz nacheinander drücken
+
 Ansagen des Wiedergabepegels: h
+
 Fokus zum Eingabefeld des Wiedergabepegels: zwei Mal kurz nacheinander drücken.
 
+
 Eine bestimmte Spur aktivieren durch angeben einer Zahl: Jaws Taste + A, a
+
 Die Aktive Spur an eine bestimmte Position verschieben, durch angeben einer Zahl: JAWS Taste+a, m
+
 Die aktive Spur merken: JAWS Taste+a, k
+
 Die zuletzt gemerkte Spur aktivieren: JAWS Taste+a, Umschalt+g
+
 Die zuletzt gemerkte Spur aktivieren und die zuvor aktive Spur merken: JAWS Taste+a, x
+
 Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: Jaws Taste + a, Umschalt+m
 
+
 Meldungen der Sprachausgabe ein- und ausschalten (muten des Synthesizers): Jaws Taste + Shift + S
+
 Ansagen bestimmter Audacity Prozesse aktivieren / deaktivieren: Steuerung+` (Paragraph Taste)
+
 Hinweis: dies verdoppelt die Ansagen von Audacity Nachrichten in den Jaws Schnelleinstellungen Optionen. Weitere Informationen in what's new.md.
 
+
 Zur nächsten Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste ist: Steuerung+Tab
+
 Zur vorherigen Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste ist: Steuerung+Umschalt+Tab
 
+
 Transport Status ansagen (Wiedergabe, Aufnahme, Pause, Stop): JAWS Taste+Entfernen
+
 Alle Optionen der Jaws Skripts für Audacity auf die Standardwerte zurücksetzen: Umschalt+Steuerung+` (Paragraph Taste)
+
 Wechseln zwischen den beiden Listen im Ketten editieren Dialog: F6
 
+
 Audacity Tastenkombinationen Hilfe: Einfügen+w
+
 Standard Windows Tastenkombinationen Hilfe: Einfügen+w zwei Mal kurz nacheinander
 
-Pause während Wiedergabe / Aufnahme an / aus: wenn die "Eingabetaste unterbricht Wiedergabe / Aufnahme" Option aktiviert ist, bewirkt das Drücken der Eingabe
-Taste das Senden der Pause Taste. In dieser Konstelation bewirkt Steuerung+Eingabe das Senden der Enter Taste.
+
+Pause während Wiedergabe / Aufnahme an / aus: wenn die "Eingabetaste unterbricht Wiedergabe / Aufnahme" Option aktiviert ist, bewirkt das Drücken der Eingabe Taste das Senden der Pause Taste. In dieser Konstelation bewirkt Steuerung+Eingabe das Senden der Enter Taste.
+
 
 In einigen VST-Plugins, wie beispielsweise dem L1V:
+
 Fokus auf die "Preset" Schaltfläche: Alt+P
+
 Um ein existierendes Preset zu laden: Alt+C
+
 Speichern der aktuellen Einstellungen des VST-Plugins als Preset: Alt+G
 
-Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau Taste gedrückt wird, wird manchmal die "Stille Vorschau" nicht erwartungsgemäss
-deaktiviert. Dies führt zu fehlenden Jaws Ansagen beim Wechsel des Fokus. Das kurzzeitige Wechseln zu einer anderen Anwendung behebt das Problem.
+
+Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau Taste gedrückt wird, wird manchmal die "Stille Vorschau" nicht erwartungsgemäss deaktiviert. Dies führt zu fehlenden Jaws Ansagen beim Wechsel des Fokus. Das kurzzeitige Wechseln zu einer anderen Anwendung behebt das Problem.
+
 
 Ändern der Einstellungen der Audacity Skripts:   Einfügen+V.
 
+
 Um die URL des Jaws Guide für Audacity zu ändern: Umschalt+Steuerung+J
  
+
 
 Viel Spass!

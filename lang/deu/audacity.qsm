@@ -30,5 +30,15 @@ Wenn aktiviert, werden während der Vorschau von Effekten Sprachmeldungen deakti
 Wenn aktiviert, wird die Sprachausgabe beim Starten der Aufnahme deaktiviert.
 			</HelpMsg>
 		</DisplayName>
-</DisplayNameDefinitions>
+		<DisplayName ID="Audacity Options.SayPosition" Text="Position ansagen">
+			<HelpMsg>
+Wenn aktiviert wird nach allen Position Änderungen die Position angesagt. Wenn deaktiviert, wird die Position nach Positionsänderungen mit Audio Vorschau nicht angesagt.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.PreviewMotion" Text="Bewegen Vorschau">
+			<HelpMsg>
+Wenn aktiviert, wird nach Cursor Bewegen Tastenkombinationen eine Audio Vorschau der Position wiedergegeben
+			</HelpMsg>
+		</DisplayName>
+	</DisplayNameDefinitions>
 </LocalizableDefinitions>
