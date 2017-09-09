@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<!-- Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
+<?xml version="1.0" encoding="utf-8" ?>
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
 		<DisplayName ID="Audacity Options" Text="Audacity Einstellungen">
@@ -11,22 +10,22 @@ Audacity spezifische Einstellungen.</HelpMsg>
 Wenn aktiviert, werden Informationen zu Audacity Audio Operationen angesagt.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.Announce toolbars" Text="Werkzeugleisten ansagen">
+		<DisplayName ID="Audacity Options.Announce toolbars" Text="Audacity Werkzeugleisten ansagen">
 			<HelpMsg>
 Wenn aktiviert, wird der Name der Werkzeugleiste angesagt, wenn der Fokus von einer Werkzeugleiste zu einer anderen wechselt.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.ENTER pauses during play/record" Text="Enter unterbricht während Wiedergabe / Aufnahme">
+		<DisplayName ID="Audacity Options.ENTER pauses during play/record" Text="Enter unterbricht wÃ¤hrend Wiedergabe / Aufnahme">
 			<HelpMsg>
-Wenn aktiviert, wird mit Enter die Wiedergabe oder Aufnahme pausiert und CTRL + Enter verhält sich wie Enter. Andernfalls wird Enter an Audacity durchgereicht.
+Wenn aktiviert, wird mit Enter die Wiedergabe oder Aufnahme pausiert und CTRL + Enter verhÃ¤lt sich wie Enter. Andernfalls wird Enter an Audacity durchgereicht.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.Silence Preview" Text="Stille während Vorschau">
+		<DisplayName ID="Audacity Options.Silence Preview" Text="Stille wÃ¤hrend Vorschau">
 			<HelpMsg>
-Wenn aktiviert, werden während der Vorschau von Effekten Sprachmeldungen deaktiviert.
+Wenn aktiviert, werden wÃ¤hrend der Vorschau von Effekten Sprachmeldungen deaktiviert.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.Silence Record" Text="Stille während Aufnahme">
+		<DisplayName ID="Audacity Options.Silence Record" Text="Stille wÃ¤hrend Aufnahme">
 			<HelpMsg>
 Wenn aktiviert, wird die Sprachausgabe beim Starten der Aufnahme deaktiviert.
 			</HelpMsg>

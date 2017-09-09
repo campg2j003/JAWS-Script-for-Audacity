@@ -1,11 +1,10 @@
-; German messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-23.
-;Translation based on English version dated 2017-02-17.
+; German messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-24.
+;Translation dated 2017-08-29.
 /*
-JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityteam.org).
+JAWS script for Audacity multitrack sound editor V2.0 or later 
+(http://audacityteam.org).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
-    Copyright (C) 2014-2016 Fernando Gregoire, for the Spanish translation. All rights reserved.
-    Copyright (C) 2017 Michael Vogt, for the German translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,13 +23,18 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityt
     See the file copying.txt for details.
 */
 
-; These are window names used to identify windows. (Should they be translated?)
+; These are window names used to identify windows. (Should be translated)
 Const
 	WN_TOOLDOCK = "Werkzeug-Dock", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Spurbereich", ; window name of track table
 	WN_SELECTION = "Selektion", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Transport", ; window name of Transport toolbar
+	WN_RECORDING_METER_TOOLBAR = "Aufnahme-Aussteuerungsanzeige", ;window name of Recording Meter toolbar
+	WN_PLAYBACK_METER_TOOLBAR = "Wiedergabe-Aussteuerungsanzeige", ;window name of Playback Meter toolbar
+	WN_COMBINED_METER_TOOLBAR = "Kombinierte Aussteuerungsanzeige", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Ketten bearbeiten", ; name of the Edit Chains dialog
+	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Vorschau erstellen", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Vorschau", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing
@@ -41,13 +45,25 @@ Const
 	CS_SelectionBar="Selektion Leiste",
 	CS_TrackPanel="Spuren Panel"
 
+;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
+Const
+    CS_SELECT_ON = " Auswählen An",
+    CS_MUTE_ON = " Stumm An",
+    CS_SOLO_ON = " Alleine An"
+    
+;For announcing selected tracks.
+Const
+	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
+	CS_TRACKS_RANGE_SEP = "-" ;separates first and last track of a track range
+
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Ansagen von Audacity Meldungen",  ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Werkzeugleisten ansagen",
-	UO_ENTER_PAUSE = "UOEnterPause:Enter Unterbrechen während Wiedergabe / Aufnahme",
+	UO_ENTER_PAUSE = "UOEnterPause:Enter unterbricht während Wiedergabe / Aufnahme",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Still während Vorschau",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme"
+	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
 
 Messages
 ; For user options.
@@ -86,6 +102,16 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+;Audacity key layer keys, must match keys JAWSKey+a&X where X sytarts a sublayer.
+const
+	;These are the prefix keys for the Audacity layer.  There are two because there are JAWSKey and Insert entries in the JKM for the same key.
+	; mv: something to do?
+	ksAudacityLayer1 = "JAWSKey+a",
+	ksAudacityLayer2 = "Insert+a",
+	ksPositionLayer = "p",
+	ksShortLayer = "s",
+	ksTempoLayer = "t"
+
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
@@ -105,14 +131,20 @@ Tastenkombinationen für die Jaws Skripts für Audacity, Version %1 (für Audacity 
 
 @@
 @msgScriptKeyHelp
- ---
-
 
 Ansagen der Start Position der Selektion: %keyfor (SaySelectionStart)
 Ansagen der Ende Position oder der Länge der Selektion: %keyfor(SaySelectionEnd) (Umlaut Taste)
 Fokus zum Eingabefeld der Start oder Ende Position der Selektion platzieren: zwei Mal kurz aufeinander drücken.
 Ansagen der Position des Audio Cursors: %keyfor(SayActiveCursor)
 Bei aktiviertem PC-Cursor: zwei Mal kurz nacheinander drücken.
+Ansagen der Nummern der selektierten Spuren: %KeyFor(SaySelectedText)
+Ansagen des aktuellen Selektion Typen (Audacity 2.2.0 und neuer): %KeyFor(SaySelectionType)
+Wählen des Selektion Typen (Audacity 2.2.0 und neuer): JAWSTaste + a,p gefolgt von
+Start-Ende: S
+Start - Länge: L
+Länge - Ende: E
+Länge - zentriert: C
+Ebenso können die Zifferntasten 1 bis 4 verwendet werden.
 
 Erhöhen der Lautstärke der aktiven Spur: %keyfor (MouseUp)
 Verringern der Lautstärke der aktiven Spur: %keyfor (MouseDown)
@@ -131,6 +163,19 @@ Die aktive Spur merken: %KeyFor(MarkTrack)
 Die zuletzt gemerkte Spur aktivieren: %KeyFor(GoToMarkedTrack)
 Die zuletzt gemerkte Spur aktivieren und die zuvor aktive Spur merken: %KeyFor(ExchangeWithMark)
 Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: %KeyFor(MoveCurrentTrackToMark)
+
+Tempo ermitteln:
+Mit der Tempo Ebene kann das Tempo einer Audio Sequenz ermittelt werden. 
+Hinweis: nach der Initialisierung der Tempo Ebene muss lediglich jeweils die letzte Taste der Tastenkombination Sequenz gedrückt werden, um eine Funktion der Tempo Ebene auszuführen.
+- Wiedergabe starten: %KeyFor(TempoStartStop)
+- Pro Beat: %KeyFor(TempoTap) 
+ - Um das Ermitteln des Tempos abzuschliessen und die Wiedergabe anzuhalten, drücken Sie erneut %KeyFor(TempoStartStop)
+- Das Tempo wird berechnet, in dem die Dauer zwischen dem ersten Beat und dem letzten Beat durch die Anzahl Beats minus 1 dividiert wird
+- Das ermittelte Tempo wird angesagt (in Schlägen pro Minute).
+- Erneutes Ansagen des ermittelten Tempos: %KeyFor(TempoAnnounce)
+- Kopieren des Tempos in die Zwischenablage: %KeyFor(TempoCopy) 
+- Das ermittelte Tempo bleibt verfügbar, bis erneut %KeyFor(TempoStartStop) gedrückt wird
+- Drücken Sie abschliessend Escape, um die Tempo Ebene zu verlassen.
 
 Meldungen der Sprachausgabe ein- und ausschalten (muten des Synthesizers): %keyfor(MuteSynthesizer)
 Ansagen bestimmter Audacity Prozesse aktivieren / deaktivieren: %keyfor (AnnounceOnOff) (Paragraph Taste)
@@ -159,6 +204,58 @@ Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau
 
 Um die URL des Jaws Guide für Audacity zu ändern: %keyfor (AddAudacityJawsGuide)
 @@
+@msgAudacityLayerHelp
+Eine bestimmte Spur aktivieren durch angeben einer Zahl: G
+Die Aktive Spur an eine bestimmte Position verschieben, durch angeben einer Zahl: M
+Die aktive Spur merken: K
+Die zuletzt gemerkte Spur aktivieren: Shift + G
+Die zuletzt gemerkte Spur aktivieren und die zuvor aktive Spur merken: X
+Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: Shift + M
+
+Aktivieren der Position Ebene: P
+Erlaubt das Ansagen und Setzen des Position Anzeige Typen.
+Aktivieren der Sequenzen Ebene: S
+Erlaubt das Abhören kurzer Audiosequenzen vor oder nach der aktuellen Selektion oder Position (Shift + F5 bis F8).
+Aktivieren der Tempo Ebene: T
+Erlaubt das Ermitteln des Tempos.
+@@
+;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
+@msgPositionLayer_start
+Position Anzeige Typen Ebene
+@@
+@msgPositionLayerHelp
+Start - Ende: S
+Start - Länge: L
+Länge - Ende: E
+Länge - zentriert: c
+Ansagen des Position Anzeige Typen: P
+@@
+@msgShortLayer_Start
+Sequenzen Ebene
+@@
+@msgShortLayerHelp
+Shift + F5 - F8: J, K, L, ö
+Shift + Control + F5 - F7: Control + J, K, L
+C: C
+@@
+@msgTempoLayer_Start
+Tempo Ebene
+@@
+@msgTempoNoBeats
+Keine Beats erfasst
+@@
+@msgTempoNoTempoStored
+Kein Tempo gespeichert
+@@
+;%1=tempo (i.e. 147.8)
+@msgTempoCopied
+Tempo %1 in Zwischenablage kopiert
+@@
+@msgTempoLayerHelp
+Start / Stop:Leertaste
+Ansagen: A
+In Zwischenablage kopieren: C
+@@
 @msgPresetHotkeyHelp
 Fokus auf die "Preset" Schaltfläche: %keyfor (VSTPreset)
 Um ein existierendes Preset zu laden: %keyfor (VSTLoadPreset)
@@ -166,7 +263,7 @@ Speichern der aktuellen Einstellungen des VST-Plugins als Preset: %keyfor (VSTSa
 
 @@
 
-;Spoken before loading the Audacity for JAWS web page.
+;Spoken before loading the Audacity for JAWS Guide web page.
 @msgLoadingJawsGuide_L
 Laden des Jaws Leitfaden für Audacity Anwender im Standard Browser...
 @@
@@ -192,7 +289,6 @@ Link zum audacity Guide for Jaws (englisch):
 
 Allgemeines
 
-
 Beschreibung Tastenkombination
 Audiodatei öffnen: Ctrl + O 
 Audio Datei importieren: Ctrl + Shift + I 
@@ -207,8 +303,8 @@ Normaler Zoom: Ctrl + 2
 Einzoomen (vergrössern): Ctrl + 1 
 Auszoomen (verkleinern): Ctrl + 3 
 
-Wiedergabe
 
+Wiedergabe
 
 Beschreibung Tastenkombination
 Wiedergabe starten / stoppen: Leertaste 
@@ -228,8 +324,8 @@ Ein kurzes Intervall nach der Selektion Ende Position wiedergeben: Shift + F8
 Ein kurzes Intervall vor und nach der Selektion Start Position wiedergeben: Ctrl + Shift + F5 
 Ein kurzes Intervall vor und nach der Selektion Ende Position wiedergeben: Ctrl + Shift + F7 
 
-Spuren Panel
 
+Spuren Panel
 
 Beschreibung Tastenkombination
 Zur vorherigen Spur: Pfeil nach oben 
@@ -244,8 +340,8 @@ Kontextmenü der aktuellen Spur anzeigen: Shift + M
 (Anwendungstaste deselektiert alles, deshalb nicht empfohlen)
 Schliessen (löschen) der aktiven Spur: Shift + C 
 
-Audio Spur
 
+Audio Spur
 
 Beschreibung Tastenkombination
 Ändern der Lautstärke der aktiven Spur (Gain): Shift + G 
@@ -255,8 +351,8 @@ Muten aller Spuren aktivieren: Ctrl + U
 Muten aller Spuren deaktivieren: Ctrl + Shift + U 
 Solo der aktiven Spur an / aus: Shift + S 
 
-Bewegen des Cursors
 
+Bewegen des Cursors
 
 Beschreibung Tastenkombination
 Zum Start der Spuren (Time Zero): Home 
@@ -272,8 +368,8 @@ Grosses Intervall vorwärts: Shift + Punkt
 Cursor ein kleines Intervall nach links: Pfeil nach links 
 Cursor ein kleines Intervall nach rechts: Pfeil nach rechts 
 
-Selektieren eines Zeitbereichs
 
+Selektieren eines Zeitbereichs
 
 Beschreibung Tastenkombination
 Selektieren eines Zeitbereichs der alle Audios enthält, und alle Spuren selektiert: Ctrl + A 
@@ -287,8 +383,8 @@ Selektion Ende Position ein kleines Intervall nach links: Ctrl + Shift + Pfeil n
 Selektion Start Position ein kleines Intervall nach rechts: Ctrl + Shift + Pfeil nach rechts 
 Selektion Start Position ein kleines Intervall nach links: Shift + Pfeil nach links 
 
-Editieren
 
+Editieren
 
 Beschreibung Tastenkombination
 Rückgängig: Ctrl + Z 
@@ -302,8 +398,8 @@ Selektiertes Audio duplizieren: Ctrl + D
 Aktive Spur schliessen (löschen): Shift + C 
 Nulldurchgänge finden: Z
 
-Textmarken
 
+Textmarken
 
 Beschreibung Tastenkombination
 Textmarke der Selektion hinzufügen: Ctrl + B 
@@ -311,8 +407,8 @@ Textmarke an Wiedergabe Position hinzufügen: Ctrl + M
 Zur nächsten Textmarke: Alt + Pfeil nach rechts 
 Zur vorherigen Textmarke: Alt + Pfeil nach links 
 
-Aufnahme
 
+Aufnahme
 
 Beschreibung Tastenkombination
 Aufnahme starten: R 
@@ -328,13 +424,26 @@ Aufnahme Kanäle Dialog: Shift + N
 Willkommen in Audacity. Um die Liste der Jaws Tastenkombinationen für Audacity anzuzeigen, drücken Sie  %Keyfor(AudacityScriptkeyHelp).
 @@
 
-;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
+;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectTo in all languages??
 @msgStart
 Start
 @@
 
 @msgEnd
 Ende
+@@
+
+@msgLength
+Länge
+@@
+
+@msgCenter
+zentriert
+@@
+
+;Say a position field.  %1 is field name, %2 is value.
+@msgPositionField
+%1 %2
 @@
 
 @msgLeft
@@ -355,7 +464,7 @@ Selektion Ende
 
 ; %1 = "start" or "end" of selection, %2 = direction ("left" or "right").
 @msgMoveSelection_L
-Verschiebe den %1 der Selektion an das %2
+Verschiebe Selektion %1 nach %2
 @@
 @msgMoveSelection
 %1 %2
@@ -393,7 +502,7 @@ Selektierte Spuren
 @@
 
 ; %1 is where we move, like start or end, %2 is of what, e.g. track or selection.
-@MSGMoveTo
+@msgMoveTo
 Verschiebe %1 zu %2
 @@
 
@@ -402,11 +511,11 @@ Verschiebe %1 zu %2
 Selektiere von %1 bis %2
 @@
 
-@MSGDelete_l
+@msgDelete_l
 Selektiertes Audio löschen
 @@
 
-@MSGDelete_s
+@msgDelete_s
 Löschen
 @@
 
@@ -448,7 +557,7 @@ Nicht gestoppt
 @@
 
 @msgNoTransportToolbar
-Die Transport Werkzeugleiste kann nicht gefunden werden. Die Transport Werkzeugleiste muss eingeblendet werden, damit diese Skripts funktionieren.
+Die Transport Werkzeugleiste kann nicht gefunden werden. Die Transport Werkzeugleiste muss eingeblendet werden, damit dieses Skript funktioniert.
 @@
 
 @msgCopyAudio
@@ -474,11 +583,21 @@ Zurücksetzen der Skript Optionen
 @msgNoSelection
 Um diese Funktion zu verwenden muss die Selektion Werkzeugleiste eingeblendet sein.
 @@
-@msgNoRecordingMeter
+;Audacity 2.1.3 and earlier
+@msgNoRecordingMeter 
 Um diese Funktion zu verwenden muss die Aufnahmepegel oder die Kombination Pegel Werkzeugleiste eingeblendet sein.
 @@
-@msgNoPlaybackMeter
+; Audacity 2.2.0
+@msgNoRecordingMeter22 
+Um diese Funktion zu verwenden muss der Aufnahmepegel angezeigt werden.
+@@
+;Audacity 2.1.3 and earlier
+@msgNoPlaybackMeter 
 Um diese Funktion zu verwenden muss die Wiedergabe Pegel oder die Kombination Pegel Werkzeugleiste eingeblendet sein.
+@@
+;Audacity 2.2.0
+@msgNoPlaybackMeter22 
+Um diese Funktion zu verwenden muss der Wiedergabe Pegel angezeigt werden.
 @@
 @msg_Script_Version
 Jaws Skripts Version %1, für Audacity 2.0.0 oder neuer.
@@ -489,7 +608,6 @@ Um diese Funktion zu verwenden muss mindestens eine Spur selektiert sein. Drücke
 @msgNoTrackSelected_S
 Keine Spuren selektiert.
 @@
-
 ;messages for warning dialog when import uncompress audio
 @msgCopy
 Erstelle vor dem Editieren eine Kopie der Dateien (sicherer)
@@ -537,12 +655,12 @@ Spur Nummer:
 
 ; Title of the input box in the  GoToTrack script.
 @msgGoToTrackTitle
-Gehe zu
+Welche Spur soll aktiviert werden?
 @@
 
 ;Title of the input box in the MoveCurrentTrackTo script.
 @msgMoveTrackToTitle
-Verschiebe an
+An welche Position  soll die aktive Spur verschoben werden?
 @@
 
 
@@ -555,8 +673,8 @@ Spur %1 gemerkt
 Keine gemerkte Spur
 @@
 
-    ;Message to announce some Audacity keys
-    @msgZoomNormal
+;Messages to announce some Audacity keys
+@msgZoomNormal
 Normaler Zoom
 @@
 
@@ -729,7 +847,7 @@ Mixdown und in neue Spur rendern
 @@
 
 @msgAddLabel
-Neue Textmarke der Selektion
+Neue Textmarke der aktuellen Selektion
 @@
 
 @msgAddLabelPlaying
@@ -778,4 +896,3 @@ Eingangs Kanäle
 
 
 EndMessages
-

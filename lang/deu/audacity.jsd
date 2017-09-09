@@ -7,7 +7,7 @@
 
 :function FocusInTrackPanel
 :Description Gibt an, ob der Fokus im Spuren Panel ist.
-:Returns int True Wenn der Fokus im Spuren Panel ist.
+:Returns int True Wenn der Fokus im Spuren Panel ist
 
 :function SaySelectionPosition
 :Description Spricht die Start oder Ende Position der Selektion.
@@ -16,8 +16,8 @@
 :Category Positioning
 
 :function MarkerMovement
-:Param string/sScript Das auszuführende Skript.
-:Param string/sAlert Die zu sprechende Warnung.
+:Param string/sScript Das auszuführende Skript
+:Param string/sAlert Die zu sprechende Warnung
 
 :function MouseMovement
 :Description Verhindert die Ausführung von Skripts wie MouseRight, MouseLeft etc. die Audacity Tastenkombinationen zugeordnet sind, wenn der Fokus im Hauptfenster ist.
@@ -59,17 +59,17 @@
 :Returns int Keine return Beschreibung
 
 :function GetPositionField
-:Description Liefert den Wert von einem der Selektion Eingabefelder
+:Description Liefert den Wert von einem der Selektion Eingabefelder.
 :Returns string Wert des Eingabefeldes
 :Param handle/hWnd Handle des position Steuerelements
 
 :script SaySelectionStart
 :Synopsis Spricht den Wert des Startposition Steuerelements
-:Description Spricht den Wert des Position Start Steuerelements. Wenn zwei Mal kurz nacheinander gedrückt, wird das Eingabefeld fokussiert.
+:Description Spricht den Wert des Position Start Steuerelements. Wenn zwei Mal kurz nacheinander gedrückt, wird das Eingabefeld fokussiert. Für Audacity 2.2.0 und neuer wird der Wert (und Name) des linken Selektion Steuerelements gesprochen.
 
 :script SaySelectionEnd
 :Synopsis Spricht die Ende Position oder die Dauer der Selektion.
-:Description Spricht die Ende Position oder die Länge der Selektion. Teilt ebenso mit, ob die Ende Position oder die Länge selektiert ist. Wenn zwei Mal kurz nacheinander gedrückt, wird das Steuerelement fokussiert.
+:Description Spricht die Ende Position oder die Länge der Selektion. Teilt ebenso mit, ob die Ende Position oder die Länge selektiert ist. Wenn zwei Mal kurz nacheinander gedrückt, wird das Steuerelement fokussiert. Für Audacity 2.2.0 und neuer wird der Wert (und Name) des rechten Selektion Steuerelements gesprochen.
 
 :script SayActiveCursor
 :Synopsis Spricht die aktuelle Audio Position.
@@ -111,18 +111,18 @@
 :Description Gibt true zurück, wenn ein Position Wert gefunden wurde, andernfalls false und eine entsprechende Information (Ausser wenn silent = true).
 Respects AnnounceMessage.
 :Returns int True wenn das Audio Position Feld gefunden wurde, andernfalls false, wenn die Werkzeugleiste nicht gefunden wurde
-:Param int/iPosition ID des  Steuerelements der Position: ID_SELECTION_START oder ID_SELECTION_END.
+:Param int/iPosition Für Audacity 2.1.3 und älter: ID des  Steuerelements der Position: ID_SELECTION_START oder ID_SELECTION_END. Für Audacity 2.2.0 und neuer: ID_SELECTION_START und ID_SELECTION_END werden als "Steuerwerte" verwendet und je nach Typ der Selektion in die entsprechenden Steuerelement IDs transformiert.
 :Optional
 :Param int/fSilent wenn true wird die Meldung nicht gesprochen, wenn die Selection Werkzeugleiste nicht gefunden wurde
 
 :script SelectionStart
 :Synopsis Spricht die Startposition der Selektion.
-:Description Spricht die Startposition der Selektion. Durch zwei Mal kurz nacheinander drücken wird das Startposition Eingabefeld fokussiert.
+:Description Spricht die Startposition der Selektion, wenn die Taste [ (resp. ü) gedrückt wird. Durch zwei Mal kurz nacheinander drücken wird das Startposition Eingabefeld fokussiert.
 :Category Positioning
 
 :script SelectionEnd
-:Synopsis Spricht die Endeposition oder die Dauer der Selektion.
-:Description Spricht die Endeposition oder die Länge der Selektion, ebenso, ob die Endeposition oder die Dauer selektiert ist. Durch zwei Mal kurz nacheinander drücken wird das Endeposition Eingabefeld fokussiert.
+:Synopsis Spricht die Selektion Ende Position.
+:Description Spricht die Selektion Ende Position, wenn die Taste ] (resp. Umlaut) gedrückt wird.
 :Category Positioning
 
 :script FinishMarkerRight
@@ -167,7 +167,7 @@ Respects AnnounceMessage.
 :Description Wenn der Fokus im Hauptfenster, ein Projekt geöffnet und Audio selektiert ist, löscht die Delete Taste das selektierte Audio. Wenn dies der Fall ist, wird das Skript DeleteSelectedAudio ausgeführt. Andernfalls das Default Skript von Jaws.
 
 :script JAWSBackspace
-:Synopsis Ähnlich wie JAWSDelete.
+:Synopsis ähnlich wie JAWSDelete.
 
 :script SayPriorCharacter
 
@@ -210,7 +210,7 @@ Respects AnnounceMessage.
 :Synopsis Spricht den aktuellen Status von Audacity (Abspielen, Pause, Aufname.
 
 :script Enter
-:Synopsis Umschalten zwischen Pause / weiter Abspielen, während im Hauptfenster Aufnahme oder Wiedergabe aktiviert ist (funktioniert nicht, wenn Wiedergabe oder Aufnahme gestoppt ist).
+:Synopsis Umschalten zwischen Pause / weiter Abspielen, während im Hauptfenster Aufnahme oder Wiedergabe aktiviert ist (wenn die "Enter während Wiedergabe / Aufnahme Pause Option" aktiviert ist). 
 
 :script CtrlEnter
 :Synopsis Reicht ENTER durch, wenn im Hauptfenster Wiedergabe oder Aufnahme aktiviert ist (wenn die "Enter während Wiedergabe / Aufnahme Pause Option" aktiviert ist).
@@ -275,31 +275,32 @@ Respects AnnounceMessage.
 
 :function NodeHlp
 :Returns string Keine Beschreibung
-:Param string/sNodeName Keine Beschreibung
+:Param string/sNodeName No Description
 
 :function UOAnnounceMessages
 :Returns string Keine Beschreibung
-:Param int Keine Beschreibung
+:Param int No Description
 
 :function UOAnnounceMessagesHlp
 :Returns string Keine Beschreibung
 
 :function UOAnnounceToolbars
 :Returns string Keine Beschreibung
-:Param int Keine Beschreibung
+:Param int No Description
 
 :function UOAnnounceToolbarsHlp
 :Returns string Keine Beschreibung
 
 :function UOEnterPause
 :Returns string Keine Beschreibung
-:Param int Keine Beschreibung
+:Param int No Description
 
 :function UOEnterPauseHlp
 :Returns string Keine Beschreibung
 
 :function AddDefaultConfig
 :Description Setzt die Jaws Optionen für Audacity auf ihre Standard Werte und schreibt diese in die .jsi Datei.
+:Description Sets the JAWS options for Audacity to their default values and writes them to the .jsi file.
 
 :script ResetConfig
 :Synopsis Setzt alle  Audacity Jaws Skript Konfigurations Optionen auf ihre Standard Werte zurück.
@@ -507,12 +508,6 @@ Respects AnnounceMessage.
 :script MixAndRenderToNewTrack
 :Synopsis Mixdown und in neue Spur rendern.
 
-:script AddLabel
-:Synopsis Fügt eine Textmarke der aktuellen Selektion hinzu.
-
-:script AddLabelPlaying
-:Synopsis Fügt eine Textmarke an der aktuellen Wiedergabe Position hinzu.
-
 :script RepeatLastEffect
 :Synopsis Wiederholt den zuletzt angewendeten Effekt.
 
@@ -523,7 +518,7 @@ Respects AnnounceMessage.
 :Synopsis Letzte Spur.
 
 :script TrackPan
-:Synopsis Panorama der Spur.
+:Synopsis Panorama der Spur ändern.
 
 :script TrackMoveTop
 :Synopsis Verschiebt die aktuelle Spur an den Anfang der Spurliste.
@@ -550,4 +545,81 @@ Respects AnnounceMessage.
 :script SayPlaybackMeter
 :Synopsis Spricht den angezeigten Wert des Wiedergabepegels.
 :Description Spricht den angezeigten Wert des Wiedergabepegels. Zwei Mal kurz nacheinander gedrückt verschiebt den Fokus zu ihm.
+
+:Function GetPositionFieldHandle
+:Description Bestimmt aufgrund der Audacity Version und dem gewählten Selektionstypen das entsprechende Steuerelement (in 2.2.0 und neuer).
+:Returns handle Handle des Position Steuerelements.
+:Param int/iPosition Für Audacity 2.1.3 und älter: die ID des Position Steuerelements.  Für Audacity 2.2.0 und neuer: ID_SELECTION_START und ID_SELECTION_END werden als "Steuerwerte" verwendet und je nach gewähltem Selektionstyp in die entsprechenden Steuerelement IDs transformiert.
+
+:function KeymapChangedEvent
+:Returns void Keine Beschreibung
+:Param int/iKeyCode
+:Param string/sKeyName
+:Param int/iKeyStatus
+
+:Script AudacityLayerHelp
+:Synopsis Spricht die Hilfe für die Audacity Tastenkombinationen Ebene.
+
+:Script PositionLayerHelp
+:Synopsis Spricht die Hilfe für die Position Tastenkombinationen Ebene
+
+:Script SaySelectionType
+:Synopsis Spricht den Wert des Selektionstyp Kombination Steuerelements.
+
+:Script SetSelectionType
+:Synopsis Setzt den Wert des Selektionstyp Kombinationssteuerelements: Start - Ende (s oder 1), Start - Dauer (l oder 2), Dauer - Ende (e oder 3), Dauer - zentriert (c oder 4).
+
+:Script SendKey
+:Synopsis Ermöglicht das Definieren von Tastenkombination Sequenzen, welche eine andere Tastenkombination Sequenz an das System sendet.
+:Description Sendet die Tastenkombination Sequenz in sKey.  Dies ermöglicht einer Tastenkombination, eine bestimmte Tastenkombination Sequenz  an das Programm zu senden.  Es wird keine Beschreibung gesprochen.  Um das Skript zu verwenden, kann in der jkm Datei ein Eintrag wie keys=SendKey("newsequence") definiert werden. 
+:Param int/sKey Tastenkombination Sequenz, die gesendet werden soll.
+:Category Script
+
+:Script SaySelectedText
+:Synopsis Spricht im Hauptfenster die Anzahl selektierter Spuren.  Andernfalls wird der selektierte Text gesprochen.  Wenn zwei Mal kurz nacheinander gedrückt, werden die Spurnamen gesprochen.
+
+:Function GetTrackPanelObj
+:Description Liefert das zugängliche Objekt des Spuren Panels.
+:Returns object Das zugängliche Objekt des Track Panels
+
+:Script ShortLayerHelp
+:Synopsis Spricht die Hilfe der Tastenkombinationen Ebene.
+:Description Die Kurztasten Ebene bietet Zugang zu den Tasten F5 bis F8 von der mittleren Tastenreihe (Home Row).
+
+:Script TempoStartStop
+:Synopsis Startet oder Stoppt die Funktion, um das Tempo zu finden.
+:Description Die Wiedergabe wird gestartet. Während der Wiedergabe zählt das Skript TempoTap die Taps, Bei erneutem Drücken wird die Anzahl Schläge pro Minute gesprochen. Weitere Informationen in der Skript Tastenkombinationen Hilfe. 
+
+:Script TempoTap
+:Synopsis Zeichnet einen Beat auf, um das Tempo zu bestimmen. 
+:Description Wird einmal für jeden Beat gedrückt. Die Zeit wird gemessen vom ersten Beat nach TempoStartStop bis zum letzten Beat vor dem erneutem TempoStartStop. Es muss nur einmal die letzte Taste dieser Tastenkombination Sequenz der Tempo Ebene gedrückt werden.
+
+:Script TempoAnnounce
+:Synopsis Spricht den Wert des zuletzt kalkulierten Tempos.
+
+:Script TempoCopy
+:Synopsis Kopiert den letzten Tempo Wert in die Zwischenablage.
+
+:Script TempoLayerHelp
+:Synopsis Spricht die Hilfe der Tastenkombinationen der Tempo Ebene.
+
+:Function GetSelectedTracks
+:Returns string :Synopsis Springt zur nächsten selektierten Spur im Spuren Panel. Andernfalls Sprung zur nächsten Zelle und spricht diese.    
+
+:Script DownCell
+:Synopsis Springt zur nächsten selektierten Spur im Spuren Panel. Andernfalls Sprung zur nächsten Zelle und spricht diese.
+
+:Script UpCell
+:Synopsis Springt zur vorherigen selektierten Spur im Spuren Panel. Andernfalls Sprung zur vorherigen Zelle und spricht diese.
+
+:Function GetSelectedTracks
+:Description Gibt einen String zurück, der die Nummern oder Namen aller selektierten Spuren enthält. Aufeinanderfolgende selektierte Spuren werden als ersteSpur - letzteSpur angezeigt.Spurbereiche werden durch "," getrennt. 
+:Returns string Selektierte Spuren aufbereitet für die Anzeige.
+:Optional
+:Param int/fName true: Gibt die Spurnamen zurück, false: Gibt die Spurnummern zurück (Standart).
+
+:Function CleanTrackName
+:Description Entfernt dem Spurnamen aufgrund der Zugänglichkeit hinzugefügte Statusinformationen wie "gewählt ein".
+:Returns string Spurname mit entfernten Statusinformationen.
+:Param string/s Spurname
 
