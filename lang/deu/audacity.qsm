@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
 		<DisplayName ID="Audacity Options" Text="Audacity Einstellungen">
