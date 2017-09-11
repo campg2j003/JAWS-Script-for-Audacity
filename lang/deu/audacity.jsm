@@ -1,5 +1,6 @@
-; German messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-08-24.
-;Translation dated 2017-08-29.
+ï»¿; German messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-01.
+; Translation based on English version dated 2017-09-01.
+; Translated by Michael Vogt last updated 2017-09-09
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -34,7 +35,7 @@ Const
 	WN_COMBINED_METER_TOOLBAR = "Kombinierte Aussteuerungsanzeige", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Ketten bearbeiten", ; name of the Edit Chains dialog
 	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
-	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
+	WN_QUICK_SETTINGS = "Schnelleinstellung - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Vorschau erstellen", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Vorschau", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Stop" ;name of Stop button to stop previewing
@@ -47,7 +48,7 @@ Const
 
 ;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
 Const
-    CS_SELECT_ON = " Auswählen An",
+    CS_SELECT_ON = " AuswÃ¤hlen An",
     CS_MUTE_ON = " Stumm An",
     CS_SOLO_ON = " Alleine An"
     
@@ -60,10 +61,10 @@ Const
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Ansagen von Audacity Meldungen",  ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Werkzeugleisten ansagen",
-	UO_ENTER_PAUSE = "UOEnterPause:Enter unterbricht während Wiedergabe / Aufnahme",
-	UO_SILENCE_PREVIEW = "UOSilencePreview:Still während Vorschau",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme",
-	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
+	UO_ENTER_PAUSE = "UOEnterPause:Enter unterbricht wÃ¤hrend Wiedergabe / Aufnahme",
+	UO_SILENCE_PREVIEW = "UOSilencePreview:Still wÃ¤hrend Vorschau",
+	UO_SILENCE_RECORD = "UOSilenceRecord:Still wÃ¤hrend Aufnahme",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Audio Vorschau nach Bewegen der Position"
 
 Messages
 ; For user options.
@@ -71,16 +72,16 @@ Messages
 Audacity spezifische Optionen
 @@
 @msgUO_AnnounceMessagesHlp
-Wenn aktiviert, informiertt Jaws über die Ausführung von Audacity Audio Operationen.
+Wenn aktiviert, informiertt Jaws Ã¼ber die AusfÃ¼hrung von Audacity Audio Operationen.
 @@
 @msgUO_AnnounceToolbarsHlp
 Wenn aktiviert, werden die Bezeichnungen der Werkzeugleisten gesprochen, wenn der Fokus von einer Werkzeugleiste zu einer anderen verschoben wird.
 @@
 @msgUO_EnterPauseHlp
-Wenn aktiviert, wird mit Enter die Wiedergabe oder Aufnahme pausiert und CTRL + Enter verhält sich wie Enter. Andernfalls wird Enter an Audacity durchgereicht.
+Wenn aktiviert, wird mit Enter die Wiedergabe oder Aufnahme pausiert und CTRL + Enter verhÃ¤lt sich wie Enter. Andernfalls wird Enter an Audacity durchgereicht.
 @@
 @msgUO_SilencePreviewHlp
-Wenn aktiviert, werden während der Vorschau von Effekten Sprachmeldungen deaktiviert.
+Wenn aktiviert, werden wÃ¤hrend der Vorschau von Effekten Sprachmeldungen deaktiviert.
 @@
 @msgUO_SilenceRecordHlp
 Wenn aktiviert, wird die Sprachausgabe beim Starten der Aufnahme deaktiviert.
@@ -93,7 +94,7 @@ Const
 	csPositionGroupFmt = "000.00",
 	;The word following the days in a position.
 	csDays = "Tage",
-	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HH MM SS.sss  format, with blanks removed
 	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = "", ; thousands separator character
 	csDecimal = "." ; decimal point
@@ -115,7 +116,7 @@ const
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Jaws Leitfaden für Audacity 2.3.1 (englisch)", 
+CS_JawsGuide_Title = "Jaws Leitfaden fÃ¼r Audacity 2.3.1 (englisch)", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "Link zum Jaws Leitfaden" ;Name displayed in links list
 
@@ -127,35 +128,44 @@ Audacity
 ; Begins the hotkey help.
 ; %1 - string containing script version and date.
 @msgScript_Ver
-Tastenkombinationen für die Jaws Skripts für Audacity, Version %1 (für Audacity 2.0.0 oder neuer):
+Tastenkombinationen fÃ¼r die Jaws Skripts fÃ¼r Audacity, Version %1 (fÃ¼r Audacity 2.0.0 oder neuer):
 
 @@
 @msgScriptKeyHelp
 
 Ansagen der Start Position der Selektion: %keyfor (SaySelectionStart)
-Ansagen der Ende Position oder der Länge der Selektion: %keyfor(SaySelectionEnd) (Umlaut Taste)
-Fokus zum Eingabefeld der Start oder Ende Position der Selektion platzieren: zwei Mal kurz aufeinander drücken.
+Ansagen der Ende Position oder der LÃ¤nge der Selektion: %keyfor(SaySelectionEnd) (Umlaut Taste)
+Fokus zum Eingabefeld der Start oder Ende Position der Selektion platzieren: zwei Mal kurz aufeinander drÃ¼cken.
 Ansagen der Position des Audio Cursors: %keyfor(SayActiveCursor)
-Bei aktiviertem PC-Cursor: zwei Mal kurz nacheinander drücken.
+Bei aktiviertem PC-Cursor: zwei Mal kurz nacheinander drÃ¼cken.
 Ansagen der Nummern der selektierten Spuren: %KeyFor(SaySelectedText)
 Ansagen des aktuellen Selektion Typen (Audacity 2.2.0 und neuer): %KeyFor(SaySelectionType)
-Wählen des Selektion Typen (Audacity 2.2.0 und neuer): JAWSTaste + a,p gefolgt von
+WÃ¤hlen des Selektion Typen (Audacity 2.2.0 und neuer): JAWSTaste + a,p gefolgt von
 Start-Ende: S
-Start - Länge: L
-Länge - Ende: E
-Länge - zentriert: C
-Ebenso können die Zifferntasten 1 bis 4 verwendet werden.
+Start - LÃ¤nge: L
+LÃ¤nge - Ende: E
+LÃ¤nge - zentriert: C
+Ebenso kÃ¶nnen die Zifferntasten 1 bis 4 verwendet werden.
 
-Erhöhen der Lautstärke der aktiven Spur: %keyfor (MouseUp)
-Verringern der Lautstärke der aktiven Spur: %keyfor (MouseDown)
+Im Spuren Panel und der Selektion Leiste: 
+Audio Vorschau nach der Start Position innerhalb der Selektion: %KeyFor(SayPriorWord)
+Audio Vorschau vor der Ende Position innerhalb der Selektion: %KeyFor(SayNextWord)
+Audio Vorschau vor der Start Position ausserhalb der Selektion: %KeyFor(SelectPriorWord) 
+Audio Vorschau nach der Ende Position ausserhalb der Selektion: %KeyFor(SelectNextWord)
+
+Umschalten zwischen Audio Vorschau und Ansagen der Position nach Bewegen der Position: %KeyFor(ToggleMotionPreview)
+Diese Funktion ermÃ¶glicht ein rasches Umschalten zwischen der Vorschau und der Ansage nach PositionsÃ¤nderungen und entspricht den Optionen Ansagen der Position und Audio Vorschau nach Bewegen der Position im Schnelleinstellung Dialog. Im Gegensatz zur Konfiguration im Schnelleinstellungen Dialog hat diese Tastenkombination eine temporÃ¤re wirkung und Ã¤ndert die im Schnelleinstellung Dialog vorgenommene Konfiguration nicht. Nach dem vorÃ¼bergehenden Wechsel in eine andere Anwendung oder dem Schnelleinstellung Dialog wird wieder die im Schnelleinstellung Dialog vorgenommene Konfiguration verwendet.
+    
+ErhÃ¶hen der LautstÃ¤rke der aktiven Spur: %keyfor (MouseUp)
+Verringern der LautstÃ¤rke der aktiven Spur: %keyfor (MouseDown)
 Panorama der aktiven Spur nach links %keyfor (MouseLeft)
 Panorama der aktiven Spur nach rechts: %keyfor (MouseRight).
 Die letzten vier Tastenkombinationen ersetzen die Standard Jaws Skripts der Steuerung des Mauszeigers, wenn der Fokus im Hauptfenster ist. Durch Aktivieren des Jaws Cursors kann die originale Jaws Maussteuerung im Hauptfenster verwendet werden.
 
 Ansagen des Aufnahmepegels: %KeyFor(SayRecordingMeter)
-Fokus zum Eingabefeld des Aufnahmepegels: zwei Mal kurz nacheinander drücken
+Fokus zum Eingabefeld des Aufnahmepegels: zwei Mal kurz nacheinander drÃ¼cken
 Ansagen des Wiedergabepegels: %KeyFor(SayPlaybackMeter)
-Fokus zum Eingabefeld des Wiedergabepegels: zwei Mal kurz nacheinander drücken.
+Fokus zum Eingabefeld des Wiedergabepegels: zwei Mal kurz nacheinander drÃ¼cken.
 
 Eine bestimmte Spur aktivieren durch angeben einer Zahl: %KeyFor(GoToTrack)
 Die Aktive Spur an eine bestimmte Position verschieben, durch angeben einer Zahl: %KeyFor(MoveCurrentTrackTo)
@@ -166,43 +176,43 @@ Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: %KeyF
 
 Tempo ermitteln:
 Mit der Tempo Ebene kann das Tempo einer Audio Sequenz ermittelt werden. 
-Hinweis: nach der Initialisierung der Tempo Ebene muss lediglich jeweils die letzte Taste der Tastenkombination Sequenz gedrückt werden, um eine Funktion der Tempo Ebene auszuführen.
+Hinweis: nach der Initialisierung der Tempo Ebene muss lediglich jeweils die letzte Taste der Tastenkombination Sequenz gedrÃ¼ckt werden, um eine Funktion der Tempo Ebene auszufÃ¼hren.
 - Wiedergabe starten: %KeyFor(TempoStartStop)
 - Pro Beat: %KeyFor(TempoTap) 
- - Um das Ermitteln des Tempos abzuschliessen und die Wiedergabe anzuhalten, drücken Sie erneut %KeyFor(TempoStartStop)
+ - Um das Ermitteln des Tempos abzuschliessen und die Wiedergabe anzuhalten, drÃ¼cken Sie erneut %KeyFor(TempoStartStop)
 - Das Tempo wird berechnet, in dem die Dauer zwischen dem ersten Beat und dem letzten Beat durch die Anzahl Beats minus 1 dividiert wird
-- Das ermittelte Tempo wird angesagt (in Schlägen pro Minute).
+- Das ermittelte Tempo wird angesagt (in SchlÃ¤gen pro Minute).
 - Erneutes Ansagen des ermittelten Tempos: %KeyFor(TempoAnnounce)
 - Kopieren des Tempos in die Zwischenablage: %KeyFor(TempoCopy) 
-- Das ermittelte Tempo bleibt verfügbar, bis erneut %KeyFor(TempoStartStop) gedrückt wird
-- Drücken Sie abschliessend Escape, um die Tempo Ebene zu verlassen.
+- Das ermittelte Tempo bleibt verfÃ¼gbar, bis erneut %KeyFor(TempoStartStop) gedrÃ¼ckt wird
+- DrÃ¼cken Sie abschliessend Escape, um die Tempo Ebene zu verlassen.
 
 Meldungen der Sprachausgabe ein- und ausschalten (muten des Synthesizers): %keyfor(MuteSynthesizer)
 Ansagen bestimmter Audacity Prozesse aktivieren / deaktivieren: %keyfor (AnnounceOnOff) (Paragraph Taste)
 Hinweis: dies verdoppelt die Ansagen von Audacity Nachrichten in den Jaws Schnelleinstellungen Optionen. Weitere Informationen in what's new.md.
 
-Zur nächsten Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste ist: %KeyFor (NextDocumentWindow)
+Zur nÃ¤chsten Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste ist: %KeyFor (NextDocumentWindow)
 Zur vorherigen Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste ist: %KeyFor (PreviousDocumentWindow)
 
 Transport Status ansagen (Wiedergabe, Aufnahme, Pause, Stop): %KeyFor(SayAudacityState)
-Alle Optionen der Jaws Skripts für Audacity auf die Standardwerte zurücksetzen: %keyfor (ResetConfig) (Paragraph Taste)
+Alle Optionen der Jaws Skripts fÃ¼r Audacity auf die Standardwerte zurÃ¼cksetzen: %keyfor (ResetConfig) (Paragraph Taste)
 Wechseln zwischen den beiden Listen im Ketten editieren Dialog: %keyfor (SwitchChainsList)
 
 Audacity Tastenkombinationen Hilfe: %keyfor(AudacityKeysHelp)
 Standard Windows Tastenkombinationen Hilfe: %keyfor(AudacityKeysHelp) zwei Mal kurz nacheinander
 
-Pause während Wiedergabe / Aufnahme an / aus: wenn die "Eingabetaste unterbricht Wiedergabe / Aufnahme" Option aktiviert ist, bewirkt das Drücken der %KeyFor(ENTER) Taste das Senden der Pause Taste. In dieser Konstelation bewirkt %KeyFor(CtrlEnter) das Senden der Enter Taste.
+Pause wÃ¤hrend Wiedergabe / Aufnahme an / aus: wenn die "Eingabetaste unterbricht Wiedergabe / Aufnahme" Option aktiviert ist, bewirkt das DrÃ¼cken der %KeyFor(ENTER) Taste das Senden der Pause Taste. In dieser Konstelation bewirkt %KeyFor(CtrlEnter) das Senden der Enter Taste.
 
 In einigen VST-Plugins, wie beispielsweise dem L1V:
-Fokus auf die "Preset" Schaltfläche: %keyfor (VSTPreset)
+Fokus auf die "Preset" SchaltflÃ¤che: %keyfor (VSTPreset)
 Um ein existierendes Preset zu laden: %keyfor (VSTLoadPreset)
 Speichern der aktuellen Einstellungen des VST-Plugins als Preset: %keyfor (VSTSavePreset)
 
-Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau Taste gedrückt wird, wird manchmal die "Stille Vorschau" nicht erwartungsgemäss deaktiviert. Dies führt zu fehlenden Jaws Ansagen beim Wechsel des Fokus. Das kurzzeitige Wechseln zu einer anderen Anwendung behebt das Problem.
+Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau Taste gedrÃ¼ckt wird, wird manchmal die "Stille Vorschau" nicht erwartungsgemÃ¤ss deaktiviert. Dies fÃ¼hrt zu fehlenden Jaws Ansagen beim Wechsel des Fokus. Das kurzzeitige Wechseln zu einer anderen Anwendung behebt das Problem.
 
-Ändern der Einstellungen der Audacity Skripts: %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
+Ã„ndern der Einstellungen der Audacity Skripts: %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
-Um die URL des Jaws Guide für Audacity zu ändern: %keyfor (AddAudacityJawsGuide)
+Um die URL des Jaws Guide fÃ¼r Audacity zu Ã¤ndern: %keyfor (AddAudacityJawsGuide)
 @@
 @msgAudacityLayerHelp
 Eine bestimmte Spur aktivieren durch angeben einer Zahl: G
@@ -215,7 +225,7 @@ Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: Shift
 Aktivieren der Position Ebene: P
 Erlaubt das Ansagen und Setzen des Position Anzeige Typen.
 Aktivieren der Sequenzen Ebene: S
-Erlaubt das Abhören kurzer Audiosequenzen vor oder nach der aktuellen Selektion oder Position (Shift + F5 bis F8).
+Erlaubt das AbhÃ¶ren kurzer Audiosequenzen vor oder nach der aktuellen Selektion oder Position (Shift + F5 bis F8).
 Aktivieren der Tempo Ebene: T
 Erlaubt das Ermitteln des Tempos.
 @@
@@ -225,16 +235,16 @@ Position Anzeige Typen Ebene
 @@
 @msgPositionLayerHelp
 Start - Ende: S
-Start - Länge: L
-Länge - Ende: E
-Länge - zentriert: c
+Start - LÃ¤nge: L
+LÃ¤nge - Ende: E
+LÃ¤nge - zentriert: c
 Ansagen des Position Anzeige Typen: P
 @@
 @msgShortLayer_Start
 Sequenzen Ebene
 @@
 @msgShortLayerHelp
-Shift + F5 - F8: J, K, L, ö
+Shift + F5 - F8: J, K, L, Ã¶
 Shift + Control + F5 - F7: Control + J, K, L
 C: C
 @@
@@ -257,7 +267,7 @@ Ansagen: A
 In Zwischenablage kopieren: C
 @@
 @msgPresetHotkeyHelp
-Fokus auf die "Preset" Schaltfläche: %keyfor (VSTPreset)
+Fokus auf die "Preset" SchaltflÃ¤che: %keyfor (VSTPreset)
 Um ein existierendes Preset zu laden: %keyfor (VSTLoadPreset)
 Speichern der aktuellen Einstellungen des VST-Plugins als Preset: %keyfor (VSTSavePreset)
 
@@ -265,7 +275,7 @@ Speichern der aktuellen Einstellungen des VST-Plugins als Preset: %keyfor (VSTSa
 
 ;Spoken before loading the Audacity for JAWS Guide web page.
 @msgLoadingJawsGuide_L
-Laden des Jaws Leitfaden für Audacity Anwender im Standard Browser...
+Laden des Jaws Leitfaden fÃ¼r Audacity Anwender im Standard Browser...
 @@
 @msgLoadingJawsGuide_S
 Lade Audacity Jaws Guide Webseite...
@@ -277,7 +287,7 @@ Lade Audacity Jaws Guide Webseite...
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Standard Tastenkombinationen für Audacity v2.1.3
+Standard Tastenkombinationen fÃ¼r Audacity v2.1.3
 (Aus dem %1, von %2)
 
 Link zum audacity Guide for Jaws (englisch):
@@ -290,17 +300,17 @@ Link zum audacity Guide for Jaws (englisch):
 Allgemeines
 
 Beschreibung Tastenkombination
-Audiodatei öffnen: Ctrl + O 
+Audiodatei Ã¶ffnen: Ctrl + O 
 Audio Datei importieren: Ctrl + Shift + I 
 Neues Projekt: Ctrl + N 
 Projekt speichern: Ctrl + S 
 Einstellungen Dialog: Ctrl + P 
-Vorwärts rotieren durch Werkzeugleisten, Spurliste und Selektion Eingabefelder: Ctrl + F6 
-Rückwärts rotieren durch Werkzeugleisten, Spurliste und Selektion Eingabefelder: Ctrl + Shift + F6 
-Vorwärts rotieren durch die  Spurliste und alle geöffneten nicht modalen Dialogfenster: Alt + F6 
-Rückwärts rotieren durch die Spurliste und alle geöffneten nicht modalen Dialogfenster: Alt + Shift + F6 
+VorwÃ¤rts rotieren durch Werkzeugleisten, Spurliste und Selektion Eingabefelder: Ctrl + F6 
+RÃ¼ckwÃ¤rts rotieren durch Werkzeugleisten, Spurliste und Selektion Eingabefelder: Ctrl + Shift + F6 
+VorwÃ¤rts rotieren durch die  Spurliste und alle geÃ¶ffneten nicht modalen Dialogfenster: Alt + F6 
+RÃ¼ckwÃ¤rts rotieren durch die Spurliste und alle geÃ¶ffneten nicht modalen Dialogfenster: Alt + Shift + F6 
 Normaler Zoom: Ctrl + 2 
-Einzoomen (vergrössern): Ctrl + 1 
+Einzoomen (vergrÃ¶ssern): Ctrl + 1 
 Auszoomen (verkleinern): Ctrl + 3 
 
 
@@ -310,13 +320,13 @@ Beschreibung Tastenkombination
 Wiedergabe starten / stoppen: Leertaste 
 Wiedergabe starten / stoppen und Cursor bewegen: X 
 Pause an / aus: P 
-Ein kleines Intervall rückwärts während der Wiedergabe: Pfeil nach links 
-Ein kleines Intervall vorwärts während der Wiedergabe: Pfeil nach rechts 
-Ein grosses Intervall rückwärts während der Wiedergabe: Shift + Pfeil nach links 
-Ein grosses Intervall nach rechts während der Wiedergabe: Shift + Pfeil nach rechts 
+Ein kleines Intervall rÃ¼ckwÃ¤rts wÃ¤hrend der Wiedergabe: Pfeil nach links 
+Ein kleines Intervall vorwÃ¤rts wÃ¤hrend der Wiedergabe: Pfeil nach rechts 
+Ein grosses Intervall rÃ¼ckwÃ¤rts wÃ¤hrend der Wiedergabe: Shift + Pfeil nach links 
+Ein grosses Intervall nach rechts wÃ¤hrend der Wiedergabe: Shift + Pfeil nach rechts 
 Wiedergabe endlos Schlaufe: Shift + Leertaste 
-Dialog Wiedergabegerät wählen: Shift + O 
-Abspielen der ausschneiden / löschen Vorschau: C 
+Dialog WiedergabegerÃ¤t wÃ¤hlen: Shift + O 
+Abspielen der ausschneiden / lÃ¶schen Vorschau: C 
 Ein kurzes Intervall vor der Selektion Start Position Wiedergeben: Shift + F5 
 Ein kurzes Intervall nach der Selektion Start Position Wiedergeben: Shift + F6 
 Ein kurzes Intervall vor der Selektion Ende Position Wiedergeben: Shift + F7 
@@ -329,23 +339,23 @@ Spuren Panel
 
 Beschreibung Tastenkombination
 Zur vorherigen Spur: Pfeil nach oben 
-Zur nächsten Spur: Pfeil nach unten 
+Zur nÃ¤chsten Spur: Pfeil nach unten 
 Zur ersten Spur: CTRL + Home 
 Zur letzten Spur: Ctrl + Ende 
 Selektion der Spur aktivieren / deaktivieren: Enter 
-Alle Spuren selektieren (und einen Zeitbereich, der alle Audios enthält): Ctrl + A 
+Alle Spuren selektieren (und einen Zeitbereich, der alle Audios enthÃ¤lt): Ctrl + A 
 Deselektieren aller Spuren (und allen Zeitbereichen): Ctrl + Shift + A 
 Selektieren aller Spuren: Ctrl + Shift + K 
-Kontextmenü der aktuellen Spur anzeigen: Shift + M 
+KontextmenÃ¼ der aktuellen Spur anzeigen: Shift + M 
 (Anwendungstaste deselektiert alles, deshalb nicht empfohlen)
-Schliessen (löschen) der aktiven Spur: Shift + C 
+Schliessen (lÃ¶schen) der aktiven Spur: Shift + C 
 
 
 Audio Spur
 
 Beschreibung Tastenkombination
-Ändern der Lautstärke der aktiven Spur (Gain): Shift + G 
-Ändern des Panorama der aktiven Spur: Shift + P 
+Ã„ndern der LautstÃ¤rke der aktiven Spur (Gain): Shift + G 
+Ã„ndern des Panorama der aktiven Spur: Shift + P 
 Muten der aktiven Spur an / aus: Shift + U 
 Muten aller Spuren aktivieren: Ctrl + U 
 Muten aller Spuren deaktivieren: Ctrl + Shift + U 
@@ -359,12 +369,12 @@ Zum Start der Spuren (Time Zero): Home
 Zum Ende aller Audios: Ende 
 Zum Start aller Audios der selektierten Spuren: J 
 Zum Ende aller Audios der selektierten Spuren: K 
-Neue Cursor Position an Wiedergabe Position: [ (ü Taste)
+Neue Cursor Position an Wiedergabe Position: [ (Ã¼ Taste)
 Wiedergabe stoppen und Cursor an diese Position: X 
-Kleines Intervall rückwärts: Komma 
-Kleines Intervall vorwärts: Punkt 
-Grosses Intervall rückwärts: Shift + Komma 
-Grosses Intervall vorwärts: Shift + Punkt 
+Kleines Intervall rÃ¼ckwÃ¤rts: Komma 
+Kleines Intervall vorwÃ¤rts: Punkt 
+Grosses Intervall rÃ¼ckwÃ¤rts: Shift + Komma 
+Grosses Intervall vorwÃ¤rts: Shift + Punkt 
 Cursor ein kleines Intervall nach links: Pfeil nach links 
 Cursor ein kleines Intervall nach rechts: Pfeil nach rechts 
 
@@ -372,7 +382,7 @@ Cursor ein kleines Intervall nach rechts: Pfeil nach rechts
 Selektieren eines Zeitbereichs
 
 Beschreibung Tastenkombination
-Selektieren eines Zeitbereichs der alle Audios enthält, und alle Spuren selektiert: Ctrl + A 
+Selektieren eines Zeitbereichs der alle Audios enthÃ¤lt, und alle Spuren selektiert: Ctrl + A 
 Selektion Start beim Beginn aller Spuren (Time Zero): Shift + Home 
 Selektion Ende am Ende aller Audios: Shift + Ende 
 Selektion Ende Position bei aktueller Wiedergabe Position: ]  (Umlaut Taste)
@@ -387,24 +397,24 @@ Selektion Start Position ein kleines Intervall nach links: Shift + Pfeil nach li
 Editieren
 
 Beschreibung Tastenkombination
-Rückgängig: Ctrl + Z 
+RÃ¼ckgÃ¤ngig: Ctrl + Z 
 Wiederholen: Ctrl + Y 
-Selektiertes Audio löschen: Entfernen 
+Selektiertes Audio lÃ¶schen: Entfernen 
 Selektiertes Audio in Zwischenablage ausschneiden: Ctrl + X 
 Selektiertes Audio in Zwischenablage kopieren: Ctrl + C 
-Aus Zwischenablage einfügen: Ctrl + V 
+Aus Zwischenablage einfÃ¼gen: Ctrl + V 
 Selektiertes Audio mit Stille ersetzen: Ctrl + L 
 Selektiertes Audio duplizieren: Ctrl + D 
-Aktive Spur schliessen (löschen): Shift + C 
-Nulldurchgänge finden: Z
+Aktive Spur schliessen (lÃ¶schen): Shift + C 
+NulldurchgÃ¤nge finden: Z
 
 
 Textmarken
 
 Beschreibung Tastenkombination
-Textmarke der Selektion hinzufügen: Ctrl + B 
-Textmarke an Wiedergabe Position hinzufügen: Ctrl + M 
-Zur nächsten Textmarke: Alt + Pfeil nach rechts 
+Textmarke der Selektion hinzufÃ¼gen: Ctrl + B 
+Textmarke an Wiedergabe Position hinzufÃ¼gen: Ctrl + M 
+Zur nÃ¤chsten Textmarke: Alt + Pfeil nach rechts 
 Zur vorherigen Textmarke: Alt + Pfeil nach links 
 
 
@@ -412,16 +422,16 @@ Aufnahme
 
 Beschreibung Tastenkombination
 Aufnahme starten: R 
-Aufnahme anfügen: Shift + R 
+Aufnahme anfÃ¼gen: Shift + R 
 Pause / Fortsetzen: P 
 Aufnahme stoppen: Leertaste 
 Audio Host selektieren Dialog: Shift + H 
-Aufnahmegerät auswählen Dialog: Shift + I 
-Aufnahme Kanäle Dialog: Shift + N 
+AufnahmegerÃ¤t auswÃ¤hlen Dialog: Shift + I 
+Aufnahme KanÃ¤le Dialog: Shift + N 
 @@
 
 @msg_App_Start
-Willkommen in Audacity. Um die Liste der Jaws Tastenkombinationen für Audacity anzuzeigen, drücken Sie  %Keyfor(AudacityScriptkeyHelp).
+Willkommen in Audacity. Um die Liste der Jaws Tastenkombinationen fÃ¼r Audacity anzuzeigen, drÃ¼cken Sie  %Keyfor(AudacityScriptkeyHelp).
 @@
 
 ;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectTo in all languages??
@@ -434,7 +444,7 @@ Ende
 @@
 
 @msgLength
-Länge
+LÃ¤nge
 @@
 
 @msgCenter
@@ -512,11 +522,11 @@ Selektiere von %1 bis %2
 @@
 
 @msgDelete_l
-Selektiertes Audio löschen
+Selektiertes Audio lÃ¶schen
 @@
 
 @msgDelete_s
-Löschen
+LÃ¶schen
 @@
 
 ;Messages for program states.
@@ -550,7 +560,7 @@ Aktive Spur schliessen
 @@
 
 @msgNotStopped_l
-Die Operation kann nur ausgeführt werden, wenn die Wiedergabe oder Aufnahme gestoppt ist
+Die Operation kann nur ausgefÃ¼hrt werden, wenn die Wiedergabe oder Aufnahme gestoppt ist
 @@
 @msgNotStopped_s
 Nicht gestoppt
@@ -569,15 +579,15 @@ Schneidet das selektierte Audio in die Zwischenablage aus
 @@
 
 @msgAnnounceOff
-Ansage ausgeführter Operationen deaktiviert
+Ansage ausgefÃ¼hrter Operationen deaktiviert
 @@
 
 @msgAnnounceOn
-Ansagen ausgeführter Operationen aktiviert
+Ansagen ausgefÃ¼hrter Operationen aktiviert
 @@
 
 @msgResetScriptOptions
-Zurücksetzen der Skript Optionen
+ZurÃ¼cksetzen der Skript Optionen
 @@
 
 @msgNoSelection
@@ -600,10 +610,10 @@ Um diese Funktion zu verwenden muss die Wiedergabe Pegel oder die Kombination Pe
 Um diese Funktion zu verwenden muss der Wiedergabe Pegel angezeigt werden.
 @@
 @msg_Script_Version
-Jaws Skripts Version %1, für Audacity 2.0.0 oder neuer.
+Jaws Skripts Version %1, fÃ¼r Audacity 2.0.0 oder neuer.
 @@
 @MsgNoTrackSelected_L
-Um diese Funktion zu verwenden muss mindestens eine Spur selektiert sein. Drücken Sie Enter, um eine Spur zu selektieren.
+Um diese Funktion zu verwenden muss mindestens eine Spur selektiert sein. DrÃ¼cken Sie Enter, um eine Spur zu selektieren.
 @@
 @msgNoTrackSelected_S
 Keine Spuren selektiert.
@@ -630,16 +640,16 @@ Kommando Sequenzen (Ketten)
 @@
 ;for changing Jaws guide's link
 @msgNoChange_l
-Keine Änderungen vorgenommen.
+Keine Ã„nderungen vorgenommen.
 @@
 @msgNoChange_s
-Keine Änderungen
+Keine Ã„nderungen
 @@
 @MSGNewURL
-Die URL wurde geändert: %1
+Die URL wurde geÃ¤ndert: %1
 @@
 @MSGJawsGuideDialog
-Geben Sie die neue URL des Audacity Guide für Jaws ein.
+Geben Sie die neue URL des Audacity Guide fÃ¼r Jaws ein.
 @@
 
 ;Used to speak the field value along with the slider value in the Compressor effect.
@@ -679,7 +689,7 @@ Normaler Zoom
 @@
 
 @msgZoomIn
-Einzoomen (Vergrössern)
+Einzoomen (VergrÃ¶ssern)
 @@
 
 @msgZoomOut
@@ -699,7 +709,7 @@ Mit Stille ersetzen
 @@
 
 @msgZeroCrossing
-Nulldurchgänge
+NulldurchgÃ¤nge
 @@
 
 @msgImportAudio
@@ -739,11 +749,11 @@ Split ausschneiden
 @@
 
 @msgSplitDelete
-Split löschen
+Split lÃ¶schen
 @@
 
 @msgPasteNewLabel
-Füge Text aus Zwischenablage in neue Textmarke ein.
+FÃ¼ge Text aus Zwischenablage in neue Textmarke ein.
 @@
 
 @msgSplit
@@ -767,7 +777,7 @@ Textmarke in Zwischenablage ausschneiden
 @@
 
 @msgDeleteLabels
-Textmarken löschen
+Textmarken lÃ¶schen
 @@
 
 @msgSplitCutLabels
@@ -775,7 +785,7 @@ Textmarken teilen und ausschneiden
 @@
 
 @msgSplitDeleteLabels
-Textmarken teilen und löschen
+Textmarken teilen und lÃ¶schen
 @@
 
 @msgSilenceLabels
@@ -791,7 +801,7 @@ Textmarken splitten
 @@
 
 @msgJoinLabels
-Textmarken zusammenfügen
+Textmarken zusammenfÃ¼gen
 @@
 
 @msgDisjoinLabels
@@ -811,11 +821,11 @@ Auf die Selektion zoomen
 @@
 
 @msgFitInWindow
-Auf Fenstergrösse einpassen
+Auf FenstergrÃ¶sse einpassen
 @@
 
 @msgFitV
-Auf Fensterhöhe einpassen
+Auf FensterhÃ¶he einpassen
 @@
 
 @msgGoSelStart
@@ -867,7 +877,7 @@ Letzte Spur
 @@
 
 @msgTrackPan
-Panorama ändern
+Panorama Ã¤ndern
 @@
 
 @msgTrackMoveTop
@@ -879,11 +889,11 @@ Verschiebe fokussierte Spur an das Ende
 @@
 
 @msgInputDevice
-Aufnahme Gerät
+Aufnahme GerÃ¤t
 @@
 
 @msgOutputDevice
-Wiedergabe Gerät
+Wiedergabe GerÃ¤t
 @@
 
 @msgAudioHost
@@ -891,7 +901,7 @@ Audio Host
 @@
 
 @msgInputChannels
-Eingangs Kanäle
+Eingangs KanÃ¤le
 @@
 
 
