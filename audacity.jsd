@@ -650,3 +650,7 @@ Respects AnnounceMessage.
 
 :Script ToggleMotionPreview
 
+:Function SayWindowTypeAndText
+:Returns void no return description
+:Param handle/hWnd
+:Description Respects gfSilence and gfSilenceClearOnNext.
