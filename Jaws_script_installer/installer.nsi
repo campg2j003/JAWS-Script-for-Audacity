@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-08-24
+Last updated: 2017-09-18
 
 Modifications:
 
@@ -42,6 +42,7 @@ Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (ht
 */
 
 ;Start of code
+Unicode true
 RequestExecutionLevel highest
 SetCompressor /solid lzma ;create the smallest file
 ;!define JAWSDEBUG ; debug

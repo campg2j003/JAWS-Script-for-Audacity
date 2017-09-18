@@ -1,4 +1,4 @@
-/*
+﻿/*
 English messages for installer.nsi (updated 2017-02-18)
 This file last updated 2017-02-18.
 */
