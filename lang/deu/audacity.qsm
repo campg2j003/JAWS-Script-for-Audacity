@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizableDefinitions File="Audacity.qs">
+	<DisplayNameDefinitions>
+		<DisplayName ID="Audacity Options" Text="Audacity Einstellungen">
+			<HelpMsg>
+Audacity spezifische Einstellungen.</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce Audacity messages" Text="Ansagen von Audacity Operationen">
+			<HelpMsg>
+Wenn aktiviert, werden Informationen zu Audacity Audio Operationen angesagt.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Announce toolbars" Text="Audacity Werkzeugleisten ansagen">
+			<HelpMsg>
+Wenn aktiviert, wird der Name der Werkzeugleiste angesagt, wenn der Fokus von einer Werkzeugleiste zu einer anderen wechselt.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.ENTER pauses during play/record" Text="Enter unterbricht während Wiedergabe / Aufnahme">
+			<HelpMsg>
+Wenn aktiviert, wird mit Enter die Wiedergabe oder Aufnahme pausiert und CTRL + Enter verhält sich wie Enter. Andernfalls wird Enter an Audacity durchgereicht.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Silence Preview" Text="Stille während Vorschau">
+			<HelpMsg>
+Wenn aktiviert, werden während der Vorschau von Effekten Sprachmeldungen deaktiviert.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.Silence Record" Text="Stille während Aufnahme">
+			<HelpMsg>
+Wenn aktiviert, wird die Sprachausgabe beim Starten der Aufnahme deaktiviert.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.SayPosition" Text="Position ansagen">
+			<HelpMsg>
+Wenn aktiviert wird nach allen Position Änderungen die Position angesagt. Wenn deaktiviert, wird die Position nach Positionsänderungen mit Audio Vorschau nicht angesagt.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.PreviewMotion" Text="Bewegen Vorschau">
+			<HelpMsg>
+Wenn aktiviert, wird nach Cursor Bewegen Tastenkombinationen eine Audio Vorschau der Position wiedergegeben
+			</HelpMsg>
+		</DisplayName>
+	</DisplayNameDefinitions>
+</LocalizableDefinitions>

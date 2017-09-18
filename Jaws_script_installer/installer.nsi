@@ -56,7 +56,7 @@ SetCompressor /solid lzma ;create the smallest file
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
-!Define JAWSScriptLangs "esn" ;Supported languages (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
+!Define JAWSScriptLangs "deu|esn" ;Supported languages delimited by | (not including English; these folders must exist in the script source lang directory ${JAWSSrcDir}\lang.
 
 ;Will be omitted if not defined.
 !define LegalCopyright "$(CopyrightMsg)"
@@ -94,11 +94,23 @@ ${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 
 ;Language-specific files
 ${Switch} $1
-${Case} "esn"
+${Case} "deu" ; German
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
+${Break}
+${Case} "esn" ; Spanish
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
+${Break}
+${Case} "deu"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
+${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
 ${Break}
 ${Default}
 ${JawsScriptFile} "${JAWSSrcDir}" "audacity.jkm"
@@ -116,9 +128,17 @@ ${If} $0 = 2 ;${INST_JUSTSCRIPTS} not defined yet
 ;Set the location for these files the same as JSD files-- for shared scripts in JAWS 17 this is Scripts\<lang>.
 ${JawsScriptSetPath} jsd
 ${Switch} $1
+${Case} "deu" ; German
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
+${Break}
 ${Case} "esn"
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
+${Break}
+${Case} "deu"
+  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
+  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
 ${Default}
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
@@ -147,6 +167,7 @@ ${Do}
 ;Why was this previously < (right to left)?
 ${StrLoc} $0 $3 "|" ">"
 ;$0 is position of |
+;DetailPrint "JAWSInstallFullItems: $$3='$3', $$0=$0," ; debug
 ${If} $0 > 0
 ;We found a |
 ;IntOp $2 $0  - 1 ;length of lang abbrev
@@ -162,14 +183,27 @@ ${EndIf}
 ;$3 is remaining lang abbreviations.
 ; $1 is JAWS language abbreviation (folder in ${JAWSScriptSrc}lang).
 ;$4 is either folder containing lang folders with trailing backslash or "" for default (enu).
+;DetailPrint "  $$1='$1'" ; debug
 StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
-${Case} "esn"
+${Case} "deu" ; German
+${AddItem} "$OUTDIR\readme_deu.html"
+File "/oname=readme_deu.html" "${JAWSSrcDir}lang\deu\readme.html"
+;${AddItem} "What's new_deu.md"
+;File "/oname=What's new_deu.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
+${Break}
+${Case} "esn" ; Spanish
 ${AddItem} "$OUTDIR\readme_esn.html"
 File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.md"
 ;File "/oname=What's new_esn.md" "${JAWSSrcDir}lang\esn\" "What's new.md"
+${Break}
+${Case} "deu"
+${AddItem} "$OUTDIR\readme_deu.html"
+File "/oname=readme_deu.html" "${JAWSSrcDir}lang\deu\readme.html"
+;${AddItem} "What's new_deu.md"
+;File "/oname=What's new_deu.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
 ${Break}
 ${Default}
 ${AddItem} "$OUTDIR\readme_enu.html"
@@ -204,9 +238,11 @@ ${File} "${JAWSSrcDir}" "copying.txt"
 ${File} "" "uninstlog.nsh"
 ${File} "" "uninstlog_enu.nsh"
 ${File} "" "uninstlog_esn.nsh"
+${File} "" "uninstlog_deu.nsh"
 ${File} "" "installer.nsi"
 ${File} "" "installer_lang_enu.nsh"
 ${File} "" "installer_lang_esn.nsh"
+${File} "" "installer_lang_deu.nsh"
 !MacroEnd ;JAWSInstallerSrc
 
 
@@ -220,5 +256,7 @@ ${File} "" "installer_lang_esn.nsh"
 ;Strange though it seems, the language file includes must follow the invocation of JAWSScriptInstaller.
   ;!include "uninstlog_enu.nsh"
   ;!include "uninstlog_esn.nsh"
+  ;!include "uninstlog_deu.nsh"
 !include "installer_lang_enu.nsh"
 !include "installer_lang_esn.nsh"
+!include "installer_lang_deu.nsh"
