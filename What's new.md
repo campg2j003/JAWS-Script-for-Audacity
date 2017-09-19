@@ -1,8 +1,9 @@
-(This file last updated 9/13/2017)
+(This file last updated 9/19/2017)
 
-# New in 2.2.0-alpha-2017-09-18
+# New in 2.2.0-alpha-2017-09-19
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
 - Added German translation.
+- Removed usePoFile script compiler pragma.
 # New in 2.2.0-alpha-2017-09-13
 Improvements to Silence Effect Preview in 2.2.0.
 # New in 2.2.0-alpha-2017-09-01
