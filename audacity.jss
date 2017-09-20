@@ -4,14 +4,14 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-19"
-;Last updated 2017-09-19T04:32Z
+Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-20"
+;Last updated 2017-09-20T03:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
 
 @msgCopyright
-JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
+JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityteam.org).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
@@ -112,8 +112,8 @@ Globals
 	Handle ghNull, ; to clear a handle
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 	Handle ghSliderEdit,
-	Int gfPreviewing,
-	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
+	Int gfPreviewing, ;true if effect previewing
+	Int gfSilence, ; If true, suppresses speech .
 	Int gfSilenceClearOnNext, ;clear gfSilence after next HandleCustomWindows or SayFocusedObject
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
 	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
@@ -2495,7 +2495,7 @@ In audacity.qs copy an existing setting (from <setting through </setting>) eleme
 In audacity.qsm copy an existing DisplayName element (from <DisplayName through </DisplayName>).  The value of the ID attribute needs to match exactly that of the corresponding Setting element in audacity.qs.  The value of the Text attribute is the text shown in the QuickSettings list and the text in the line between <HelpMsg> and </HelpMsg> is the text of the setting help.
 To support JAWS prior to V13:
 Copy the two functions UOOptionName and UOOptionNameHlp for an option below, changing OptionName to the new option name in the copy.
-In AdjustJawsOptions add UO_OPTION_NAME to variable strListOfOptions.
+In AdjustJawsOptions and AdjustJawsVerbosity add UO_OPTION_NAME to variable strListOfOptions.
 In audacity.jsm add a UO_OPTION_NAME constant and a msgUO_OptionNameHlp message.  UO_OPTION_NAME is a string containing the function name UOOptionName, a colon, and the text that appears in the text attribute of the DisplayName element in audacity.qsm.  The value of msgUOOptionName is the line from the HelpMsg element in audacity.qsm.
 */
 

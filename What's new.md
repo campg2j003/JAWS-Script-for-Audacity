@@ -1,5 +1,7 @@
 (This file last updated 9/19/2017)
 
+# New in 2.2.0-alpha-2017-09-20
+- Updated README.
 # New in 2.2.0-alpha-2017-09-19
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
 - Added German translation.
@@ -29,7 +31,7 @@ Note: The motion previewing capability requires that Audacity is set to the the 
 # New in 2.2.0-alpha-2017-08-05
 - Added Audacity layer key help.
 - Added Position Display key layer.
-- Added "Short" key layer for speaking Shift+F5-F8 and Shift+Control+F5 and F7from the home row.
+- Added "Short" key layer for speaking Shift+F5-F8 and Shift+Control+F5 and F7 from the home row.
 # New in 2.2.0-alpha-2017-07-10
 - Converted code that speaks position fields to work with Audacity 2.2.0-Alpha-09JUL17.
 

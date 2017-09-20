@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-01.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-19.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -60,8 +60,9 @@ Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Announce Audacity messages", ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Announce toolbars",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pauses during play/record",
-	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Preview",
+	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Effect Preview",
 	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record",
+	UO_SAY_POSITION = "UOSayPosition:Announce Position"
 	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
 
 Messages
@@ -83,6 +84,9 @@ If on, Turns speech off while previewing an effect.
 @@
 @msgUO_SilenceRecordHlp
 If on, silences speech that occurs when starting to record.
+@@
+@msgUO_SayPositionHlp
+If off, does not speak position announcements for arrow keys that preview.  If on, speaks all position announcements.
 @@
 EndMessages
 
@@ -131,13 +135,13 @@ JAWS keystrokes for script version %1, for Audacity 2.0.0 or later:
 @msgScriptKeyHelp
 
 To say the selection start position, press %keyfor (SaySelectionStart).
-To say the selection end position or length, press %keyfor(SaySelectionEnd).
+To say the selection end position, press %keyfor(SaySelectionEnd).
 To move focus to these controls, press the key twice quickly.
 To say the Audio Position value, press %keyfor(SayActiveCursor).
-In the main window to say the numbers of the selected tracks, press %KeyFor(SaySelectedText).
 To say the active cursor while the PC cursor is active, press %keyfor(SayActiveCursor) twice quickly.
 To Say the current selection type (Audacity 2.2.0 and later), press %KeyFor(SaySelectionType).
 To set the selection type (Audacity 2.2.0 and later), press JAWSKey+a,p followed by s (start-end), l (end-length), e (length-end) or c (length-center).  You can also use the numbers 1-4.
+In the main window to say the numbers of the selected tracks, press %KeyFor(SaySelectedText).  Press twice quickly to say track names.
 
 In the track panel and selection bar , to preview audio after (inside) the selection start, press %KeyFor(SayPriorWord)
 In the track panel and selection bar , to preview audio before (inside) the selection end, press %KeyFor(SayNextWord)
@@ -165,7 +169,7 @@ To go to the marked track, press %KeyFor(GoToMarkedTrack).
 To go to the marked track and mark the starting track, press %KeyFor(ExchangeWithMark).
 To move the current track to the position of the marked track and set the mark to the current track, press %KeyFor(MoveCurrentTrackToMark).
 
-To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you've entered the Tempo layer.)  
+To find the tempo, press %KeyFor(TempoStartStop).  Playback starts.  Then press %KeyFor(TempoTap) for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you have entered the Tempo layer.)  
 When you are finished press %KeyFor(TempoStartStop) again.  Playback stops and the tempo in beats per minute is spoken.  
 After that you can press %KeyFor(TempoAnnounce) to speak the tempo again or %KeyFor(TempoCopy) to copy it to the clipboard.  The value will be retained until %KeyFor(TempoStartStop) is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
 The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
@@ -178,22 +182,23 @@ In a toolbar to move to the next toolbar press %KeyFor (NextDocumentWindow)
 In a toolbar to move to the previous toolbar press %KeyFor (PreviousDocumentWindow)
 
 To speak the program's state (play/pause/record/stop) press %KeyFor(SayAudacityState)
-To reset all script options to default values, press %keyfor (ResetConfig)
+
 To switch between the two lists in the Edit Chains dialog, press %keyfor (SwitchChainsList).
 
 To get help with Audacity hot keys, press %keyfor(AudacityKeysHelp).
 To get the default Windows hot key help, press %keyfor(AudacityKeysHelp) twice quickly.
 
+To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
+To reset all script options to default values, press %keyfor (ResetConfig)
+
 If the "ENTER pauses during play/record" option is on, pressing %KeyFor(ENTER) while playing or recording sends the Pause key.  Use %KeyFor(CtrlEnter) to execute ENTER in this situation.
 
+If Silence Effect Preview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
+ 
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
 To save the current settings as a preset, press  %keyfor (VSTSavePreset).
-
-If SilencePreview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
- 
-To change settings for the Audacity script, press %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 To Change the URL for the Audacity Jaws Guide, press %keyfor (AddAudacityJawsGuide)
 @@
@@ -242,6 +247,7 @@ Copied %1
 @@
 @msgTempoLayerHelp
 Start/stop press SPACE.
+tap press ENTER.
 Announce press a.
 Copy to clipboard press c.
 @@
