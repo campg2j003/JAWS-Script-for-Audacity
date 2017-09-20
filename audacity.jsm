@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-19.
+; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-20.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -62,7 +62,7 @@ Const
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pauses during play/record",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silence Effect Preview",
 	UO_SILENCE_RECORD = "UOSilenceRecord:Silence Record",
-	UO_SAY_POSITION = "UOSayPosition:Announce Position"
+	UO_SAY_POSITION = "UOSayPosition:Announce Position",
 	UO_MOTION_PREVIEW = "UOMotionPreview:Motion Previewing"
 
 Messages
