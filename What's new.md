@@ -1,15 +1,12 @@
-(This file last updated 9/19/2017)
+(This file last updated 9/20/2017)
 
 # New in 2.2.0-alpha-2017-09-20
 - Updated README.
-# New in 2.2.0-alpha-2017-09-19
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
 - Added German translation.
 - Removed usePoFile script compiler pragma.
-# New in 2.2.0-alpha-2017-09-13
-Improvements to Silence Effect Preview in 2.2.0.
-# New in 2.2.0-alpha-2017-09-01
-Sliders in Equalization dialog now speak DB values.
+- Improvements to Silence Effect Preview in 2.2.0.
+- Sliders in Equalization dialog now speak DB values.
 # New in 2.2.0-alpha-2017-08-31
 - Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  On functions as before.  Off silences position messages for arrow keys that play audio if Motion Preview is on.
 - Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
