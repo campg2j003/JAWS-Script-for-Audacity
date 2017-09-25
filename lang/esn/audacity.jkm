@@ -1,14 +1,14 @@
-[Common Keys]
+﻿[Common Keys]
 JAWSKey+h=AudacityScriptKeyHelp
 Insert+h=AudacityScriptKeyHelp
 JAWSKey+w=AudacityKeysHelp
 Insert+w=AudacityKeysHelp
 JAWSKey+delete=SayAudacityState
 Insert+delete=SayAudacityState
-shift+control+rightarrow=StartMarkerRight
-;control+]=
+control+shift+rightarrow=StartMarkerRight
+;  control+]=
 control+k=DeleteSelectedAudio
-shift+control+leftarrow=FinishMarkerLeft
+control+shift+leftarrow=FinishMarkerLeft
 shift+j=SelectToBeginning
 k=MoveToEndOfSelectedTracks
 shift+leftarrow=StartMarkerLeft
@@ -18,16 +18,16 @@ j=MoveToStartOfSelectedTracks
 [=SelectionStart
 control+c=Copy
 shift+rightarrow=FinishMarkerRight
-shift+control+a=DeselectAll
-shift+control+k=SelectInAllTracks
+control+shift+a=DeselectAll
+control+shift+k=SelectInAllTracks
 shift+c=CloseFocusTrack
-;control+[=
+;  control+[=
 Control+graveaccent=AnnounceOnOff
 ENTER=Enter
 NumPadEnter=Enter
 Control+ENTER=CtrlEnter
-; Asignar CtrlEnter a NumPadEnter hace que %KeyFor devuelva Control+NumPadEnter en vez de Control+ENTER.
-;Control+NumPadEnter=CtrlEnter
+;  Asignar CtrlEnter a NumPadEnter hace que %KeyFor devuelva Control+NumPadEnter en vez de Control+ENTER.
+;  Control+NumPadEnter=CtrlEnter
 Shift+Control+`=ResetConfig
 Alt+P=VSTPreset
 Alt+C=VSTLoadPreset
@@ -56,12 +56,73 @@ JAWSKey+a&x=ExchangeWithMark
 Insert+a&x=ExchangeWithMark
 JAWSKey+a&Shift+m=MoveCurrentTrackToMark
 Insert+a&Shift+m=MoveCurrentTrackToMark
+JAWSKey+a&Shift+Dash*=AudacityLayerHelp
+Insert+a&Shift+Dash*=AudacityLayerHelp
 Control+Shift+UpArrow=MoveTrackUp
 Control+Shift+DownArrow=MoveTrackDown
 Control+B=AddLabelAtSelection
 Control+m=AddLabelAtPlayPosition
 
-;Teclas para anunciar teclas de Audacity (generadas con make-key-script)
+;Teclas para enviar Shift+F5-F8 y Control+Shift+F5, F7 ("nivel "corto")
+Insert+a&c&Shift+-*=ShortLayerHelp
+JAWSKey+a&c&Shift+-*=ShortLayerHelp
+JAWSKey+a&c&c*=SendKey("c")
+Insert+a&c&c*=SendKey("c")
+JAWSKey+a&c&j*=SendKey("Shift+F5")
+JAWSKey+a&c&k*=SendKey("Shift+F6")
+JAWSKey+a&c&l*=SendKey("Shift+F7")
+JAWSKey+a&c&;*=SendKey("Shift+F8")
+JAWSKey+a&c&Control+j*=SendKey("Control+Shift+F5")
+JAWSKey+a&c&Control+l*=SendKey("Control+Shift+F7")
+JAWSKey+a&c&LeftArrow*=SayPriorCharacter
+JAWSKey+a&c&NumPad5*=SayCharacter
+JAWSKey+a&c&RightArrow*=SayNextCharacter
+JAWSKey+a&c&Shift+LeftArrow*=StartMarkerLeft
+JAWSKey+a&c&Shift+RightArrow*=FinishMarkerRight
+JAWSKey+a&c&Control+Shift+LeftArrow*=FinishMarkerLeft
+JAWSKey+a&c&Control+Shift+RightArrow*=StartMarkerRight
+JAWSKey+a&c&JAWSKey+UpArrow*=SayLine
+JAWSKey+a&c&JAWSKey+NumPad5*=SayWord
+Insert+a&c&j*=SendKey("Shift+F5")
+Insert+a&c&k*=SendKey("Shift+F6")
+Insert+a&c&l*=SendKey("Shift+F7")
+Insert+a&c&;*=SendKey("Shift+F8")
+Insert+a&c&Control+j*=SendKey("Control+Shift+F5")
+Insert+a&c&Control+l*=SendKey("Control+Shift+F7")
+Insert+a&c&LeftArrow*=SayPriorCharacter
+Insert+a&c&NumPad5*=SayCharacter
+Insert+a&c&RightArrow*=SayNextCharacter
+Insert+a&c&Shift+LeftArrow*=StartMarkerLeft
+Insert+a&c&Shift+RightArrow*=FinishMarkerRight
+Insert+a&c&Control+Shift+LeftArrow*=FinishMarkerLeft
+Insert+a&c&Control+Shift+RightArrow*=StartMarkerRight
+Insert+a&c&Insert+UpArrow*=SayLine
+Insert+a&c&Insert+NumPad5*=SayWord
+
+;Para el cuadro combinado de tipo de selección en Audacity 2.2.0
+JAWSKey+a&p&p=SaySelectionType
+Insert+a&p&p=SaySelectionType
+JAWSKey+a&p&Shift+Dash*=PositionLayerHelp
+Insert+a&p&Shift+Dash*=PositionLayerHelp
+;Si cambia las teclas siguientes también tendrá que actualizar msgScriptKeyHelp, pues estas teclas se encuentran "codificadas rígidamente".
+JAWSKey+a&p&1=SetSelectionType(1)
+Insert+a&p&1=SetSelectionType(1)
+JAWSKey+a&p&c=SetSelectionType(1)
+Insert+a&p&c=SetSelectionType(1)
+JAWSKey+a&p&2=SetSelectionType(2)
+Insert+a&p&2=SetSelectionType(2)
+JAWSKey+a&p&l=SetSelectionType(2)
+Insert+a&p&l=SetSelectionType(2)
+JAWSKey+a&p&3=SetSelectionType(3)
+Insert+a&p&3=SetSelectionType(3)
+JAWSKey+a&p&f=SetSelectionType(3)
+Insert+a&p&f=SetSelectionType(3)
+JAWSKey+a&p&4=SetSelectionType(4)
+Insert+a&p&4=SetSelectionType(4)
+JAWSKey+a&p&c=SetSelectionType(4)
+Insert+a&p&c=SetSelectionType(4)
+
+;  Teclas para anunciar teclas de Audacity (generadas con make-key-script)
 Control+2=ZoomNormal
 Control+1=ZoomIn
 Control+3=ZoomOut
@@ -110,14 +171,28 @@ Ctrl+R=RepeatLastEffect
 Ctrl+Home=FirstTrack
 Ctrl+End=LastTrack
 Shift+P=TrackPan
-;These are my own assignments that got into my automated generation of the support for these keys.  The scripts remain but I have commented them out here because they are not part of the default key assignments.
-;Alt+NUMPAD_HOME=TrackMoveTop
-;Alt+NUMPAD_END=TrackMoveBottom
+;  Estas son mis propias asignaciones que van en mi generación automática de la compatibilidad con estas teclas. Los scripts permanecen, pero aquí los he comentado porque no son parte de las asignaciones de teclas predeterminadas.
+;  Alt+NUMPAD_HOME=TrackMoveTop
+;  Alt+NUMPAD_END=TrackMoveBottom
 Shift+I=InputDevice
 Shift+O=OutputDevice
 Shift+H=AudioHost
 Shift+N=InputChannels
 g=SayRecordingMeter
 h=SayPlaybackMeter
+
+;Tempo
+JAWSKey+a&t&SPACE*=TempoStartStop
+JAWSKey+a&t&ENTER*=TempoTap
+JAWSKey+a&t&a*=TempoAnnounce
+JAWSKey+a&t&c*=TempoCopy
+JAWSKey+a&t&Shift+-*=TempoLayerHelp
+Insert+a&t&SPACE*=TempoStartStop
+Insert+a&t&ENTER*=TempoTap
+Insert+a&t&a*=TempoAnnounce
+Insert+a&t&c*=TempoCopy
+Insert+a&t&Shift+-*=TempoLayerHelp
+
+[Laptop Keys]
 
 [Laptop Keys]

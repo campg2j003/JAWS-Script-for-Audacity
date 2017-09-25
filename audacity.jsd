@@ -1,4 +1,4 @@
-:script for
+﻿:script for
 
 :function AnnounceOn
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
