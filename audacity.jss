@@ -1,11 +1,11 @@
-; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacityteam.org).
+﻿; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacityteam.org).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-09-20"
-;Last updated 2017-09-20T16:05Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-09-27"
+;Last updated 2017-09-27T02:50Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1252,6 +1252,7 @@ SetFocus (hWnd)
 Pause ()
 While iCount
 	TypeKey (sKey)
+	Pause ()
 	Let iCount = iCount - 1
 EndWhile
 Pause ()
