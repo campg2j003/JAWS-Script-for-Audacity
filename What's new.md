@@ -1,5 +1,7 @@
-(This file last updated 9/20/2017)
+(This file last updated 9/28/2017)
 
+# New in 2.2.0-beta-2017-09-28
+- Updated Spanish translation.
 # New in 2.2.0-beta-2017-09-20
 - Updated README.
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
