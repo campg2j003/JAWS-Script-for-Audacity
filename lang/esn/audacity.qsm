@@ -21,7 +21,7 @@ SI se activa, lee el nombre de las barras de herramientas cuando el foco se muev
 Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
 			</HelpMsg>
 		</DisplayName>
-		<DisplayName ID="Audacity Options.Silence Preview" Text="Silenciar en vista previa">
+		<DisplayName ID="Audacity Options.Silence Preview" Text="Silenciar en vista previa de efectos">
 			<HelpMsg>
 Si se activa, desactiva la voz mientras se previsualiza un efecto.
 			</HelpMsg>
@@ -29,6 +29,16 @@ Si se activa, desactiva la voz mientras se previsualiza un efecto.
 		<DisplayName ID="Audacity Options.Silence Record" Text="Silenciar al grabar">
 			<HelpMsg>
 Si se activa, silencia la voz que tenga lugar cuando se haya empezado a grabar.
+			</HelpMsg>
+		</DisplayName>
+<DisplayName ID="Audacity Options.SayPosition" Text="Anunciar posición">
+			<HelpMsg>
+Si se desactiva, no verbaliza anuncios de posición al pulsar las flechas en casos de vista previa. Si se activa, verbaliza todos los anuncios de posición.
+			</HelpMsg>
+		</DisplayName>
+		<DisplayName ID="Audacity Options.PreviewMotion" Text="Vista previa de movimiento">
+			<HelpMsg>
+Si se activa, las teclas de movimiento del cursor reproducen una vista previa del audio.
 			</HelpMsg>
 		</DisplayName>
 </DisplayNameDefinitions>

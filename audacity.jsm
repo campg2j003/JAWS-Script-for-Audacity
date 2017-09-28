@@ -1,4 +1,4 @@
-; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-20.
+ï»¿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-20.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -96,7 +96,7 @@ Const
 	csPositionGroupFmt = "000,00",
 	;The word following the days in a position.
 	csDays = "days",
-	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHÃµMMÃµSS.sss  format, with blanks removed
 	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = ",", ; thousands separator character
 	csDecimal = "." ; decimal point
