@@ -1,5 +1,7 @@
-(This file last updated 9/28/2017)
+(This file last updated 9/29/2017)
 
+# New in 2.2.0-beta-2017-09-29
+- Updated Vietnamese README.  Changed from .txt to .html.
 # New in 2.2.0-beta-2017-09-28
 - Updated Spanish translation.
 # New in 2.2.0-beta-2017-09-20
