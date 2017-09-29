@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-09-18
+Last updated: 2017-09-28
 
 Modifications:
 
@@ -225,7 +225,7 @@ pop $2
 pop $1
 pop $0
 
-${File} "${JAWSSrcDir}" "readme_vi.txt" ; Vietnamese README file
+${File} "${JAWSSrcDir}" "readme_vi.html" ; Vietnamese README file
 !ifdef JAWSLicenseFile
 ${File} "${JAWSSrcDir}" "copying.txt"
 !EndIf ; if JAWSLicenseFile

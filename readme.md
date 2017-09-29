@@ -1,4 +1,4 @@
-﻿2017-09-26  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-09-28  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
 
@@ -18,7 +18,7 @@ This JAWS script package provides support for Audacity 2.0.0 and later, includin
 - Track gain and pan controls are passed to the application when the PC cursor is active and focus is in the main window.  Otherwise they execute their default mouse movement functions.
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
-- Multilanguage support: English, German, and Spanish are supported.  There is also a Vietnamese translation of the README file.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
+- Multilanguage support: English, German, and Spanish are supported.  There is also a Vietnamese translation of the README file.  It is in the file audacity_readme_vi.html in the installation folder in your program files folder.
 - While in the main window JAWSKey+Shift+DownArrow (SaySelectedText) speaks track numbers (or names if pressed twice quickly) of selected tracks.
 - You can go to a track by number.  You can also move a track to a specific position by number.  You can also set a "mark" on a track and later return there, or move a track there.
 - Feedback is provided when moving a track via the keyboard.  (See below.)
@@ -152,7 +152,7 @@ The installer messages are now localizable.  The message text has now been separ
 This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md](CONTRIBUTING.md) in the repository.
 
 # Notes for Translators
-Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+Note that `readme.html` and `readme_vi.html` are generated from `readme.md` and `readme_vi.md`, which are only available from the GitHub repository.  See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
 # Credits
 - Script coding: Gary Campbell and Dang Manh Cuong <dangmanhcuong@gmail.com>
