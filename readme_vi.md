@@ -50,7 +50,7 @@ Khi cài cho tất cả tài khoản, ở trang chọn phiên bản / ngôn ng�
 
 Nếu muốn hiệu chỉnh bộ cài đặt, hay chỉ đơn giản là muốn khám phá nó, bạn có thể cài installer source bằng cách chọn Custom install  >  Installer source.
 
- ## Gỡ cài đặt:
+## Gỡ cài đặt:
 Gói cài đặt có thể được gỡ thông qua Program And Features (Add/Remove Programs). Bạn cũng có thể chạy tập tin `uninst.exe`   trong thư mục cài đặt (`%programfiles(x86)%\Jaws Script for Audacity` hoặc `%localappdata%\Jaws Script for Audacity`).
 
 Nếu trình gỡ cài đặt nhận thấy các tập tin script đã được chỉnh sửa, nó sẽ yêu cầu xác nhận trước khi gỡ chúng. Nếu chọn yes thì các tập tin đã chỉnh sửa sẽ bị xóa, no thì ngược lại. các tập tin (`audacity.jcf` hoặc `audacity.jsi`) sẽ không bị xóa.
@@ -160,12 +160,12 @@ Lưu ý rằng tập tin `Readme.HTML` đã được tạo từ tập tin `Readm
 - Phiên dịch tiếng Tây Ban Nha: Fernando Gregoire
 - Tập tin Readme tiếng Việt: Nguyễn Hoàng Giang, Đặng Mạnh Cường và Lê Thị Thêu
 
-# kết luận
+# Kết luận
 Gần đây, script được phát triển với Audacity 2.1.3, 2.2.0 alpha và beta. Nó sẽ hoạt động được với Các phiên bản Jaws từ 5.0 trở lên, dù rằng các tùy chọn cho Audacity trong phần Adjust Jaws Verbosity có vẻ chưa tốt lắm và cũng chưa được kiểm tra (tôi nhớ rằng chúng tôi đã dùng một hàm mà theo FSDN thì chỉ dùng được cho Jaws 10.0 trở lên). Các phiên bản gần đây được phát triển với Jaws 17, 18 và 2018 beta (build 1708.29) trên máy laptop chạy Windows 10 64 bit. Dù rằng vẫn hỗ trợ cho các phiên bản cũ của Jaws, chúng tôi vẫn chưa thử nghiệm điều đó. Hiện nay, chưa có hỗ trợ nào cho màn hình chữ nổi.
 
 tôi sẵn sàng tiếp nhận những phản hồi cho script, cũng như các đề nghị để cải thiện, nhưng không thể hứa hẹn về  việc cập nhật nó.
 
-dưới đây là bảng phím nóng hỗ trợ của jaws:
+# Dưới đây là bảng phím nóng hỗ trợ của jaws:
 
 ```
 Để đọc điểm chọn trái, bấm Alt+[.
