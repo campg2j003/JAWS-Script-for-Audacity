@@ -1,4 +1,4 @@
-:script for
+﻿:script for
 
 :function AnnounceOn
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
@@ -650,3 +650,7 @@ Respects AnnounceMessage.
 
 :Script ToggleMotionPreview
 
+:Function SayWindowTypeAndText
+:Returns void no return description
+:Param handle/hWnd
+:Description Respects gfSilence and gfSilenceClearOnNext.
