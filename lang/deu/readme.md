@@ -1,4 +1,4 @@
-06.09.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+28.09.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -16,7 +16,7 @@ Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer ein
 - Informiert, wenn keine Spuren in einem Projekt vorhanden sind und deshalb die gewählte Operation nicht angewendet werden kann.
 - Tastenkombinationen, um die Werte des Wiedergabe- und Aufnahmepegels anzusagen (maximale Spitze).
 - Mit den Jaws Tastenkombinationen zur Steuerung der Maus können die Lautstärke und das Panorama der aktiven Spur verändert werden. Diese werden an die Applikation durchgereicht, wenn der PC Cursor aktiviert und der Fokus im Hauptfenster ist. Andernfalls werden die Standard Funktionen zur Maussteuerung ausgeführt.
-- In vielen VST-Plugins kann das Preset Steuerelement mittels Tastenkombination fokussiert und Presets geladen und gespeichert werden.
+- In vielen VST-Plugins kann das Preset Steuerelement mittels Tastenkombination fokussiert sowie Presets geladen und gespeichert werden.
 - In vielen Plugin Dialogen werden Namen und Werte der Steuerelemente angesagt.
 - Unterstützung mehrere Sprachen: Englisch, Spanisch und Deutsch werden unterstützt. Ebenso ist eine Übersetzung der readme Datei in Vietnamesisch vorhanden. Vielen Dank an Nguyen Hoang Giang, Dang Manh Cuong und Le Thi Theu dies anzubieten. Diese Datei audacity_readme_vi.txt ist im Installationsverzeichnis im Programme Ordner zu finden.
 - Spricht die Nummern der aktuell selektierten Spuren durch Drücken von Jaws Taste + Shift + Pfeil nach unten (SaySelectedText). Die Namen der aktuell selektierten Spuren werden durch zwei Mal kurz nacheinander drücken gesprochen.
@@ -44,7 +44,7 @@ Wenn die Berechtigungen des Benutzers die Installation für alle Benutzer erlaub
 
 Bei der alle Benutzer Installation, auf der Seite Versionen/Sprache, kann zwischen der Installation für alle Benutzer oder der Installation für den aktuellen Benutzer gewählt werden.
 
-Der Installer erlaubt es auszuwählen, in welche Jaws Version und Sprache die Skripts installiert werden. Er kompilliert das Skript Paket für jede Version. Beachte, dass das Skript Paket nur für die Sprache der aktuell laufenden Jaws Version sauber kompilliert werden kann.
+Der Installer erlaubt es auszuwählen, in welche Jaws Version und Sprache die Skripts installiert werden. Er kompilliert das Skript Paket für jede Version. Mit der Leertaste können die gewünschten Versionen, in welche das Skript Paket installiert werden soll, ausgewählt werden. Beachte, dass das Skript Paket nur für die Sprache der aktuell laufenden Jaws Version sauber kompilliert werden kann.
 
 Wenn Du den Installer modifizieren möchtest, oder Du betrachten möchtest, wie er funktioniert, kannst Du die Quelldaten des Installers installieren, in dem im benutzerdefinierten Installationstyp die Option Installer Source installieren gewählt wird.
 
@@ -166,6 +166,23 @@ Beachte, dass dieses "Merken" lediglich die Position der Spur in der Spurliste "
 
 Sprich Zeile (Jaws Taste + Num Pad 5) sagt die aktuelle Spurnummer und die Anzahl  aller Spuren an, wenn der Fokus im Spuren Panel ist. (Einige mögen denken "Aber Audacity sagt bereits Spurnummern". Das stimmt wenn eine Spur erstellt wird, jedoch nicht, wenn sie umbenannt wird. Oder wenn es das Resultat vom Importieren einer Datei ist.)
 
+## Tempo ermitteln
+Mit der Tempo Ebene kann das Tempo einer beliebigen Audio Sequenz im Rythmus der Musik mit der Tastatur getabt und anschliessend berechnet werden.
+
+Dieses Feature funktioniert ähnlich wie ein Add-On von Robert Hänggi in NVDA. Der Algorithmus unterscheidet sich ein wenig davon.
+
+
+Die Tastenkombination Ebene "Tempo" wird initialisiert mit Jaws Taste + A, T
+- Wiedergabe starten: Leertaste
+- Pro Beat: Tabulator Taste
+ - Um das Ermitteln des Tempos abzuschliessen und die Wiedergabe anzuhalten, drücken Sie erneut die Leertaste
+- Das ermittelte Tempo wird angesagt (in Schlägen pro Minute).
+- Erneutes Ansagen des ermittelten Tempos: A
+- Kopieren des Tempos in die Zwischenablage: C 
+- Das ermittelte Tempo bleibt verfügbar, bis erneut die Leertaste gedrückt wird
+- Drücken Sie abschliessend Escape, um die Tempo Ebene zu verlassen.
+
+ 
 # Bekannte Probleme
 1. Diese Version des Skripts bietet die Möglichkeit des Deaktivierens der Sprachmeldungen (Stille) während der Vorschau von Effekten (Vorhören vor der Anwendung einer Operation auf die Audiodaten). Manchmal wird diese Stille nicht richtig nach der Vorschau wieder ausgeschaltet. Dies kann durch kurzes Wechseln des Fokus weg von Audacity und wieder zurück behoben werden.
 2. Die Position Steuerelemente liefern manchmal ungekürzte Zeitwerte. Das geschieht, da die JAWS GetWindowText Funktion lediglich Werte ohne h, m, s etc. liefert. Wir wissen nicht, wodurch dies ausgelöst wird. Ich konnte dies durch Beenden und neu Starten von Audacity korrigieren. Das Phänomen wurde in Jaws 10, 15, 16 und 17 beobachtet. Ich habe beobachtet, dass dieses Problem manchmal von alleine verschwindet. 
@@ -175,7 +192,7 @@ Sprich Zeile (Jaws Taste + Num Pad 5) sagt die aktuelle Spurnummer und die Anzah
 6. In Jaws Versionen vor 13 erscheint die Tastenkombination Jaws Taste + V für die Skriptspezifischen  Optionen nicht in der Hotkey Hilfe. Die Tastenkombination funktioniert trotzdem. Wie auch immer, wir können dies beheben, wenn  sich zeigt, dass dies ein Problem sein sollte.
 
 # Unterstützung mehrerer Sprachen
-Diese Version des Installer Frameworks enthält den ersten Wurf, welche die Installation der Skripts in mehreren Sprachen unterstützt. Es behandelt nun Version / Sprache Paare wie bisher Versionen behandelt wurden. So  werden nun in der Version Auswahlliste Einträge wie 16.0 / deu angezeigt. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. Fernando Gregoire hat die spanische Übersetzung bereitgestellt. Gracias! Michael Vogt hat die deutsche Übersetzung bereitgestellt. Dankeschön!
+Diese Version des Installer Frameworks enthält den ersten Wurf, welche die Installation der Skripts in mehreren Sprachen unterstützt. Es behandelt nun Version / Sprache Paare wie bisher Versionen behandelt wurden. So  werden nun in der Version Auswahlliste Einträge wie 16.0 / deu angezeigt. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. 
 
 Obschon der Installer die Skriptdateien in die Ordner der gewählten Sprache installiert und kompilliert, kompilliert der Jaws Script Compiler die Scripts nur in der Sprache der aktuell laufenden Jaws Version. Deshalb muss nach der Installation Jaws in den entsprechenden Sprachen gestartet und die Skripts kompilliert werden (Mit Fokus in Audacity Jaws + F2 drücken, Skript Manager starten, im Editor wird dann audacity.jss angezeigt. Einmal Ctrl + S, dadurch wird das Skript kompiliert).
 
@@ -183,7 +200,7 @@ Obschon der Installer die Skriptdateien in die Ordner der gewählten Sprache ins
 Wenn Sie die Skriptdateien modifizieren, aktualisieren Sie bitte die Version Konstante in der Nähe des Anfangs der Datei audacity.jss. Das ist besonders dann wichtig, wenn Sie das Skript Paket weitergeben. Auch wenn Sie die  modifizierten Skript Dateien ausschliesslich selbst verwenden, stellt das Vorgehen sicher, dass wir wissen, dass es sich um eine modifizierte Version handelt, wenn Sie damit mit uns in Kontakt treten.
 
 
-Meldungen und String Konstanten für das Jaws Skript sind in den Dateien audacity.jsm und audacity.qsm.
+Meldungen und String Konstanten für das Jaws Skript sind in den Dateien audacity.jsm und audacity.qsm enthalten. Ab Version 2.0.0 müssen alle Dateien als UTF-8 encodiert sein.
 
 Die Meldungstexte des Installers sind nun lokalisierbar. Die Meldungstexte wurden nun vom Programmcode getrennt, so dass für jede Sprache separate Message Sets präpariert werden können. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. Meldungstexte sind in .nsh Header Dateien mit Dateinamen wie *_enu.nsh oder *_lang_enu.nsh deklariert.
 
@@ -193,9 +210,15 @@ Dieses Paket wird jetzt auf GitHub gehostet. Das Repository ist unter <https://g
 Beachte dass readme.html aus readme.md generiert wird, welche nur im GitHub Repository zu finden ist. Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für weitere Informationen.
 
 Beachte, dass das Skript mit #pragma usePoFile 0 kompiliert wird.
+
+# Credits
+- Script Entwicklung: Gary Campbell and Dang Manh Cuong <dangmanhcuong@gmail.com>
+- Deutsche Übersetzung: Michael Vogt
+- Spanische Übersetzung: Fernando Gregoire
+- Vietnamesisches README: Nguyen Hoang Giang, Dang Manh Cuong, and Le Thi Theu
  
 # Abschliessende Anmerkungen
-Zuletzt wurde dieses Skript mit Audacity 2.1.3 und Audacity 2.2.0 Alpha entwickelt.  Es wird wahrscheinlich mit allen Jaws Versionen ab 5.0 funktionieren, obschon die Optionen für Audacity in den Jaws Schnelleinstellungen nicht sehr gut aussehen, was nicht getestet wurde (ich erinnere mich daran, dass eine Jaws Funktion die wir verwenden, auf FSDN mit "erfordert Jaws 10 oder neuer" vermerkt ist. Die letzten Programmierarbeiten wurden mit Jaws 17 und 18 auf einem 64 Bit Notebook mit Windows 10 ausgeführt. Auch wenn Support für frühere Versionen von Jaws angeboten wird, wurde  der aktuelle Code nicht mit diesen getestet. Zum jetzigen Zeitpunkt bieten wir keinen spezifischen Support für Braille an.
+Zuletzt wurde dieses Skript mit Audacity 2.1.3 und Audacity 2.2.0 Alpha und Beta entwickelt.  Es wird wahrscheinlich mit allen Jaws Versionen ab 5.0 funktionieren, obschon die Optionen für Audacity in den Jaws Schnelleinstellungen nicht sehr gut aussehen, was nicht getestet wurde (ich erinnere mich daran, dass eine Jaws Funktion die wir verwenden, auf FSDN mit "erfordert Jaws 10 oder neuer" vermerkt ist. Die letzten Programmierarbeiten wurden mit Jaws 17,  18 und 2018 Beta auf einem 64 Bit Notebook mit Windows 10 ausgeführt. Auch wenn Support für frühere Versionen von Jaws angeboten wird, wurde  der aktuelle Code nicht mit diesen getestet. Zum jetzigen Zeitpunkt bieten wir keinen spezifischen Support für Braille an.
 
 Ich bin  interessiert an Feedback zu dem Skript und Vorschlägen zu Verbesserungen, kann jedoch keine Updates versprechen.
 

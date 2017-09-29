@@ -1,17 +1,17 @@
-; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacityteam.org).
+﻿; JAWS script for Audacity multitrack sound editor V2.0.1.0 (http://audacityteam.org).
 ;Original author: Gary Campbell
 ;Modified: Dang Manh Cuong
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-Alpha-2017-09-08"
-;Last updated 2017-09-08T00:30Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-09-28"
+;Last updated 2017-09-28T15:37Z
 
 ; This puts the copyright in the jsb file.
 Messages
 
 @msgCopyright
-JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
+JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityteam.org).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
@@ -45,7 +45,6 @@ Include "msaaconst.jsh"
 ;use "debugstring.jsb" ; debug
 
 ;The following line makes JAWS 17 to use the old localization model. Although the scripts stored in Settings\Language folder seem to work without adding this, international characters of messages in Audacity.jsm are not processed correctly.
-;#pragma usePoFile 0
 
 ;The next line makes the script compiled on Jaws 13.0 to behave the same as it does with earlier versions.
 ;#pragma StringComparison partial
@@ -113,8 +112,8 @@ Globals
 	Handle ghNull, ; to clear a handle
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 	Handle ghSliderEdit,
-	Int gfPreviewing,
-	Int gfSilence, ; If true, suppresses speech in HandleCustomWindows and HandleCustomRealWindows.
+	Int gfPreviewing, ;true if effect previewing
+	Int gfSilence, ; If true, suppresses speech .
 	Int gfSilenceClearOnNext, ;clear gfSilence after next HandleCustomWindows or SayFocusedObject
 	Int gfSuppressNextTutor, ;Suppress next TutorMessegeEvent, not currently used.
 	Int gfInLabel, ;True if a label writing command has been entered but ENTER hasn't been pressed and we haven't left the label track.
@@ -693,6 +692,17 @@ Else
 EndIf
 EndFunction ; SayFocusedObject
 
+Void Function SayWindowTypeAndText (Handle hWnd)
+If gfSilence Then
+	If gfSilenceClearOnNext Then
+		Let gfSilence = False
+		Let gfSilenceClearOnNext = False
+	EndIf
+	Return
+EndIf
+SayWindowTypeAndText (hWnd)
+EndFunction
+
 Int Function IsToolbar (Handle hWnd)
 ; Return True if hWnd is one of the toolbars.
 ; The toolbars are in a window named ToolDock under the app window.  It is the second window, the selection bar is inside the window following it, which is also named ToolDock.
@@ -1242,6 +1252,7 @@ SetFocus (hWnd)
 Pause ()
 While iCount
 	TypeKey (sKey)
+	Pause ()
 	Let iCount = iCount - 1
 EndWhile
 Pause ()
@@ -2485,7 +2496,7 @@ In audacity.qs copy an existing setting (from <setting through </setting>) eleme
 In audacity.qsm copy an existing DisplayName element (from <DisplayName through </DisplayName>).  The value of the ID attribute needs to match exactly that of the corresponding Setting element in audacity.qs.  The value of the Text attribute is the text shown in the QuickSettings list and the text in the line between <HelpMsg> and </HelpMsg> is the text of the setting help.
 To support JAWS prior to V13:
 Copy the two functions UOOptionName and UOOptionNameHlp for an option below, changing OptionName to the new option name in the copy.
-In AdjustJawsOptions add UO_OPTION_NAME to variable strListOfOptions.
+In AdjustJawsOptions and AdjustJawsVerbosity add UO_OPTION_NAME to variable strListOfOptions.
 In audacity.jsm add a UO_OPTION_NAME constant and a msgUO_OptionNameHlp message.  UO_OPTION_NAME is a string containing the function name UOOptionName, a colon, and the text that appears in the text attribute of the DisplayName element in audacity.qsm.  The value of msgUOOptionName is the line from the HelpMsg element in audacity.qsm.
 */
 

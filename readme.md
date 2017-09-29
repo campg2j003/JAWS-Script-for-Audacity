@@ -1,4 +1,4 @@
-2017-09-01  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-09-26  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
 
@@ -18,7 +18,7 @@ This JAWS script package provides support for Audacity 2.0.0 and later, includin
 - Track gain and pan controls are passed to the application when the PC cursor is active and focus is in the main window.  Otherwise they execute their default mouse movement functions.
 - In many VST plug-ins, keystrokes move focus to the Presets control and activate save/Load Presets.
 - In many plug-in dialogs control names and values are spoken.  
-- Multilanguage support: English and Spanish are supported.  There is also a Vietnamese translation of the README file.  Thanks to Nguyen Hoang Giang, Dang Manh Cuong, and Le Thi Theu for providing this.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
+- Multilanguage support: English, German, and Spanish are supported.  There is also a Vietnamese translation of the README file.  It is in the file audacity_readme_vi.txt in the installation folder in your program files folder.
 - While in the main window JAWSKey+Shift+DownArrow (SaySelectedText) speaks track numbers (or names if pressed twice quickly) of selected tracks.
 - You can go to a track by number.  You can also move a track to a specific position by number.  You can also set a "mark" on a track and later return there, or move a track there.
 - Feedback is provided when moving a track via the keyboard.  (See below.)
@@ -42,11 +42,11 @@ For full or custom installations for all users the uninstaller and README files 
 
 If you choose the Just Script install type, the README and What's New files will be installed in the JAWS scripts folder for each version, and `What's new.md` will be called `audacity_whatsnew.md`.  (The Vietnamese README file will not be installed in a Just Script install.)
 
+The Versions/Languages page displays a list of the JAWS versions/languages installed on your machine.  Press `SPACE` to check the JAWS versions you want to install into.  It will compile the script package for each JAWS version.  Note that the script will only be properly compiled for the language of the currently running JAWS.
+
 If the user's priveleges allow for installing for all users, an all user install is performed.  Otherwise a current user install is performed.  If privileges allow for all user installation, current user installation can be forced by adding the `/currentuser` command line switch.
 
 For all user installs, on the Versions/Languages page you can choose whether to install the script for the current user or for all users.  
-
-The installer allows you to choose which JAWS versions and languages to install into.  It will compile the script package for each JAWS version.  Note that the script will only be properly compiled for the language of the currently running JAWS.
 
 If you want to modify the installer, or are just curious how it works, you can install the installer source by selecting the Custom install type and choosing the Install Installer source component.
 
@@ -115,17 +115,22 @@ It is possible to go to a track by number, move a track to a position by number,
 
 If you want to use different keys you will have to change the assignments in `audacity.jkm`.
 
-Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script prompts for a number.  You can enter a number to go to that track.  Prefix the number with `+` to move down (to higher track numbers) that many tracks, or `-` to move up.  You can move a track with `JAWSKey+a,m`.  You can mark the current track with `JAWSKey+a,k`.  Then you can return to the marked track with `JAWSKey+a,Shift+g` and move the current track to the marked position with `JAWSKey+a,Shift+m`.  Note that this mark simply remembers a track number, so if you add or delete tracks above it, it will point to the wrong track.  `SayLine` (`JAWSKey+Numpad7`) speaks the number of the current track and the total number of tracks when focus is in the track panel.  (Some of you may be thinking, "but Audacity already says track numbers."  It does when you create a track, but not if you rename it, or if it is the result of importing a file.)
+Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script prompts for a number.  You can enter a number to go to that track.  Prefix the number with `+` to move down (to higher track numbers) that many tracks, or `-` to move up.  You can move a track with `JAWSKey+a,m`.  You can mark the current track with `JAWSKey+a,k`.  Then you can return to the marked track with `JAWSKey+a,Shift+g` and move the current track to the marked position with `JAWSKey+a,Shift+m`.  Note that this mark simply remembers a track number, so if you add or delete tracks above it, it will point to the wrong track.  `SayLine` (`JAWSKey+Numpad8`) speaks the number of the current track and the total number of tracks when focus is in the track panel.  (Some of you may be thinking, "but Audacity already says track numbers."  It does when you create a track, but not if you rename it, or if it is the result of importing a file.)
+
+## Determining Tempo
+The `JAWSKey+a,t` layer allows you to determine the tempo by tapping along with the music.  To do this, move to the start of the audio.  Then press `JAWSKey+a,t,SPACE`.  Audacity starts playing.  While playing, tap `ENTER` for each beat.  When you press `SPACE` again, the tempo in beats per minute is spoken.  `a` speaks it again.  `c` copies it to the clipboard.  The tempo value is retained until the next time `SPACE` in the tempo layer is pressed.  This feature is based on a similar feature in the NVDA add-on by Robert Hänggi, although the algorithm is slightly different.  
+
+Note: There is another implementation of this feature that more closely follows the NVDA algorithm but requires JAWS 11 update 1.  To activate it, run Audacity and open Script Manager by pressing `JAWSKey+0` (on the typing keys numbers row).  You can locate the relevant sections by searching for "JAWS 11".  There are two sections that need to be uncommented and one that needs to be commented out.  To uncomment a section, place a semicolon (;) just before the `/*` and `*/` at the start/end of the section.  To comment out a section, remove the semicolon before its `/*` and `*/` markers.  Then press `Control+s` to save and compile the script.
 
 # Issues:
 
-1.  This version of the script adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.  this feature currently does not work in Audacity 2.2.0.
+1.  This version of the script adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.  
 
 2.  The position fields sometimes are not shortened.  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, 17, and 18.  I have observed that this problem sometimes goes away on its own.
 
 3.  If the "ENTER Pauses during play/record" feature is on (which is the default), `ENTER` will not select or unselect the current track while playing or recording.  Use `Control+ENTER` instead of `ENTER` in this case.
 
-4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the the version constant so we'll know it is a modified version if you communicate with us about it.
+4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the version constant so we'll know it is a modified version if you communicate with us about it.
 
 5.  The JAWS script compiler only compiles for the language of the currently running JAWS.  (See below.)
 
@@ -133,26 +138,30 @@ Once configured, you can go to a track by pressing `JAWSKey+a,g`.  The script pr
 
 
 # Multiple Language Support
-This version of the installer framework contains the first cut of support for installation of the script in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English and Spanish are currently supported.  Fernando Gregoire has contributed the Spanish translation.  Gracias!
+This version of the installer framework contains support for installation of the script in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English, German, and Spanish are currently supported.
 
 Although the installer installs and compiles the script into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the script.
 
 # Notes for script developers
 If you modify the script files, please update the version constant near the beginning of `audacity.jss`.  This is particularly important if you distribute the script.  Even if you just modify it for your own use, this will make sure we know it is a modified version if you communicate with us about it.
 
-Messages and string constants for the JAWS script are in `audacity.jsm` and `audacity.qsm`.  
+Messages and string constants for the JAWS script are in `audacity.jsm` and `audacity.qsm`.  Note that starting with version 2.2.0, the message files must be in UTF-8 encoding.
 
-The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.
+The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English, German, and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.  These file's must also be in UTF-8 encoding.  NSIS 3.0 or later is required to build the installer.
 
 This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md](CONTRIBUTING.md) in the repository.
 
 # Notes for Translators
 Note that `readme.html` is generated from `readme.md`, which is only available from the GitHub repository.  See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
-Note that the script is compiled using `#pragma usePoFile 0`.
+# Credits
+- Script coding: Gary Campbell and Dang Manh Cuong <dangmanhcuong@gmail.com>
+- German translation: Michael Vogt
+- Spanish translation: Fernando Gregoire
+- Vietnamese README: Nguyen Hoang Giang, Dang Manh Cuong, and Le Thi Theu
 
 # Conclusion
-Recent script development was done with Audacity 2.1.3 and 2.2.0 alpha versions.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17 and 18 on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
+Recent script development was done with Audacity 2.1.3 and 2.2.0 alpha and beta versions.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17, 18, and 2018 beta (build 1708.29) on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
@@ -212,6 +221,6 @@ in missing speech that occurs as a result of focus changes.  You can fix this by
 To change settings for the Audacity script, press   JAWSKey+V.
 
 To Change the URL for the Audacity Jaws Guide, press Shift+Control+J
- ```
+```
 
 Enjoy!
