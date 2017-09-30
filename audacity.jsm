@@ -1,4 +1,4 @@
-﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-20.
+﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-30.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -115,9 +115,9 @@ const
 	ksTempoLayer = "t"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Audacity 2.1.3 Guide", 
+CS_JawsGuide_Title = "Audacity 2.2.0 Guide", 
 CS_JawsGuide_Author = "David Bailes",
 CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
@@ -272,7 +272,7 @@ JAWS Guide
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.1.3 (from %1, by %2).  Access the guide at
+Default keystrokes for Audacity v2.2.0 (from %1, by %2).  Access the guide at
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
@@ -287,6 +287,7 @@ Open audio file Ctrl + O
 Import audio file Ctrl + Shift + I 
 New project Ctrl + N 
 Save project Ctrl + S 
+Export Audio Ctrl + Shift + E 
 Preferences dialog Ctrl + P 
 Cycle forward through Toolbars, Track table, and Selection bar Ctrl + F6 
 Cycle backward through Toolbars, Track table, and Selection bar Ctrl + Shift + F6 
@@ -321,7 +322,7 @@ Play short period before and after selection end Ctrl + Shift + F7
 Track table
 
 
-Command Keystroke
+Command keystroke
 
 Move to previous track Up Arrow 
 Move to next track Down Arrow 
@@ -331,7 +332,7 @@ Toggle selection of focused track Enter
 Select all the tracks (and a time range which includes all the audio) Ctrl + A 
 Deselect all the tracks (and any time-range) Ctrl + Shift + A 
 Select all the tracks Ctrl + Shift + K 
-Open menu of focused track Application Key or Shift + M 
+Open menu of focused track Shift + M or Application key 
 Close (Delete) focused track Shift + C 
 
 Audio track
@@ -406,18 +407,32 @@ Add label at playback position Ctrl + M
 Move to next label Alt + Right Arrow 
 Move to previous label Alt + Left Arrow 
 
+Clips
+
+
+Command Keystroke
+
+Select previous clip Alt + P 
+Select next clip Alt + N 
+Split Ctrl + I 
+Split delete Ctrl + Alt + K 
+Split cut Ctrl + Alt + X 
+Split New Ctrl + Alt + I 
+Detach at silences Ctrl + Alt + J 
+Join Ctrl + J 
+
 Recording
 
 
 Command Keystroke
 
-Record R 
-Append Record Shift + R 
+Append Record R, using default settings 
+Record in new Track Shift + R, using default settings 
 Pause/resume P 
 Stop Spacebar 
 Select Audio Host dialog Shift + H 
 Select Recording Device dialog Shift + I 
-Select Recording Channels dialog Shift + N 
+ 
 @@
 
 @msg_App_Start
