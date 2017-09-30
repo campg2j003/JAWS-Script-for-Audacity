@@ -322,7 +322,7 @@ Play short period before and after selection end Ctrl + Shift + F7
 Track table
 
 
-Command keystroke
+Command Keystroke
 
 Move to previous track Up Arrow 
 Move to next track Down Arrow 
@@ -432,7 +432,7 @@ Pause/resume P
 Stop Spacebar 
 Select Audio Host dialog Shift + H 
 Select Recording Device dialog Shift + I 
- 
+Select Recording Channels dialog Shift + N
 @@
 
 @msg_App_Start
