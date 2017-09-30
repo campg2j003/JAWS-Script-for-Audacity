@@ -75,7 +75,10 @@ goto next
 goto next
 :tojaws
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
-if exist "%SCOMPILE%" (
+if exist "%SCOMPILE%" goto scompileexists
+echo Could not find script compiler %scompile%
+goto next
+:scompileexists
 pushd "%JAWSDIR%"
 "%scompile%" "%PROD%.jss"
 if %errorlevel% == 0 (
@@ -84,9 +87,6 @@ echo Compile finished successfully
 echo Compile failed with exit code %errorlevel%.
 )
 popd
-) else (
-echo Could not find script compilter %scompile%
-)
 goto next
 :fromjaws
 set curdir=%CD%
