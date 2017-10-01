@@ -1,4 +1,4 @@
-28.09.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+01.10.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -226,7 +226,7 @@ Ich bin  interessiert an Feedback zu dem Skript und Vorschlägen zu Verbesserung
 
 Ansagen der Start Position der Selektion: Alt+ü
 
-Ansagen der Ende Position oder der Länge der Selektion: Alt+Plus Taste (Umlaut Taste)
+Ansagen der Ende Position der Selektion: Alt+Plus Taste (Umlaut Taste)
 
 Fokus zum Eingabefeld der Start oder Ende Position der Selektion platzieren: zwei Mal kurz aufeinander drücken.
 
@@ -234,7 +234,42 @@ Ansagen der Position des Audio Cursors: Alt+Entfernen
 
 Bei aktiviertem PC-Cursor: zwei Mal kurz nacheinander drücken.
 
+Ansagen des aktuellen Selektion Typen (Audacity 2.2.0 und neuer): JAWS Taste+a, p, p
 
+Wählen des Selektion Typen (Audacity 2.2.0 und neuer): JAWSTaste + a,p gefolgt von
+
+Start-Ende: S
+
+Start - Länge: L
+
+Länge - Ende: E
+
+Länge - zentriert: C
+
+Ebenso können die Zifferntasten 1 bis 4 verwendet werden.
+
+
+Ansagen der Nummern der selektierten Spuren: JAWS Taste+Umschalt+A
+
+Ansagen der Bezeichnung der selektierten Spuren: zwei Mal kurz nacheinander drücken.
+
+
+Im Spuren Panel und der Selektion Leiste:
+ 
+Audio Vorschau nach der Start Position innerhalb der Selektion: Einfügen+Pfeil Links
+
+Audio Vorschau vor der Ende Position innerhalb der Selektion: JAWS Taste+L
+
+Audio Vorschau vor der Start Position ausserhalb der Selektion: Einfügen+Umschalt+Pfeil Links
+ 
+Audio Vorschau nach der Ende Position ausserhalb der Selektion: Einfügen+Umschalt+Pfeil Rechts
+
+
+Umschalten zwischen Audio Vorschau und Ansagen der Position nach Bewegen der Position: JAWS Taste+p
+
+Diese Funktion ermöglicht ein rasches Umschalten zwischen der Vorschau und der Ansage nach Positionsänderungen und entspricht den Optionen Ansagen der Position und Audio Vorschau nach Bewegen der Position im Schnelleinstellung Dialog. Im Gegensatz zur Konfiguration im Schnelleinstellungen Dialog hat diese Tastenkombination eine temporäre wirkung und ändert die im Schnelleinstellung Dialog vorgenommene Konfiguration nicht. Nach dem vorübergehenden Wechsel in eine andere Anwendung oder dem Schnelleinstellung Dialog wird die im Schnelleinstellungen Dialog definierte Konfiguration verwendet. 
+    
+    
 Erhöhen der Lautstärke der aktiven Spur: Alt+Umschalt+Pfeil Rauf
 
 Verringern der Lautstärke der aktiven Spur: Alt+Umschalt+Pfeil Runter
@@ -255,7 +290,7 @@ Ansagen des Wiedergabepegels: h
 Fokus zum Eingabefeld des Wiedergabepegels: zwei Mal kurz nacheinander drücken.
 
 
-Eine bestimmte Spur aktivieren durch angeben einer Zahl: Jaws Taste + A, a
+Eine bestimmte Spur aktivieren durch angeben einer Zahl: JAWS Taste+a, g
 
 Die Aktive Spur an eine bestimmte Position verschieben, durch angeben einer Zahl: JAWS Taste+a, m
 
@@ -265,10 +300,35 @@ Die zuletzt gemerkte Spur aktivieren: JAWS Taste+a, Umschalt+g
 
 Die zuletzt gemerkte Spur aktivieren und die zuvor aktive Spur merken: JAWS Taste+a, x
 
-Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: Jaws Taste + a, Umschalt+m
+Aktive Spur an die zuletzt gemerkte Position verschieben und diese merken: Einfügen+a, Umschalt+m
 
 
-Meldungen der Sprachausgabe ein- und ausschalten (muten des Synthesizers): Jaws Taste + Shift + S
+Tempo ermitteln:
+
+Mit der Tempo Ebene kann das Tempo einer Audio Sequenz ermittelt werden.
+ 
+Hinweis: nach der Initialisierung der Tempo Ebene muss lediglich jeweils die letzte Taste der Tastenkombination Sequenz gedrückt werden, um eine Funktion der Tempo Ebene auszuführen.
+
+- Wiedergabe starten: Einfügen+a, t, Leertaste
+
+- Pro Beat: Einfügen+a, t, Eingabe
+ 
+ - Um das Ermitteln des Tempos abzuschliessen und die Wiedergabe anzuhalten, drücken Sie erneut Einfügen+a, t, Leertaste
+ 
+- Das Tempo wird berechnet, in dem die Dauer zwischen dem ersten Beat und dem letzten Beat durch die Anzahl Beats minus 1 dividiert wird
+
+- Das ermittelte Tempo wird angesagt (in Schlägen pro Minute).
+
+- Erneutes Ansagen des ermittelten Tempos: JAWS Taste+a, t, a
+
+- Kopieren des Tempos in die Zwischenablage: JAWS Taste+a, t, c
+ 
+- Das ermittelte Tempo bleibt verfügbar, bis erneut Einfügen+a, t, Leertaste gedrückt wird
+
+- Drücken Sie abschliessend Escape, um die Tempo Ebene zu verlassen.
+
+
+Meldungen der Sprachausgabe ein- und ausschalten (muten des Synthesizers): Umschalt+Einfügen+S
 
 Ansagen bestimmter Audacity Prozesse aktivieren / deaktivieren: Steuerung+` (Paragraph Taste)
 
@@ -282,7 +342,6 @@ Zur vorherigen Werkzeugleiste navigieren, wenn der Fokus in einer Werkzeugleiste
 
 Transport Status ansagen (Wiedergabe, Aufnahme, Pause, Stop): JAWS Taste+Entfernen
 
-Alle Optionen der Jaws Skripts für Audacity auf die Standardwerte zurücksetzen: Umschalt+Steuerung+` (Paragraph Taste)
 
 Wechseln zwischen den beiden Listen im Ketten editieren Dialog: F6
 
@@ -292,26 +351,29 @@ Audacity Tastenkombinationen Hilfe: Einfügen+w
 Standard Windows Tastenkombinationen Hilfe: Einfügen+w zwei Mal kurz nacheinander
 
 
+Ändern der Einstellungen der Audacity Skripts:   Einfügen+V.
+
+Alle Optionen der Jaws Skripts für Audacity auf die Standardwerte zurücksetzen: Steuerung+Umschalt+` (Paragraph Taste)
+
+
 Pause während Wiedergabe / Aufnahme an / aus: wenn die "Eingabetaste unterbricht Wiedergabe / Aufnahme" Option aktiviert ist, bewirkt das Drücken der Eingabe Taste das Senden der Pause Taste. In dieser Konstelation bewirkt Steuerung+Eingabe das Senden der Enter Taste.
-
-
-In einigen VST-Plugins, wie beispielsweise dem L1V:
-
-Fokus auf die "Preset" Schaltfläche: Alt+P
-
-Um ein existierendes Preset zu laden: Alt+C
-
-Speichern der aktuellen Einstellungen des VST-Plugins als Preset: Alt+G
 
 
 Wenn die "Stille Vorschau" aktiviert ist und in einem Effekt Dialog die Vorschau Taste gedrückt wird, wird manchmal die "Stille Vorschau" nicht erwartungsgemäss deaktiviert. Dies führt zu fehlenden Jaws Ansagen beim Wechsel des Fokus. Das kurzzeitige Wechseln zu einer anderen Anwendung behebt das Problem.
 
 
-Ändern der Einstellungen der Audacity Skripts:   Einfügen+V.
+In einigen VST-Plugins, wie beispielsweise dem L1V:
 
 
-Um die URL des Jaws Guide für Audacity zu ändern: Umschalt+Steuerung+J
+Fokus auf die "Preset" Schaltfläche: Alt+P
+
+Um ein existierendes Preset zu laden:
  
+Speichern der aktuellen Einstellungen des VST-Plugins als Preset: Alt+S
+
+
+Um die URL des Jaws Guide für Audacity zu ändern: Steuerung+Umschalt+J
+
 
 
 Viel Spass!
