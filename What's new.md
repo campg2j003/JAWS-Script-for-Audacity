@@ -1,5 +1,7 @@
-(This file last updated 9/29/2017)
+(This file last updated 10/1/2017)
 
+# New in 2.2.0-beta-2017-10-01
+- JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
 # New in 2.2.0-beta-2017-09-29
 - Updated Vietnamese README.  Changed from .txt to .html.
 # New in 2.2.0-beta-2017-09-28

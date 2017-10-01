@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-09-30"
-;Last updated 2017-09-30T16:00Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-01"
+;Last updated 2017-10-01T22:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1579,7 +1579,7 @@ EndScript ; StartMarkerLeft
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -1597,7 +1597,7 @@ EndScript ; JawsHome
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
