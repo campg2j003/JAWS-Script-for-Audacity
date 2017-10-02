@@ -382,6 +382,10 @@ Respects AnnounceMessage.
 :Synopsis Add a label at the current play/record position.
 :Description Special audacity speech functionality is cancelled until ENTER is pressed, SayNext/PriorLine is pressed, or focus moves out of the window.
 
+:Function SayTimelineEnd
+:Synopsis Speaks the last number on the timeline after a zoom command.
+:Returns void no return description
+
 :Script ZoomNormal
 :Synopsis zoom normal
 
@@ -651,6 +655,7 @@ Respects AnnounceMessage.
 :Script ToggleMotionPreview
 
 :Function SayWindowTypeAndText
+:Description Respects gfSilence and gfSilenceClearOnNext.
 :Returns void no return description
 :Param handle/hWnd
-:Description Respects gfSilence and gfSilenceClearOnNext.
+

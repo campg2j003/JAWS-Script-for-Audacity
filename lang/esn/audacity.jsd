@@ -382,6 +382,10 @@ Respeta AnnounceMessage.
 :Synopsis Añade una etiqueta en la posición de reproducción o grabación actual.
 :Description La funcionalidad de voz para Audacity se cancela hasta que se pulsen ENTER o SayNext/PriorLine (Verbalizar Línea Siguiente/Anterior), o el foco se salga de la ventana.
 
+:Function SayTimelineEnd
+:Synopsis Speaks the last number on the timeline after a zoom command.
+:Returns void no return description
+
 :Script ZoomNormal
 :Synopsis ampliación normal
 

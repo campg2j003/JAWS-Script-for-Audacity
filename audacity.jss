@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-01"
-;Last updated 2017-10-01T22:00Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-02"
+;Last updated 2017-10-02T16:05Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -3364,6 +3364,22 @@ TypeCurrentScriptKey ()
 ;AnnounceKeyMessage (msgAddLabelPlaying)
 EndScript ; AddLabelAtPlayPosition
 
+Void Function SayTimelineEnd ()
+Var
+	Handle hTemp
+	
+Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
+Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ;timeline
+SaveCursor ()
+MoveToWindow (hTemp)
+Pause ()
+JAWSEnd ()
+Pause ()
+SayWord ()
+RestoreCursor ()
+EndFunction
+
 ;*** More scripts for Audacity keys
 Script ZoomNormal ()
 If NoProject () Then
@@ -3371,6 +3387,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomNormal)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomNormal
 
@@ -3380,6 +3397,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomIn)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomIn
 
@@ -3389,6 +3407,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomOut)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomOut
 
@@ -3879,6 +3898,7 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomSel)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomSel
 
@@ -3888,6 +3908,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgFitInWindow)
+	SayTimelineEnd ()
 EndIf
 EndScript ; FitInWindow
 

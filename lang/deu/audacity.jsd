@@ -383,6 +383,10 @@ Respects AnnounceMessage.
 :Synopsis Fügt eine Textmarke an der aktuellen Wiedergabe / Aufnahme Position hinzu.
 :Description Die spezielle Audacity Sprachausgabe Funktionalität wird unterbrochen, bis Enter oder nächste / vorherige Linie sprechen Tasten gedrückt werden oder das Fenster verlassen wird.
 
+:Function SayTimelineEnd
+:Synopsis Speaks the last number on the timeline after a zoom command.
+:Returns void no return description
+
 :Script ZoomNormal
 :Synopsis normaler Zoom.
 
