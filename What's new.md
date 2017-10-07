@@ -1,5 +1,7 @@
-(This file last updated 10/2/2017)
+(This file last updated 10/7/2017)
 
+# New in 2.2.0-beta-2017-10-07
+- ToggleMotionPreview now returns to quick settings when turned off.
 # New in 2.2.0-beta-2017-10-02
 - JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
 - Zoom command keystrokes now speak the last number on the timeline indicating the maximum time shown in the window.

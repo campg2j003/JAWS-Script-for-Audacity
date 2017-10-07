@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-03"
-;Last updated 2017-10-03T14:50Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-07"
+;Last updated 2017-10-06T16:05Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -105,6 +105,7 @@ Globals
 	Int gfRecordSpeechOff,
 	Int gfSayPosition,
 	Int gfPreviewMotion, ;true plays preview with cursor motions
+	Int gfToggleMotionPreview, ;true motion preview, false quicksettings
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -327,6 +328,7 @@ Let gfSilence = FALSE
 Let gfSilenceClearOnNext = False
 Let gfPreviewing = FALSE
 Let gfInLabel = FALSE
+	Let gfToggleMotionPreview = FALSE
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_NO_DISABLE, msg_App_Start)
@@ -1971,11 +1973,13 @@ Var
 	
 ;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
 Let sMessage=StringSegment (UO_MOTION_PREVIEW, ":", 2)
-If gfPreviewMotion Then
-	Let gfPreviewMotion = CI_UO_OFF
+If gfToggleMotionPreview Then
+	Let gfToggleMotionPreview = FALSE
+	Let gfPreviewMotion = GetQuickSetting("PreviewMotion")
 	Let sMessage = sMessage + cScSpace + cmsg_off
-	Let gfSayPosition = CI_UO_ON
+	Let gfSayPosition = GetQuickSetting("SayPosition")
 Else
+	Let gfToggleMotionPreview = TRUE
 	Let gfPreviewMotion = CI_UO_ON
 	Let sMessage = sMessage + cScSpace + cmsg_on
 	Let gfSayPosition = CI_UO_OFF
