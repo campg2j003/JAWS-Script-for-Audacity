@@ -654,6 +654,9 @@ Respects AnnounceMessage.
 :Synopsis Spielt eine Vorschau des übergebenen Audios ab, wenn in den Selektion Start / Ende Steuerelementen. Andernfalls wird die Standard Funktion ausgeführt.
 
 :Script ToggleMotionPreview
+:Script ToggleMotionPreview
+:synopsis Temporarily turns SayPosition off and PreviewMotion on.
+:Description When turned on temporarily turns SayPosition off and PreviewMotion on.  When turned off restores them to their Quick Settings.  This is turned off when focus returns to the program.
 
 :Function SayWindowTypeAndText
 :Returns void Keine Beschreibung

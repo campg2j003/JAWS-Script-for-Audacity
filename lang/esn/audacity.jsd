@@ -658,6 +658,8 @@ Respeta AnnounceMessage.
 :Synopsis En los campos de comienzo/final de selección, reproduce una vista previa que contiene el audio sobre el que se mueve. En cualquier otro sitio ejecuta la acción predeterminada.
 
 :Script ToggleMotionPreview
+:synopsis Temporarily turns SayPosition off and PreviewMotion on.
+:Description When turned on temporarily turns SayPosition off and PreviewMotion on.  When turned off restores them to their Quick Settings.  This is turned off when focus returns to the program.
 
 :Function SayWindowTypeAndText
 :Returns void sin descripción de lo devuelto
