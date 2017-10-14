@@ -1,5 +1,7 @@
-(This file last updated 10/7/2017)
+(This file last updated 10/14/2017)
 
+# New in 2.2.0-beta-2017-10-14
+- Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
 # New in 2.2.0-beta-2017-10-07
 - ToggleMotionPreview now returns to quick settings when turned off.
 # New in 2.2.0-beta-2017-10-02
