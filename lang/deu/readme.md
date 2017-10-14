@@ -1,4 +1,4 @@
-01.10.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+<09.10.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -53,13 +53,25 @@ Das Paket kann unter Programme und Features deinstalliert werden (Programme hinz
 
 Wenn der Uninstaller erkennt, dass die Skripts seit der Installation modifiziert wurden, muss das Löschen der Skripts bestätigt werden. Wird ja gewählt, werden alle modifizierten Dateien gelöscht, wird nein gewählt, bleiben alle Skripts unverändert. Die Konfigurationsdatei (audacity.jcf oder audacity.jsi) wird nicht entfernt.
 
+# Verwenden der Skripts mit deutschsprachigem Tastaturlayout
+Hinweis: Dieser Abschnitt wurde vom Übersetzer ergänzt. Bei Fragen im Zusammenhang mit diesem Abschnitt wenden Sie sich direkt an Michael Vogt <michael.vogt@blindlings.ch>.
+
+In englischsprachigen Tastaturlayouts sind die Zeichen [ und ] mit einem einzelnen Tastendruck erreichbar. Bei verwendung des Tastaturlayouts Deutsch (Schweiz) beispielsweise sind diese Zeichen mit den gleichen Tasten erreichbar. Jedoch müssen zusätzlich die ctrl und die alt Tasten oder die alt gr Taste gedrückt werden. 
+
+Im Leitfaden "Audacity für Jaws Anwender" empfiehlt David Bailes die Audacity Funktionen, die den [ und ] Tasten zugeordnet sind in nicht englischsprachigen Tastaturlayouts anderen Tasten zuzuordnen. Entgegen dieser Empfehlung bevorzuge ich die von den Entwicklern von Audacity gut durchdachte Zuordnung der [ und ] Tasten auch bei deutschsprachigem Tastaturlayout. Mit den Jaws Scripts für Audacity von Gary Campbell und Dang Manh Cuong funktionieren die Tastenkombinationen mit [ und ] perfekt und ohne Veränderung der Tastenbelegung in Audacity. Das Zeichen [ wird in Audacity mit der linken Auswahlgrenze repräsentiert und das Zeichen ] mit der rechten Auswahlgrenze. Da sich dies recht gut einprägen lässt und diese beiden Tasten gut erreichbar sind schätze ich diese Anordnung und Funktionsweise sehr.
+
+Im englischsprachigen Tastaturlayout sind die beiden Tasten links neben der ENTER Taste angeordnet. Bei Verwendung der Jaws Scripts für Audacity mit deutschsprachigen Tastaturlayouts drücken Sie die ü Taste bei Tastenkombinationen, die der [ Taste zugeordnet sind. In Österreich, Deutschland und Luxenburg drücken Sie die + Taste bei Tastenkombinationen, die der ] Taste zugeordnet sind. In Liechtenstein und der Schweiz drücken Sie die Umlaut Taste bei Tastenkombinationen, die der ] Taste zugeordnet sind. 
+Auf dem Tastaturlayout von Liechtenstein und der Schweiz sind die Zeichen [ und ] neben dem ü und dem Umlaut Zeichen auf den Tasten aufgedruckt.
+
+Ähnliches gilt für das Fragezeichen. Mit dem englischen Tastaturlayout befindet sich das Fragezeichen direkt links neben der rechten Umschalt (Shift) Taste. Das entspricht beispielsweise im Tastaturlayout Deutsch (Schweiz) der Unterstrich Taste (shift + -). Bei Tastenkombinationen, die dem Fragezeichen zugeordnet sind, verwenden Sie die Taste links neben der rechten Umschalttaste.
+
 # Verwenden der Skripts
 Hinweis: Das Skript spricht Namen einiger Audacity Tastenkombinationen und verwendet andere um bestimmte Operationen auszuführen. Wenn in Audacity im Menü Einstellungen, Tastatur diese Tastenkombinationen geändert werden, müssen auch dessen Zuordnungen in der Datei audacity.jkm geändert werden, damit das Skript weiterhin sauber funktioniert.
 
 ## Grundlagen
 Nach der Installation spricht das Skript eine Willkommen Meldung, wenn Audacity erstmals den Fokus erhält. Du kannst eine Liste der vom Skript bereitgestellten Tastenkombinationen anschauen, in dem Du Jaws Taste + H drückst ( Hotkey Hilfe). Eine Liste mit Audacity Tastenkombinationen erhälst Du mit Jaws Taste + W. Diese Seite enthält auch einen Link, mit dem der Audacity Leitfaden für Jaws Anwender von David Bailes im Browser geöffnet werden kann. 
 
-Du kannst die Selektion Start und Selektion Ende Position oder die Selektion Dauer ansagen mit Alt + [ und Alt + ] (ü und Umlaut-Taste deutschsprachiger Tastaturlayouts). Zwei Mal kurz nacheinander gedrückt wird das jeweilige Eingabefeld zur Eingabe der Position fokussiert. Beachte, dass in Audacity Versionen vor v2.2.0 Alt + ] "Ende" oder "Länge" spricht, je nach gewähltem Optionsfeld.
+Du kannst die Selektion Start und Selektion Ende Position oder die Selektion Dauer ansagen mit Alt + [ und Alt + ] (ü und Umlaut-oder +-Taste deutschsprachiger Tastaturlayouts). Zwei Mal kurz nacheinander gedrückt wird das jeweilige Eingabefeld zur Eingabe der Position fokussiert. Beachte, dass in Audacity Versionen vor v2.2.0 Alt + ] "Ende" oder "Länge" spricht, je nach gewähltem Optionsfeld.
  
 Mit Alt + Entfernen wird die Audio Cursor Position angesagt (bei aktiviertem PC-Cursor). Das ist Hilfreich während der Wiedergabe oder Aufnahme. Zwei Mal kurz nacheinander gedrückt wird die normale Jaws Funktion ausgeführt.
  

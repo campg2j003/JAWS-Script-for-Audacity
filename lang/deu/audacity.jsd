@@ -1,4 +1,4 @@
-﻿:script for
+:script for
 
 :function AnnounceOn
 :Synopsis Gibt an, ob bei der Ausführung bestimmter Audacity Funktionen diese von Jaws gesprochen werden sollen.
@@ -383,6 +383,10 @@ Respects AnnounceMessage.
 :Synopsis Fügt eine Textmarke an der aktuellen Wiedergabe / Aufnahme Position hinzu.
 :Description Die spezielle Audacity Sprachausgabe Funktionalität wird unterbrochen, bis Enter oder nächste / vorherige Linie sprechen Tasten gedrückt werden oder das Fenster verlassen wird.
 
+:Function SayTimelineEnd
+:Synopsis Spricht die letzte sichtbare Zeitangabe der Zeitachse nach verändern des Zooms.
+:Returns void Keine Beschreibung
+
 :Script ZoomNormal
 :Synopsis normaler Zoom.
 
@@ -650,6 +654,8 @@ Respects AnnounceMessage.
 :Synopsis Spielt eine Vorschau des übergebenen Audios ab, wenn in den Selektion Start / Ende Steuerelementen. Andernfalls wird die Standard Funktion ausgeführt.
 
 :Script ToggleMotionPreview
+:synopsis Aktiviert vorübergehend die Audio Vorschau und deaktiviert die Positionsansage.
+:Description Wenn aktiviert wird die Ansage der Position vorübergehend deaktiviert und die Audiovorschau aktiviert.Wenn deaktiviert wird die Konfiguration des Schnelleinstellungen Dialogs wieder übernommen.  Dies wird deaktiviert, wenn der Fokus wieder zurück zum Programm erfolgt.
 
 :Function SayWindowTypeAndText
 :Returns void Keine Beschreibung
