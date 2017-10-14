@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-09-08
+Last updated: 2017-10-14
 
 Modifications:
 
@@ -94,7 +94,7 @@ ${JawsScriptFile} "${JAWSSrcDir}" "audacity.qs"
 ;Language-specific files
 ${Switch} $1
 ${Case} "deu" ; German
-${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
+${JawsScriptFile} "${JAWSSrcDir}" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
@@ -104,12 +104,6 @@ ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jkm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsd"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.jsm"
 ${JawsScriptFile} "${JAWSSrcDir}lang\esn\" "audacity.qsm"
-${Break}
-${Case} "deu"
-${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jkm"
-${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsd"
-${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.jsm"
-${JawsScriptFile} "${JAWSSrcDir}lang\deu\" "audacity.qsm"
 ${Break}
 ${Default}
 ${JawsScriptFile} "${JAWSSrcDir}" "audacity.jkm"
