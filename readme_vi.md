@@ -1,4 +1,4 @@
-﻿28-09-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿14-10-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
@@ -23,7 +23,7 @@ Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.
 - Bạn có thể đi đến một track bằng cách nhập số cụ thể. Bạn cũng có thể chuyển một track đến một vị trí xác định bằng số. Bạn cũng có thể đánh dấu một điểm "mark" trên track rồi sau đó trở lại điểm đã đánh dấu, hoặc chuyển một track đến đó. 
 - Có phản hồi khi di chuyển bằng bàn phím (xem thêm bên dưới).
 - Bản cài đặt hiện tại có thể sử dụng cho tất cả tài khoản (all user) hay tài khoản hiện tại (current user)và có thể cài vào thư mục Shared , bao gồm cài trên Jaws 17.
--Khi đang phát hay thu âm, phím `Enter` có chức năng tạm dừng hoặc tiếp tục. Trường hợp này, muốn bấm `Enter` thì hãy bấm `Ctrl+Enter`. Tôi thích tính năng này vì phím `Enter` ở bàn phím số dễ tìm hơn nút “p” khi bạn rời tay khỏi bàn phím. Tính năng này có thể bật / tắt thông qua tùy chọn trong Adjust Jaws options. Hãy thử và cho chúng tôi biết nếu nó hữu ích với bạn và nếu bạn thích nó. 
+- Khi đang phát hay thu âm, phím `Enter` có chức năng tạm dừng hoặc tiếp tục. Trường hợp này, muốn bấm `Enter` thì hãy bấm `Ctrl+Enter`. Tôi thích tính năng này vì phím `Enter` ở bàn phím số dễ tìm hơn nút “p” khi bạn rời tay khỏi bàn phím. Tính năng này có thể bật / tắt thông qua tùy chọn trong Adjust Jaws options. Hãy thử và cho chúng tôi biết nếu nó hữu ích với bạn và nếu bạn thích nó. 
 
 # cài đặt / gỡ cài đặt script:
 
@@ -85,7 +85,7 @@ URL truy cập trang hướng dẫn sử dụng Audacity với Jaws có thể đ
 
 Khi nhập một nhãn (label) vào label track, Jaws thường đọc các phím lệnh của Audacity, dù rằng nó là những kí tự đã được nhập vào tên của label. Chúng tôi đã khắc phục tình trạng trên nếu bạn đặt tên cho label bằng phương pháp chuẩn. Tính năng này được kích hoạt bằng `Ctrl+B` hay `Ctrl+M`. Và ngưng hoạt động khi bạn bấm `Enter` (hoặc bấm mũi tên di chuyển tới track khác hay con trỏ di chuyển khỏi bản phân bố track). Nó sẽ không hoạt động nếu bạn di chuyển tới track label và viết tên cho label. Nếu bạn thay đổi phím lệnh này trong Audacity, bạn cũng phải thay đổi luôn trong tập tin `Audacity.jkm`.
 
-Khi con trỏ ở trong track lable, bấm `Tab` để Jaws đọc tên label hiện tại. Tính năng này không phải lúc nào cũng hoạt động. Nhất là khi có quá nhiều label.
+Khi con trỏ ở trong track label, bấm `Tab` để Jaws đọc tên label hiện tại. Tính năng này không phải lúc nào cũng hoạt động. Nhất là khi có quá nhiều label.
 
 ## Nghe thử âm thanh
 Bạn có thể cấu hình để script phát âm thanh sau khi dùng các lệnh điều chỉnh con trỏ. Có hai tùy chọn cho việc này nằm trong Quick Settings. Thông báo  các vị trí điều khiển và đọc hay không đọc vị trí con trỏ với các lệnh di chuyển. Nếu bật Preview Motion, phím lệnh phát thử (`Shift+F6` cho điểm bắt đầu và `Shift+F7` cho điểm kết thúc). Nó được thực hiện theo con trỏ. Điều này cho phép bạn nghe một phần âm thanh ở điểm bắt đầu hay kết thúc vùng chọn. Lưu ý rằng độ dài của đoạn âm thanh này sẽ lớn hơn khi di chuyển qua nó bằng con trỏ. Bạn có thể tạm thời chuyển đổi giữa đọc vị trí (speaking position) và phát âm thanh (playing audio) bằng lệnh `JAWSKey+p`.  Thiết lập sẽ trả về giá trị được chọn bởi Quick Settings nếu hộp thoại này đang mở hoặc con trỏ chuyển ra khỏi cửa sổ Audacity và chuyển trở về.
@@ -118,7 +118,7 @@ Nếu muốn dùng các phím khác, bạn phải gán lại trong tập tin `Au
 Sau khi thiết lập như trên, bạn có thể đi đến một track bằng phím `JawsKey+A, G`. Script sẽ yêu cầu nhập số. Có thể nhập số của track để đi đến nó. Thêm vào dấu cộng (`+`) để di chuyển xuống phía dưới (track có số lơn hơn), hay thêm dấu trừ (`-`)để di chuyển lên trên. Bạn có thể di chuyển một track bằng lệnh `Jawskey+a, M`. Bạn có thể đánh dấu track hiện tại bằng  lệnh `Jawskey+A, K` và di chuyển tới nó bằng lệnh Jawskey+A, Shift+G và di chuyển track hiện tại đến vị trí đã đánh dấu bằng lệnh `Jawskey+A, Shift+M`.
 
 ## Xác định tốc độ
-Lệnh `JAWSKey+a,t` cho phép bạn xác định tốc độ (tempo) bằng cách tapb (gõ nhịp) theo nhạc.  Để làm điều này, chuyển về đầu đoạn âm thanh  rồi bấm `JAWSKey+a,t,khoảng trắng`.  Audacity bắt đầu phát âm thanh.  Trong khi đang phát, bấm `ENTER` cho mỗi nhịp (beat).  Khi bấm `khoảng trắng` lần nữa, tốc độ sẽ được đọc lên.  `a` đọc lại thông tin này.  `c` chép vào bộ nhớ tạm.  Giá trị của tempo is được giữ lại đến khi bấm `khoảng trắng` thêm lần nữa.  Tính năng này dựa trên tính năng tương tự trong NVDA add-on của Robert Hänggi, dù rằng dùng thuật toán khác.  
+Lệnh `JAWSKey+a,t` cho phép bạn xác định tốc độ (tempo) bằng cách tap (gõ nhịp) theo nhạc.  Để làm điều này, chuyển về đầu đoạn âm thanh  rồi bấm `JAWSKey+a,t,khoảng trắng`.  Audacity bắt đầu phát âm thanh.  Trong khi đang phát, bấm `ENTER` cho mỗi nhịp (beat).  Khi bấm `khoảng trắng` lần nữa, tốc độ sẽ được đọc lên.  `a` đọc lại thông tin này.  `c` chép vào bộ nhớ tạm.  Giá trị của tempo is được giữ lại đến khi bấm `khoảng trắng` thêm lần nữa.  Tính năng này dựa trên tính năng tương tự trong NVDA add-on của Robert Hänggi, dù rằng dùng thuật toán khác.  
 
 Lưu ý: Có một cách thực hiện khác  của tính năng này gần với thuật toán của NVDA nhưng bắt buộc phải dùng JAWS từ bản 11 update 1.  Để kích hoạt, gọi chạy Audacity và mở Script Manager bằng phím lệnh `JAWSKey+0` (trên bàn phím chữ).  Bạn có thể xác định các phần có liên quan bằng cách tìm cụm từ "JAWS 11".  Có hai phần  cần phải bỏ đánh dấu chú thích và một phần cần đánh dấu chú thích.  Để bỏ chú thích một phần, đặt dấu chấm phảy (;) đầu dòng `/*` và `*/` ở đầu / cuối của phần đó.  Để bỏ chú thích, xóa dấu chấm phảy trước dòng `/*` và `*/`, rồi bấm `Control+s` để lưu và biên dịch script.
 
@@ -168,10 +168,10 @@ tôi sẵn sàng tiếp nhận những phản hồi cho script, cũng như các 
 # Dưới đây là bảng phím nóng hỗ trợ của jaws:
 
 ```
-Để đọc điểm chọn trái, bấm Alt+[.
-Để đọc điểm chọn phải hoặc độ dài, bấm Alt+].
+Để đọc điểm bắt đầu vùng chọn, bấm Alt+[.
+Để đọc điểm kết thúc vùng chọn hoặc độ dài, bấm Alt+].
 nếu muốn di chuyển con trỏ đến đó, bấm  tổ hợp phím trên nhanh hai lần.
-để đọc trường Audio Position, bấm Alt+Delete.
+để đọc trường vị trí Audio (Audio Position), bấm Alt+Delete.
  khi đã kích hoạt con trỏ PC, để đọc thông tin về con trỏ đang hoạt động, bấm Alt+Delete nhanh 2 lần.
 
 để tăng gain của track tại vị trí con trỏ, bấm Alt+Shift+mũi tên lên.
@@ -179,7 +179,6 @@ nếu muốn di chuyển con trỏ đến đó, bấm  tổ hợp phím trên nh
 để điều chỉnh âm thanh qua loa trái, bấm Alt+Shift+mũi tên trái.
 để điều chỉnh âm thanh qua loa phải, bấm Alt+Shift+mũi tên phải.
 4 phím nóng ở trên đã thay thế 4 phím di chuyển chuột của Jaws khi con trỏ ở cửa sổ chính của ứng dụng. Vì vậy, để sử dụng tính năng này, trước tiên, phải bật con trỏ Jaws.
-
 
 Để đọc giá trị âm lượng khi thu âm (recording meter), bấm g.
 Bấm nhanh hai lần để đưa con trỏ đến đồng hồ đo âm.
