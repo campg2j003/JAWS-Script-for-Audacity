@@ -382,6 +382,10 @@ Respects AnnounceMessage.
 :Synopsis Add a label at the current play/record position.
 :Description Special audacity speech functionality is cancelled until ENTER is pressed, SayNext/PriorLine is pressed, or focus moves out of the window.
 
+:Function SayTimelineEnd
+:Synopsis Speaks the last number on the timeline after a zoom command.
+:Returns void no return description
+
 :Script ZoomNormal
 :Synopsis zoom normal
 
@@ -649,8 +653,11 @@ Respects AnnounceMessage.
 :Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
 
 :Script ToggleMotionPreview
+:synopsis Temporarily turns SayPosition off and PreviewMotion on.
+:Description When turned on temporarily turns SayPosition off and PreviewMotion on.  When turned off restores them to their Quick Settings.  This is turned off when focus returns to the program.
 
 :Function SayWindowTypeAndText
+:Description Respects gfSilence and gfSilenceClearOnNext.
 :Returns void no return description
 :Param handle/hWnd
-:Description Respects gfSilence and gfSilenceClearOnNext.
+

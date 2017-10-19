@@ -1,5 +1,16 @@
-(This file last updated 9/20/2017)
+(This file last updated 10/14/2017)
 
+# New in 2.2.0-beta-2017-10-14
+- Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
+# New in 2.2.0-beta-2017-10-07
+- ToggleMotionPreview now returns to quick settings when turned off.
+# New in 2.2.0-beta-2017-10-02
+- JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
+- Zoom command keystrokes now speak the last number on the timeline indicating the maximum time shown in the window.
+# New in 2.2.0-beta-2017-09-29
+- Updated Vietnamese README.  Changed from .txt to .html.
+# New in 2.2.0-beta-2017-09-28
+- Updated Spanish translation.
 # New in 2.2.0-beta-2017-09-20
 - Updated README.
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.

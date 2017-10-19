@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-09-24"
-;Last updated 2017-09-24T14:55Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-10-14"
+;Last updated 2017-10-14T16:20Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -105,6 +105,7 @@ Globals
 	Int gfRecordSpeechOff,
 	Int gfSayPosition,
 	Int gfPreviewMotion, ;true plays preview with cursor motions
+	Int gfToggleMotionPreview, ;true motion preview, false quicksettings
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
@@ -327,6 +328,7 @@ Let gfSilence = FALSE
 Let gfSilenceClearOnNext = False
 Let gfPreviewing = FALSE
 Let gfInLabel = FALSE
+	Let gfToggleMotionPreview = FALSE
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_NO_DISABLE, msg_App_Start)
@@ -1252,6 +1254,7 @@ SetFocus (hWnd)
 Pause ()
 While iCount
 	TypeKey (sKey)
+	Pause ()
 	Let iCount = iCount - 1
 EndWhile
 Pause ()
@@ -1578,7 +1581,7 @@ EndScript ; StartMarkerLeft
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -1596,7 +1599,7 @@ EndScript ; JawsHome
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
@@ -1970,11 +1973,13 @@ Var
 	
 ;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
 Let sMessage=StringSegment (UO_MOTION_PREVIEW, ":", 2)
-If gfPreviewMotion Then
-	Let gfPreviewMotion = CI_UO_OFF
+If gfToggleMotionPreview Then
+	Let gfToggleMotionPreview = FALSE
+	Let gfPreviewMotion = GetQuickSetting("PreviewMotion")
 	Let sMessage = sMessage + cScSpace + cmsg_off
-	Let gfSayPosition = CI_UO_ON
+	Let gfSayPosition = GetQuickSetting("SayPosition")
 Else
+	Let gfToggleMotionPreview = TRUE
 	Let gfPreviewMotion = CI_UO_ON
 	Let sMessage = sMessage + cScSpace + cmsg_on
 	Let gfSayPosition = CI_UO_OFF
@@ -3363,6 +3368,22 @@ TypeCurrentScriptKey ()
 ;AnnounceKeyMessage (msgAddLabelPlaying)
 EndScript ; AddLabelAtPlayPosition
 
+Void Function SayTimelineEnd ()
+Var
+	Handle hTemp
+	
+Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
+Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ;timeline
+SaveCursor ()
+MoveToWindow (hTemp)
+Pause ()
+JAWSEnd ()
+Pause ()
+SayWord ()
+RestoreCursor ()
+EndFunction
+
 ;*** More scripts for Audacity keys
 Script ZoomNormal ()
 If NoProject () Then
@@ -3370,6 +3391,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomNormal)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomNormal
 
@@ -3379,6 +3401,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomIn)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomIn
 
@@ -3388,6 +3411,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomOut)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomOut
 
@@ -3878,6 +3902,7 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (msgZoomSel)
+	SayTimelineEnd ()
 EndIf
 EndScript ; ZoomSel
 
@@ -3887,6 +3912,7 @@ If NoProject () Then
 	Return
 Else
 	AnnounceKeyMessage (msgFitInWindow)
+	SayTimelineEnd ()
 EndIf
 EndScript ; FitInWindow
 

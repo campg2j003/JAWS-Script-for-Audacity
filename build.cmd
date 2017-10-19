@@ -16,9 +16,9 @@ set MD2HTML=md2html
 REM %MD2HTML% -V
 rem source files
 set SCRIPTSRC=audacity.jdf audacity.jkm audacity.jsd audacity.jsm audacity.jss audacity.qs audacity.qsm
-set OTHERSRC=readme_vi.txt copying.txt "What's new.md"
+set OTHERSRC=readme_vi.md copying.txt "What's new.md"
 REM These are basenames of .md files that should be converted to HTML files.
-set MARKDOWNSRC=readme
+set MARKDOWNSRC=readme readme_vi
 set INSTALLSRC=installer.nsi installer_lang_enu.nsh installer_lang_esn.nsh installer_lang_deu.nsh jfw_nsh\JFW.nsh jfw_nsh\JFW_lang_enu.nsh jfw_nsh\JFW_lang_esn.nsh jfw_nsh\JFW_lang_deu.nsh jfw_nsh\readme.md jfw_nsh\uninstlog\uninstlog.nsh jfw_nsh\uninstlog\uninstlog_enu.nsh jfw_nsh\uninstlog\uninstlog_esn.nsh jfw_nsh\uninstlog\uninstlog_deu.nsh jfw_nsh\uninstlog\logging.nsh
 if "%1"=="/?" goto help
 if "%1"=="-?" goto help
@@ -75,7 +75,10 @@ goto next
 goto next
 :tojaws
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
-if exist "%SCOMPILE%" (
+if exist "%SCOMPILE%" goto scompileexists
+echo Could not find script compiler %scompile%
+goto next
+:scompileexists
 pushd "%JAWSDIR%"
 "%scompile%" "%PROD%.jss"
 if %errorlevel% == 0 (
@@ -84,9 +87,6 @@ echo Compile finished successfully
 echo Compile failed with exit code %errorlevel%.
 )
 popd
-) else (
-echo Could not find script compilter %scompile%
-)
 goto next
 :fromjaws
 set curdir=%CD%
