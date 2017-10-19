@@ -1,4 +1,4 @@
-﻿2017-09-20  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-09-30  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores, incluido Audacity 2.2.0.
 
@@ -18,7 +18,8 @@ Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y 
 - Cuando está activo el cursor del PC y el foco se encuentra en la ventana principal, los controles de ganancia y posicionamiento de las pistas se pasan a la aplicación. De lo contrario, ejecutan sus funciones predeterminadas para mover el ratón.
 - En muchos plugins VST, hay combinaciones de teclas que mueven el foco al control de Predefiniciones y activan los pertinentes para Guardar/Cargar predefiniciones.
 - Se verbalizan los nombres y valores de controles en los diálogos de muchos plugins.  
-- Compatibilidad con varios idiomas: se admiten alemán, español e inglés. Además de ésta al español por Fernando Gregoire, hay una traducción del archivo LÉAME al vietnamita. Está en el archivo audacity_readme_vi.txt en la carpeta de instalación en la carpeta de archivos de programa.
+- Compatibilidad con varios idiomas: se admiten alemán, español e inglés.
+Además de ésta al español por Fernando Gregoire, hay una traducción del archivo LÉAME al vietnamita. Está en el archivo audacity_readme_vi.html en la carpeta de instalación en la carpeta de archivos de programa.
 - En la ventana principal, TeclaJAWS+Shift+FlechaAbajo (SaySelectedText, Verbalizar el Texto Seleccionado) verbaliza los números (o los nombres si se pulsa dos veces rápidamente) de las pistas seleccionadas.
 - Puede ir a una pista por su número. También puede mover una pista a una posición específica por un número. También puede fijar una "marca" en una pista y volver allí más tarde, o mover una pista allí.
 - Al mover una pista mediante el teclado se proporciona respuesta de voz. (Consulte más abajo).
@@ -150,7 +151,7 @@ Ahora los mensajes del instalador son traducibles. Ahora el texto de los mensaje
 Este paquete ahora se hospeda en GitHub. El repositorio está en <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Si quiere colaborar con cambios en los scripts, por favor consulte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) en el repositorio.
 
 # Notas para traductores
-Observe que `readme.html` se genera desde `readme.md`, que sólo está disponible a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
+Observe que `readme.html` y `readme_vi.html` se generan desde `readme.md` y `readme_vi.md`, que sólo están disponibles a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # Créditos
 - Codificación de los scripts: Gary Campbell y Dang Manh Cuong <dangmanhcuong@gmail.com>
@@ -172,19 +173,15 @@ Para mover el foco a estos controles, pulse la tecla dos veces rápidamente.
 Para verbalizar el valor de posición del audio, pulse Alt+Suprimir.
 Para verbalizar el cursor activo mientras esté activo el del PC, pulse Alt+Suprimir dos veces rápidamente.
 Para verbalizar el tipo de selección actual (Audacity 2.2.0 y posteriores), pulse Tecla JAWS+a, p, p.
-Para establecer el tipo de selección (Audacity 2.2.0 y posteriores), pulse TeclaJAWS+a,p seguido de c (comienzo-final), l (final-longitud), f (longitud-final)
-o e (longitud-centro). También puede utilizar los números 1-4.
-Para verbalizar en la ventana principal los números de las pistas seleccionadas, pulse Mayúscula+Insert+ExtendedDownArrow. Para verbalizar los nombres de
-las pistas, pulse dos veces rápidamente.
+Para establecer el tipo de selección (Audacity 2.2.0 y posteriores), pulse TeclaJAWS+a,p seguido de c (comienzo-final), l (final-longitud), f (longitud-final) o e (longitud-centro). También puede utilizar los números 1-4.
+Para verbalizar en la ventana principal los números de las pistas seleccionadas, pulse Mayúscula+Insert+ExtendedDownArrow. Para verbalizar los nombres de las pistas, pulse dos veces rápidamente.
 
-Para previsualizar en el panel de pista y la barra de selección el audio posterior (perteneciente) al comienzo de la selección, pulse Tecla JAWS+Flecha
-Izquierda
+Para previsualizar en el panel de pista y la barra de selección el audio posterior (perteneciente) al comienzo de la selección, pulse Tecla JAWS+Flecha Izquierda
 Para previsualizar en el panel de pista y la barra de selección el audio anterior (perteneciente) al final de la selección, pulse Tecla JAWS+Flecha Derecha
 Para previsualizar en el panel de pista y la barra de selección el audio anterior (no perteneciente) al comienzo de la selección, pulse Control+Mayúscula+ExtendedLeftArrow
-Para previsualizar en el panel de pista y la barra de selección el audio posterior (no perteneciente) al final de la selección, pulse Tecla JAWS+Mayúscula+Flecha
-Derecha
+Para previsualizar en el panel de pista y la barra de selección el audio posterior (no perteneciente) al final de la selección, pulse Tecla JAWS+Mayúscula+Flecha Derecha
 
-Para conmutar entre reproducción de audio y verbalización de posición ante los comandos de movimiento del cursor, pulse .
+Para conmutar entre reproducción de audio y verbalización de posición ante los comandos de movimiento del cursor, pulse Tecla JAWS+P.
 Esto es igual que activar la Vista Previa de Movimiento y desactivar Anunciar Posición, o bien, desactivar la Vista Previa de Movimiento y activar Anunciar
 Posición. Así, puede conmutar rápidamente entre oír la posición del cursor u oír el audio. Este cambio es temporal. No cambia el valor guardado de estas
 configuraciones, con lo cual éstas se restablecerán a los valores que haya establecido en Configuración Rápida cuando abra este diálogo o cambie el foco

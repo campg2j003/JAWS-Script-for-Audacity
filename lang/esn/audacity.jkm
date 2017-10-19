@@ -23,6 +23,8 @@ control+shift+k=SelectInAllTracks
 shift+c=CloseFocusTrack
 ;  control+[=
 Control+graveaccent=AnnounceOnOff
+JAWSKey+p=ToggleMotionPreview
+Insert+p=ToggleMotionPreview
 ENTER=Enter
 NumPadEnter=Enter
 Control+ENTER=CtrlEnter
@@ -192,7 +194,5 @@ Insert+a&t&ENTER*=TempoTap
 Insert+a&t&a*=TempoAnnounce
 Insert+a&t&c*=TempoCopy
 Insert+a&t&Shift+-*=TempoLayerHelp
-
-[Laptop Keys]
 
 [Laptop Keys]

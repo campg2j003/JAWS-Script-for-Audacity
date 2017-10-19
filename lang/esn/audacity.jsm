@@ -1,10 +1,10 @@
-; Spanish messages for Audacity 2.1.0 script by Gary Campbell last updated 2017-08-24.
-;Translation based on English version dated 2017-02-17.
+Ôªø; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-10-18.
+;Translation based on English version dated 2017-09-30.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
-    Copyright (C) 2014-2016 Fernando Gregoire, for the Spanish translation. All rights reserved.
+    Copyright (C) 2014-2017 Fernando Gregoire, for the Spanish translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
     See the file copying.txt for details.
 */
 
-; These are window names used to identify windows. (they Should be translated)
+; These are window names used to identify windows. (Should they be translated?)
 Const
 	WN_TOOLDOCK = "Bloqueo de herramientas", ; grandparent of toolbar buttons and selection bar controls
 	WN_TRACKPANEL = "Panel de pista", ; window name of track table
-	WN_SELECTION = "SelecciÛn", ;window name of selection bar
-	WN_TRANSPORT_TOOLBAR = "ReproducciÛn", ; window name of Transport toolbar
+	WN_SELECTION = "Selecci√≥n", ;window name of selection bar
+	WN_TRANSPORT_TOOLBAR = "Reproducci√≥n", ; window name of Transport toolbar
 	WN_EDIT_CHAINS = "Editar secuencias de comandos", ; name of the Edit Chains dialog
 	WN_PREPARING_PREVIEW = "Preparando vista previa", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Mostrando vista previa", ;appears in progress dialog while previewing effects
@@ -37,7 +37,7 @@ Const
 Const
 	; These are used to announce different areas of the main window.  They should be translated.
 	CS_Toolbars="Barras de herramientas",
-	CS_SelectionBar="Barra de selecciÛn",
+	CS_SelectionBar="Barra de selecci√≥n",
 	CS_TrackPanel="Panel de pista"
 
 ;For user options.  The text after the : should be translated, the text before must not be translated.
@@ -51,7 +51,7 @@ Const
 Messages
 ; For user options.
 @msgUO_AudacityOptionsHlp
-Opciones especÌficas para Audacity
+Opciones espec√≠ficas para Audacity
 @@
 @msgUO_AnnounceMessagesHlp
 Si se activa, lee mensajes para las operaciones con audio en Audacity.
@@ -60,7 +60,7 @@ Si se activa, lee mensajes para las operaciones con audio en Audacity.
 SI se activa, lee el nombre de las barras de herramientas cuando el foco se desplaza de una barra de herramientas a otra.
 @@
 @msgUO_EnterPauseHlp
-Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envÌa ENTER. De lo contrario, envÌa ENTER a Audacity.
+Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER env√≠a ENTER. De lo contrario, env√≠a ENTER a Audacity.
 @@
 @msgUO_SilencePreviewHlp
 Si se activa, desactiva la voz mientras se previsualiza un efecto.
@@ -75,8 +75,8 @@ Const
 	;The format of a position with value 0 containing thousands separators, not including the last 0, like the seconds format, with blanks removed
 	csPositionGroupFmt = "000.00",
 	;The word following the days in a position.
-	csDays = "dÌas",
-	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHıMMıSS.sss  format, with blanks removed
+	csDays = "d√≠as",
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HH√µMM√µSS.sss  format, with blanks removed
 	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = ".", ; thousands separator character
 	csDecimal = "," ; decimal point
@@ -85,12 +85,20 @@ Const
 	;The key for pause
 	csPauseKey="p"
 
+;Audacity key layer keys, must match keys JAWSKey+a&X where X sytarts a sublayer.
+const
+	;These are the prefix keys for the Audacity layer.  There are two because there are JAWSKey and Insert entries in the JKM for the same key.
+	ksAudacityLayer1 = "JAWSKey+a",
+	ksAudacityLayer2 = "Insert+a",
+	ksPositionLayer = "p",
+	ksShortLayer = "c"
+
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.1.3-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
 ;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "GuÌa de Audacity 2.1.3 (en inglÈs)", 
+CS_JawsGuide_Title = "Gu√≠a de Audacity 2.2.0 (en ingl√©s)", 
 CS_JawsGuide_Author = "David Bailes",
-CS_JawsGuide_LINK_DISP = "enlace a la guÌa para JAWS" ;Name displayed in links list
+CS_JawsGuide_LINK_DISP = "enlace a la gu√≠a para JAWS" ;Name displayed in links list
 
 Messages
 @msgProgName
@@ -100,83 +108,116 @@ Audacity
 ; Begins the hotkey help.
 ; %1 - string containing script version and date.
 @msgScript_Ver
-Combinaciones de teclas de JAWS con scripts versiÛn %1, para Audacity 2.0.0 o posterior:
+Combinaciones de teclas de JAWS con scripts versi√≥n %1, para Audacity 2.0.0 o posterior:
 
 @@
 @msgScriptKeyHelp
 
-Para verbalizar la posiciÛn inicial de la selecciÛn, pulse %keyfor (SaySelectionStart).
-Para verbalizar la posiciÛn final de la selecciÛn o la longitud, pulse %keyfor(SaySelectionEnd).
-Para mover el foco a estos controles, pulse la tecla dos veces r·pidamente.
-Para verbalizar el valor de posiciÛn del audio, pulse %keyfor(SayActiveCursor).
-Para verbalizar el cursor activo mientras estÈ activo el del PC, pulse %keyfor(SayActiveCursor) dos veces r·pidamente.
+Para verbalizar la posici√≥n inicial de la selecci√≥n, pulse %keyfor (SaySelectionStart).
+Para verbalizar la posici√≥n final de la selecci√≥n o la longitud, pulse %keyfor(SaySelectionEnd).
+Para mover el foco a estos controles, pulse la tecla dos veces r√°pidamente.
+Para verbalizar el valor de posici√≥n del audio, pulse %keyfor(SayActiveCursor).
+Para verbalizar el cursor activo mientras est√© activo el del PC, pulse %keyfor(SayActiveCursor) dos veces r√°pidamente.
+Para verbalizar el tipo de selecci√≥n actual (Audacity 2.2.0 y posteriores), pulse %KeyFor(SaySelectionType).
+Para establecer el tipo de selecci√≥n (Audacity 2.2.0 y posteriores), pulse TeclaJAWS+a,p seguido de c (comienzo-final), l (final-longitud), f (longitud-final) o e (longitud-centro). Tambi√©n puede utilizar los n√∫meros 1-4.
+
 Para aumentar la ganancia de la pista activa, pulse %keyfor (MouseUp).
 Para reducir la ganancia de la pista activa, pulse %keyfor (MouseDown).
-Para ajustar el posicionamiento estÈreo hacia la izquierda, pulse %keyfor (MouseLeft).
-Para ajustar el posicionamiento estÈreo hacia la derecha, pulse %keyfor (MouseRight).
-Mientras el foco est· en la ventana principal, las cuatro ˙ltimas teclas reemplazan los scripts de JAWS predeterminados para mover el ratÛn. Si desea activar la funcionalidad original mientras estÈ en la ventana principal, active el cursor de JAWS.
+Para ajustar el posicionamiento est√©reo hacia la izquierda, pulse %keyfor (MouseLeft).
+Para ajustar el posicionamiento est√©reo hacia la derecha, pulse %keyfor (MouseRight).
+Mientras el foco est√° en la ventana principal, las cuatro √∫ltimas teclas reemplazan los scripts de JAWS predeterminados para mover el rat√≥n. Si desea activar la funcionalidad original mientras est√© en la ventana principal, active el cursor de JAWS.
 
-Para verbalizar el valor del medidor de grabaciÛn, pulse %KeyFor(SayRecordingMeter).
- Pulse dos veces r·pidamente para mover el foco al medidor.
-Para verbalizar el valor del medidor de reproducciÛn, pulse %KeyFor(SayPlaybackMeter).
- Pulse dos veces r·pidamente para mover el foco al medidor.
+Para verbalizar el valor del medidor de grabaci√≥n, pulse %KeyFor(SayRecordingMeter).
+ Pulse dos veces r√°pidamente para mover el foco al medidor.
+Para verbalizar el valor del medidor de reproducci√≥n, pulse %KeyFor(SayPlaybackMeter).
+ Pulse dos veces r√°pidamente para mover el foco al medidor.
 
-Para ir a una pista por su n˙mero, pulse %KeyFor(GoToTrack).
-Para mover la pista actual a una posiciÛn de pista por su n˙mero, pulse %KeyFor(MoveCurrentTrackTo).
+Para ir a una pista por su n√∫mero, pulse %KeyFor(GoToTrack).
+Para mover la pista actual a una posici√≥n de pista por su n√∫mero, pulse %KeyFor(MoveCurrentTrackTo).
 Para marcar la pista actual, pulse %KeyFor(MarkTrack).
 Para ir a la pista marcada, pulse %KeyFor(GoToMarkedTrack).
 Para ir a la pista marcada y marcar la pista de partida, pulse %KeyFor(ExchangeWithMark).
-Para mover la pista actual a la posiciÛn de la pista marcada y fijar la marca en la pista actual, pulse %KeyFor(MoveCurrentTrackToMark).
+Para mover la pista actual a la posici√≥n de la pista marcada y fijar la marca en la pista actual, pulse %KeyFor(MoveCurrentTrackToMark).
 
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
-Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opciÛn Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
-Para m·s info, vea el archivo what's new.md.
+Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opci√≥n Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
+Para m√°s info, consulte el archivo what's new.md.
 
 En una barra de herramientas, pulse %KeyFor (NextDocumentWindow) para moverse a la siguiente
 En una barra de herramientas, pulse %KeyFor (PreviousDocumentWindow) para moverse a la anterior
 
 Para leer el estado del programa (reproduciendo/pausado/grabando/detenido), pulse %KeyFor(SayAudacityState)
 Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse %keyfor (ResetConfig)
-Para conmutar entre las dos listas del di·logo Editar secuencias de comandos, pulse %keyfor (SwitchChainsList).
+Para conmutar entre las dos listas del di√°logo Editar secuencias de comandos, pulse %keyfor (SwitchChainsList).
 
-Para obtener ayuda sobre las teclas r·pidas de Audacity, pulse %keyfor(AudacityKeysHelp).
-Para obtener la ayuda predeterminada sobre teclas r·pidas de Windows, pulse %keyfor(AudacityKeysHelp) dos veces r·pidamente.
+Para obtener ayuda sobre las teclas r√°pidas de Audacity, pulse %keyfor(AudacityKeysHelp).
+Para obtener la ayuda predeterminada sobre teclas r√°pidas de Windows, pulse %keyfor(AudacityKeysHelp) dos veces r√°pidamente.
 
-Si est· activada la opciÛn "ENTER pausa al reproducir/grabar", al pulsar %KeyFor(ENTER) en tanto se reproduce o graba, se envÌa la tecla Pausa. Para ejecutar ENTER en esta situaciÛn, utilice %KeyFor(CtrlEnter).
+Si est√° activada la opci√≥n "ENTER pausa al reproducir/grabar", al pulsar %KeyFor(ENTER) en tanto se reproduce o graba, se env√≠a la tecla Pausa. Para ejecutar ENTER en esta situaci√≥n, utilice %KeyFor(CtrlEnter).
 
 En algunos plugins VST comunes, como L1V:
 Para llevar el foco al control de predefinidos, pulse %keyfor (VSTPreset).
-Para cargar una predefiniciÛn existente, pulse %keyfor (VSTLoadPreset).
-Para guardar la configuraciÛn actual como predefiniciÛn, pulse %keyfor (VSTSavePreset).
+Para cargar una predefinici√≥n existente, pulse %keyfor (VSTLoadPreset).
+Para guardar la configuraci√≥n actual como predefinici√≥n, pulse %keyfor (VSTSavePreset).
 
-Si Silenciar en Vista Previa est· activado y aprieta el botÛn Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocar· pÈrdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo despuÈs.
+Si Silenciar en Vista Previa est√° activado y aprieta el bot√≥n Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocar√° p√©rdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo despu√©s.
 
-Para cambiar la configuraciÛn de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
+Para cambiar la configuraci√≥n de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
-Para cambiar la URL de la GuÌa de JAWS para Audacity, pulse %keyfor (AddAudacityJawsGuide)
+Para cambiar la URL de la Gu√≠a de JAWS para Audacity, pulse %keyfor (AddAudacityJawsGuide)
 @@
+@msgAudacityLayerHelp
+Para ir a una pista por su n√∫mero, pulse i.
+Para mover una pista por su n√∫mero, pulse m.
+Para marcar la pista actual pulse, k.
+Para ir a la pista marcada, pulse Shift+I.
+Para intercambiar la pista actual con la marcada, pulse x.
+Para mover la pista actual a la marcada, pulse Shift+m.
+Para ingresar en el nivel para establecer o verbalizar el tipo de posici√≥n mostrada, pulse p.
+Para ingresar al nivel para verbalizar las secciones de audio cortas (Shift+F5-F8), pulse s.
+@@
+;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
+@msgPositionLayer_start
+posici√≥n
+@@
+@msgPositionLayerHelp
+comienzo-final, pulse c.
+comienzo-longitud, pulse l.
+longitud-final, pulse f.
+longitud-centro, pulse c.
+verbalizar tipo de posici√≥n mostrado, pulse p.
+@@
+@msgShortLayer_Start
+corto
+@@
+@msgShortLayerHelp
+Shift+F5-F8, pulse j, k, l, √±.
+Shift+Control+F5, F7 pulse Control+j, Control+√±.
+c pulse c.
+@@
+
 @msgPresetHotkeyHelp
-Para llevar el foco a la opciÛn predefinidos, pulse %keyfor (VSTPreset).
-Para cargar una predefiniciÛn existente, pulse %keyfor (VSTLoadPreset).
-Para guardar la configuraciÛn actual como predefiniciÛn, pulse %keyfor (VSTSavePreset).
+Para llevar el foco a la opci√≥n predefinidos, pulse %keyfor (VSTPreset).
+Para cargar una predefinici√≥n existente, pulse %keyfor (VSTLoadPreset).
+Para guardar la configuraci√≥n actual como predefinici√≥n, pulse %keyfor (VSTSavePreset).
 
 @@
 
 ;Spoken before loading the Audacity for JAWS web page.
 @msgLoadingJawsGuide_L
-cargando p·gina web de la GuÌa de Audacity para JAWS
+cargando p√°gina web de la Gu√≠a de Audacity para JAWS
 @@
 @msgLoadingJawsGuide_S
-GuÌa para JAWS
+Gu√≠a para JAWS
 @@
 
 ;Text of Audacity hotkey help that appears before the link to the Audacity guide for JAWS.
 ;We don't use a % substitution for the link because it must be added to the virtual buffer by a separate function call to make it a link.
-;˚1 -- Audacity guide title
+;%1 -- Audacity guide title
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Combinaciones de teclas predeterminadas para Audacity v2.1.3 (de la %1, por %2). Acceda a la guÌa (en inglÈs) en
+Combinaciones de teclas predeterminadas para Audacity v2.2.0 (de la %1, por %2). Acceda a la gu√≠a (en ingl√©s) en
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
@@ -185,65 +226,66 @@ Combinaciones de teclas predeterminadas para Audacity v2.1.3 (de la %1, por %2).
 Generales
 
 
-Comando CombinaciÛn de teclas
+Comando Combinaci√≥n de teclas
 Abrir archivo de audio Ctrl + O 
 Importar archivo de audio Ctrl + Shift + I 
 Nuevo proyecto Ctrl + N 
 Guardar proyecto Ctrl + S 
-Di·logo de Preferencias Ctrl + P 
-Moverse cÌclicamente hacia adelante por Barras de herramientas, Tabla de pistas y Barra de selecciÛn Ctrl + F6 
-Moverse cÌclicamente hacia atr·s por Barras de herramientas, Tabla de pistas y Barra de selecciÛn Ctrl + Shift + F6 
-Moverse cÌclicamente hacia adelante por la ventana principal de Audacity y todos los di·logos no modales abiertos Alt + F6 
-Moverse cÌclicamente hacia atr·s por la ventana principal de Audacity y todos los di·logos no modales abiertos Alt + Shift + F6 
+Exportar audio Ctrl + Shift + E 
+Di√°logo de Preferencias Ctrl + P 
+Moverse c√≠clicamente hacia adelante por Barras de herramientas, Tabla de pistas y Barra de selecci√≥n Ctrl + F6 
+Moverse c√≠clicamente hacia atr√°s por Barras de herramientas, Tabla de pistas y Barra de selecci√≥n Ctrl + Shift + F6 
+Moverse c√≠clicamente hacia adelante por la ventana principal de Audacity y todos los di√°logos no modales abiertos Alt + F6 
+Moverse c√≠clicamente hacia atr√°s por la ventana principal de Audacity y todos los di√°logos no modales abiertos Alt + Shift + F6 
 Zoom normal Ctrl + 2 
 Acercar Ctrl + 1 
 Alejar Ctrl + 3 
 
-ReproducciÛn
+Reproducci√≥n
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
 Iniciar/Detener Barra Espaciadora 
 Iniciar/Detener y mover cursor X 
 Pausa/reanudar P 
-Rebobinar perÌodo corto durante reproducciÛn Flecha Izquierda 
-Adelantar perÌodo corto durante reproducciÛn Flecha Derecha 
-Rebobinar perÌodo largo durante reproducciÛn Shift + Flecha Izquierda 
-Adelantar perÌodo largo durante reproducciÛn Shift + Flecha Derecha 
-ReproducciÛn en bucle Shift + Barra Espaciadora 
-Di·logo Dispositivo de salida Shift + O 
-Reproducir vista previa de corte/eliminaciÛn C 
-Reproducir perÌodo corto antes del comienzo de la selecciÛn Shift + F5 
-Reproducir perÌodo corto despuÈs del comienzo de la selecciÛn Shift + F6 
-Reproducir perÌodo corto antes del final de la selecciÛn Shift + F7 
-Reproducir perÌodo corto despuÈs del final de la selecciÛn Shift + F8 
-Reproducir perÌodo corto antes y despuÈs del comienzo de la selecciÛn Ctrl + Shift + F5 
-Reproducir perÌodo corto antes y despuÈs del final de la selecciÛn Ctrl + Shift + F7 
+Rebobinar per√≠odo corto durante reproducci√≥n Flecha Izquierda 
+Adelantar per√≠odo corto durante reproducci√≥n Flecha Derecha 
+Rebobinar per√≠odo largo durante reproducci√≥n Shift + Flecha Izquierda 
+Adelantar per√≠odo largo durante reproducci√≥n Shift + Flecha Derecha 
+Reproducci√≥n en bucle Shift + Barra Espaciadora 
+Di√°logo Dispositivo de salida Shift + O 
+Reproducir vista previa de corte/eliminaci√≥n C 
+Reproducir per√≠odo corto antes del comienzo de la selecci√≥n Shift + F5 
+Reproducir per√≠odo corto despu√©s del comienzo de la selecci√≥n Shift + F6 
+Reproducir per√≠odo corto antes del final de la selecci√≥n Shift + F7 
+Reproducir per√≠odo corto despu√©s del final de la selecci√≥n Shift + F8 
+Reproducir per√≠odo corto antes y despu√©s del comienzo de la selecci√≥n Ctrl + Shift + F5 
+Reproducir per√≠odo corto antes y despu√©s del final de la selecci√≥n Ctrl + Shift + F7 
 
 Tabla de pistas
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
 Moverse a pista anterior Flecha Arriba 
 Moverse a pista siguiente Flecha Abajo 
 Moverse a primera pista Ctrl + Inicio 
-Moverse a ˙ltima pista Ctrl + Fin 
-Alternar selecciÛn de pista activa Enter 
+Moverse a √∫ltima pista Ctrl + Fin 
+Alternar selecci√≥n de pista activa Enter 
 Seleccionar todas las pistas (y un rango de tiempo que incluye todo el audio) Ctrl + A 
 Deseleccionar todas las pistas (y todos los rangos de tiempo) Ctrl + Shift + A 
 Seleccionar todas las pistas Ctrl + Shift + K 
-Abrir el men˙ de la pista activa Tecla Aplicaciones o Shift + M 
+Abrir el men√∫ de la pista activa Shift + M o Tecla Aplicaciones
 Cerrar (Eliminar) la pista activa Shift + C 
 
 Pista de audio
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
 Cambiar ganancia de pista activa Shift + G 
-Cambiar posicionamiento estÈreo de pista activa Shift + P 
+Cambiar posicionamiento est√©reo de pista activa Shift + P 
 Silenciar/Desactivar silencio en la pista activa Shift + U 
 Silenciar todas las pistas Ctrl + U 
 Desactivar silencio en todas las pistas Ctrl + Shift + U 
@@ -252,41 +294,41 @@ Solo/Desactivar solo en la pista activa Shift + S
 Movimiento del cursor
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
 Moverse al comienzo de las pistas (tiempo cero) Inicio 
 Moverse al final de todo el audio Fin 
 Moverse al comienzo del audio en las pistas seleccionadas J 
 Moverse al final del audio en las pistas seleccionadas K 
-Nueva posiciÛn del cursor en posiciÛn de reproducciÛn ` 
-Detener reproducciÛn y mover cursor X 
-Rebobinar perÌodo corto Coma 
-Adelantar perÌodo corto Punto 
-Rebobinar perÌodo largo Shift + Coma 
-Adelantar perÌodo largo Shift + Punto 
+Nueva posici√≥n del cursor en posici√≥n de reproducci√≥n ` 
+Detener reproducci√≥n y mover cursor X 
+Rebobinar per√≠odo corto Coma 
+Adelantar per√≠odo corto Punto 
+Rebobinar per√≠odo largo Shift + Coma 
+Adelantar per√≠odo largo Shift + Punto 
 Cursor un poquito a la izquierda Flecha Izquierda 
 Cursor un poquito a la derecha Flecha Derecha 
 
-SelecciÛn de un rango de tiempo
+Selecci√≥n de un rango de tiempo
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
-Seleccionar un rango de tiempo que incluya todo el audio y seleccionar todas las pistas Ctrl + A 
-Comienzo de selecciÛn al principio de las pistas (tiempo 0) Shift + Inicio 
-Final de selecciÛn al final de todo el audio Shift + Fin 
-Final de selecciÛn en posiciÛn de reproducciÛn + 
-Comienzo de selecciÛn al principio del audio en las pistas seleccionadas Shift + J 
-Final de selecciÛn al final del audio en las pistas seleccionadas Shift + K 
-Para mover el final de la selecciÛn un poquito a la derecha Shift + Flecha Derecha 
-Para mover el final de la selecciÛn un poquito hacia la izquierda Ctrl + Shift + Flecha Izquierda 
-Para mover el comienzo de la selecciÛn un poquito a la derecha Ctrl + Shift + Flecha Derecha 
-Para mover el comienzo de la selecciÛn un poquito a la izquierda Shift + Flecha Izquierda 
+Seleccionar un rango de tiempo que incluye todo el audio y seleccionar todas las pistas Ctrl + A 
+Comienzo de selecci√≥n al principio de las pistas (tiempo 0) Shift + Inicio 
+Final de selecci√≥n al final de todo el audio Shift + Fin 
+Final de selecci√≥n en posici√≥n de reproducci√≥n + 
+Comienzo de selecci√≥n al principio del audio en las pistas seleccionadas Shift + J 
+Final de selecci√≥n al final del audio en las pistas seleccionadas Shift + K 
+Para mover el final de la selecci√≥n un poquito a la derecha Shift + Flecha Derecha 
+Para mover el final de la selecci√≥n un poquito hacia la izquierda Ctrl + Shift + Flecha Izquierda 
+Para mover el comienzo de la selecci√≥n un poquito a la derecha Ctrl + Shift + Flecha Derecha 
+Para mover el comienzo de la selecci√≥n un poquito a la izquierda Shift + Flecha Izquierda 
 
-EdiciÛn
+Edici√≥n
 
 
-Comando CombinaciÛn de teclas 
+Comando Combinaci√≥n de teclas 
 
 Deshacer Ctrl + Z 
 Rehacer Ctrl + Y 
@@ -296,35 +338,50 @@ Copiar audio seleccionado Ctrl + C
 Pegar Ctrl + V 
 Reemplazar audio seleccionado por silencio Ctrl + L 
 Duplicar el audio seleccionado Ctrl + D 
-Cerrar (Eliminar) pista activa Shift + C 
+Cerrar (Eliminar) la pista activa Shift + C 
 Encontrar cruces en cero Z
 
 Etiquetas
 
 
-Comando CombinaciÛn de teclas
+Comando Combinaci√≥n de teclas
 
-AÒadir etiqueta en la selecciÛn Ctrl + B 
-AÒadir etiqueta en la posiciÛn de reproducciÛn Ctrl + M 
+A√±adir etiqueta en la selecci√≥n Ctrl + B 
+A√±adir etiqueta en la posici√≥n de reproducci√≥n Ctrl + M 
 Moverse a la etiqueta siguiente Alt + Flecha Derecha 
 Moverse a la etiqueta anterior Alt + Flecha Izquierda 
 
-GrabaciÛn
+Clips
 
 
-Comando CombinaciÛn de teclas 
+Command Keystroke
+
+Seleccionar clip anterior Alt + P 
+Seleccionar clip siguiente Alt + N 
+Dividir Ctrl + I 
+Dividir y borrar Ctrl + Alt + K 
+Dividir y cortar Ctrl + Alt + X 
+Dividir y nueva Ctrl + Alt + I 
+Desunir en los silencios Ctrl + Alt + J 
+Unir Ctrl + J 
+
+Grabaci√≥n
+
+
+Comando Combinaci√≥n de teclas 
 
 Grabar R 
-AÒadir grabaciÛn Shift + R 
+A√±adir grabaci√≥n Shift + R, utilizando la configuraci√≥n predeterminada 
+Grabar en pista nueva Shift + R, utilizando la configuraci√≥n predeterminada 
 Pausa/reanudar P 
 Detener Barra Espaciadora 
-Di·logo Servidor de audio Shift + H 
-Di·logo Dispositivo de grabaciÛn Shift + I 
-Di·logo Canales de grabaciÛn Shift + N 
+Di√°logo Servidor de audio Shift + H 
+Di√°logo Dispositivo de grabaci√≥n Shift + I 
+Di√°logo Canales de grabaci√≥n Shift + N 
 @@
 
 @msg_App_Start
-Bienvenido a Audacity. Para mostrar la lista de teclas r·pidas de JAWS para Audacity, pulse %Keyfor(AudacityScriptkeyHelp).
+Bienvenido a Audacity. Para mostrar la lista de teclas r√°pidas de JAWS para Audacity, pulse %Keyfor(AudacityScriptkeyHelp).
 @@
 
 ;Is the same text for Start and End acceptable in msgMoveSelection, msgMoveTo, and msgSelectedTo in all languages??
@@ -336,6 +393,19 @@ comienzo
 final
 @@
 
+@msgLength
+longitud
+@@
+
+@msgCenter
+centro
+@@
+
+;Say a position field.  %1 is field name, %2 is value.
+@msgPositionField
+%1 %2
+@@
+
 @msgLeft
 izquierda
 @@
@@ -345,16 +415,16 @@ derecha
 @@
 
 @msgSelectionStart
-Comienzo de selecciÛn
+Comienzo de selecci√≥n
 @@
 
 @msgSelectionEnd
-Final de selecciÛn
+Final de selecci√≥n
 @@
 
 ; %1 = "start" or "end" of selection, %2 = direction ("left" or "right").
 @msgMoveSelection_L
-Mover %1 de selecciÛn a la %2
+Mover %1 de selecci√≥n a la %2
 @@
 @msgMoveSelection
 %1 %2
@@ -370,7 +440,7 @@ Sin pistas
 
 ;Used??
 @msgSelection
-selecciÛn
+selecci√≥n
 @@
 
 @msgTrack
@@ -440,14 +510,14 @@ cerrar pista activa
 @@
 
 @msgNotStopped_l
-No se puede realizar esta operaciÛn salvo que estÈ detenido.
+No se puede realizar esta operaci√≥n salvo que est√© detenido.
 @@
 @msgNotStopped_s
 no detenido.
 @@
 
 @msgNoTransportToolbar
-No se encuentra la barra de herramientas de reproducciÛn. Para que estos scripts funcionen, la barra de herramientas de reproducciÛn debe habilitarse.
+No se encuentra la barra de herramientas de reproducci√≥n. Para que este script funcione, la barra de herramientas de reproducci√≥n debe habilitarse.
 @@
 
 @msgCopyAudio
@@ -471,19 +541,19 @@ Las opciones de los scripts se restablecieron a sus valores predeterminados
 @@
 
 @msgNoSelection
-Para utilizar esta funciÛn, debe habilitar la barra de herramientas de selecciÛn
+Para utilizar esta funci√≥n, debe habilitar la barra de herramientas de selecci√≥n
 @@
 @msgNoRecordingMeter
-Para utilizar esta funciÛn, debe habilitar las barras de herramientas de MediciÛn de GrabaciÛn o MediciÛn Combinada
+Para utilizar esta funci√≥n, debe habilitar las barras de herramientas de Medici√≥n de Grabaci√≥n o Medici√≥n Combinada
 @@
 @msgNoPlaybackMeter
-Para utilizar esta funciÛn, debe habilitar las barras de herramientas de MediciÛn de ReproducciÛn o MediciÛn Combinada
+Para utilizar esta funci√≥n, debe habilitar las barras de herramientas de Medici√≥n de Reproducci√≥n o Medici√≥n Combinada
 @@
 @msg_Script_Version
-VersiÛn de los scripts para JAWS %1, para Audacity 2.0.0 o posterior.
+Versi√≥n de los scripts para JAWS %1, para Audacity 2.0.0 o posterior.
 @@
 @MsgNoTrackSelected_L
-Para utilizar esta funciÛn, antes debe seleccionar por lo menos una pista. Para seleccionar una pista, pulse ENTER.
+Para utilizar esta funci√≥n, antes debe seleccionar por lo menos una pista. Para seleccionar una pista, pulse ENTER.
 @@
 @msgNoTrackSelected_S
 No hay pistas seleccionadas.
@@ -491,15 +561,15 @@ No hay pistas seleccionadas.
 
 ;messages for warning dialog when import uncompress audio
 @msgCopy
-Hacer una copia de los archivos antes de editar (m·s seguro)
+Hacer una copia de los archivos antes de editar (m√°s seguro)
 @@
 
 @msgDirectEdit
-Leer %%los archivos directamente desde el original (m·s r·pido)
+Leer %%los archivos directamente desde el original (m√°s r√°pido)
 @@
 
 @msgDoNotWarn
-No volver a preguntar y utilizar siempre la opciÛn seleccionada
+No volver a preguntar y utilizar siempre la opci√≥n seleccionada
 @@
 
 ;Messages for the two lists in the Edit Chains dialog.
@@ -520,7 +590,7 @@ Sin cambios.
 La URL se ha cambiado a %1
 @@
 @MSGJawsGuideDialog
-Escriba la nueva URL a la GuÌa de Audacity con JAWS.
+Escriba la nueva URL a la Gu√≠a de Audacity con JAWS.
 @@
 
 ;Used to speak the field value along with the slider value in the Compressor effect.
@@ -531,7 +601,7 @@ Escriba la nueva URL a la GuÌa de Audacity con JAWS.
 
 ; Prompt for the input boxes in the GoToTrack and MoveCurrentTrackTo scripts.
 @msgTrackNumber
-N˙mero de pista:
+N√∫mero de pista:
 @@
 
 ; Title of the input box in the  GoToTrack script.
@@ -556,7 +626,7 @@ sin marcas
 
     ;Message to announce some Audacity keys
     @msgZoomNormal
-ampliaciÛn normal
+ampliaci√≥n normal
 @@
 
 @msgZoomIn
@@ -612,7 +682,7 @@ recortar
 @@
 
 @msgExportMultiple
-Exportar m˙ltiple
+Exportar m√∫ltiple
 @@
 
 @msgSplitCut
@@ -680,7 +750,7 @@ Desunir etiquetas en los silencios
 @@
 
 @msgToggleSpectralSelection
-Cambiar la selecciÛn de espectro
+Cambiar la selecci√≥n de espectro
 @@
 
 @msgSelSyncLockTracks
@@ -688,7 +758,7 @@ seleccionar en todas las pistas enlazadas
 @@
 
 @msgZoomSel
-Ampliar la selecciÛn
+Ampliar la selecci√≥n
 @@
 
 @msgFitInWindow
@@ -700,11 +770,11 @@ Ajustar verticalmente
 @@
 
 @msgGoSelStart
-Ir al comienzo de la selecciÛn
+Ir al comienzo de la selecci√≥n
 @@
 
 @msgGoSelEnd
-Ir al final de la selecciÛn
+Ir al final de la selecci√≥n
 @@
 
 @msgCollapseAllTracks
@@ -716,7 +786,7 @@ Expandir todas las pistas
 @@
 
 @msgPlayLooped
-Reproducir cÌclicamente
+Reproducir c√≠clicamente
 @@
 
 @msgNewMonoTrack
@@ -728,15 +798,15 @@ Mezclar y generar en pista nueva
 @@
 
 @msgAddLabel
-AÒadir etiqueta en la selecciÛn
+A√±adir etiqueta en la selecci√≥n
 @@
 
 @msgAddLabelPlaying
-Agregar etiqueta en posiciÛn de reproducciÛn
+Agregar etiqueta en posici√≥n de reproducci√≥n
 @@
 
 @msgRepeatLastEffect
-Repetir el ˙ltimo efecto
+Repetir el √∫ltimo efecto
 @@
 
 @msgFirstTrack
@@ -744,7 +814,7 @@ Primera pista
 @@
 
 @msgLastTrack
-⁄ltima pista
+√öltima pista
 @@
 
 @msgTrackPan
@@ -760,11 +830,11 @@ Desplazar pista activa a la parte inferior
 @@
 
 @msgInputDevice
-Cambiar dispositivo de grabaciÛn
+Cambiar dispositivo de grabaci√≥n
 @@
 
 @msgOutputDevice
-Cambiar dispositivo de reproducciÛn
+Cambiar dispositivo de reproducci√≥n
 @@
 
 @msgAudioHost
@@ -772,9 +842,8 @@ Cambiar servidor de audio
 @@
 
 @msgInputChannels
-Cambiar canales de grabaciÛn
+Cambiar canales de grabaci√≥n
 @@
 
 
 EndMessages
-

@@ -382,6 +382,10 @@ Respeta AnnounceMessage.
 :Synopsis Añade una etiqueta en la posición de reproducción o grabación actual.
 :Description La funcionalidad de voz para Audacity se cancela hasta que se pulsen ENTER o SayNext/PriorLine (Verbalizar Línea Siguiente/Anterior), o el foco se salga de la ventana.
 
+:Function SayTimelineEnd
+:Synopsis Verbaliza el último número de la línea de tiempo después de un comando de ampliación o reducción.
+:Returns void Sin descripción de lo devuelto
+
 :Script ZoomNormal
 :Synopsis ampliación normal
 
@@ -654,6 +658,8 @@ Respeta AnnounceMessage.
 :Synopsis En los campos de comienzo/final de selección, reproduce una vista previa que contiene el audio sobre el que se mueve. En cualquier otro sitio ejecuta la acción predeterminada.
 
 :Script ToggleMotionPreview
+:synopsis Temporarily turns SayPosition off and PreviewMotion on.
+:Description When turned on temporarily turns SayPosition off and PreviewMotion on.  When turned off restores them to their Quick Settings.  This is turned off when focus returns to the program.
 
 :Function SayWindowTypeAndText
 :Returns void sin descripción de lo devuelto
