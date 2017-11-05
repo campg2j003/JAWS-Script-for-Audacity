@@ -1,4 +1,4 @@
-﻿14-10-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿04-11-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
@@ -130,20 +130,20 @@ Lưu ý: Có một cách thực hiện khác  của tính năng này gần với
 
 3.  Nếu bật tính năng "ENTER Pauses during play/record" (mặc định được bật), `ENTER` sẽ không chọn / bỏ chọn track hiện tại trong khi phát hay thu âm. Trường hợp này, ta Sử dụng `Control+Enter` thay cho `Enter`. 
 
-4.  Nếu bạn thiết lập cho phím  `numpad ENTER` và thiết lập JAWS để xử lý các phím mở rộng một cách riêng biệt, kể cả phím `Enter` cũng sẽ được đặt cho việc gõ phím `Enter`. Nếu bạn không thích tính năng này, có thể tắt nó bằng cách thêm một dấu chấm phẩy trên các dòng `ENTER`, `NumPadEnter` và `Control + ENTER` trong `audacity.jkm` và loại bỏ các dấu chấm phẩy trên dòng có chứa `/ *` và `* /` trước và sau scripts `Enter` và `CtrlEnter` trong `audacity.jss`. Nếu có thay đổi trong tập tin `Audacity.JSS`, vui lòng thay đổi giá trị ngày trong biến Version để chúng tôi biết đây là phiên bản chỉnh sửa trong trường hợp bạn liên hệ với chúng tôi.
+4.  Nếu bạn thiết lập cho phím  `numpad ENTER` và thiết lập JAWS để xử lý các phím mở rộng một cách riêng biệt, kể cả phím `Enter` cũng sẽ được đặt cho việc gõ phím `Enter`. Nếu bạn không thích tính năng này, có thể tắt nó bằng cách thêm một dấu chấm phẩy trên các dòng `ENTER`, `NumPadEnter` và `Control + ENTER` trong `audacity.jkm` và loại bỏ các dấu chấm phẩy trên dòng có chứa `/ *` và `* /` trước và sau script `Enter` và `CtrlEnter` trong `audacity.jss`. Nếu có thay đổi trong tập tin `Audacity.JSS`, vui lòng thay đổi giá trị ngày trong biến Version để chúng tôi biết đây là phiên bản đã chỉnh sửa trong trường hợp bạn liên hệ với chúng tôi.
 
 5. Trình biên dịch Jaws Script chỉ hoạt động với ngôn ngữ mà Jaws đang chạy. Xem thêm bên dưới.
 
-6. Các phiên bản trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại nghiêm trọng với người dùng.
+6. Các phiên bản Jaws trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại nghiêm trọng với người dùng.
 
 
 # Hỗ trợ đa  ngôn ngữ
 Bộ cài đặt hỗ trợ cài Script cho nhiều ngôn ngữ. Bộ cài đặt này vẫn xử lí phần ngôn ngữ giống các bộ cài đặt trước. Vậy nên trang chọn phiên bản sẽ hiển thị theo kiểu 16.0/enu. Hiện nay, tiếng Anh, tiếng Đức và tiếng Tây Ban Nha đang được hỗ trợ.
 
-Dù rằng bộ cài đặt thực hiện việc cài và biên dịch Script cho ngôn ngữ đã được chọn, nhưng Jaws Script Compiler thì luôn luôn biên dịch script cho ngôn ngữ mà jaws đang chạy. Vậy nên, sau khi cài Script, bạn phải chạy Jaws với ngôn ngữ đã chọn của script và biên dịch lại.
+Giờ đây, trình cài đặt sẽ biên dịch script cho mỗi ngôn ngữ. Dù trình biên dịch JAWS script luôn biên dịch  script cho ngôn ngữ mà JAWS đang chạy, trình cài đặt giờ đây đã sử dụng  kịch bản JAWSUtil.vbs script trong công cụ BX toolkit của Doug Lee để giải quyết vấn đề trên. Vậy nên, bạn sẽ không phải chạy Jaws và biên dịch cho các ngôn ngữ khác.
 
 #lưu ý cho người viết script
-Nếu có chỉnh sửa các tập tin của script, vui lòng cập nhật biến của phiên bản (Version Constain) ở dòng gần đầu tập tin `Audacity.jss`. Điều này rất quan trọng nếu bạn công bố script, dù bạn chỉ chỉnh sửa cho cá nhân bạn. Nó sẽ giúp chúng tôi biết rằng đây là phiên bản có chỉnh sửa trong trường hợp bạn liên lạc với chúng tôi về script này. 
+Nếu có chỉnh sửa các tập tin của script, vui lòng cập nhật biến của phiên bản (Version Constain) ở dòng gần đầu tập tin `Audacity.jss`. Điều này rất quan trọng nếu bạn công bố script, dù bạn chỉ chỉnh sửa cho cá nhân bạn. Nó sẽ giúp chúng tôi biết rằng đây là phiên bản dã chỉnh sửa trong trường hợp bạn liên lạc với chúng tôi về script này. 
 
 Các thông điệp và chuỗi hằng được lưu trong `Audacity.JSM` và `Audacity.QSM`. Lưu ý rằng từ phiên bản 2.0.0, các tập tin lưu thông điệp phải dùng mã UTF8.
 
@@ -152,13 +152,14 @@ Các thông điệp của bộ cài đặt đã được bản địa hóa. Chú
 Bộ cài đặt đã được tải lên GitHub tại địa chỉ <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  Nếu bạn muốn đóng góp cho script, vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # Lưu ý cho người biên dịch
-Lưu ý rằng tập tin `Readme.HTML` đã được tạo từ tập tin `Readme.MD`, chỉ dùng được trên kho chia sẻ của GidHub. Vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md) để có thêm thông tin.
+Lưu ý rằng tập tin `Readme.HTML` và `readme_vi.html` đã được tạo từ tập tin `Readme.MD` và `readme_vi.md`, chỉ dùng được trên kho chia sẻ của GidHub. Vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md) để có thêm thông tin.
 
 # Ghi công
 - Viết Script: Gary Campbell và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 - Phiên dịch tiếng Đức: Michael Vogt
 - Phiên dịch tiếng Tây Ban Nha: Fernando Gregoire
 - Tập tin Readme tiếng Việt: Nguyễn Hoàng Giang, Đặng Mạnh Cường và Lê Thị Thêu
+- JAWSUtil.vbs: bản quyền 2009-2017 thuộc về Doug Lee (từ BX Toolkit bản hiệu đính 1876). (Xem jfw_nsh\JAWSUtil.vbs để biết thêm thông tin.)
 
 # Kết luận
 Gần đây, script được phát triển với Audacity 2.1.3, 2.2.0 alpha và beta. Nó sẽ hoạt động được với Các phiên bản Jaws từ 5.0 trở lên, dù rằng các tùy chọn cho Audacity trong phần Adjust Jaws Verbosity có vẻ chưa tốt lắm và cũng chưa được kiểm tra (tôi nhớ rằng chúng tôi đã dùng một hàm mà theo FSDN thì chỉ dùng được cho Jaws 10.0 trở lên). Các phiên bản gần đây được phát triển với Jaws 17, 18 và 2018 beta (build 1708.29) trên máy laptop chạy Windows 10 64 bit. Dù rằng vẫn hỗ trợ cho các phiên bản cũ của Jaws, chúng tôi vẫn chưa thử nghiệm điều đó. Hiện nay, chưa có hỗ trợ nào cho màn hình chữ nổi.
