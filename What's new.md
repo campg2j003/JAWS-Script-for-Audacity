@@ -1,5 +1,7 @@
 (This file last updated 10/14/2017)
 
+# New in 2.2.0-beta-2017-11-04
+- Updated the installer to use version that uses JAWSUtil.vbs from the BX Toolkit rev 1876 by Doug Lee.  The installer now compiles scripts correctly for all languages during the install.
 # New in 2.2.0-beta-2017-10-14
 - Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
 # New in 2.2.0-beta-2017-10-07

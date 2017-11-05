@@ -1,4 +1,4 @@
-﻿2017-10-8  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-11-04  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
 
@@ -132,15 +132,13 @@ Note: There is another implementation of this feature that more closely follows 
 
 4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the version constant so we'll know it is a modified version if you communicate with us about it.
 
-5.  The JAWS script compiler only compiles for the language of the currently running JAWS.  (See below.)
-
-6.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
+5.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
 
 
 # Multiple Language Support
 This version of the installer framework contains support for installation of the script in multiple languages.  It now treats version/language pairs as it previously treated versions, so the version selection list view now shows entries like 16.0/enu.  English, German, and Spanish are currently supported.
 
-Although the installer installs and compiles the script into the selected language folders, the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS.  Therefore, after installing you will need to run JAWS with each of the other languages and compile the script.
+The installer now compiles the script for each language. Although the JAWS script compiler always compiles the script files for the language of the currently-running version of JAWS, the installer now uses the JAWSUtil.vbs script from Doug Lee's BX toolkit which works around this problem.  Therefore, you will no longer need to run JAWS with each of the other languages and compile the script.
 
 # Notes for script developers
 If you modify the script files, please update the version constant near the beginning of `audacity.jss`.  This is particularly important if you distribute the script.  Even if you just modify it for your own use, this will make sure we know it is a modified version if you communicate with us about it.
@@ -159,6 +157,7 @@ Note that `readme.html` and `readme_vi.html` are generated from `readme.md` and 
 - German translation: Michael Vogt
 - Spanish translation: Fernando Gregoire
 - Vietnamese README: Nguyen Hoang Giang, Dang Manh Cuong, and Le Thi Theu
+- JAWSUtil.vbs: Copyright 2009-2017 by Doug Lee (from BX Toolkit revision 1876).  (See jfw_nsh\JAWSUtil.vbs for details.)
 
 # Conclusion
 Recent script development was done with Audacity 2.1.3 and 2.2.0 alpha and beta versions.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17, 18, and 2018 beta (build 1708.29) on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
