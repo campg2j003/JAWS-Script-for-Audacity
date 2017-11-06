@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-11-04"
-;Last updated 2017-11-04T23:50Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-11-06"
+;Last updated 2017-11-06T01:14Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2813,8 +2813,7 @@ Var
 	Int iMSAAMode
 	
 If NoProject () Then
-	SayNoProject ()
-	Return
+	Return FALSE
 Else
 	Let hWnd = GetFirstChild (GetLastWindow (GetFirstChild (GetAppMainWindow (GetFocus ()))))
 	;SayString ("Window name = " + GetWindowName(hWnd)) ; debug
