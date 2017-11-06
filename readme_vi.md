@@ -1,29 +1,29 @@
-﻿14-10-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿04-11-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
 # Các tính năng:
- - Cung cấp các phím lệnh để xem điểm bắt đầu, điểm kết thúc vùng chọn hoặc độ dài và vị trí của đoạn âm thanh ở bất  cứ đâu trong cửa sổ chính.
+ - Các phím lệnh để đọc điểm bắt đầu, điểm kết thúc vùng chọn hoặc độ dài và vị trí của đoạn âm thanh ở bất  cứ đâu trong cửa sổ chính.
 - Các phím lệnh di chuyển con trỏ đến bảng điều khiển vùng chọn.
-- Hiển thị phím tắt của Audacity và của Jaws cho Audacity.
+- Hiển thị phím tắt của Audacity và của Jaws script cho Audacity.
 - Tiếp cận được trang hướng dẫn sử dụng Audacity  với Jaws của David Bailes bằng phím lệnh Insert+W.
 - Đọc các vùng của cửa sổ chính, tức các thanh công cụ toolbars, bảng phân bố track (track panel) và thanh lựa chọn (selection bar) khi di chuyển con trỏ giữa chúng.
 - Đọc tên thanh công cụ khi con trỏ di chuyển từ thanh công cụ này sang thanh công cụ khác.
-- Khi con trỏ đang ở giữa các thanh công cụ, bấm `CTRL+tab` để di chuyển đến phần điều khiển đầu tiên của thanh công cụ kế tiếp và `CTRL+shift+tab` để đến phần điều khiển cuối của thanh công cụ trước.
+- Khi con trỏ đang ở giữa các thanh công cụ, bấm `CTRL+tab` để di chuyển đến điều khiển đầu tiên của thanh công cụ kế tiếp và `CTRL+shift+tab` để đến điều khiển cuối của thanh công cụ trước.
 - Có thể cấu hình để phát thử âm thanh tại vị trí con trỏ khi bấm mũi tên trái / phải và Audacity dừng khi con trỏ ở trong bản phân bố track  (track panel).
 - Có thể cấu hình để đọc vị trí con trỏ khi bấm mũi tên trái hoặc phải trong lúc Audacity dừng và con trỏ đang ở trong bảng phân bố track.
 - Có thể cấu hình cho các phím lệnh mở rộng hoặc thu hẹp vùng chọn thông báo vị trí mới của vùng chọn hay phát thử vùng chọn đó.
-- Thông báo không có project khi thực hiện các hoạt động bắt buộc phải có project được mở.
+- Thông báo không có track nào trong project với nhiều hoạt động.
 - Cung cấp các phím lệnh để đọc giá trị (maximum peak) khi thu / phát.
 - Track gain (chỉnh âm) và pan control (chỉnh độ cân bằng) được kích hoạt khi con trỏ PC hoạt động và đang ở trong cửa sổ chính. Trường hợp khác, Jaws sẽ kích hoạt tính năng di chuyển chuột.
 - Trong nhiều VST plug-in, có các phím lệnh để di chuyển con trỏ đến  điều khiển Presets và kích hoạt tính năng lưu hay gọi Presets.
 - Trong nhiều hộp thoại plug-in, tên và giá trị của các điều khiển đã được Jaws đọc. 
-- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt bởi Đặng Mạnh Cường, Nguyễn Hoàng Giang và Lê Thị Thêu. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files.
+- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files.
 - Khi ở cửa sổ chính, JAWSKey+Shift+mũi tên xuống (SaySelectedText) đọc số track (hoặc tên nếu bấm nhanh hai lần) tại track được chọn.
 - Bạn có thể đi đến một track bằng cách nhập số cụ thể. Bạn cũng có thể chuyển một track đến một vị trí xác định bằng số. Bạn cũng có thể đánh dấu một điểm "mark" trên track rồi sau đó trở lại điểm đã đánh dấu, hoặc chuyển một track đến đó. 
 - Có phản hồi khi di chuyển bằng bàn phím (xem thêm bên dưới).
 - Bản cài đặt hiện tại có thể sử dụng cho tất cả tài khoản (all user) hay tài khoản hiện tại (current user)và có thể cài vào thư mục Shared , bao gồm cài trên Jaws 17.
-- Khi đang phát hay thu âm, phím `Enter` có chức năng tạm dừng hoặc tiếp tục. Trường hợp này, muốn bấm `Enter` thì hãy bấm `Ctrl+Enter`. Tôi thích tính năng này vì phím `Enter` ở bàn phím số dễ tìm hơn nút “p” khi bạn rời tay khỏi bàn phím. Tính năng này có thể bật / tắt thông qua tùy chọn trong Adjust Jaws options. Hãy thử và cho chúng tôi biết nếu nó hữu ích với bạn và nếu bạn thích nó. 
+- Khi đang phát hay thu âm, phím `Enter` có chức năng tạm dừng hoặc tiếp tục. Trường hợp này, muốn bấm `Enter` thì hãy bấm `Ctrl+Enter`. Tôi thích tính năng này vì phím `Enter` ở bàn phím số dễ tìm hơn nút “p” khi bạn rời tay khỏi bàn phím. Tính năng này có thể bật / tắt thông qua tùy chọn trong Adjust Jaws options. Hãy thử và cho chúng tôi biết nếu nó hữu ích với bạn và bạn thích nó. 
 
 # cài đặt / gỡ cài đặt script:
 
@@ -44,11 +44,11 @@ Nếu chọn Just Scripts , tập tin What’s new và README sẽ được cài
 
 Trang Versions/Languages  hiển thị danh sách các phiên bản jaws / các ngôn ngữ được cài đặt trên máy bạn.  Bấm `khoảng trắng` để chọn phiên bản Jaws bạn muốn cài đặt script.  Script sẽ được biên dịch lại cho mỗi phiên bản được chọn.  Lưu ý rằng  script sẽ chỉ được biên dịch cho ngôn ngữ của phiên bản jaws đang chạy.
 
-Nếu tài khoản quản trị cho phép cài đặt cho tất cả tài khoản, lựa chọn all user sẽ được thực hiện. Nếu không lựa chọn current user sẽ được thực hiện. Nếu tài khoản quản trị cho phép cài đặt cho tất cả các tài khoản, lựa chọn current user có thể BUỘC thực hiện bằng cách thêm lệnh chuyển `/curentuser`.   
+Nếu tài khoản quản trị cho phép cài đặt cho tất cả tài khoản, lựa chọn all user sẽ được thực hiện. Nếu không, lựa chọn current user sẽ được thực hiện. Nếu tài khoản quản trị cho phép cài đặt cho tất cả các tài khoản, lựa chọn current user có thể BUỘC thực hiện bằng cách thêm lệnh chuyển `/curentuser`.   
 
 Khi cài cho tất cả tài khoản, ở trang chọn phiên bản / ngôn ngữ, người dùng có thể chọn cài Script cho tài khoản hiện tại hoặc tất cả tài khoản.
 
-Nếu muốn hiệu chỉnh bộ cài đặt, hay chỉ đơn giản là muốn khám phá nó, bạn có thể cài installer source bằng cách chọn Custom install  >  Installer source.
+Nếu muốn hiệu chỉnh bộ cài đặt, hay chỉ đơn giản là tìm hiểu nó, bạn có thể cài installer source bằng cách chọn Custom install  >  Installer source.
 
 ## Gỡ cài đặt:
 Gói cài đặt có thể được gỡ thông qua Program And Features (Add/Remove Programs). Bạn cũng có thể chạy tập tin `uninst.exe`   trong thư mục cài đặt (`%programfiles(x86)%\Jaws Script for Audacity` hoặc `%localappdata%\Jaws Script for Audacity`).
@@ -92,9 +92,9 @@ Bạn có thể cấu hình để script phát âm thanh sau khi dùng các lệ
 
 Khi ở trường bắt đầu / kết thúc chọn (selection start/end), `Shift+mũi tên lên` và `Shift+mũi tên xuống` sẽ âm thầm tăng và giảm thông số rồi mới phát thử.
 
-Có vài phím lệnh  để thực hiện việc   phát thử, và cũng dễ tiếp cận hơn.  Trong bản phân bố track và thanh lựa chọn, `JAWSKey+mũi tên trái` thực hiện lệnh `Shift+F6` và `JAWSKey+mũi tên phải` thực hiện `Shift+F7`. Các lệnh này phát đoạn đầu và  cuối của vùng chọn (ở trong vùng chọn).  Thêm phím Shift sẽ phát đoạn đầu và cuối (ngoài) vùng chọn.
+Có vài phím lệnh  thuận tiện để thực hiện việc   phát thử, và cũng dễ tiếp cận hơn.  Trong bản phân bố track và thanh lựa chọn, `JAWSKey+mũi tên trái` thực hiện lệnh `Shift+F6` và `JAWSKey+mũi tên phải` thực hiện `Shift+F7`. Các lệnh này phát đoạn đầu và  cuối của vùng chọn (ở trong vùng chọn).  Thêm phím Shift sẽ phát đoạn đầu và cuối (ngoài) vùng chọn.
 
-`JAWSKey+a,s` (nhóm lệnh rút gọn) cũng có thể thực thi các lệnh phát thử.  Điều này có thể có ích cho các Laptop yêu cầu bạn phải giữ phím `FN` để thực hiện các lệnh.  Khi kích hoạt nhóm lệnh này, `j`, `k`, `l`, và `;` thực thi `Shift+F5` đến `Shift+F8`.  `Control+j` thực thi `Control+Shift+F5` và `Control+l` thực thi `Control+Shift+F7`.  Nhóm lệnh này cũng thực thi các phím mũi tên trái / phải, Shift và `Shift+Control` mũi tên trái / phải, và `c`.  `?` đọc thông tin giúp đỡ của nhóm lệnh.  Khi kích hoạt  nhóm lệnh này, bạn có thể bấm bất kì phím lệnh nào mà không cần bấm phím để vào nhóm lệnh.  Bấm `ESC` hay một phím không thuộc nhóm lệnh này sẽ thoát ra khỏi nó.
+`JAWSKey+a,s` (nhóm lệnh rút gọn) cũng có thể thực thi các lệnh phát thử.  Điều này có thể có ích cho các Laptop yêu cầu bạn phải giữ phím `FN` để thực hiện các lệnh.  Khi kích hoạt nhóm lệnh này, `j`, `k`, `l`, và `;` thực thi `Shift+F5` đến `Shift+F8`.  `Control+j` thực thi `Control+Shift+F5` và `Control+l` thực thi `Control+Shift+F7`.  Nhóm lệnh này cũng thực thi các phím mũi tên trái / phải, Shift và `Shift+Control` mũi tên trái / phải, và `c`.  `?` đọc thông tin giúp đỡ của nhóm lệnh.  Khi kích hoạt  nhóm lệnh này, bạn có thể bấm bất kì phím lệnh nào mà không cần bấm phím để vào nhóm lệnh.  Bấm `ESC` hay một phím không thuộc nhóm lệnh này sẽ thoát khỏi nó.
 
 ## Các tùy chọn cho Script
 
@@ -130,38 +130,37 @@ Lưu ý: Có một cách thực hiện khác  của tính năng này gần với
 
 3.  Nếu bật tính năng "ENTER Pauses during play/record" (mặc định được bật), `ENTER` sẽ không chọn / bỏ chọn track hiện tại trong khi phát hay thu âm. Trường hợp này, ta Sử dụng `Control+Enter` thay cho `Enter`. 
 
-4.  Nếu bạn thiết lập cho phím  `numpad ENTER` và thiết lập JAWS để xử lý các phím mở rộng một cách riêng biệt, kể cả phím `Enter` cũng sẽ được đặt cho việc gõ phím `Enter`. Nếu bạn không thích tính năng này, có thể tắt nó bằng cách thêm một dấu chấm phẩy trên các dòng `ENTER`, `NumPadEnter` và `Control + ENTER` trong `audacity.jkm` và loại bỏ các dấu chấm phẩy trên dòng có chứa `/ *` và `* /` trước và sau scripts `Enter` và `CtrlEnter` trong `audacity.jss`. Nếu có thay đổi trong tập tin `Audacity.JSS`, vui lòng thay đổi giá trị ngày trong biến Version để chúng tôi biết đây là phiên bản chỉnh sửa trong trường hợp bạn liên hệ với chúng tôi.
+4.  Nếu bạn thiết lập cho phím  `numpad ENTER` và thiết lập JAWS để xử lý các phím mở rộng một cách riêng biệt, kể cả phím `Enter` cũng sẽ được đặt cho việc gõ phím `Enter`. Nếu bạn không thích tính năng này, có thể tắt nó bằng cách thêm một dấu chấm phẩy trên các dòng `ENTER`, `NumPadEnter` và `Control + ENTER` trong `audacity.jkm` và loại bỏ các dấu chấm phẩy trên dòng có chứa `/ *` và `* /` trước và sau script `Enter` và `CtrlEnter` trong `audacity.jss`. Nếu có thay đổi trong tập tin `Audacity.JSS`, vui lòng thay đổi giá trị ngày trong biến Version để chúng tôi biết đây là phiên bản đã chỉnh sửa trong trường hợp bạn liên hệ với chúng tôi.
 
-5. Trình biên dịch Jaws Script chỉ hoạt động với ngôn ngữ mà Jaws đang chạy. Xem thêm bên dưới.
-
-6. Các phiên bản trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại nghiêm trọng với người dùng.
+5. Các phiên bản Jaws trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại nghiêm trọng với người dùng.
 
 
 # Hỗ trợ đa  ngôn ngữ
 Bộ cài đặt hỗ trợ cài Script cho nhiều ngôn ngữ. Bộ cài đặt này vẫn xử lí phần ngôn ngữ giống các bộ cài đặt trước. Vậy nên trang chọn phiên bản sẽ hiển thị theo kiểu 16.0/enu. Hiện nay, tiếng Anh, tiếng Đức và tiếng Tây Ban Nha đang được hỗ trợ.
 
-Dù rằng bộ cài đặt thực hiện việc cài và biên dịch Script cho ngôn ngữ đã được chọn, nhưng Jaws Script Compiler thì luôn luôn biên dịch script cho ngôn ngữ mà jaws đang chạy. Vậy nên, sau khi cài Script, bạn phải chạy Jaws với ngôn ngữ đã chọn của script và biên dịch lại.
+Giờ đây, trình cài đặt sẽ biên dịch script cho mỗi ngôn ngữ. Dù trình biên dịch JAWS script luôn biên dịch  script cho ngôn ngữ mà JAWS đang chạy, trình cài đặt đã sử dụng  kịch bản JAWSUtil.vbs script trong công cụ BX toolkit của Doug Lee để giải quyết vấn đề trên. Vậy nên, bạn sẽ không phải chạy Jaws và biên dịch cho các ngôn ngữ khác.
 
 #lưu ý cho người viết script
-Nếu có chỉnh sửa các tập tin của script, vui lòng cập nhật biến của phiên bản (Version Constain) ở dòng gần đầu tập tin `Audacity.jss`. Điều này rất quan trọng nếu bạn công bố script, dù bạn chỉ chỉnh sửa cho cá nhân bạn. Nó sẽ giúp chúng tôi biết rằng đây là phiên bản có chỉnh sửa trong trường hợp bạn liên lạc với chúng tôi về script này. 
+Nếu có chỉnh sửa các tập tin của script, vui lòng cập nhật biến của phiên bản (Version Constain) ở dòng gần đầu tập tin `Audacity.jss`. Điều này rất quan trọng nếu bạn công bố script, dù bạn chỉ chỉnh sửa cho cá nhân bạn. Nó sẽ giúp chúng tôi biết rằng đây là phiên bản dã chỉnh sửa trong trường hợp bạn liên lạc với chúng tôi về script này. 
 
 Các thông điệp và chuỗi hằng được lưu trong `Audacity.JSM` và `Audacity.QSM`. Lưu ý rằng từ phiên bản 2.0.0, các tập tin lưu thông điệp phải dùng mã UTF8.
 
 Các thông điệp của bộ cài đặt đã được bản địa hóa. Chúng đã được tách ra khỏi bộ cài nên người dùng có thể viết lại thông điệp cho từng ngôn ngữ. Hiện tại, tiếng Anh, tiếng Đức và tiếng Tây Ban Nha đã được hỗ trợ. Các thông điệp này được lưu trong các tập tin `.nsh` với các tên kiểu như  `*_enu.nsh` hay `*_lang_enu.nsh` . Chúng cũng dùng mã UTF8. Để tạo bộ cài đặt, phải dùng NSIS 3.0 trở lên.
 
-Bộ cài đặt đã được tải lên GitHub tại địa chỉ <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  Nếu bạn muốn đóng góp cho script, vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md).
+Gói script này đã được tải lên GitHub tại địa chỉ <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  Nếu bạn muốn đóng góp cho script, vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md).
 
 # Lưu ý cho người biên dịch
-Lưu ý rằng tập tin `Readme.HTML` đã được tạo từ tập tin `Readme.MD`, chỉ dùng được trên kho chia sẻ của GidHub. Vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md) để có thêm thông tin.
+Lưu ý rằng tập tin `Readme.HTML` và `readme_vi.html` đã được tạo từ tập tin `Readme.MD` và `readme_vi.md`, chỉ dùng được trên kho chia sẻ của GidHub. Vui lòng xem tập tin [CONTRIBUTING.md](CONTRIBUTING.md) để có thêm thông tin.
 
 # Ghi công
 - Viết Script: Gary Campbell và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 - Phiên dịch tiếng Đức: Michael Vogt
 - Phiên dịch tiếng Tây Ban Nha: Fernando Gregoire
 - Tập tin Readme tiếng Việt: Nguyễn Hoàng Giang, Đặng Mạnh Cường và Lê Thị Thêu
+- JAWSUtil.vbs: bản quyền 2009-2017 thuộc về Doug Lee (từ BX Toolkit bản hiệu đính 1876). (Xem jfw_nsh\JAWSUtil.vbs để biết thêm thông tin.)
 
 # Kết luận
-Gần đây, script được phát triển với Audacity 2.1.3, 2.2.0 alpha và beta. Nó sẽ hoạt động được với Các phiên bản Jaws từ 5.0 trở lên, dù rằng các tùy chọn cho Audacity trong phần Adjust Jaws Verbosity có vẻ chưa tốt lắm và cũng chưa được kiểm tra (tôi nhớ rằng chúng tôi đã dùng một hàm mà theo FSDN thì chỉ dùng được cho Jaws 10.0 trở lên). Các phiên bản gần đây được phát triển với Jaws 17, 18 và 2018 beta (build 1708.29) trên máy laptop chạy Windows 10 64 bit. Dù rằng vẫn hỗ trợ cho các phiên bản cũ của Jaws, chúng tôi vẫn chưa thử nghiệm điều đó. Hiện nay, chưa có hỗ trợ nào cho màn hình chữ nổi.
+Gần đây, script được phát triển với Audacity 2.1.3, 2.2.0 alpha và beta. Nó sẽ hoạt động được với Các phiên bản Jaws từ 5.0 trở lên, dù rằng các tùy chọn cho Audacity trong phần Adjust Jaws Verbosity có vẻ chưa tốt lắm và cũng chưa được kiểm tra.  (Tôi nhớ rằng chúng tôi đã dùng một hàm mà theo FSDN thì chỉ dùng được cho Jaws 10.0 trở lên). Các phiên bản gần đây được phát triển với Jaws 17, 18 và 2018 beta (build 1708.29) trên máy laptop chạy Windows 10 64 bit. Dù rằng vẫn hỗ trợ cho các phiên bản cũ của Jaws, chúng tôi vẫn chưa thử nghiệm điều đó. Hiện nay, chưa có hỗ trợ nào cho màn hình chữ nổi.
 
 tôi sẵn sàng tiếp nhận những phản hồi cho script, cũng như các đề nghị để cải thiện, nhưng không thể hứa hẹn về  việc cập nhật nó.
 
