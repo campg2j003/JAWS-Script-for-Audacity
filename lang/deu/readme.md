@@ -1,4 +1,4 @@
-09.10.2017 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+2017-11-04 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -200,13 +200,12 @@ Die Tastenkombination Ebene "Tempo" wird initialisiert mit Jaws Taste + A, T
 2. Die Position Steuerelemente liefern manchmal ungekürzte Zeitwerte. Das geschieht, da die JAWS GetWindowText Funktion lediglich Werte ohne h, m, s etc. liefert. Wir wissen nicht, wodurch dies ausgelöst wird. Ich konnte dies durch Beenden und neu Starten von Audacity korrigieren. Das Phänomen wurde in Jaws 10, 15, 16 und 17 beobachtet. Ich habe beobachtet, dass dieses Problem manchmal von alleine verschwindet. 
 3. Wenn das "Enter pausiert während Wiedergabe / Aufnahme" Feature aktiviert ist (das ist die Voreinstellung), führt Enter nicht zum Selektieren und Deselektieren der aktiven Spur während der Wiedergabe oder Aufnahme. Verwenden Sie in diesem Fall Ctrl + Enter anstatt Enter. 
 4. Wenn die Num Pad Enter Taste redefiniert und die erweiterten Tasten zur unterschiedlichen Belegung konfiguriert sind, werden denoch beide Enter Tasten identisch zugeordnet. Wenn dieses Feature nicht erwünscht ist, kann es deaktiviert werden, in dem in audacity.jkm ein Semikolon vor die Zeilen Enter, Numpad Enter und Ctrl + Enter eingefügt wird und in audacity.jss die Semikolons in den Zeilen, die /* und */ vor und nach den Skripts Enter und CtrlEnter enthalten. Wenn audacity.jss modifiziert wird, ändern Sie in der Version Konstanten das Datum. So wissen Sie das genau, wenn Sie mit uns darüber kommunizieren. 
-5. Der Jaws Skript Compiler kompilliert nur für die aktuell laufende  Sprachversion von Jaws (siehe weiter unten).
-6. In Jaws Versionen vor 13 erscheint die Tastenkombination Jaws Taste + V für die Skriptspezifischen  Optionen nicht in der Hotkey Hilfe. Die Tastenkombination funktioniert trotzdem. Wie auch immer, wir können dies beheben, wenn  sich zeigt, dass dies ein Problem sein sollte.
+5. In Jaws Versionen vor 13 erscheint die Tastenkombination Jaws Taste + V für die Skriptspezifischen  Optionen nicht in der Hotkey Hilfe. Die Tastenkombination funktioniert trotzdem. Wie auch immer, wir können dies beheben, wenn  sich zeigt, dass dies ein Problem sein sollte.
 
 # Unterstützung mehrerer Sprachen
-Diese Version des Installer Frameworks enthält den ersten Wurf, welche die Installation der Skripts in mehreren Sprachen unterstützt. Es behandelt nun Version / Sprache Paare wie bisher Versionen behandelt wurden. So  werden nun in der Version Auswahlliste Einträge wie 16.0 / deu angezeigt. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. 
+Der Installer unterstützt nun die Installation der Skripts in mehreren Sprachen . Er behandelt nun Version / Sprache Paare wie bisher Versionen behandelt wurden. So  werden nun in der Version Auswahlliste Einträge wie 16.0 / deu angezeigt. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. 
 
-Obschon der Installer die Skriptdateien in die Ordner der gewählten Sprache installiert und kompilliert, kompilliert der Jaws Script Compiler die Scripts nur in der Sprache der aktuell laufenden Jaws Version. Deshalb muss nach der Installation Jaws in den entsprechenden Sprachen gestartet und die Skripts kompilliert werden (Mit Fokus in Audacity Jaws + F2 drücken, Skript Manager starten, im Editor wird dann audacity.jss angezeigt. Einmal Ctrl + S, dadurch wird das Skript kompiliert).
+Der Installer kompiliert nun die Jaws Skripts für jede installierte Sprache. Grundsätzlich kompiliert der Jaws Skript Kompiler Scripts nur in der Sprache der aktuell laufenden Jaws Version. Dies wird mit dem JAWSUtil.vbs script von Doug Lee's BX toolkit umgangen. Somit ist es nicht mehr erforderlich, dass die Skripts in jeder Sprache manuell kompiliert werden müssen.
 
 # Hinweise für Skript Entwickler
 Wenn Sie die Skriptdateien modifizieren, aktualisieren Sie bitte die Version Konstante in der Nähe des Anfangs der Datei audacity.jss. Das ist besonders dann wichtig, wenn Sie das Skript Paket weitergeben. Auch wenn Sie die  modifizierten Skript Dateien ausschliesslich selbst verwenden, stellt das Vorgehen sicher, dass wir wissen, dass es sich um eine modifizierte Version handelt, wenn Sie damit mit uns in Kontakt treten.
@@ -228,9 +227,11 @@ Beachte, dass das Skript mit #pragma usePoFile 0 kompiliert wird.
 - Deutsche Übersetzung: Michael Vogt
 - Spanische Übersetzung: Fernando Gregoire
 - Vietnamesisches README: Nguyen Hoang Giang, Dang Manh Cuong, and Le Thi Theu
- 
-# Abschliessende Anmerkungen
-Zuletzt wurde dieses Skript mit Audacity 2.1.3 und Audacity 2.2.0 Alpha und Beta entwickelt.  Es wird wahrscheinlich mit allen Jaws Versionen ab 5.0 funktionieren, obschon die Optionen für Audacity in den Jaws Schnelleinstellungen nicht sehr gut aussehen, was nicht getestet wurde (ich erinnere mich daran, dass eine Jaws Funktion die wir verwenden, auf FSDN mit "erfordert Jaws 10 oder neuer" vermerkt ist. Die letzten Programmierarbeiten wurden mit Jaws 17,  18 und 2018 Beta auf einem 64 Bit Notebook mit Windows 10 ausgeführt. Auch wenn Support für frühere Versionen von Jaws angeboten wird, wurde  der aktuelle Code nicht mit diesen getestet. Zum jetzigen Zeitpunkt bieten wir keinen spezifischen Support für Braille an.
+- JAWSUtil.vbs: Copyright 2009-2017 by Doug Lee (from BX Toolkit revision 1876).  (See jfw_nsh\JAWSUtil.vbs for details.)
+
+ # Abschliessende Anmerkungen
+Zuletzt wurde dieses Skript mit Audacity 2.1.3 und Audacity 2.2.0 Alpha und Beta entwickelt.  Es wird wahrscheinlich mit allen Jaws Versionen ab 5.0 funktionieren, obschon die Optionen für Audacity in den Jaws Schnelleinstellungen nicht sehr gut aussehen, was nicht getestet wurde (ich erinnere mich daran, dass eine Jaws Funktion die wir verwenden, auf FSDN mit "erfordert Jaws 10 oder neuer" vermerkt ist. Die letzten Programmierarbeiten wurden mit Jaws 17,  18 und 2018 Beta (build 1708.29)
+auf einem 64 Bit Notebook mit Windows 10 ausgeführt. Auch wenn Support für frühere Versionen von Jaws angeboten wird, wurde  der aktuelle Code nicht mit diesen getestet. Zum jetzigen Zeitpunkt bieten wir keinen spezifischen Support für Braille an.
 
 Ich bin  interessiert an Feedback zu dem Skript und Vorschlägen zu Verbesserungen, kann jedoch keine Updates versprechen.
 
