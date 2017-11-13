@@ -1,18 +1,13 @@
-(This file last updated 10/14/2017)
+(This file last updated 11/13/2017)
 
-# New in 2.2.0-beta-2017-11-04
+# New in 2.2.0-beta-2017-11-06
 - Updated the installer to use version that uses JAWSUtil.vbs from the BX Toolkit rev 1876 by Doug Lee.  The installer now compiles scripts correctly for all languages during the install.
 - The installer offers to display the installer log on exit.
-# New in 2.2.0-beta-2017-10-14
-- Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
-# New in 2.2.0-beta-2017-10-07
 - ToggleMotionPreview now returns to quick settings when turned off.
-# New in 2.2.0-beta-2017-10-02
 - JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
 - Zoom command keystrokes now speak the last number on the timeline indicating the maximum time shown in the window.
-# New in 2.2.0-beta-2017-09-29
+- Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
 - Updated Vietnamese README.  Changed from .txt to .html.
-# New in 2.2.0-beta-2017-09-28
 - Updated Spanish translation.
 # New in 2.2.0-beta-2017-09-20
 - Updated README.
