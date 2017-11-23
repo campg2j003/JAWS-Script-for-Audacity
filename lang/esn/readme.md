@@ -1,4 +1,4 @@
-﻿2017-09-30  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-11-04  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores, incluido Audacity 2.2.0.
 
@@ -131,15 +131,13 @@ Nota: Hay otra implementación de esta característica que se asemeja más al al
 
 4.  Si redefine la tecla ENTER del teclado numérico y configura JAWS para tratar las teclas del teclado extendido por separado, ambas teclas ENTER se asignarán a la tecla ENTER para escribir. Si esta característica no le gusta, la puede desactivar agregando un punto y coma en las líneas para ENTER, NumPadEnter y Control+ENTER en audacity.jkm, y quitando los punto y comas en las líneas que contienen /* y */ antes y después de los scripts Enter y CtrlEnter en audacity.jss. Si modifica `audacity.jss`, por favor cambie la fecha en la constante version, a fin de que si se comunica con nosotros al respecto sepamos que se trata de una versión modificada.
 
-5.  El compilador de scripts de JAWS sólo compila para el idioma en que se está ejecutando actualmente. (Consulte más abajo.)
-
-6.  En versiones de JAWS anteriores a la 13, la combinación de teclas para configurar las opciones de los scripts (`TeclaJAWS+v`) no aparecerá en la ayuda de teclas rápidas. No obstante, seguirá funcionando. Si aquello se torna un problema, podríamos mitigarlo a través de scripting.
+5.  En versiones de JAWS anteriores a la 13, la combinación de teclas para configurar las opciones de los scripts (`TeclaJAWS+v`) no aparecerá en la ayuda de teclas rápidas. No obstante, seguirá funcionando. Si aquello se torna un problema, podríamos mitigarlo a través de scripting.
 
 
 # Compatibilidad con Varios Idiomas
 Esta versión del framework del instalador contiene compatibilidad con varios idiomas. Ahora trata los pares versión/idioma como anteriormente trataba las versiones, con lo que ahora la presentación en lista de selección de versiones muestra entradas como 16.0/esn. Actualmente se admiten alemán, español e inglés.
 
-Aunque el instalador instala y compila los scripts en las carpetas de los idiomas seleccionados, el compilador de scripts de JAWS siempre compila los archivos de scripts en el idioma en que se está ejecutando la versión actual de JAWS. Por lo tanto, después de instalar tendrá que ejecutar JAWS en cada uno de los otros idiomas y compilar los scripts.
+Ahora el instalador compila los scripts en cada idioma. Aunque el compilador de scripts de JAWS siempre compila los archivos de scripts en el idioma en que se está ejecutando la versión actual de JAWS, el instalador ahora utiliza el script JAWSUtil.vbs del kit de herramientas BX de Doug Lee, que sortea este problema. Por lo tanto, ya no tendrá que ejecutar JAWS en cada uno de los otros idiomas y compilar los scripts.
 
 # Notas para desarrolladores de scripts
 Si modifica los archivos de scripts, por favor actualice la constante version cerca del principio de `audacity.jss`. Es particularmente importante si distribuye los scripts. Aun si tan sólo los modifica para su propio uso, esto asegurará que si se comunica con nosotros al respecto sepamos que se trata de una versión modificada.
@@ -158,6 +156,7 @@ Observe que `readme.html` y `readme_vi.html` se generan desde `readme.md` y `rea
 - Traducción al alemán: Michael Vogt
 - Traducción al español: Fernando Gregoire
 - LÉAME en vietnamita: Nguyen Hoang Giang, Dang Manh Cuong y Le Thi Theu
+- JAWSUtil.vbs: copyright 2009-2017 por Doug Lee (del Kit de Herramientas BX revisión 1876). (Vea jfw_nsh\JAWSUtil.vbs para más detalles).
 
 # Conclusión
 El desarrollo reciente de los scripts se realizó con Audacity 2.1.3 y versiones alfa y beta de 2.2.0. Probablemente funcionará con cualquier JAWS posterior al 5.0, aunque puede que las opciones de Audacity en Ajuste de la Cantidad de Información de JAWS no se vean muy bien y ello no se ha probado. (Recuerdo que una de las funciones de JAWS que utilizamos se marcó en el FSDN como que requiere JAWS 10.) El desarrollo reciente se ha hecho con JAWS 17, 18 y 2018 beta (compilación 1708.29) en un portátil de 64 bits que ejecuta Windows 10. Aunque la compatibilidad con versiones de JAWS anteriores permanece, el código actual no se ha probado con éstas. Por el momento no hay compatibilidad específica con braille.
