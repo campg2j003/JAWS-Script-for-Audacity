@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-beta-2017-11-06"
-;Last updated 2017-11-06T01:14Z
+;Last updated 2017-11-23T17:50Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -28,7 +28,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityt
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-    
+
     See the file copying.txt for details.
 @@
 EndMessages
@@ -74,7 +74,7 @@ Const
 	ID_Chains_List=7001,
 	ID_Chain_Cmds_List=10002,
 	ID_Chain_Cmds_List2=7002, ;Audacity 2.0.4 or higher
-	
+
 	WC_wxWindowClass = "wxWindowClass", ; grabber control on toolbars, pre 2.1.2
 	WC_wxWindowClass2 = "wxWindow", ; grabber control on toolbars, 2.1.2
 	CS_INI_FILE="Audacity.jsi",
@@ -90,8 +90,8 @@ Const
 	CI_SAY_POSITION_NONE = 0, ;say no positions except when explicitly requested
 	CI_SAY_POSITION_NOT_ARROWS = 1, ;say only positions that do not involve previewing
 	CI_SAY_POSITION_ALL = 2 ;say all positions
-	
-	
+
+
 Globals
 	Int App_FirstTime,
 	Int gfAudacityAutostarted, ;Set in AutoStartEvent, cleared in HandleCustomWindows and HandleCustomApp.
@@ -109,7 +109,7 @@ Globals
 	String gsJawsGuideLink, ;URL of Audacity Guide for JAWS users
 	;Commented this out 9/14/13.
 	;String gsJawsGuideTitle, ;title of Audacity Guide for JAWS users
-	
+
 	Handle ghNull, ; to clear a handle
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 	Handle ghSliderEdit,
@@ -132,7 +132,7 @@ Const
 	KS_PREVIEW_END_BACKWARD = "Shift+F7", ;Preview for selection end backward motion
 	KS_PREVIEW_END_FORWARD = "Shift+F7", ;Preview for selection end forward motion
 
-;Keys to send to preview audio at the selection range ends.  These are used by the JAWSKey+left/right keys.
+	;Keys to send to preview audio at the selection range ends.  These are used by the JAWSKey+left/right keys.
 	KS_PREVIEW_START_BEFORE = "Shift+F5",
 	KS_PREVIEW_START_AFTER = "Shift+F6",
 	KS_PREVIEW_END_BEFORE = "Shift+F7",
@@ -184,7 +184,7 @@ EndFunction ; FocusInTrackPanel
 
 Int Function FocusInSelectionBar ()
 Return GetControlID (GetParent (GetFocus ())) == ID_SELECTION_BAR
-EndFunction
+EndFunction ; FocusInSelectionBar
 
 Object Function GetTrackPanelObj ()
 ;Get the accessible object of the track panel.
@@ -201,7 +201,7 @@ Pause ()
 Let obj = GetCurrentObject (0)
 RestoreCursor ()
 Return obj
-EndFunction
+EndFunction ; GetTrackPanelObj
 
 Void Function SaySelectionPosition (Int iPosition, String sMessage)
 ;say the selection position field and pass the key to the ap.
@@ -212,7 +212,7 @@ Void Function SaySelectionPosition (Int iPosition, String sMessage)
 Var
 	Handle wnd, ;the window containing the selection bar
 	String sValue ;the selection field value 
-	
+
 If DialogActive ()||MenusActive () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey () ;allow users to type [, ] if focus in any text box
@@ -305,7 +305,7 @@ Var
 	Int iSubtype,
 	Handle hTemp,
 	Object obj
-	
+
 If !UserBufferIsActive () && FocusInMainWindow () Then
 	Let obj = GetTrackPanelObj ()
 	If obj.AccChildCount == 0 Then
@@ -319,16 +319,16 @@ Function AutoStartEvent ()
 Var
 	String sTemp,
 	Int iTemp
-	
-	;DebugString("AutoStart") ; debug
-	;gfAudacityAutoStarted prevents activation of Silence Preview when switching from another app while focus is in a dialog.
+
+;DebugString("AutoStart") ; debug
+;gfAudacityAutoStarted prevents activation of Silence Preview when switching from another app while focus is in a dialog.
 Let gfAudacityAutostarted = TRUE
 ;We reset these flags in case they get stuck on.
 Let gfSilence = FALSE
-Let gfSilenceClearOnNext = False
+Let gfSilenceClearOnNext = FALSE
 Let gfPreviewing = FALSE
 Let gfInLabel = FALSE
-	Let gfToggleMotionPreview = FALSE
+Let gfToggleMotionPreview = FALSE
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_NO_DISABLE, msg_App_Start)
@@ -359,14 +359,14 @@ If !App_FirstTime Then
 		Let gsJawsGuideTitle = CS_JawsGuide_Title
 		EndIf ; else no space
 		*/
-		
+
 		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile))
 	EndIf ; if before JAWS 13
-	
+
 	;Set keys that move the focus up and down in the track panel.
 	Let gsGoTrackUpKey = "UpArrow"
 	Let gsGoTrackDownKey = "DownArrow"
-	
+
 	;Set keys that move a track up and down in the track panel.
 	Let gsMoveTrackUpKey = "Control+Shift+UpArrow"
 	Let gsMoveTrackDownKey = "Control+Shift+DownArrow"
@@ -395,7 +395,7 @@ EndFunction ; NewTextEventShouldBeSilent
 
 Globals Handle ghAudacityLastArea,
 	Handle ghAudacityLastToolbar
-	
+
 Void Function TutorMessageEvent(Handle hWnd, Int nMenuMode)
 ; Suppress tutor message while previewing.
 If gfSilence Then
@@ -424,12 +424,30 @@ ActiveItemChangedEvent (curHwnd, curObjectId, curChildId, prevHwnd, prevObjectId
 EndFunction
 */
 
+/*
+Silence Effect Previewing.
+
+This feature silences speech that occurs as a result of focus changes during previewing of an effect.  Determining the conditions that should start and stop this feature is difficult because they do not occur while execution is stopped.  I used a facility that writes debug messages to a string that record information about window attributes during execution of JAWS focus events such as HandleCustomAppWindows, HandleCustomRealWindows, and HandleCustomWindows.  (The messages can then be displayed in the User Buffer when execution has completed.)  These conditions change depeneding on the version of Audacity.
+
+When previewing is activated, a dialog appears (in some versions) that displays a message indicating "preparing preview".  A dialog containing a progress bar and a stop button appears until previewing is complete.  Then the dialog of the effect reappears.
+
+The current process works as follows:
+
+Two global flags are used to record the stages of activation of effect previewing.  gfSilence is set when we detect  that the Preview button has been activated.  gfPreviewing is set when we detect that previewing is in progress.
+
+Detecting the start of effect previewing:
+We cannot detect the start of effect previewing by monitoring keystrokes or by noticing that focus is on the Preview button because it can be started by pressing SPACE on the button, by a hot key, or by the mouse.  Focus may not be on the button when the latter two occur.
+For Audacity versions before 2.1.2, we notice that in HandleCustomWindows the focus is on the app main window.  For 2.1.2 and later we notice that the first child of the app window (or real window) is a window named "Preparing Preview" or "Previewing".  We record that this has occurred by setting gfSilence.  We repeat this in HandleCustomRealWindows.  (This may not be necessary but it was where this test was done previously and we leave it for safety.)  When this flag is set, we detect that previewing is active when focus is on the stop button.  We record that this has occurred by setting gfPreviewing.  We detect that previewing is finished the next time we enter HandleCustomWindows.
+
+The activation condition can also occur when focus moves to us from another app, so we set gfAudacityAutostarted in AutoStartEvent and clear it in HandleCustomWindows.  It must be clear for previewing to start.
+*/
+
 ; This is probably where Silence Previewing should have been handled.  We retain the code in HandleCustomRealWindows just in case this isn't called first.
 Int Function HandleCustomAppWindows(Handle hWnd)
 Var
 	Int iRtn,
 	String sFirst
-	
+
 ;DebugString("Enter HandleApp") ; debug
 Let sFirst = GetWindowName (GetFirstChild (GetRealWindow(GetFocus ())))
 If gfSilencePreview && CheckAudacityVersion ("2,1,2") && DialogActive () && !gfAudacityAutostarted && (sFirst == WN_PREPARING_PREVIEW || sFirst == WN_PREVIEWING) Then
@@ -447,7 +465,7 @@ Int Function HandleCustomRealWindows(Handle hReal)
 ;Suppress speech for preview.
 Var Int iRtn, ; debug
 	String sFirst
-	
+
 ;This may no longer be needed because it is handled in HandleCustomAppWindows, but we keep this code just in case.
 Let sFirst = GetWindowName(GetFirstChild(hReal))
 ;DebugString("Enter HandleReal " + sFirst) ; debug
@@ -514,7 +532,7 @@ Var
 	String sName,
 	Int iMSAA_JCFOpt,
 	Int iRtn
-	
+
 Let gfAudacityAutostarted = FALSE
 ;See if Stop being spoken in previewing is an invisible window.
 If !IsWindowVisible(hFocus) Then
@@ -611,78 +629,78 @@ EndIf ; stop button
 If gfSilence Then
 	;DebugString("custom suppressing focus") ; debug
 	If gfSilenceClearOnNext Then
-		Let gfSilence = False
-		Let gfSilenceClearOnNext = False
+		Let gfSilence = FALSE
+		Let gfSilenceClearOnNext = FALSE
 	EndIf
 	Return TRUE ; we're doing something like previewing and we don't want focus change stuff spoken
 EndIf ; if gfSilence
 
-	    ;Announce when focus changes to a different area of the main window.
-	    If !FocusInMainWindow() Then
-	    If DialogActive () && GetWindowName(GetFocus()) == cscNull Then
-	    ;SayString("No window name") ; debug
-	    Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
-	    SetJCFOption (OPT_MSAA_MODE, 2)
-	    Let sName = GetObjectName()
-	    SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
-	    SayControlEx(GetFocus (), 
-	    sName, "",   ; control name, type
-	    "",   ; control state
-	    "", "",   ; Container name, type
-	    "", "",   ; value, position
-	    "")   ; dialog text
-	    ;SayString("Exit HandleFocus null winname") ; debug
-	    Return TRUE
-	    ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
-	    SayWindowTypeAndText (GetFocus ())
-	    ;SayString("Exit HandleFocus warning dlg") ; debug
-	    Return TRUE
-	    EndIf ; no window name
-	    ;SayString("Calling HandleCustom") ; debug
-	    Let iRtn = HandleCustomWindows (hFocus) ; not main window, continue with normal processing
-	    ;SayString("Exit HandleFocus not main window") ; debug
-	    Return iRtn
-	    EndIf ; if ! focus in main window
-	    Let hParent = GetParent(hFocus)
-	    If GetWindowName(hFocus) != WN_TRACKPANEL Then
-	    Let hParent = GetParent(hParent)
-	    EndIf ; if not track panel
-	    ; If hFocus is the track panel, hParent is its parent.  Otherwise it is the grandparent of hFocus.
-	    Let hOld = ghAudacityLastArea
-	    If hParent != hOld Then
-	    Let ghAudacityLastArea = hParent ; new area.
-	    ; We could use FocusInTrackPanel here but we've already tested most of its conditions.
-	    If GetWindowName(hFocus) == WN_TRACKPANEL Then
-	    Say (CS_TrackPanel, OT_POSITION)
-	    Return HandleCustomWindows (hFocus)
-	    EndIf ; if track panel
-	    ; We could also identify the selection by testing for WindowHierarchyX = 3.
-	    If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
-	    Say (CS_SelectionBar, OT_POSITION)
-	    Else
-	    Say (CS_Toolbars, OT_POSITION)
-	    EndIf ; else toolbar
-	    EndIf ; new area
+;Announce when focus changes to a different area of the main window.
+If !FocusInMainWindow() Then
+	If DialogActive () && GetWindowName(GetFocus()) == cscNull Then
+		;SayString("No window name") ; debug
+		Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
+		Let sName = GetObjectName()
+		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
+		SayControlEx(GetFocus (), 
+		sName, "",   ; control name, type
+		"",   ; control state
+		"", "",   ; Container name, type
+		"", "",   ; value, position
+		"")   ; dialog text
+		;SayString("Exit HandleFocus null winname") ; debug
+		Return TRUE
+	ElIf IsWarningDialog ()&&!CheckAudacityVersion ("2,0,3") Then
+		SayWindowTypeAndText (GetFocus ())
+		;SayString("Exit HandleFocus warning dlg") ; debug
+		Return TRUE
+	EndIf ; no window name
+	;SayString("Calling HandleCustom") ; debug
+	Let iRtn = HandleCustomWindows (hFocus) ; not main window, continue with normal processing
+	;SayString("Exit HandleFocus not main window") ; debug
+	Return iRtn
+EndIf ; if ! focus in main window
+Let hParent = GetParent(hFocus)
+If GetWindowName(hFocus) != WN_TRACKPANEL Then
+	Let hParent = GetParent(hParent)
+EndIf ; if not track panel
+; If hFocus is the track panel, hParent is its parent.  Otherwise it is the grandparent of hFocus.
+Let hOld = ghAudacityLastArea
+If hParent != hOld Then
+	Let ghAudacityLastArea = hParent ; new area.
+	; We could use FocusInTrackPanel here but we've already tested most of its conditions.
+	If GetWindowName(hFocus) == WN_TRACKPANEL Then
+		Say (CS_TrackPanel, OT_POSITION)
+		Return HandleCustomWindows (hFocus)
+	EndIf ; if track panel
+	; We could also identify the selection by testing for WindowHierarchyX = 3.
+	If GetWindowName(GetFirstChild(hParent)) == WN_SELECTION Then
+		Say (CS_SelectionBar, OT_POSITION)
+	Else
+		Say (CS_Toolbars, OT_POSITION)
+	EndIf ; else toolbar
+EndIf ; new area
 
-	    If IsToolbar(GetToolbar ()) Then
-	    Let hToolbar = GetToolbar ()
-	    If hToolbar != ghAudacityLastToolbar Then
-	    Let ghAudacityLastToolbar = hToolbar
-	    If GetQuickSetting ("AnnounceToolbars") Then
-	    Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
-	    EndIf
-	    EndIf ; new toolbar
-	    EndIf ; If IsToolbar
-	    Let iRtn = HandleCustomWindows (hFocus) ; allow others to process
-	    ;SayString("Exit HandleFocus") ; debug
-	    Return iRtn
+If IsToolbar(GetToolbar ()) Then
+	Let hToolbar = GetToolbar ()
+	If hToolbar != ghAudacityLastToolbar Then
+		Let ghAudacityLastToolbar = hToolbar
+		If GetQuickSetting ("AnnounceToolbars") Then
+			Say(GetWindowName(hToolbar), OT_CONTROL_GROUP_NAME)
+		EndIf
+	EndIf ; new toolbar
+EndIf ; If IsToolbar
+Let iRtn = HandleCustomWindows (hFocus) ; allow others to process
+;SayString("Exit HandleFocus") ; debug
+Return iRtn
 EndFunction ; HandleCustomWindows
 
 Void Function SayFocusedObject ()
 If gfSilence Then
 	If gfSilenceClearOnNext Then
-		Let gfSilence = False
-		Let gfSilenceClearOnNext = False
+		Let gfSilence = FALSE
+		Let gfSilenceClearOnNext = FALSE
 	EndIf
 	Return
 EndIf
@@ -697,13 +715,13 @@ EndFunction ; SayFocusedObject
 Void Function SayWindowTypeAndText (Handle hWnd)
 If gfSilence Then
 	If gfSilenceClearOnNext Then
-		Let gfSilence = False
-		Let gfSilenceClearOnNext = False
+		Let gfSilence = FALSE
+		Let gfSilenceClearOnNext = FALSE
 	EndIf
 	Return
 EndIf
 SayWindowTypeAndText (hWnd)
-EndFunction
+EndFunction ; SayWindowTypeAndText
 
 Int Function IsToolbar (Handle hWnd)
 ; Return True if hWnd is one of the toolbars.
@@ -711,7 +729,7 @@ Int Function IsToolbar (Handle hWnd)
 ; Assumes focus is in the main window.
 Var
 	Handle hParent
-	
+
 Let hParent = GetParent(hWnd)
 If hParent == 0 Then
 	;Make sure we have a window handle, just to be safe.
@@ -734,7 +752,7 @@ Int Function FocusInMainWindow ()
 Var
 	Handle hFocus,
 	Handle hWnd
-	
+
 Let hFocus = GetFocus ()
 If (GetWindowName(hFocus) == WN_TRACKPANEL || GetWindowName(GetParent(GetParent(hFocus))) == WN_TOOLDOCK) Then
 	Return TRUE
@@ -755,7 +773,7 @@ Var
 	String s4,
 	Int i,
 	Int j
-	
+
 Let s = GetWindowText(hWnd, 0)
 
 ;Remove "uninteresting" stuff from the position, like leading zeros and ".000"
@@ -840,12 +858,12 @@ Else
 	Let iId = iPosition
 EndIf
 Return iId
-EndFunction
-	
+EndFunction ; GetPositionFieldID
+
 Handle Function GetPositionFieldHandle(Int iPosition)
 Return FindDescendantWindow (GetRealWindow (GetFocus ()), GetPositionFieldID (iPosition))
-EndFunction
-	
+EndFunction ; GetPositionFieldHandle
+
 Int Function SayPositionField (Int iPosition, Int fSilent)
 ;Say the specified position field.
 ;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
@@ -856,10 +874,10 @@ Var
 	Handle hWnd,
 	String sValue,
 	Int iRtn
-	
-	;If the Announce Messages option is on, speak the selection posision.
+
+;If the Announce Messages option is on, speak the selection posision.
 If GetQuickSetting ("AnnounceMessage") Then
-		Let hWnd = GetPositionFieldHandle(iPosition)
+	Let hWnd = GetPositionFieldHandle(iPosition)
 	Let sValue=GetPositionField (hWnd) ;get value of desired control
 	If !sValue Then ;the selection toolbar is turned off
 		If !fSilent Then
@@ -884,7 +902,7 @@ Var
 	String sMsg,
 	Int iSelectionType,
 	Int iId
-	;I modified this script to make it work on open project only.
+;I modified this script to make it work on open project only.
 If NoProject () Then
 	SayNoProject ()
 	Return ;exit this script when no project open
@@ -943,7 +961,7 @@ Var
 	Int iSelectionType,
 	Int iId,
 	Int bIsSelected
-	
+
 If NoProject () Then
 	SayNoProject ()
 	Return
@@ -979,8 +997,8 @@ Else ; do it
 		SetFocus(hEnd)
 		Return
 	EndIf ; if IsSameScriqt
-	
-	
+
+
 	Let sValue = GetPositionField(hEnd)
 	If !sValue Then
 		Say (msgNoSelection, OT_ERROR)
@@ -1018,7 +1036,7 @@ Let s2 = StringReplaceSubstrings(s2, CS_SELECT_ON, "")
 Let s2 = StringReplaceSubstrings(s2, CS_MUTE_ON, "")
 Let s2 = StringReplaceSubstrings(s2, CS_SOLO_ON, "")
 Return s2
-EndFunction
+EndFunction ; CleanTrackName
 
 String Function GetSelectedTracks (Int fName)
 Var
@@ -1094,7 +1112,7 @@ If iSelCount > 1 Then
 	Let iSelCount = 0
 EndIf ;iSelCount > 1
 Return sTracks
-EndFunction
+EndFunction ; GetSelectedTracks
 
 Script SaySelectedText ()
 ;If in the main window say the selected tracks.
@@ -1106,19 +1124,19 @@ If FocusInMainWindow () Then
 	If sTracks Then
 		Say(sTracks, OT_USER_REQUESTED_INFORMATION)
 	Else
-		SayMessage (ot_error, cmsgNothingSelected)
+		SayMessage (OT_ERROR, cmsgNothingSelected)
 	EndIf
 Else
 	PerformScript SaySelectedText ()
 EndIf
-EndScript
+EndScript ; SaySelectedText
 
 Script DownCell ()
 Var
 	Object o,
 	Int iMax,
 	Int i
-	
+
 If !IsPCCursor () || UserBufferIsActive () || !FocusInTrackPanel () Then
 	PerformScript DownCell ()
 	Return
@@ -1135,7 +1153,7 @@ If iMax == 0 Then
 EndIf
 Let i = o.accFocus
 If i == iMax Then
-	beep ()
+	Beep ()
 	Return
 EndIf
 Let i = i + 1
@@ -1149,13 +1167,13 @@ If i <= iMax Then
 Else
 	Beep ()
 EndIf
-EndScript
+EndScript ; DownCell
 
 Script UpCell ()
 Var
 	Object o,
 	Int i
-	
+
 If !IsPCCursor () || UserBufferIsActive () || !FocusInTrackPanel () Then
 	PerformScript UpCell ()
 	Return
@@ -1185,14 +1203,14 @@ If i > 0 Then
 Else
 	Beep ()
 EndIf
-EndScript
+EndScript ; UpCell
 
 Script SayActiveCursor ()
 ; Say audio position field if PC cursor is on, or perform the normal function if pressed twice quickly.
 Var
 	Handle hWnd,
 	String sValue
-	
+
 If (Not FocusInMainWindow () || IsSameScript () || Not IsPCCursor () || UserBufferIsActive ())||NoProject () Then
 	PerformScript SayActiveCursor()
 	Return
@@ -1217,11 +1235,11 @@ EndScript ; SayActiveCursor
 Script SaySelectionType ()
 ;Say the value of the Selection Type combo.
 Var
-    String sText
+	String sText
 
 Let sText = GetWindowText (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO), 0)
 SayMessage (OT_NO_DISABLE, sText, sText)
-EndScript ;SaySelectionType   
+EndScript ; SaySelectionType
 
 Script SetSelectionType(Int iType)
 ;Set the Selection Type combo to the specified value.
@@ -1249,7 +1267,7 @@ EndIf
 Let iCount = abs (iType - iStart)
 Let hFocus = GetFocus ()
 Let fSilence = gfSilence
-Let gfSilence = True
+Let gfSilence = TRUE
 SetFocus (hWnd)
 Pause ()
 While iCount
@@ -1262,7 +1280,7 @@ SetFocus (hFocus)
 Pause ()
 Let gfSilence = fSilence
 PerformScript SaySelectionType ()
-EndScript ;SetSelectionType
+EndScript ; SetSelectionType
 
 Script  ScriptFileName ()
 ScriptAndAppNames(msgProgName)
@@ -1271,7 +1289,7 @@ EndScript ; ScriptFileName
 Script AudacityScriptKeyHelp ()
 Var
 	String sMessage
-	
+
 If UserBufferIsActive () Then
 	UserBufferDeactivate ()
 EndIf
@@ -1321,30 +1339,30 @@ Speak the message msgXNameLayer_Start.
 
 void function KeymapChangedEvent(int iKeyCode, string sKeyName, int iKeyStatus)
 ;var
-	;string sSoundFile
+;string sSoundFile
 ;SayString("key " + sKeyName + ", status " + IntToString(iKeyStatus)) ; debug
 if iKeyStatus == KeySequenceStart
 || iKeyStatus  == KeySequenceRestarted then
 	If StringCompare (sKeyName, ksAudacityLayer1) == 0 || StringCompare (sKeyName, ksAudacityLayer2) == 0 Then
 		let giAudacityKeyLayer = CI_AUDACITY_LAYER
 		Let GlobalActiveLayer = NoLayerActive
-		PlayJCFSoundFile(section_options,hKey_KeyLayerSound)
+		PlayJCFSoundFile(Section_Options,hKey_KeyLayerSound)
 		return
 	EndIf ; Audacity layer key
 elif iKeyStatus == KeySequencePending then
 	If giAudacityKeyLayer == CI_AUDACITY_LAYER Then
-		if StringCompare(sKeyname,ksPositionLayer) == 0 then
+		if StringCompare(sKeyName,ksPositionLayer) == 0 then
 			let giAudacityKeyLayer = CI_POSITION_LAYER	
-			SayMessage(ot_status,msgPositionLayer_Start, msgPositionLayer_Start)
+			SayMessage(OT_STATUS,msgPositionLayer_start, msgPositionLayer_start)
 			Return
-		ElIf StringCompare(sKeyname,ksShortLayer) == 0 then
+		ElIf StringCompare(sKeyName,ksShortLayer) == 0 then
 			let giAudacityKeyLayer = CI_SHORT_LAYER	
-			SayMessage(ot_status,msgShortLayer_Start, msgShortLayer_Start)
+			SayMessage(OT_STATUS,msgShortLayer_Start, msgShortLayer_Start)
 			Return
-		ElIf StringCompare(sKeyname,ksTempoLayer) == 0 then
+		ElIf StringCompare(sKeyName,ksTempoLayer) == 0 then
 			let giAudacityKeyLayer = CI_TEMPO_LAYER
-			Let gfTempoRunning = False
-			SayMessage(ot_status,msgTempoLayer_Start, msgTempoLayer_Start)
+			Let gfTempoRunning = FALSE
+			SayMessage(OT_STATUS,msgTempoLayer_Start, msgTempoLayer_Start)
 			Return
 		endIf ; Tempo layer
 	EndIf ; Audacity layer
@@ -1354,32 +1372,32 @@ elif iKeyStatus == KeySequenceComplete Then
 		Return
 	EndIf
 ElIf iKeyStatus == KeySequenceCanceled
-	if giAudacityKeyLayer Then
-		PlayJCFSoundFile(section_options,hKey_TableLayerExitSound)
-		;SayString("cancel") ; debug
-		let giAudacityKeyLayer = CI_AUDACITY_NOLAYER
-		Return
-	EndIf ; Audacity layer
+if giAudacityKeyLayer Then
+	PlayJCFSoundFile(Section_Options,hKey_TableLayerExitSound)
+	;SayString("cancel") ; debug
+	let giAudacityKeyLayer = CI_AUDACITY_NOLAYER
+	Return
+EndIf ; Audacity layer
 EndIf ; elif KeySequenceCanceled
 KeymapChangedEvent(iKeyCode, sKeyName, iKeyStatus)
-endFunction
+endFunction ; KeymapChangedEvent
 
 Script AudacityLayerHelp ()
-Say(msgAudacityLayerHelp, ot_user_requested_information)
-EndScript
+Say(msgAudacityLayerHelp, OT_USER_REQUESTED_INFORMATION)
+EndScript ; AudacityLayerHelp
 
 Script PositionLayerHelp ()
-Say(msgPositionLayerHelp, ot_user_requested_information)
-EndScript
+Say(msgPositionLayerHelp, OT_USER_REQUESTED_INFORMATION)
+EndScript ; PositionLayerHelp
 
 Script ShortLayerHelp ()
-Say(msgShortLayerHelp, ot_user_requested_information)
-EndScript
+Say(msgShortLayerHelp, OT_USER_REQUESTED_INFORMATION)
+EndScript ; ShortLayerHelp
 
 Script SendKey(String sKey)
 ;Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.
 TypeKey(sKey)
-EndScript
+EndScript ; SendKey
 
 Function ShowJawsGuide()
 SayMessage(OT_JAWS_MESSAGE, msgLoadingJawsGuide_L, msgLoadingJawsGuide_S)
@@ -1418,7 +1436,7 @@ EndScript ; AudacityKeysHelp
 Script MouseUp ()
 Var
 	String sScriptName
-	
+
 Let sScriptName="MouseUp" ;Perform script name for MouseUp in a variable
 MouseMovement (sScriptName)
 EndScript ; MouseUp
@@ -1426,7 +1444,7 @@ EndScript ; MouseUp
 Script MouseDown ()
 Var
 	String sScriptName
-	
+
 Let sScriptName="MouseDown"
 MouseMovement (sScriptName)
 EndScript ; MouseDown
@@ -1434,7 +1452,7 @@ EndScript ; MouseDown
 Script MouseLeft ()
 Var
 	String sScriptName
-	
+
 Let sScriptName="MouseLeft"
 MouseMovement (sScriptName)
 EndScript ; MouseLeft
@@ -1442,7 +1460,7 @@ EndScript ; MouseLeft
 Script MouseRight ()
 Var
 	String sScriptName
-	
+
 Let sScriptName="MouseRight"
 MouseMovement (sScriptName)
 EndScript ; MouseRight
@@ -1461,10 +1479,10 @@ EndScript ; SelectionEnd
 Script FinishMarkerRight ()
 ;move the end of the selection to the right by a small amount.
 Var
-;Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
-	
+
 If !IsPCCursor () || UserBufferIsActive () || gfInLabel Then
 	PerformScript SelectNextCharacter ()
 	Return
@@ -1494,10 +1512,10 @@ EndScript ; FinishMarkerRight
 
 Script FinishMarkerLeft ()
 Var
-;Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
-	
+
 If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	PerformScript SelectPriorWord ()
 	Return
@@ -1521,10 +1539,10 @@ EndScript ; FinishMarkerLeft
 
 Script StartMarkerRight ()
 Var
-;Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
-	
+
 If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	PerformScript SelectNextWord ()
 	Return
@@ -1548,10 +1566,10 @@ EndScript ; StartMarkerRight
 
 Script StartMarkerLeft ()
 Var
-;Handle hWnd,
+	;Handle hWnd,
 	String sScriptName,
 	String sMessage
-	
+
 If !IsPCCursor () || UserBufferIsActive () || gfInLabel Then
 	PerformScript SelectPriorCharacter ()
 	Return
@@ -1834,7 +1852,7 @@ EndIf
 
 ;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
 TypeKey(KS_PREVIEW_START_AFTER)
-EndScript
+EndScript ; SayPriorWord
 
 Script SayNextWord ()
 ;inside the end
@@ -1845,7 +1863,7 @@ EndIf
 
 ;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
 TypeKey(KS_PREVIEW_END_BEFORE)
-EndScript
+EndScript ; SayNextWord
 
 Script SelectPriorWord ()
 ;Outside the start
@@ -1856,7 +1874,7 @@ EndIf
 
 ;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
 TypeKey(KS_PREVIEW_START_BEFORE)
-EndScript
+EndScript ; SelectPriorWord
 
 Script SelectNextWord ()
 ;outside the end
@@ -1867,7 +1885,7 @@ EndIf
 
 ;Is PC Cursor, user buffer not active, in track panel or selection bar, not in a dialog, not entering a label.
 TypeKey(KS_PREVIEW_END_AFTER)
-EndScript
+EndScript ; SelectNextWord
 
 
 Script Copy ()
@@ -1960,9 +1978,9 @@ EndScript ; CloseFocusTrack
 Script AnnounceOnOff ()
 Var
 	String sMessage
-	
-	;Let sMessage="Announce messages" + UOAnnounceMessages(0)
-	;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
+
+;Let sMessage="Announce messages" + UOAnnounceMessages(0)
+;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
 Let sMessage=StringSegment (UO_ANNOUNCE_MESSAGES, ":", 2) + UOAnnounceMessages(0)
 Say (sMessage, OT_STATUS)
 EndScript ; AnnounceOnOff
@@ -1970,7 +1988,7 @@ EndScript ; AnnounceOnOff
 Script ToggleMotionPreview ()
 Var
 	String sMessage
-	
+
 ;We extract the message from the AdjustJawsOptions constant so we don't need another message constant.
 Let sMessage=StringSegment (UO_MOTION_PREVIEW, ":", 2)
 If gfToggleMotionPreview Then
@@ -1985,7 +2003,7 @@ Else
 	Let gfSayPosition = CI_UO_OFF
 EndIf
 Say (sMessage, OT_STATUS)
-EndScript
+EndScript ; ToggleMotionPreview
 
 Void Function SayActiveLabel ()
 ;Speak the text of the active label if any.  Assumes focus in track panel.
@@ -2028,7 +2046,7 @@ Var
 	Handle hToolbar,
 	Handle hNext,
 	Handle hWnd
-	
+
 If !IsToolbar (GetToolbar ()) Then
 	PerformScript NextDocumentWindow ()
 Else
@@ -2060,7 +2078,7 @@ Var
 	Handle hToolbar,
 	Handle hPrior,
 	Handle hWnd
-	
+
 If !IsToolbar (GetToolbar ()) Then
 	PerformScript PreviousDocumentWindow ()
 Else
@@ -2086,13 +2104,13 @@ EndIf ; else is toolbar
 EndScript ; PreviousDocumentWindow
 
 Const
-;Audacity program states returned by GetAudacityState.
+	;Audacity program states returned by GetAudacityState.
 	ST_NOTOOLBAR = 0,
 	ST_PAUSE = 1,
 	ST_PLAY = 2,
 	ST_RECORD = 4,
 	ST_STOPPED = 8
-	
+
 Int Function GetAudacityState ()
 ;Returns a value indicating the current program state, e.g. play, record, stopped, paused.
 Var
@@ -2103,7 +2121,7 @@ Var
 	Handle hTemp,
 	Int iState,
 	Int iTemp
-	
+
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
 Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
@@ -2136,14 +2154,14 @@ EndFunction ; GetAudacityState
 Script SayAudacityState ()
 ;Announces whether Audacity is stopped, playing, paused, or recording.
 Var
-;Int iPauseState,
-;Int iPlayState,
-;Int iStopState,
-;Int iRecordState,
+	;Int iPauseState,
+	;Int iPlayState,
+	;Int iStopState,
+	;Int iRecordState,
 	Handle hTemp,
 	Int iState,
 	String sMsg
-	
+
 Let iState = GetAudacityState ()
 If DialogActive () ||MenusActive () Then
 	;Pass key to app.
@@ -2240,7 +2258,7 @@ Int Function IsDigits(String s)
 ;Returns True if all of the characters in s are digits, +, or -.
 Var
 	String s2
-	
+
 Let s2 = stringStripAllBlanks(StringReplaceChars(s, "+-0123456789", " "))
 ;SayString("IsDigits(" + s + "), s2 = " + s2 + ", returning " + IntToString(StringLength(s2))) ; debug
 Return StringLength(s2) == 0
@@ -2260,7 +2278,7 @@ Var
 	Int fSilence,
 	String sKey,
 	String s
-	
+
 Let iStart = GetFocusObject (0).accFocus
 Let iMax = GetFocusObject (0).accChildCount
 ;SayString ("iNum = " + IntToString (iNum) + ", iStart = " + IntToString (iStart) + ", iMax = " + IntToString(iMax)) ; debug
@@ -2307,7 +2325,7 @@ Script GoToTrack ()
 
 Var
 	String s
-	
+
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2350,7 +2368,7 @@ EndScript ; GoToMarkedTrack
 Script ExchangeWithMark ()
 Var
 	Int iStartTrack
-	
+
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2372,7 +2390,7 @@ Script MoveCurrentTrackTo ()
 
 Var
 	String s
-	
+
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2390,7 +2408,7 @@ EndScript ; MoveCurrentTrackTo
 Script MoveCurrentTrackToMark ()
 Var
 	Int iStartTrack
-	
+
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2412,8 +2430,8 @@ Script MoveTrackUp ()
 Var
 	Object o,
 	String s
-	
-	;SayCurrentScriptKeyLabel ()
+
+;SayCurrentScriptKeyLabel ()
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2433,8 +2451,8 @@ Script MoveTrackDown ()
 Var
 	Object o,
 	String s
-	
-	;SayCurrentScriptKeyLabel ()
+
+;SayCurrentScriptKeyLabel ()
 If !FocusInTrackPanel () Then
 	SayCurrentScriptKeyLabel ()
 	TypeCurrentScriptKey ()
@@ -2462,7 +2480,7 @@ Var
 	Int iMSAAMode,
 	Object obj,
 	Int iTemp
-	
+
 Let sName = GetWindowName (hWnd)
 Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
 SetJCFOption (OPT_MSAA_MODE, 1)
@@ -2508,8 +2526,8 @@ Script AdjustJawsVerbosity ()
 ;This is to support JAWS versions that do not support tree-style user options.  This should work but may not look very nice.  Not tested!
 Var
 	String strListOfOptions
-	
-	;Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
+
+;Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS
 Let strListOfOptions = UO_ANNOUNCE_MESSAGES + _DLG_SEPARATOR + UO_ANNOUNCE_TOOLBARS + _DLG_SEPARATOR + UO_ENTER_PAUSE + _DLG_SEPARATOR + UO_SILENCE_PREVIEW + _DLG_SEPARATOR + UO_SILENCE_RECORD
 JAWSVerbosityCore (strListOfOptions)
 EndScript ; AdjustJawsVerbosity
@@ -2569,7 +2587,7 @@ EndFunction ; UOAnnounceMessagesHlp
 String Function UOAnnounceToolbars (Int iRetCurVal)
 Var
 	Int iVal
-	
+
 Let iVal = IniReadInteger (gsIniSection, "Announcetoolbars", CI_TOOLBARS_OFF, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_TOOLBARS_ON Then
@@ -2594,7 +2612,7 @@ EndFunction ; UOAnnounceToolbarsHlp
 String Function UOEnterPause (Int iRetCurVal)
 Var
 	Int iVal
-	
+
 Let iVal = IniReadInteger (gsIniSection, "EnterPause", CI_ENTERPAUSE_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_ENTERPAUSE_ON Then
@@ -2618,7 +2636,7 @@ EndFunction ; UOEnterPauseHlp
 String Function UOSilencePreview (Int iRetCurVal)
 Var
 	Int iVal
-	
+
 Let iVal = IniReadInteger (gsIniSection, "SilencePreview", CI_UO_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_UO_ON Then
@@ -2642,7 +2660,7 @@ EndFunction ; UOSilencePreviewHlp
 String Function UOSilenceRecord (Int iRetCurVal)
 Var
 	Int iVal
-	
+
 Let iVal = IniReadInteger (gsIniSection, "SilenceRecord", CI_UO_ON, gsIniFile)
 If !iRetCurVal Then
 	If iVal == CI_UO_ON Then
@@ -2681,8 +2699,8 @@ Script ResetConfig ()
 ;Reset all audacity JAWS script options to their default values.
 Var
 	String sMessage
-	
-	;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
+
+;First we remove the old key because of our changes in Audacity.JSI file made by script v1.1.
 If GetJFWVersion()<1300000 && FileExists (FindJAWSPersonalizedSettingsFile (gsIniFile, TRUE)) Then
 	;Remove obsolete key if it exists.
 	Let sMessage=IniReadString (gsIniSection, "announce", "", gsIniFile) ;the old key "anounce" has been changed to "AnnounceMessage"
@@ -2698,7 +2716,7 @@ Script SayAppVersion ()
 ;Says current program and script version
 Var
 	String sMessage
-	
+
 PerformScript SayAppVersion () ;Says current program version
 Let sMessage=FormatString (msg_Script_Version, CS_SCRIPT_VERSION) ;current script version
 Say (sMessage, OT_NO_DISABLE) ;says current script version
@@ -2736,7 +2754,7 @@ Void Function ProcessVST (Int iControlID)
 Var
 	Handle hWnd,
 	Int bSpeechOff
-	
+
 Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), iControlID) ;The control ID of the control the focus should be moved to
 If DialogActive () && hWnd Then ;make sure user is in a dialog and we found the desired control.
 	If GetWindowSubtypeCode (hWnd)==WT_BUTTON Then
@@ -2811,7 +2829,7 @@ Var
 	Int iTrackCount,
 	Int iState,
 	Int iMSAAMode
-	
+
 If NoProject () Then
 	Return FALSE
 Else
@@ -2849,7 +2867,7 @@ Int Function IsWarningDialog ()
 ;Verify that focus is in the warning dialog that appears when importing uncompressed audio files.
 Var
 	String sName
-	
+
 Let sName = GetWindowName (GetFocus ())
 If DialogActive ()
 && (sName==msgCopy
@@ -2907,7 +2925,7 @@ EndIf
 Let iId = GetControlID (GetFocus ())
 Let fOldSilence = gfSilence
 If iId == GetPositionFieldID (ID_SELECTION_START) Then
-	Let gfSilence = True
+	Let gfSilence = TRUE
 	TypeCurrentScriptKey ()
 	TypeKey (KS_PREVIEW_START_FORWARD)
 	Pause ()
@@ -2915,7 +2933,7 @@ If iId == GetPositionFieldID (ID_SELECTION_START) Then
 	Return
 EndIf
 If iId == GetPositionFieldID (ID_SELECTION_END) Then
-	Let gfSilence = True
+	Let gfSilence = TRUE
 	TypeCurrentScriptKey ()
 	TypeKey (KS_PREVIEW_END_FORWARD)
 	Pause ()
@@ -2924,7 +2942,7 @@ If iId == GetPositionFieldID (ID_SELECTION_END) Then
 EndIf
 ;Catch-all, shouldn't happen.
 PerformScript SelectPriorLine ()
-EndScript
+EndScript ; SelectPriorLine
 
 Script SelectNextLine ()
 ;In selection bar edit controls plays a preview after changing the digit.  Note that Shift+DownArrow moves the position backward.
@@ -2939,7 +2957,7 @@ EndIf
 Let fOldSilence = gfSilence
 Let iId = GetControlID (GetFocus ())
 If iId == GetPositionFieldID (ID_SELECTION_START) Then
-	Let gfSilence = True
+	Let gfSilence = TRUE
 	TypeCurrentScriptKey ()
 	TypeKey (KS_PREVIEW_START_BACKWARD)
 	Pause ()
@@ -2947,7 +2965,7 @@ If iId == GetPositionFieldID (ID_SELECTION_START) Then
 	Return
 EndIf
 If iId == GetPositionFieldID (ID_SELECTION_END) Then
-	Let gfSilence = True
+	Let gfSilence = TRUE
 	TypeCurrentScriptKey ()
 	TypeKey (KS_PREVIEW_END_BACKWARD)
 	Pause ()
@@ -2956,7 +2974,7 @@ If iId == GetPositionFieldID (ID_SELECTION_END) Then
 EndIf
 ;Catch-all, shouldn't happen.
 PerformScript SelectNextLine ()
-EndScript
+EndScript ; SelectNextLine
 
 Script SwitchChainsList ()
 ;Switch between the Chains and Chain Commands lists in the Edit Chains dialog.
@@ -2967,7 +2985,7 @@ Var
 	Handle hReal,
 	Int iCurId,
 	String sMessage
-	
+
 Let hReal = GetRealWindow (GetFocus ())
 If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
 	Let iCurId = GetControlID (GetFocus ())
@@ -3036,7 +3054,7 @@ If !hTemp || !IsWindowVisible (hTemp) Then
 	Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
 	Let hTemp = FindDescendantWindow (hTemp, ID_RECORDING_METER_COMBINED2)
 	*/
-	Let hTemp = FindWindow (hParent, "", wn_combined_meter_toolbar)
+	Let hTemp = FindWindow (hParent, "", WN_COMBINED_METER_TOOLBAR)
 	If hTemp Then
 		Let hTemp = GetNextWindow (GetFirstChild (hTemp))
 	EndIf
@@ -3086,7 +3104,7 @@ If !hTemp || !IsWindowVisible (hTemp) Then
 	Let hTemp = GetPriorWindow (GetPriorWindow(GetPriorWindow (hTemp)))
 	Let hTemp = FindDescendantWindow (hTemp, ID_PLAYBACK_METER_COMBINED2)
 	*/
-	Let hTemp = FindWindow (hParent, "", Wn_combined_meter_toolbar)
+	Let hTemp = FindWindow (hParent, "", WN_COMBINED_METER_TOOLBAR)
 	If hTemp Then
 		Let hTemp = GetNextWindow (GetNextWindow (GetFirstChild (hTemp)))
 	EndIf
@@ -3126,7 +3144,7 @@ Var
 	Int fRes,
 	Int iTemp,
 	Int iTemp2
-	;Now check current version number
+;Now check current version number
 Let sVersion = GetVersionInfoString (GetAppFilePath (), "FileVersion")
 Let iMax = StringSegmentCount (sVersion, ",")
 Let iTemp = StringSegmentCount (sCheckVer, ",")
@@ -3211,7 +3229,7 @@ If InputBox("track number:", "go to", s) Then
 		SayObjectActiveItem()
 		;rtn = o.AccSelect(SELFLAG_TAKEFOCUS, iNum)
 		;SayString("returned " + IntToString(rtn))
-		
+
 EndIf ; InputBox
 */
 /*; get focused object rectangle.
@@ -3370,18 +3388,18 @@ EndScript ; AddLabelAtPlayPosition
 Void Function SayTimelineEnd ()
 Var
 	Handle hTemp
-	
+
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
 Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
 Let hTemp = GetNextWindow(GetFirstChild(hTemp)) ;timeline
 SaveCursor ()
 MoveToWindow (hTemp)
 Pause ()
-JAWSEnd ()
+JawsEnd ()
 Pause ()
 SayWord ()
 RestoreCursor ()
-EndFunction
+EndFunction ; SayTimelineEnd
 
 ;*** More scripts for Audacity keys
 Script ZoomNormal ()
@@ -4243,22 +4261,22 @@ If !gfTempoRunning Then
 	Let giTempoCount = 0
 	Let giTempoStart = 0
 	Let giTempoLast = 0
-	Let gfTempoRunning = True
+	Let gfTempoRunning = TRUE
 	TypeKey (cksSpace) ;Start playback.
 Else
 	;running, stop if we are playing
 	If GetAudacityState () == ST_PLAY Then
 		TypeKey (cksSpace)
 	EndIf
-	Let gfTempoRunning = False
-	If GiTempoStart && giTempoLast && giTempoCount >= 2 Then
+	Let gfTempoRunning = FALSE
+	If giTempoStart && giTempoLast && giTempoCount >= 2 Then
 		Let iTempoAvg = (giTempoLast - giTempoStart)/(giTempoCount - 1) ;ms/beat
 		Let iTemp = 600000/ iTempoAvg
 		;iTemp is 10*BPM.
 		;Division might round or something, so we get the tenths digit with string manipulation.
 		Let gsTempoBPM = IntToString (iTemp)
 		Let s2 = StringRight(gsTempoBPM, 1)
-		Let gsTempoBPM = StringChopRight (gsTempoBPM, 1)
+		Let gsTempoBPM = stringChopRight (gsTempoBPM, 1)
 		if s2 != "0" Then
 			Let gsTempoBPM = gsTempoBPM + "." + s2
 		EndIf
@@ -4268,7 +4286,7 @@ Else
 		Return
 	EndIf ;giTempoStart && giTempoLast
 EndIf ;else running
-EndScript
+EndScript ; TempoStartStop
 
 Script TempoTap ()
 If gfTempoRunning Then
@@ -4278,7 +4296,7 @@ If gfTempoRunning Then
 		Let giTempoStart = giTempoLast
 	EndIf
 EndIf ;If running
-EndScript
+EndScript ; TempoTap
 
 ;*/
 Script TempoAnnounce ()
@@ -4287,7 +4305,7 @@ If gsTempoBPM Then
 Else
 	Say(msgTempoNoTempoStored, OT_ERROR)
 EndIf ;else no beats
-EndScript
+EndScript ; TempoAnnounce
 
 Script TempoCopy ()
 If !gsTempoBPM Then
@@ -4296,9 +4314,9 @@ If !gsTempoBPM Then
 EndIf
 CopyToClipboard (gsTempoBPM)
 Say(FormatString(msgTempoCopied, gsTempoBPM), OT_STATUS)
-EndScript
+EndScript ; TempoCopy
 
 Script TempoLayerHelp ()
-Say(msgTempoLayerHelp, ot_user_requested_information)
-EndScript
+Say(msgTempoLayerHelp, OT_USER_REQUESTED_INFORMATION)
+EndScript ; TempoLayerHelp
 

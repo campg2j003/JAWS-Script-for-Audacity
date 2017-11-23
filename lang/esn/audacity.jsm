@@ -19,7 +19,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-    
+
     See the file copying.txt for details.
 */
 
@@ -95,10 +95,10 @@ const
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
-;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Guía de Audacity 2.2.0 (en inglés)", 
-CS_JawsGuide_Author = "David Bailes",
-CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
+	;This should reference the guide from which the Audacity Keys help message was taken.
+	CS_JawsGuide_Title = "Guía de Audacity 2.2.0 (en inglés)", 
+	CS_JawsGuide_Author = "David Bailes",
+	CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
 
 Messages
 @msgProgName
@@ -451,7 +451,7 @@ pista
 @msgTrackPosition
 %1 de %2
 @@
-    
+
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 todo el audio
@@ -624,8 +624,8 @@ Pista %1 marcada
 sin marcas
 @@
 
-    ;Message to announce some Audacity keys
-    @msgZoomNormal
+;Message to announce some Audacity keys
+@msgZoomNormal
 ampliación normal
 @@
 

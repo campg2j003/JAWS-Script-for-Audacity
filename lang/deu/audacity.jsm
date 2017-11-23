@@ -20,7 +20,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-    
+
     See the file copying.txt for details.
 */
 
@@ -48,10 +48,10 @@ Const
 
 ;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
 Const
-    CS_SELECT_ON = " Auswählen An",
-    CS_MUTE_ON = " Stumm An",
-    CS_SOLO_ON = " Alleine An"
-    
+	CS_SELECT_ON = " Auswählen An",
+	CS_MUTE_ON = " Stumm An",
+	CS_SOLO_ON = " Alleine An"
+
 ;For announcing selected tracks.
 Const
 	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
@@ -64,7 +64,7 @@ Const
 	UO_ENTER_PAUSE = "UOEnterPause:Enter unterbricht während Wiedergabe / Aufnahme",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Still während Effekt Vorschau",
 	UO_SILENCE_RECORD = "UOSilenceRecord:Still während Aufnahme",
-		UO_SAY_POSITION = "UOSayPosition:Position ansagen",
+	UO_SAY_POSITION = "UOSayPosition:Position ansagen",
 	UO_MOTION_PREVIEW = "UOMotionPreview:Audio Vorschau nach Bewegen der Position"
 
 Messages
@@ -98,7 +98,7 @@ Const
 	csPositionGroupFmt = "000.00",
 	;The word following the days in a position.
 	csDays = "Tage",
-		;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
+	;The format of a position with value 0 containing hours, minutes, and seconds, up to but not including the decimal point, like the HHõMMõSS.sss  format, with blanks removed
 	csPositionHHMMFmt = "00h00m00",
 	csGroupSep = "", ; thousands separator character
 	csDecimal = "." ; decimal point
@@ -119,10 +119,10 @@ const
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
-;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Jaws Leitfaden für Audacity 2.2.0 (englisch)", 
-CS_JawsGuide_Author = "David Bailes",
-CS_JawsGuide_LINK_DISP = "Link zum Jaws Leitfaden" ;Name displayed in links list
+	;This should reference the guide from which the Audacity Keys help message was taken.
+	CS_JawsGuide_Title = "Jaws Leitfaden für Audacity 2.2.0 (englisch)", 
+	CS_JawsGuide_Author = "David Bailes",
+	CS_JawsGuide_LINK_DISP = "Link zum Jaws Leitfaden" ;Name displayed in links list
 
 Messages
 @msgProgName
@@ -162,7 +162,7 @@ Audio Vorschau nach der Ende Position ausserhalb der Selektion: %KeyFor(SelectNe
 Umschalten zwischen Audio Vorschau und Ansagen der Position nach Bewegen der Position: %KeyFor(ToggleMotionPreview)
 Diese Funktion ermöglicht ein rasches Umschalten zwischen der Vorschau und der Ansage nach Positionsänderungen und entspricht den Optionen Ansagen der Position und Audio Vorschau nach Bewegen der Position im Schnelleinstellung Dialog. 
 Im Gegensatz zur Konfiguration im Schnelleinstellungen Dialog hat diese Tastenkombination eine temporäre wirkung und ändert die im Schnelleinstellung Dialog vorgenommene Konfiguration nicht. Nach dem vorübergehenden Wechsel in eine andere Anwendung oder dem Schnelleinstellung Dialog wird wieder die im Schnelleinstellung Dialog vorgenommene Konfiguration verwendet.
-    
+
 Erhöhen der Lautstärke der aktiven Spur: %keyfor (MouseUp)
 Verringern der Lautstärke der aktiven Spur: %keyfor (MouseDown)
 Panorama der aktiven Spur nach links %keyfor (MouseLeft)
@@ -526,7 +526,7 @@ Spur
 @msgTrackPosition
 %1 von %2
 @@
-    
+
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 Alle Audios

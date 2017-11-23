@@ -18,7 +18,7 @@ JAWS script for Audacity multitrack sound editor V2.0 or later
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-    
+
     See the file copying.txt for details.
 */
 
@@ -46,10 +46,10 @@ Const
 
 ;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
 Const
-    CS_SELECT_ON = " Select On",
-    CS_MUTE_ON = " Mute On",
-    CS_SOLO_ON = " Solo On"
-    
+	CS_SELECT_ON = " Select On",
+	CS_MUTE_ON = " Mute On",
+	CS_SOLO_ON = " Solo On"
+
 ;For announcing selected tracks.
 Const
 	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
@@ -116,10 +116,10 @@ const
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
-;This should reference the guide from which the Audacity Keys help message was taken.
-CS_JawsGuide_Title = "Audacity 2.2.0 Guide", 
-CS_JawsGuide_Author = "David Bailes",
-CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
+	;This should reference the guide from which the Audacity Keys help message was taken.
+	CS_JawsGuide_Title = "Audacity 2.2.0 Guide", 
+	CS_JawsGuide_Author = "David Bailes",
+	CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
 Messages
 @msgProgName
@@ -150,7 +150,7 @@ In the track panel and selection bar , to preview audio after (outside) the sele
 
 To switch between playing audio and speaking position time for cursor motion commands, press %KeyFor(ToggleMotionPreview).  
 This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
-    
+
 To increase gain of focus track, press %keyfor (MouseUp).
 To reduce gain of focus track, press %keyfor (MouseDown).
 To adjust pan left, press %keyfor (MouseLeft).
@@ -194,7 +194,7 @@ To reset all script options to default values, press %keyfor (ResetConfig)
 If the "ENTER pauses during play/record" option is on, pressing %KeyFor(ENTER) while playing or recording sends the Pause key.  Use %KeyFor(CtrlEnter) to execute ENTER in this situation.
 
 If Silence Effect Preview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
- 
+
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press %keyfor (VSTPreset).
 To load an existing preset, press  %keyfor (VSTLoadPreset).
@@ -506,7 +506,7 @@ track
 @msgTrackPosition
 %1 of %2
 @@
-    
+
 ;Substituted in msgMoveTo and msgSelectTo.
 @msgAllAudio
 all audio
