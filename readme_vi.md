@@ -1,4 +1,4 @@
-﻿04-11-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿23-11-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
@@ -18,7 +18,7 @@ Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.
 - Track gain (chỉnh âm) và pan control (chỉnh độ cân bằng) được kích hoạt khi con trỏ PC hoạt động và đang ở trong cửa sổ chính. Trường hợp khác, Jaws sẽ kích hoạt tính năng di chuyển chuột.
 - Trong nhiều VST plug-in, có các phím lệnh để di chuyển con trỏ đến  điều khiển Presets và kích hoạt tính năng lưu hay gọi Presets.
 - Trong nhiều hộp thoại plug-in, tên và giá trị của các điều khiển đã được Jaws đọc. 
-- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files.
+- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files (hoặc trong thư mục local appdata).
 - Khi ở cửa sổ chính, JAWSKey+Shift+mũi tên xuống (SaySelectedText) đọc số track (hoặc tên nếu bấm nhanh hai lần) tại track được chọn.
 - Bạn có thể đi đến một track bằng cách nhập số cụ thể. Bạn cũng có thể chuyển một track đến một vị trí xác định bằng số. Bạn cũng có thể đánh dấu một điểm "mark" trên track rồi sau đó trở lại điểm đã đánh dấu, hoặc chuyển một track đến đó. 
 - Có phản hồi khi di chuyển bằng bàn phím (xem thêm bên dưới).
@@ -77,7 +77,7 @@ Trong Audacity 2.2.0, thanh lựa chọn End/Length radio button đã được t
 - `p`: đọc thiết lập hiện tại
 - `?`: đọc thông tin giúp đỡ cho nhóm phím này.
 
-`Alt+[` đọc giá trị được liệt kê đầu tiên và `Alt+RightArrow` đọc giá trị thứ hai.  Sau khi bấm `?` bạn có thể bấm một trong các phím này mà không cần lặp lại tổ hợp phím để mở nhóm lệnh này.
+`Alt+[` đọc giá trị được liệt kê đầu tiên và `Alt+mũi tên phải` đọc giá trị thứ hai.  Sau khi bấm `?` bạn có thể bấm một trong các phím này mà không cần lặp lại tổ hợp phím để mở nhóm lệnh này.
 
     có thể xem thông tin về phiên bản của script  bằng cách bấm nhanh hai lần `JAWSKey+CONTROL+V` để hiển thị trên cửa sổ ảo. (Virtual Viewer). Thông tin này  cũng hiển thị trong phần JAWS hot key help.
 
@@ -94,7 +94,7 @@ Khi ở trường bắt đầu / kết thúc chọn (selection start/end), `Shif
 
 Có vài phím lệnh  thuận tiện để thực hiện việc   phát thử, và cũng dễ tiếp cận hơn.  Trong bản phân bố track và thanh lựa chọn, `JAWSKey+mũi tên trái` thực hiện lệnh `Shift+F6` và `JAWSKey+mũi tên phải` thực hiện `Shift+F7`. Các lệnh này phát đoạn đầu và  cuối của vùng chọn (ở trong vùng chọn).  Thêm phím Shift sẽ phát đoạn đầu và cuối (ngoài) vùng chọn.
 
-`JAWSKey+a,s` (nhóm lệnh rút gọn) cũng có thể thực thi các lệnh phát thử.  Điều này có thể có ích cho các Laptop yêu cầu bạn phải giữ phím `FN` để thực hiện các lệnh.  Khi kích hoạt nhóm lệnh này, `j`, `k`, `l`, và `;` thực thi `Shift+F5` đến `Shift+F8`.  `Control+j` thực thi `Control+Shift+F5` và `Control+l` thực thi `Control+Shift+F7`.  Nhóm lệnh này cũng thực thi các phím mũi tên trái / phải, Shift và `Shift+Control` mũi tên trái / phải, và `c`.  `?` đọc thông tin giúp đỡ của nhóm lệnh.  Khi kích hoạt  nhóm lệnh này, bạn có thể bấm bất kì phím lệnh nào mà không cần bấm phím để vào nhóm lệnh.  Bấm `ESC` hay một phím không thuộc nhóm lệnh này sẽ thoát khỏi nó.
+`JAWSKey+a,s` (nhóm lệnh rút gọn) cũng có thể thực thi các lệnh phát thử.  Điều này có thể có ích cho các Laptop yêu cầu bạn phải giữ phím `FN` để thực hiện các lệnh.  Khi kích hoạt nhóm lệnh này, `j`, `k`, `l`, và `;` sẽ thay cho `Shift+F5` đến `Shift+F8`.  `Control+j` thay cho `Control+Shift+F5` và `Control+l` thay cho `Control+Shift+F7`.  Nhóm lệnh này cũng thực thi các phím mũi tên trái / phải, Shift và `Shift+Control` mũi tên trái / phải, và `c`.  `?` đọc thông tin giúp đỡ của nhóm lệnh.  Khi kích hoạt  nhóm lệnh này, bạn có thể bấm bất kì phím lệnh nào mà không cần bấm phím để vào nhóm lệnh.  Bấm `ESC` hay một phím không thuộc nhóm lệnh này sẽ thoát khỏi nó.
 
 ## Các tùy chọn cho Script
 
