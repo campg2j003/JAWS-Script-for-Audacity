@@ -1,4 +1,4 @@
-﻿2017-11-23  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-12-11  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
 
@@ -133,6 +133,17 @@ Note: There is another implementation of this feature that more closely follows 
 4.  If you redefine the `numpad ENTER` key and set JAWS to treat extended keys separately, both `ENTER` keys will be mapped to the typing keys `ENTER`.  If you don't like this feature you can deactivate it by adding a semicolon on the lines for `ENTER`, `NumPadEnter`, and `Control+ENTER` in `audacity.jkm` and removing semicolons on the lines containing `/*` and `*/` before and after scripts `Enter` and `CtrlEnter` in `audacity.jss`.  If you modify `audacity.jss`, please change the version constant so we'll know it is a modified version if you communicate with us about it.
 
 5.  In versions of JAWS prior to 13 the keystroke for setting script options (`JAWSKey+v`) will not appear in hotkey help.  It will still work, however.  We could script around this if it turns out to be a problem.
+
+6.  For the `g` and `h` keys that speak the values of the recording or playback meters to work, the appropriate toolbars must be enabled and docked.  If enabling them in `View > Toolbars` doesn't solve the problem, they may be undocked.  To fix this:
+
+
+    1.  Shut Audacity down and edit `%appdata%\audacity\audacity.cfg`.  
+    2.  Search for "meter".  You will find a line like "`[GUI/ToolBars/RecordMeter]`".
+    3.  Following it and before the next line starting with `[`, find a line "`Dock=N`" where N is 0 or 1.  (In my installation this line is the first line of the section.)  Change N to 1.
+    4.  Repeat for all other similar sections.
+    5.  Save the file and restart Audacity.
+    6.  In `View > Toolbars` make sure that The desired meter(s) are enabled.
+    7.  If the correct meter is not reported, choose `View > Toolbars > Reset Toolbars`.
 
 
 # Multiple Language Support
