@@ -1,4 +1,4 @@
-﻿23-11-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿11-12-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
@@ -18,7 +18,7 @@ Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.
 - Track gain (chỉnh âm) và pan control (chỉnh độ cân bằng) được kích hoạt khi con trỏ PC hoạt động và đang ở trong cửa sổ chính. Trường hợp khác, Jaws sẽ kích hoạt tính năng di chuyển chuột.
 - Trong nhiều VST plug-in, có các phím lệnh để di chuyển con trỏ đến  điều khiển Presets và kích hoạt tính năng lưu hay gọi Presets.
 - Trong nhiều hộp thoại plug-in, tên và giá trị của các điều khiển đã được Jaws đọc. 
-- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files (hoặc trong thư mục local appdata).
+- Hỗ trợ nhiều ngôn ngữ. Đã hỗ trợ tiếng Anh, tiếng Đức và Tây Ban Nha. Tập tin Readme cũng đã được dịch ra tiếng Việt. Xem tập tin audacity_readme_vi.html trong thư mục cài đặt trong Program Files (hoặc trong local appdata).
 - Khi ở cửa sổ chính, JAWSKey+Shift+mũi tên xuống (SaySelectedText) đọc số track (hoặc tên nếu bấm nhanh hai lần) tại track được chọn.
 - Bạn có thể đi đến một track bằng cách nhập số cụ thể. Bạn cũng có thể chuyển một track đến một vị trí xác định bằng số. Bạn cũng có thể đánh dấu một điểm "mark" trên track rồi sau đó trở lại điểm đã đánh dấu, hoặc chuyển một track đến đó. 
 - Có phản hồi khi di chuyển bằng bàn phím (xem thêm bên dưới).
@@ -132,7 +132,17 @@ Lưu ý: Có một cách thực hiện khác  của tính năng này gần với
 
 4.  Nếu bạn thiết lập cho phím  `numpad ENTER` và thiết lập JAWS để xử lý các phím mở rộng một cách riêng biệt, kể cả phím `Enter` cũng sẽ được đặt cho việc gõ phím `Enter`. Nếu bạn không thích tính năng này, có thể tắt nó bằng cách thêm một dấu chấm phẩy trên các dòng `ENTER`, `NumPadEnter` và `Control + ENTER` trong `audacity.jkm` và loại bỏ các dấu chấm phẩy trên dòng có chứa `/ *` và `* /` trước và sau script `Enter` và `CtrlEnter` trong `audacity.jss`. Nếu có thay đổi trong tập tin `Audacity.JSS`, vui lòng thay đổi giá trị ngày trong biến Version để chúng tôi biết đây là phiên bản đã chỉnh sửa trong trường hợp bạn liên hệ với chúng tôi.
 
-5. Các phiên bản Jaws trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại nghiêm trọng với người dùng.
+5. Các phiên bản Jaws trước 13.0, phím nóng để thiết lập cho script (`JAWSKey+v`) sẽ không hiển thị trong phần Hotkey Help. Tuy nhiên, nó vẫn hoạt động. Chúng tôi có thể khặc phục điều này nếu nó là một trở ngại.
+6. Để các phím `g` và `h` đọc bản ghi  giá trị thu phát  âm thanh hoạt động được, phải bật các thanh công cụ cần thiết.  Nếu việc bật chúng trong `View > Toolbars` không giải quyết được vấn đề, chúng có thể đã bị tắt.  Để sửa lỗi này:
+
+    1.  Tắt Audacity và chỉnh sửa tập tin `%appdata%\audacity\audacity.cfg`.
+    2.  tìm từ "meter".  Bạn sẽ tìm thấy một dòng đại khái 
+"`[GUI/ToolBars/RecordMeter]`".
+    3.  Đi theo dòng này cho đến trước dòng bắt đầu với `[`, tìm dòng "`Dock=N`". Trong đó, N là 0 hoặc 1.  (trong máy tôi, nó nằm ở dòng đầu của phần này.)  đổi N thành 1.
+    4.  Làm lại các bước trên cho tất cả các phần tương ứng khác.
+    5.  Lưu tập tin và khởi động lại Audacity.
+    6.  Trong `View > Toolbars`,  hãy chắc rằng các công cụ bản ghi mong muốn  đã được bật.
+    7.  Nếu bản ghi mong muốn không được thông báo, chọn `View > Toolbars > Reset Toolbars`.
 
 
 # Hỗ trợ đa  ngôn ngữ
