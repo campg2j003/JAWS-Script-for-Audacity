@@ -1,4 +1,4 @@
-﻿11-12-2017  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
+﻿2017-12-12  JAWS script cho Audacity V2.0 (cho phiên bản script 2.2.0) bởi Gary Campbell <campg2003@gmail.com> và Đặng Mạnh Cường <dangmanhcuong@gmail.com>
 
 Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.2.0.
 
@@ -6,7 +6,7 @@ Gói script này hỗ trợ cho Audacity 2.0.0 trở lên, bao gồm Audacity 2.
  - Các phím lệnh để đọc điểm bắt đầu, điểm kết thúc vùng chọn hoặc độ dài và vị trí của đoạn âm thanh ở bất  cứ đâu trong cửa sổ chính.
 - Các phím lệnh di chuyển con trỏ đến bảng điều khiển vùng chọn.
 - Hiển thị phím tắt của Audacity và của Jaws script cho Audacity.
-- Tiếp cận được trang hướng dẫn sử dụng Audacity  với Jaws của David Bailes bằng phím lệnh Insert+W.
+- Tiếp cận được trang hướng dẫn sử dụng Audacity  với Jaws của David Bailes bằng  lệnh Jawskey+W.
 - Đọc các vùng của cửa sổ chính, tức các thanh công cụ toolbars, bảng phân bố track (track panel) và thanh lựa chọn (selection bar) khi di chuyển con trỏ giữa chúng.
 - Đọc tên thanh công cụ khi con trỏ di chuyển từ thanh công cụ này sang thanh công cụ khác.
 - Khi con trỏ đang ở giữa các thanh công cụ, bấm `CTRL+tab` để di chuyển đến điều khiển đầu tiên của thanh công cụ kế tiếp và `CTRL+shift+tab` để đến điều khiển cuối của thanh công cụ trước.
