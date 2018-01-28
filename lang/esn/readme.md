@@ -1,4 +1,4 @@
-﻿2017-11-04  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-12-12  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores, incluido Audacity 2.2.0.
 
@@ -133,6 +133,7 @@ Nota: Hay otra implementación de esta característica que se asemeja más al al
 
 5.  En versiones de JAWS anteriores a la 13, la combinación de teclas para configurar las opciones de los scripts (`TeclaJAWS+v`) no aparecerá en la ayuda de teclas rápidas. No obstante, seguirá funcionando. Si aquello se torna un problema, podríamos mitigarlo a través de scripting.
 
+6.  Para que funcionen las teclas `g` y `h` que verbalizan los valores de los medidores de reproducción o grabación, las barras de herramientas correspondientes deben estar habilitadas y bloqueadas. Si habilitarlas en `Ver > Barras de herramientas` no resuelve el problema, puede que estén desbloqueadas. Para corregirlo, restablezca las barras de herramientas (`Ver > Barras de herramientas > Restablecer barras de herramientas`) y deshabilite/habilite cualquier barra de herramientas que usted haya cambiado.
 
 # Compatibilidad con Varios Idiomas
 Esta versión del framework del instalador contiene compatibilidad con varios idiomas. Ahora trata los pares versión/idioma como anteriormente trataba las versiones, con lo que ahora la presentación en lista de selección de versiones muestra entradas como 16.0/esn. Actualmente se admiten alemán, español e inglés.
