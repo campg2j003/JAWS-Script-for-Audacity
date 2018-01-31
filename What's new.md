@@ -1,5 +1,9 @@
-(This file last updated 11/13/2017)
+(This file last updated 1/28/2018)
 
+# New in 2.2.0-beta-2018-01-29
+- Keys to move current track to marked track and exchange current track with marked track now remain in the Audacity key layer.  This allows moving several consecutive tracks more easily.
+- Added JAWSKey+a&SPACE as an alias for JAWS+a&k (mark current track).
+- Changed copyright (in message in audacity.jss) to 2018.
 # New in 2.2.0-beta-2017-11-06
 - Updated the installer to use version that uses JAWSUtil.vbs from the BX Toolkit rev 1876 by Doug Lee.  The installer now compiles scripts correctly for all languages during the install.
 - The installer offers to display the installer log on exit.
