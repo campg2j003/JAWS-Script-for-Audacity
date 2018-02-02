@@ -1,4 +1,4 @@
-2017-11-04 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2017-12-12 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -18,7 +18,7 @@ Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer ein
 - Mit den Jaws Tastenkombinationen zur Steuerung der Maus können die Lautstärke und das Panorama der aktiven Spur verändert werden. Diese werden an die Applikation durchgereicht, wenn der PC Cursor aktiviert und der Fokus im Hauptfenster ist. Andernfalls werden die Standard Funktionen zur Maussteuerung ausgeführt.
 - In vielen VST-Plugins kann das Preset Steuerelement mittels Tastenkombination fokussiert sowie Presets geladen und gespeichert werden.
 - In vielen Plugin Dialogen werden Namen und Werte der Steuerelemente angesagt.
-- Unterstützung mehrere Sprachen: Englisch, Spanisch und Deutsch werden unterstützt. Ebenso ist eine Übersetzung der readme Datei in Vietnamesisch vorhanden. Vielen Dank an Nguyen Hoang Giang, Dang Manh Cuong und Le Thi Theu dies anzubieten. Diese Datei audacity_readme_vi.txt ist im Installationsverzeichnis im Programme Ordner zu finden.
+- Unterstützung mehrere Sprachen: Englisch, Spanisch und Deutsch werden unterstützt. Ebenso ist eine Übersetzung der readme Datei in Vietnamesisch vorhanden. Vielen Dank an Nguyen Hoang Giang, Dang Manh Cuong und Le Thi Theu dies anzubieten. Diese Datei audacity_readme_vi.txt ist im Installationsverzeichnis im Programme Ordner oder im lokalen appdata Ordner des Benutzers zu finden.
 - Spricht die Nummern der aktuell selektierten Spuren durch Drücken von Jaws Taste + Shift + Pfeil nach unten (SaySelectedText). Die Namen der aktuell selektierten Spuren werden durch zwei Mal kurz nacheinander drücken gesprochen.
 - Spuren können durch angabe einer Nummer aktiviert oder an eine bestimmte Position verschoben werden. Ebenso kann eine bestimmte Spur "gemerkt" werden, um zu einem späteren Zeitpunkt diese Spur zu aktivieren oder eine andere Spur an diese gemerkte Position zu verschieben.
 - Feedback, wenn eine Spur mit der Tastatur verschoben wird (siehe weiter unten)
@@ -201,6 +201,7 @@ Die Tastenkombination Ebene "Tempo" wird initialisiert mit Jaws Taste + A, T
 3. Wenn das "Enter pausiert während Wiedergabe / Aufnahme" Feature aktiviert ist (das ist die Voreinstellung), führt Enter nicht zum Selektieren und Deselektieren der aktiven Spur während der Wiedergabe oder Aufnahme. Verwenden Sie in diesem Fall Ctrl + Enter anstatt Enter. 
 4. Wenn die Num Pad Enter Taste redefiniert und die erweiterten Tasten zur unterschiedlichen Belegung konfiguriert sind, werden denoch beide Enter Tasten identisch zugeordnet. Wenn dieses Feature nicht erwünscht ist, kann es deaktiviert werden, in dem in audacity.jkm ein Semikolon vor die Zeilen Enter, Numpad Enter und Ctrl + Enter eingefügt wird und in audacity.jss die Semikolons in den Zeilen, die /* und */ vor und nach den Skripts Enter und CtrlEnter enthalten. Wenn audacity.jss modifiziert wird, ändern Sie in der Version Konstanten das Datum. So wissen Sie das genau, wenn Sie mit uns darüber kommunizieren. 
 5. In Jaws Versionen vor 13 erscheint die Tastenkombination Jaws Taste + V für die Skriptspezifischen  Optionen nicht in der Hotkey Hilfe. Die Tastenkombination funktioniert trotzdem. Wie auch immer, wir können dies beheben, wenn  sich zeigt, dass dies ein Problem sein sollte.
+6. Die Tastenkombinationen G und H, mit denen die Wiedergabe- und Aufnahme-Pegel angesagt werden, funktionieren nur dann erwartungsgemäss, wenn die entsprechende Werkzeugleiste aktiviert und angedockt ist. Wenn die Werkzeugleiste im Menü Ansicht, Werkzeugleisten aktiviert sind und die Pegelansage nicht funktioniert, sind die entsprechenden Werkzeugleisten nicht angedockt. Um dies zu ändern wählen Sie im Menü Ansicht, Werkzeugleisten den Menüpunkt Werkzeugleisten zurücksetzen
 
 # Unterstützung mehrerer Sprachen
 Der Installer unterstützt nun die Installation der Skripts in mehreren Sprachen . Er behandelt nun Version / Sprache Paare wie bisher Versionen behandelt wurden. So  werden nun in der Version Auswahlliste Einträge wie 16.0 / deu angezeigt. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. 
