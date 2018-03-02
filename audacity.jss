@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-beta-2018-01-29"
-;Last updated 2018-01-29T04:55Z
+Const CS_SCRIPT_VERSION = "2.2.0-beta-2018-03-02"
+;Last updated 2018-03-02T20:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -772,9 +772,37 @@ Var
 	String s3,
 	String s4,
 	Int i,
-	Int j
+	Int j,
+	Int iRtn,
+	Int iMSAAMode,
+	Object obj,
+	Int iTemp
 
 Let s = GetWindowText(hWnd, 0)
+	If s == "" Then
+		;Try to get the text with MSAA.
+		;/*
+		Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
+		Let obj = GetObjectFromEvent(hWnd, -4, 0, iTemp)
+		If obj Then
+			Let s = obj.accName(0)
+		EndIf
+		SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
+		;*/ ; objectFromEvent
+		/*
+		;This seems to work no better than GetObjectFromEvent, but it does work the same.  It is similar to the code in UtilitySayMSAAObjectInfo for object name, however, Script Utility F9 speaks the letters and . that this does not.
+		Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
+		SaveCursor ()
+		InvisibleCursor ()
+		MoveToWindow (hWnd)
+		Pause ()
+		Let s = GetObjectName (True)
+		RestoreCursor ()
+		SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
+		*/ ;invisible cursor and GetObjectName.
+	EndIf ; if s==""
 
 ;Remove "uninteresting" stuff from the position, like leading zeros and ".000"
 ;A position can be in several formats, such as "0 0  h 0 0  m 0 0 .0 0 0  s " or "0 0 0 ,0 0 0  seconds ".
@@ -2489,6 +2517,8 @@ Let iRtn = GetObjectInfoByName (hWnd, sName, 1, iSubtype, iState)
 If !iRtn Then
 	;Try GetObjectFromEvent.
 	;SayString ("GetObjState: GetObjectInfoByName failed for " + sName) ; debug
+Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
+SetJCFOption (OPT_MSAA_MODE, 1)
 	Let obj = GetObjectFromEvent(hWnd, -4, 0, iTemp)
 	If obj Then
 		Let iTemp = obj.accState(1)

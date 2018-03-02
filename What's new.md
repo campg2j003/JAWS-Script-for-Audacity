@@ -1,5 +1,7 @@
-(This file last updated 1/28/2018)
+(This file last updated 3/2/2018)
 
+# New in 2.2.0-beta-2018-03-02
+-If we can't get the position field via GetWindowText we try to get it with MSAA.  This doesn't get the letters and period, but it does get something when we used to get an error.
 # New in 2.2.0-beta-2018-01-29
 - Keys to move current track to marked track and exchange current track with marked track now remain in the Audacity key layer.  This allows moving several consecutive tracks more easily.
 - Added JAWSKey+a&SPACE as an alias for JAWS+a&k (mark current track).
