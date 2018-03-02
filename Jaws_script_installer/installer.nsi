@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2017-10-14
+Last updated: 2018-03-02
 
 Modifications:
 
@@ -22,7 +22,7 @@ Modifications:
 /*
 Installer for JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2018  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,6 +53,8 @@ SetCompressor /solid lzma ;create the smallest file
 !define JAWSMINVERSION "" ; min version of JAWS for which this script can be installed
 !define JAWSMAXVERSION "" ; max version of JAWS for which this script can be installed
 !define JAWSALLOWALLUSERS ; comment this line if you don't want to allow installation for all users.
+;Uncomment to change the default compile method, can be j=JAWSUtil, s=scompile, or n=do not compile scripts.
+;!define JAWSDefaultCompileMethod "j"
 ;Uncomment and change if the scripts are in another location.
 ;!define JAWSSrcDir "script\" ;Folder relative to current folder containing JAWS scripts, empty or ends with backslash.
 
