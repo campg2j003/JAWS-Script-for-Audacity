@@ -1,12 +1,11 @@
 (This file last updated 3/2/2018)
 
-# New in 2.2.0-beta-2018-03-02
+# New in 2.2.0-rc.1
 -If we can't get the position field via GetWindowText we try to get it with MSAA.  This doesn't get the letters and period, but it does get something when we used to get an error.
 - You can now choose to compile scripts with either JAWSUtil.vbs (default), scompile directly, or not to compile at all.  To not use JAWSUtil.vbs, on the installer command line, include the /compile=s switch.  /compile=n will suppress compilation of scripts.
-# New in 2.2.0-beta-2018-01-29
 - Keys to move current track to marked track and exchange current track with marked track now remain in the Audacity key layer.  This allows moving several consecutive tracks more easily.
 - Added JAWSKey+a&SPACE as an alias for JAWS+a&k (mark current track).
-- Changed copyright (in message in audacity.jss) to 2018.
+- Changed copyright (in message in audacity.jss and installer) to 2018.
 # New in 2.2.0-beta-2017-11-06
 - Updated the installer to use version that uses JAWSUtil.vbs from the BX Toolkit rev 1876 by Doug Lee.  The installer now compiles scripts correctly for all languages during the install.
 - The installer offers to display the installer log on exit.
