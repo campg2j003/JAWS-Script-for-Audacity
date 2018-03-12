@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.0-rc.1"
-;Last updated 2018-03-02T21:10Z
+Const CS_SCRIPT_VERSION = "2.2.0-rc.2"
+;Last updated 2018-03-10T17:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -897,25 +897,25 @@ Int Function SayPositionField (Int iPosition, Int fSilent)
 ;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
 ;fSilent -- If True does not speak error message if the selection toolbar could not be found.
 ;Returns True if a position value was found, False if it could not be gotten, in which case it speaks a corresponding message (unless fSilent is True).
-;Respects AnnounceMessage.
+;Respects AnnounceMessage for the error message.
 Var
 	Handle hWnd,
 	String sValue,
 	Int iRtn
 
-;If the Announce Messages option is on, speak the selection posision.
-If GetQuickSetting ("AnnounceMessage") Then
-	Let hWnd = GetPositionFieldHandle(iPosition)
-	Let sValue=GetPositionField (hWnd) ;get value of desired control
-	If !sValue Then ;the selection toolbar is turned off
-		If !fSilent Then
-			Say (msgNoSelection, OT_ERROR)
-		EndIf ;if fSilent
-		Return FALSE
-	Else
-		SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
-	EndIf ;say selection position
-EndIf ; AnnounceOn
+;;If the Announce Messages option is on, speak the selection posision.
+;If GetQuickSetting ("AnnounceMessage") Then
+Let hWnd = GetPositionFieldHandle(iPosition)
+Let sValue=GetPositionField (hWnd) ;get value of desired control
+If !sValue Then ;the selection toolbar is turned off
+	If !fSilent && GetQuickSetting ("AnnounceMessage") Then
+		Say (msgNoSelection, OT_ERROR)
+	EndIf ;if fSilent
+	Return FALSE
+Else
+	SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
+EndIf ;say selection position
+;EndIf ; AnnounceOn
 Return TRUE
 EndFunction ; SayPositionField
 
@@ -1819,13 +1819,14 @@ If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPa
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
-If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
-	If NoProject () Then
-		SayNoProject ()
-		Return
-	EndIf ; if no project
-	;In track panel, stopped, not entering a label, announcing messages.
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label, in project.
+;If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
+If IsStopped () Then
+	;In track panel, stopped, not entering a label.
 	TypeCurrentScriptKey ()
 	Pause ()
 	If gfSayPosition Then
@@ -1834,12 +1835,16 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_BACKWARD)
 	EndIf
-ElIf !IsStopped () Then
+;ElIf !IsStopped () Then
+Else
+	;Stopped.
 	TypeCurrentScriptKey ()
+/*
 Else
 	;Stopped, AnnounceMessages off.
 	PerformScript SayPriorCharacter ()
-EndIf
+*/
+EndIf ; else not stopped
 EndScript ; SayPriorCharacter
 
 Script SayNextCharacter ()
@@ -1848,13 +1853,14 @@ If UserBufferIsActive () || DialogActive () || !IsPCCursor () || !FocusInTrackPa
 	Return
 EndIf
 
-;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label.
-If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
-	If NoProject () Then
-		SayNoProject ()
-		Return
-	EndIf ; if no project
-	;In track panel, stopped, not entering a label, announcing messages.
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; if no project
+;Is PC Cursor, user buffer not active, in track panel, not in a dialog, not entering a label, in project.
+;If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
+If IsStopped () Then
+	;In track panel, stopped, not entering a label.
 	TypeCurrentScriptKey ()
 	Pause ()
 	If gfSayPosition Then
@@ -1863,12 +1869,15 @@ If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
-ElIf !IsStopped () Then
+;ElIf !IsStopped () Then
+	;Not stopped.
 	TypeCurrentScriptKey ()
+/*
 Else
 	;Stopped, AnnounceMessages off.
 	PerformScript SayNextCharacter ()
-EndIf
+*/
+EndIf ; else not stopped
 EndScript ; SayNextCharacter
 
 Script SayPriorWord ()
@@ -2825,7 +2834,7 @@ ProcessVST (ID_Save_Preset)
 EndScript ; VSTSavePreset
 
 Script SayJump ()
-;For use by short/long jumps (,, ., etc.).  sends the key, if in track panel and AnnounceOn speaks start position, otherwise speaks the key label.
+;For use by short/long jumps (,, ., etc.).  sends the key, if in track panel and gfPreviewMotion or gfSayPosition speaks start position, otherwise speaks the key label.
 ;If you want a separate script for each key, turn this into a function and call it from the scripts.
 ;Var
 ;Handle hWnd
@@ -2834,7 +2843,7 @@ TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
 	SayNoProject ()
 	Return
-ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && GetQuickSetting ("AnnounceMessage") && IsStopped () Then
+ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && (gfSayPosition || gfPreviewMotion) && IsStopped () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
