@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-rc.2"
-;Last updated 2018-03-10T17:00Z
+;Last updated 2018-03-12T15:45Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1870,6 +1870,7 @@ If IsStopped () Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
 ;ElIf !IsStopped () Then
+Else
 	;Not stopped.
 	TypeCurrentScriptKey ()
 /*

@@ -1,5 +1,7 @@
-(This file last updated 3/2/2018)
+(This file last updated 3/12/2018)
 
+# New in 2.2.0-rc.2
+Position announcement is now no longer controlled by Anounce Audacity Messages.
 # New in 2.2.0-rc.1
 -If we can't get the position field via GetWindowText we try to get it with MSAA.  This doesn't get the letters and period, but it does get something when we used to get an error.
 - You can now choose to compile scripts with either JAWSUtil.vbs (default), scompile directly, or not to compile at all.  To not use JAWSUtil.vbs, on the installer command line, include the /compile=s switch.  /compile=n will suppress compilation of scripts.
