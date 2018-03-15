@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.0-rc.2"
-;Last updated 2018-03-12T15:45Z
+;Last updated 2018-03-15T16:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1627,11 +1627,11 @@ EndScript ; StartMarkerLeft
 
 Script JawsHome ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () &&! NoProject () &&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage")Then
+If IsPCCursor () &&FocusInTrackPanel () &&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage")Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -1645,11 +1645,11 @@ EndScript ; JawsHome
 
 Script JawsEnd ()
 ;If we are speaking an Audacity message, don't speak the key name.
-If IsPCCursor () && NoProject () && FocusInTrackPanel () &&!UserBufferIsActive () Then
+If IsPCCursor () && NoProject () && FocusInTrackPanel () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
-If IsPCCursor () &&FocusInTrackPanel () && !NoProject () &&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
+If IsPCCursor () &&FocusInTrackPanel () && !UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -1730,11 +1730,9 @@ If NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ;No project
-If IsPCCursor ()&&FocusInTrackPanel ()&&!NoProject ()&&!UserBufferIsActive () && !gfInLabel Then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive () && !gfInLabel && GetQuickSetting ("AnnounceMessage") Then
 	SelectFromStartOfLine ()
-	If GetQuickSetting ("AnnounceMessage") Then ;User can turn off this message
-		SayFormattedMessage (OT_NO_DISABLE, FormatString (msgSelectTo, msgStart, msgAllAudio)) ;alerts when user activates this script at the main window, and a project is open
-	EndIf
+	SayFormattedMessage (OT_NO_DISABLE, FormatString (msgSelectTo, msgStart, msgAllAudio)) ;alerts when user activates this script at the main window, and a project is open
 	;Otherwise, perform default script
 Else
 	PerformScript SelectFromStartOfLine ()
@@ -1748,15 +1746,15 @@ If NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ;No project
-If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive ()&&!NoProject () && !gfInLabel Then
+If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive () && !gfInLabel && (GetQuickSetting ("AnnounceMessage") || gfSayPosition) Then
 	SelectToEndOfLine ()
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_NO_DISABLE, FormatString(msgSelectTo, msgEnd, msgAllAudio))
+	EndIf ;AnnounceMessage
+	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		Pause ()
-		If gfSayPosition > CI_SAY_POSITION_NONE Then
-			SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
-		EndIf
-	EndIf
+		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	EndIf ;if gfSayPosition
 Else
 	PerformScript SelectToEndOfLine ()
 EndIf
@@ -1793,20 +1791,19 @@ EndIf ; else not main window, etc.
 EndScript ; DeleteSelectedAudio
 
 Script JawsDelete ()
-;If focus is in the main window, a project exists, and audio is selected, the DEL key will delete it.  In this case we perform the script DeleteSelectedAudio.  Otherwise we perform the default script.
+;If focus is in the main window, a project exists, and audio is selected, the DEL key will delete it.  In this case we perform the script DeleteSelectedAudio.  Otherwise we perform the default script.  DeleteSelectedAudio handles the no project, selected track, and stopped tests.
 
-If FocusInMainWindow () && !gfInLabel Then
-	; (!gfInLabel || !FocusInMainWindow () || IsTrackSelected ()) && (FocusInTrackPanel ()&&!NoProject ())
+If FocusInTrackPanel () && !gfInLabel Then
 	PerformScript DeleteSelectedAudio()
 Else
-	; gfInLabel || NoProject() || ((!FocusInMainWindow () || IsTrackSelected ()) && !FocusInTrackPanel ()) ; ?? not sure these are the right conditions here
+	; gfInLabel || (IsTrackSelected () && !FocusInTrackPanel ()) ; ?? not sure these are the right conditions here
 	PerformScript JawsDelete ()
 EndIf
 EndScript ; JawsDelete
 
 Script JAWSBackspace ()
-;This script is similar to the JawsDelete script.
-If FocusInTrackPanel ()&&!NoProject () && !gfInLabel Then
+;This script is similar to the JawsDelete script.  DeleteSelectedAudio handles the no project, selected track, and stopped tests.
+If FocusInTrackPanel () && !gfInLabel Then
 	PerformScript DeleteSelectedAudio()
 Else
 	PerformScript JAWSBackspace()
@@ -1928,15 +1925,15 @@ EndScript ; SelectNextWord
 
 Script Copy ()
 ;Copy selected sound to clipboard in main window.
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; no project
 If !IsTrackSelected () &&!UserBufferIsActive ()&&!DialogActive () && !MenusActive () && !gfInLabel Then
 	SayNoTrackSelected ()
 	Return
 ElIf FocusInMainWindow () && !gfInLabel
 &&!UserBufferIsActive () Then ;this third condition makes the default script active in virtual viewer
-	If NoProject () Then
-		SayNoProject ()
-		Return
-	EndIf ; no project
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
@@ -1952,15 +1949,15 @@ EndIf
 EndScript ; Copy
 
 Script CutToClipboard ()
+If NoProject () Then
+	SayNoProject ()
+	Return
+EndIf ; no project
 If !IsTrackSelected () &&! DialogActive () && !gfInLabel Then
 	SayNoTrackSelected ()
 	Return
 ElIf FocusInMainWindow () && !gfInLabel
 &&!UserBufferIsActive () Then ;this third condition makes the default script active in virtual viewer
-	If NoProject () Then
-		SayNoProject ()
-		Return
-	EndIf ; no project
 	If !IsStopped () Then
 		SayNotStopped ()
 		Return
