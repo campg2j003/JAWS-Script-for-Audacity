@@ -1,55 +1,44 @@
-(This file last updated 3/15/2018)
+(This file last updated 5/12/2018)
 
-# New in 2.2.0-rc.2
-- Position announcement is now no longer controlled by Anounce Audacity Messages.
+# New in 2.2.0
+## Installer
+- Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
+-   The installer now compiles scripts correctly for all languages during the install via the JAWSUtil.vbs script.  To use scompile directly without JAWSUtil.vbs, on the installer command line include `/compile=s'.  `/compile=n' will suppress compilation of scripts.
+- The installer offers to display the installer log on exit.
+- The installer no longer uninstalls an existing installation for a Just Script install type.
+
+## Changes to the Scripts
+- Zoom command keystrokes now speak the last number on the timeline indicating the maximum time shown in the window.
+- Sliders in Equalization dialog now speak DB values.
+- Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
+- Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  On functions as before.  Off silences position messages for arrow keys.
+- Position announcement is no longer controlled by Anounce Audacity Messages.
 - Copy and CutToClipboard now test for no project before track selected.
 - JAWSDelete and JAWSBackspace now behave specially in the track panel only, instead of the main window.
-# New in 2.2.0-rc.1
--If we can't get the position field via GetWindowText we try to get it with MSAA.  This doesn't get the letters and period, but it does get something when we used to get an error.
-- You can now choose to compile scripts with either JAWSUtil.vbs (default), scompile directly, or not to compile at all.  To not use JAWSUtil.vbs, on the installer command line, include the /compile=s switch.  /compile=n will suppress compilation of scripts.
-- Keys to move current track to marked track and exchange current track with marked track now remain in the Audacity key layer.  This allows moving several consecutive tracks more easily.
-- Added JAWSKey+a&SPACE as an alias for JAWS+a&k (mark current track).
-- Changed copyright (in message in audacity.jss and installer) to 2018.
-# New in 2.2.0-beta-2017-11-06
-- Updated the installer to use version that uses JAWSUtil.vbs from the BX Toolkit rev 1876 by Doug Lee.  The installer now compiles scripts correctly for all languages during the install.
-- The installer offers to display the installer log on exit.
-- ToggleMotionPreview now returns to quick settings when turned off.
-- JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
-- Zoom command keystrokes now speak the last number on the timeline indicating the maximum time shown in the window.
-- Updated German files.  Removed deu/audacity.jkm and modified installer acordingly.
-- Updated Vietnamese README.  Changed from .txt to .html.
-- Updated Spanish translation.
-# New in 2.2.0-beta-2017-09-20
-- Updated README.
-- Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
-- Added German translation.
-- Removed usePoFile script compiler pragma.
-- Improvements to Silence Effect Preview in 2.2.0.
-- Sliders in Equalization dialog now speak DB values.
-# New in 2.2.0-alpha-2017-08-31
-- Added Quick Setting for controlling announcement of selection positions when arrow keys are pressed.  On functions as before.  Off silences position messages for arrow keys that play audio if Motion Preview is on.
-- Added ability to preview audio with cursor motion keys.  This is controlled by the Preview Motion Quick Setting.
 - Added script ToggleMotionPreview assigned to JAWSKey+p.  This temporarily toggles motion preview on and off and Say Position between All but Arrows and All.
 - In the start/end selection fields Shift+Up/DownArrow preview audio at the selection end points.
 - Numpad left/right arrow keys with JAWSKey now preview in the track panel and selection bar.  In the track panel and selection bar, scripts SayPrior/NextWord play the preview after the start/before the end position (inside the selection range).  Scripts SelectPrior/NextWord preview before the start/after the end position (outside the selection).
 
-Note: The motion previewing capability requires that Audacity is set to the the Full shortcut key binding.
+Note: The motion previewing capability requires that Audacity is set to the Full shortcut key binding.
 
 
-- Added cursor motion and selection keys to short layer.
-- Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
-# New in 2.2.0-alpha-2017-08-18
+- Added ability to find the tempo of a portion of audio.  See Script Key Help for details.  There is also a commented out implementation based on Robert HÃ¤nggi's NVDA add-on which uses arrays and therefore requires JAWS 11 update 1 or later.
+- SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.  When pressed twice quickly track names are spoken instead of track numbers.
 - In the track panel UpCell and DownCell (Alt+Control+Up/DownArrow) move to the prior/next selected track.
-- If SaySelectedText is pressed twice quickly track names are spoken instead of track numbers.
-# New in 2.2.0-alpha-2017-08-15
-- Added ability to find the tempo of a portion of audio.  See Script Key Help for details.  There is also a commented out implementation based on Robert Hänggi's NVDA add-on which uses arrays and therefore requires JAWS 11 update 1 or later.
-- SaySelectedText (JAWSKey+Shift+DownArrow) now says the track numbers of the selected tracks when focus is in the main window.
-# New in 2.2.0-alpha-2017-08-05
 - Added Audacity layer key help.
 - Added Position Display key layer.
-- Added "Short" key layer for speaking Shift+F5-F8 and Shift+Control+F5 and F7 from the home row.
-# New in 2.2.0-alpha-2017-07-10
-- Converted code that speaks position fields to work with Audacity 2.2.0-Alpha-09JUL17.
+- Added "Short" key layer for speaking Shift+F5-F8 and Shift+Control+F5 and F7 from the home row.  Also supports cursor motion and selection keys.
+- Keys to move current track to marked track and exchange current track with marked track now remain in the Audacity key layer.  This allows moving several consecutive tracks more easily.
+- Added JAWSKey+a&SPACE as an alias for JAWS+a&k (mark current track).
+- JAWSHome and JAWSEnd now perform their normal function in the Track panel if the JAWS cursor is active.
+- Converted code that speaks position fields to work with Audacity 2.2.0.
+- If we can't get the position field via GetWindowText we try to get it with MSAA.  This doesn't get the letters and period, but it does get something when we used to get an error.
+- Silence Effect Preview now works most of the time in Audacity 2.2.0.
+- Reimplemented speaking of level meters.  The code no longer uses control IDs and will now work when multiple project windows are open.
+- Updated Vietnamese README.  Changed from .txt to .html.
+- Updated Spanish translation.
+- Added German translation.
+- Removed usePoFile script compiler pragma.
 
 # New in 2.1.0
 
