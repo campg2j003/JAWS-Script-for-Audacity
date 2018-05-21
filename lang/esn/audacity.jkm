@@ -43,7 +43,7 @@ ctrl+JAWSKey+z=test
 Alt+[=SaySelectionStart
 Alt+]=SaySelectionEnd
 Shift+Insert+S=MuteSynthesizer
-Shift+Control+J=AddAudacityJawsGuide
+Control+Shift+J=AddAudacityJawsGuide
 r=Record
 Shift+r=Record
 JAWSKey+a&i=GoToTrack
@@ -184,6 +184,7 @@ Shift+H=AudioHost
 Shift+N=InputChannels
 g=SayRecordingMeter
 h=SayPlaybackMeter
+
 
 ;Tempo
 JAWSKey+a&t&SPACE*=TempoStartStop
