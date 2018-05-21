@@ -1,10 +1,10 @@
-﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-10-18.
+﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2018-05-20.
 ;Translation based on English version dated 2017-09-30.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
     Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
-    Copyright (C) 2014-2018 Fernando Gregoire, for the Spanish translation. All rights reserved.
+    Copyright (C) 2014-2017 Fernando Gregoire, for the Spanish translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,12 @@ Const
 	WN_TRACKPANEL = "Panel de pista", ; window name of track table
 	WN_SELECTION = "Selección", ;window name of selection bar
 	WN_TRANSPORT_TOOLBAR = "Reproducción", ; window name of Transport toolbar
+	WN_RECORDING_METER_TOOLBAR = "Medidor de grabación", ;window name of Recording Meter toolbar
+	WN_PLAYBACK_METER_TOOLBAR = "Medidor de reproducción", ;window name of Playback Meter toolbar
+	WN_COMBINED_METER_TOOLBAR = "Medidor combinado", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
 	WN_EDIT_CHAINS = "Editar secuencias de comandos", ; name of the Edit Chains dialog
+	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_QUICK_SETTINGS = "Configuración rápida - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparando vista previa", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Mostrando vista previa", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Detener" ;name of Stop button to stop previewing
@@ -40,13 +45,26 @@ Const
 	CS_SelectionBar="Barra de selección",
 	CS_TrackPanel="Panel de pista"
 
+;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
+Const
+	CS_SELECT_ON = " Selección activada",
+	CS_MUTE_ON = " Silencio activado",
+	CS_SOLO_ON = " Solo activado"
+
+;For announcing selected tracks.
+Const
+	CS_TRACKS_ITEM_SEP = ",", ;separates track ranges
+	CS_TRACKS_RANGE_SEP = "-" ;separates first and last track of a track range
+
 ;For user options.  The text after the : should be translated, the text before must not be translated.
 Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Anunciar los mensajes de Audacity",  ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Anunciar las barras de herramientas",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pausa al reproducir/grabar",
 	UO_SILENCE_PREVIEW = "UOSilencePreview:Silenciar en vista previa",
-	UO_SILENCE_RECORD = "UOSilenceRecord:Silenciar al grabar"
+	UO_SILENCE_RECORD = "UOSilenceRecord:Silenciar al grabar",
+	UO_SAY_POSITION = "UOSayPosition:Anunciar posición",
+	UO_MOTION_PREVIEW = "UOMotionPreview:Vista previa de movimiento"
 
 Messages
 ; For user options.
@@ -67,6 +85,9 @@ Si se activa, desactiva la voz mientras se previsualiza un efecto.
 @@
 @msgUO_SilenceRecordHlp
 Si se activa, silencia la voz que tenga lugar cuando se haya empezado a grabar.
+@@
+@msgUO_SayPositionHlp
+Si se desactiva, no verbaliza anuncios de posición al pulsar las flechas en casos de vista previa. Si se activa, verbaliza todos los anuncios de posición.
 @@
 EndMessages
 
@@ -91,7 +112,8 @@ const
 	ksAudacityLayer1 = "JAWSKey+a",
 	ksAudacityLayer2 = "Insert+a",
 	ksPositionLayer = "p",
-	ksShortLayer = "c"
+	ksShortLayer = "c",
+	ksTempoLayer = "t"
 
 Const
 	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
@@ -120,6 +142,15 @@ Para verbalizar el valor de posición del audio, pulse %keyfor(SayActiveCursor).
 Para verbalizar el cursor activo mientras esté activo el del PC, pulse %keyfor(SayActiveCursor) dos veces rápidamente.
 Para verbalizar el tipo de selección actual (Audacity 2.2.0 y posteriores), pulse %KeyFor(SaySelectionType).
 Para establecer el tipo de selección (Audacity 2.2.0 y posteriores), pulse TeclaJAWS+a,p seguido de c (comienzo-final), l (final-longitud), f (longitud-final) o e (longitud-centro). También puede utilizar los números 1-4.
+Para verbalizar en la ventana principal los números de las pistas seleccionadas, pulse %KeyFor(SaySelectedText). Pulse dos veces rápidamente para verbalizar sus nombres.
+
+En el panel de pista y la barra de selección, para previsualizar el audio posterior perteneciente al comienzo de la selección, pulse %KeyFor(SayPriorWord)
+En el panel de pista y la barra de selección, para previsualizar el audio anterior perteneciente al final de la selección, pulse %KeyFor(SayNextWord)
+En el panel de pista y la barra de selección, para previsualizar el audio anterior no perteneciente al comienzo de la selección, pulse %KeyFor(SelectPriorWord)
+En el panel de pista y la barra de selección, para previsualizar el audio posterior no perteneciente al final de la selección, pulse, press %KeyFor(SelectNextWord)
+
+Para conmutar entre reproducir audio y verbalizar posición ante los comandos de movimiento del cursor, pulse %KeyFor(ToggleMotionPreview).
+Esto equivale a activar Vista Previa de Movimiento y desactivar Anunciar Posición, o desactivar Vista Previa de Movimiento y activar Anunciar Posición. De este modo puede alternar rápidamente entre oír la posición del cursor u oír el audio. Este cambio es temporal. No cambia el valor guardado de estas configuraciones y éstas volverán a sus valores en Configuración Rápida después de abrir Configuración Rápida o llevar el foco fuera de Audacity.
 
 Para aumentar la ganancia de la pista activa, pulse %keyfor (MouseUp).
 Para reducir la ganancia de la pista activa, pulse %keyfor (MouseDown).
@@ -138,6 +169,11 @@ Para marcar la pista actual, pulse %KeyFor(MarkTrack).
 Para ir a la pista marcada, pulse %KeyFor(GoToMarkedTrack).
 Para ir a la pista marcada y marcar la pista de partida, pulse %KeyFor(ExchangeWithMark).
 Para mover la pista actual a la posición de la pista marcada y fijar la marca en la pista actual, pulse %KeyFor(MoveCurrentTrackToMark).
+
+Para averiguar el tempo, pulse %KeyFor(TempoStartStop). Comienza la reproducción. Entonces pulse %KeyFor(TempoTap) por cada pulsación. (Una vez que ha entrado al nivel Tempo, sólo tiene que pulsar la última tecla de la secuencia de teclas del nivel Tempo.)
+Cuando haya terminado, vuelva a pulsar %KeyFor(TempoStartStop). Se detiene la reproducción y se anuncia el tempo en pulsaciones por minuto.
+Luego puede pulsar %KeyFor(TempoAnnounce) para volver a verbalizar el tempo o %KeyFor(TempoCopy) para copiarlo al portapapeles. El valor se conservará hasta que vuelva a pulsarse %KeyFor(TempoStartStop). Para evitar confusión, es buena idea pulsar ESC cuando termine con el nivel Tempo.
+El tempo se calcula dividiendo el tiempo de la última pulsación menos el tiempo de la primera, por el número de pulsaciones menos 1.
 
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
@@ -169,12 +205,13 @@ Para cambiar la URL de la Guía de JAWS para Audacity, pulse %keyfor (AddAudacit
 @msgAudacityLayerHelp
 Para ir a una pista por su número, pulse i.
 Para mover una pista por su número, pulse m.
-Para marcar la pista actual pulse, k.
+Para marcar la pista actual, pulse k.
 Para ir a la pista marcada, pulse Shift+I.
 Para intercambiar la pista actual con la marcada, pulse x.
 Para mover la pista actual a la marcada, pulse Shift+m.
 Para ingresar en el nivel para establecer o verbalizar el tipo de posición mostrada, pulse p.
-Para ingresar al nivel para verbalizar las secciones de audio cortas (Shift+F5-F8), pulse s.
+Para ingresar al nivel para verbalizar las secciones de audio cortas (Shift+F5-F8), pulse c.
+Para ingresar al nivel para averiguar el tempo, pulse t
 @@
 ;Speaks the name of the Position Display Type layer (from KeymapChangedEvent) when p is pressed.
 @msgPositionLayer_start
@@ -195,7 +232,25 @@ Shift+F5-F8, pulse j, k, l, ñ.
 Shift+Control+F5, F7 pulse Control+j, Control+ñ.
 c pulse c.
 @@
-
+@msgTempoLayer_Start
+tempo
+@@
+@msgTempoNoBeats
+no hay pulsaciones
+@@
+@msgTempoNoTempoStored
+No hay tempo almacenado
+@@
+;%1=tempo (i.e. 147.8)
+@msgTempoCopied
+Se copió %1
+@@
+@msgTempoLayerHelp
+Para comenzar/detener, pulse ESPACIO.
+Para marcar una pulsación, pulse ENTER.
+Para anunciarlo, pulse a.
+Para copiarlo al portapapeles, pulse c.
+@@
 @msgPresetHotkeyHelp
 Para llevar el foco a la opción predefinidos, pulse %keyfor (VSTPreset).
 Para cargar una predefinición existente, pulse %keyfor (VSTLoadPreset).
@@ -543,11 +598,21 @@ Las opciones de los scripts se restablecieron a sus valores predeterminados
 @msgNoSelection
 Para utilizar esta función, debe habilitar la barra de herramientas de selección
 @@
+;Audacity 2.1.3 and earlier
 @msgNoRecordingMeter
 Para utilizar esta función, debe habilitar las barras de herramientas de Medición de Grabación o Medición Combinada
 @@
+; Audacity 2.2.0
+@msgNoRecordingMeter22 
+Para utilizar esta función, debe habilitar el medidor de grabación
+@@
+;Audacity 2.1.3 and earlier
 @msgNoPlaybackMeter
 Para utilizar esta función, debe habilitar las barras de herramientas de Medición de Reproducción o Medición Combinada
+@@
+;Audacity 2.2.0
+@msgNoPlaybackMeter22 
+Para utilizar esta función, debe habilitar el medidor de reproducción
 @@
 @msg_Script_Version
 Versión de los scripts para JAWS %1, para Audacity 2.0.0 o posterior.
