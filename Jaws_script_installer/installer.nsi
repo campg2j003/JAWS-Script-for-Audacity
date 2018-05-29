@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2018-05-27
+Last updated: 2018-05-29
 
 Modifications:
 
@@ -128,13 +128,9 @@ ${Case} "deu" ; German
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
-${Case} "esn"
+${Case} "esn" ; Spanish
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
-${Break}
-${Case} "deu"
-  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
-  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
 ${Default}
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
@@ -195,12 +191,6 @@ ${AddItem} "$OUTDIR\readme_esn.html"
 File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.md"
 ;File "/oname=What's new_esn.md" "${JAWSSrcDir}lang\esn\" "What's new.md"
-${Break}
-${Case} "deu"
-${AddItem} "$OUTDIR\readme_deu.html"
-File "/oname=readme_deu.html" "${JAWSSrcDir}lang\deu\readme.html"
-;${AddItem} "What's new_deu.md"
-;File "/oname=What's new_deu.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
 ${Break}
 ${Default}
 ${AddItem} "$OUTDIR\readme_enu.html"
