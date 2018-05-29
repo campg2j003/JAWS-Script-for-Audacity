@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2018-03-02
+Last updated: 2018-05-27
 
 Modifications:
 
@@ -142,10 +142,11 @@ ${Default}
 ${Break}
 ${EndSwitch}
   ${If} $JAWSREADME == ""
-    ;no README location for the Finish page, set it to the first version we install.
+  ${OrIf} $1 == "$(JawsInstallerLanguage)"
+    ;no README location for the Finish page or this is the README for the current installer language, set it to the current installer language or the first version we install.
     StrCpy $JAWSREADME "$OUTDIR\${ScriptApp}_readme.html"
 DetailPrint "JAWSInstallScriptItems: JustScripts for $0/$1 setting $$JAWSREADME to $JAWSREADME" ; debug
-  ${EndIf} ;$JAWSREADME not yet set
+  ${EndIf} ;$JAWSREADME not yet set or current installer language
 ${EndIf} ;if just scripts
 pop $0
 !macroend ;JAWSInstallScriptItems
@@ -210,10 +211,11 @@ ${Break}
 ${EndSwitch}
 ;Set the location of the README file for the Finish page.
 ${If} $JAWSREADME == ""
-  ;no README location for the Finish page, set it to the first version we install.
+  ${OrIf} $1 == "$(JawsInstallerLanguage)"
+    ;no README location for the Finish page or this is the README for the current installer language, set it to the current installer language or the first version we install.
   StrCpy $JAWSREADME "$OUTDIR\readme_$1.html"
 DetailPrint "JAWSInstallFullItems: setting $$JAWSREADME (for lang $1) to $JAWSREADME" ; debug
-${EndIf} ;$JAWSREADME not yet set
+${EndIf} ;$JAWSREADME not yet set or installer language
 ${LoopUntil} $3 == ""
 pop $4
 pop $3
