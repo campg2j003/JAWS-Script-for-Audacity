@@ -13,7 +13,7 @@ Features:
 ;. Macro to copy script from all user to current user.
 
 Date created: Wednesday, July 11, 2012
-Last updated: 2018-05-27
+Last updated: 2018-05-29
 
 Modifications:
 
@@ -128,13 +128,9 @@ ${Case} "deu" ; German
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
-${Case} "esn"
+${Case} "esn" ; Spanish
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\esn\readme.html"
   ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\esn\What's new.md"
-${Break}
-${Case} "deu"
-  File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}lang\deu\readme.html"
-  ;File "/oname=$OUTDIR\${ScriptApp}_whatsnew.md" "${JAWSSrcDir}lang\deu\What's new.md"
 ${Break}
 ${Default}
   File "/oname=$OUTDIR\${ScriptApp}_readme.html" "${JAWSSrcDir}readme.html"
@@ -154,21 +150,18 @@ pop $0
 ;/*
 ;Items to be placed in the installation folder in a full install.
 !macro JAWSInstallFullItems
-push $0
 push $1
 push $2
 push $3
-push $4
 StrCpy $3 "enu|${JAWSScriptLangs}"
 ${Do}
 ;Why was this previously < (right to left)?
-${StrLoc} $0 $3 "|" ">"
-;$0 is position of |
-;DetailPrint "JAWSInstallFullItems: $$3='$3', $$0=$0," ; debug
-${If} $0 > 0
+${StrLoc} $2 $3 "|" ">"
+;$2 is position of |
+;DetailPrint "JAWSInstallFullItems: $$3='$3', $$2=$2," ; debug
+${If} $2 > 0
 ;We found a |
-;IntOp $2 $0  - 1 ;length of lang abbrev
-StrCpy $2 $0 ;$2 is length of abbrev.
+;$2 is length of abbrev.
 StrCpy $1 $3 $2 ;lang abbrev
 IntOp $2 $2 + 1 ;after the |
 StrCpy $3 $3 "" $2 ;Chop off the first element and its |
@@ -179,9 +172,7 @@ StrCpy $3 ""
 ${EndIf}
 ;$3 is remaining lang abbreviations.
 ; $1 is JAWS language abbreviation (folder in ${JAWSScriptSrc}lang).
-;$4 is either folder containing lang folders with trailing backslash or "" for default (enu).
 ;DetailPrint "  $$1='$1'" ; debug
-StrCpy $4 "lang\"
 ;Don't think we can use registers with ${File} etc.
 ${Switch} $1
 ${Case} "deu" ; German
@@ -195,12 +186,6 @@ ${AddItem} "$OUTDIR\readme_esn.html"
 File "/oname=readme_esn.html" "${JAWSSrcDir}lang\esn\readme.html"
 ;${AddItem} "What's new_esn.md"
 ;File "/oname=What's new_esn.md" "${JAWSSrcDir}lang\esn\" "What's new.md"
-${Break}
-${Case} "deu"
-${AddItem} "$OUTDIR\readme_deu.html"
-File "/oname=readme_deu.html" "${JAWSSrcDir}lang\deu\readme.html"
-;${AddItem} "What's new_deu.md"
-;File "/oname=What's new_deu.md" "${JAWSSrcDir}lang\deu\" "What's new.md"
 ${Break}
 ${Default}
 ${AddItem} "$OUTDIR\readme_enu.html"
@@ -217,11 +202,9 @@ ${If} $JAWSREADME == ""
 DetailPrint "JAWSInstallFullItems: setting $$JAWSREADME (for lang $1) to $JAWSREADME" ; debug
 ${EndIf} ;$JAWSREADME not yet set or installer language
 ${LoopUntil} $3 == ""
-pop $4
 pop $3
 pop $2
 pop $1
-pop $0
 
 ${File} "${JAWSSrcDir}" "readme_vi.html" ; Vietnamese README file
 !ifdef JAWSLicenseFile
