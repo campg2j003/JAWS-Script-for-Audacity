@@ -1,10 +1,11 @@
-(This file last updated 5/12/2018)
+(This file last updated 5/29/2018)
 
-# New in 2.2.0
+# New in 2.2.1
 ## Installer
 - Updated the installer to use Unicode.  This package now requires NSIS 3.0 or later.  All language message files should be in UTF-8 encoding.
 -   The installer now compiles scripts correctly for all languages during the install via the JAWSUtil.vbs script.  To use scompile directly without JAWSUtil.vbs, on the installer command line include `/compile=s'.  `/compile=n' will suppress compilation of scripts.
 - The installer offers to display the installer log on exit.
+- The installer displays the README of the selected installer language.
 - The installer no longer uninstalls an existing installation for a Just Script install type.
 
 ## Changes to the Scripts

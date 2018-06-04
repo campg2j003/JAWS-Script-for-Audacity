@@ -5,7 +5,7 @@
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
 Const CS_SCRIPT_VERSION = "2.2.1"
-;Last updated 2018-05-21T16:55Z
+;Last updated 2018-06-01T17:30Z
 
 ; This puts the copyright in the jsb file.
 Messages
