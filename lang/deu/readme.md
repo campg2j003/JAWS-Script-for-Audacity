@@ -1,4 +1,4 @@
-2017-12-21 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
+2018-06-04 JAWS skript für Audacity V2.0 (für Skript Version 2.2.0) von Gary Campbell <campg2003@gmail.com> und Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Dieses Jaws Skript Paket bietet Unterstützung für Audacity 2.0.0 und neuer einschliesslich Audacity 2.2.0.
 
@@ -216,10 +216,10 @@ Meldungen und String Konstanten für das Jaws Skript sind in den Dateien audacit
 
 Die Meldungstexte des Installers sind nun lokalisierbar. Die Meldungstexte wurden nun vom Programmcode getrennt, so dass für jede Sprache separate Message Sets präpariert werden können. Aktuell werden Englisch, Spanisch und Deutsch unterstützt. Meldungstexte sind in .nsh Header Dateien mit Dateinamen wie *_enu.nsh oder *_lang_enu.nsh deklariert.
 
-Dieses Paket wird jetzt auf GitHub gehostet. Das Repository ist unter <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Wenn Sie Änderungen an den Skripts veröffentlichen möchten, llesen Sie bitte [CONTRIBUTING.md](CONTRIBUTING.md) im repository.
+Dieses Paket wird jetzt auf GitHub gehostet. Das Repository ist unter <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Wenn Sie Änderungen an den Skripts veröffentlichen möchten, llesen Sie bitte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) im repository.
 
 # Hinweise für Übersetzer
-Beachte dass readme.html aus readme.md generiert wird, welche nur im GitHub Repository zu finden ist. Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für weitere Informationen.
+Beachte dass readme.html aus readme.md generiert wird, welche nur im GitHub Repository zu finden ist. Siehe [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) für weitere Informationen.
 
 Beachte, dass das Skript mit #pragma usePoFile 0 kompiliert wird.
 
