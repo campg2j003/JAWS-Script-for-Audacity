@@ -1,4 +1,4 @@
-﻿2017-12-12  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2018-06-04  Scripts de JAWS para Audacity V2.0 (para versión de los scripts 2.2.0) por Gary Campbell <campg2003@gmail.com> y Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 Este paquete de scripts de JAWS proporciona compatibilidad con Audacity 2.0.0 y posteriores, incluido Audacity 2.2.0.
 
@@ -150,7 +150,7 @@ Ahora los mensajes del instalador son traducibles. Ahora el texto de los mensaje
 Este paquete ahora se hospeda en GitHub. El repositorio está en <https://github.com/campg2j003/JAWS-Script-for-Audacity>. Si quiere colaborar con cambios en los scripts, por favor consulte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) en el repositorio.
 
 # Notas para traductores
-Observe que `readme.html` y `readme_vi.html` se generan desde `readme.md` y `readme_vi.md`, que sólo están disponibles a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
+Observe que `readme.html` y `readme_vi.html` se generan desde `readme.md` y `readme_vi.md`, que sólo están disponibles a través del repositorio en GitHub. Para más información, consulte [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md).
 
 # Créditos
 - Codificación de los scripts: Gary Campbell y Dang Manh Cuong <dangmanhcuong@gmail.com>

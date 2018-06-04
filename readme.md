@@ -1,4 +1,4 @@
-﻿2017-12-12  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2018-06-04  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
 
@@ -148,10 +148,10 @@ Messages and string constants for the JAWS script are in `audacity.jsm` and `aud
 
 The installer messages are now localizable.  The message text has now been separated from the installer code so that message sets can be prepared for each language.  English, German, and Spanish are currently supported.  Messages are in `.nsh` header files with names like `*_enu.nsh` or `*_lang_enu.nsh`.  These file's must also be in UTF-8 encoding.  NSIS 3.0 or later is required to build the installer.
 
-This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md](CONTRIBUTING.md) in the repository.
+This package is now hosted on GitHub.  The repository is at <https://github.com/campg2j003/JAWS-Script-for-Audacity>.  If you would like to contribute changes to the script, please see [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) in the repository.
 
 # Notes for Translators
-Note that `readme.html` and `readme_vi.html` are generated from `readme.md` and `readme_vi.md`, which are only available from the GitHub repository.  See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+Note that `readme.html` and `readme_vi.html` are generated from `readme.md` and `readme_vi.md`, which are only available from the GitHub repository.  See [CONTRIBUTING.md](https://github.com/campg2j003/JAWS-Script-for-Audacity/blob/master/CONTRIBUTING.md) for more information.
 
 # Credits
 - Script coding: Gary Campbell and Dang Manh Cuong <dangmanhcuong@gmail.com>
