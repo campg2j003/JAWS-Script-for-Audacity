@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.1"
-;Last updated 2018-06-01T17:30Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2018-10-25"
+;Last updated 2018-10-25T17:35Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -64,6 +64,12 @@ Const
 	ID_SELECTION_LENGTH = 2720,
 	ID_SELECTION_CENTER = 2721,
 	ID_AUDIO_POSITION = 2723,
+	;For Audacity 2.3.0 and later
+	ID_SELECTION_START_23 = 2705,
+	ID_SELECTION_END_23 = 2708,   ; selection end
+	ID_SELECTION_LENGTH_23 = 2706,
+	ID_SELECTION_CENTER_23 = 2707,
+	ID_AUDIO_POSITION_23 = 2709,
 
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	;For VST plugins
@@ -123,7 +129,14 @@ Globals
 	String gsGoTrackDownKey, ;key that moves focus to the next (higher numbered) track
 	String gsMoveTrackUpKey, ; key that moves a track up in the track panel (to lower-numbered tracks)
 	String gsMoveTrackDownKey, ; key that moves a track down in the track panel (to higher-numbered tracks)
-	Int giTrackMark ;Holds the number of the marked track, 0 if none
+	Int giTrackMark, ;Holds the number of the marked track, 0 if none
+	;Control ID values that change in different versions of Audacity.
+	Int giIDSelectionTypeCombo,
+	Int giIDSelectionStart,
+	Int giIDSelectionEnd,
+	Int giIDSelectionLength,
+	Int giIDSelectionCenter,
+	Int giIDAudioPosition
 
 ;Keys for playing previews with cursor motion keys.  These are executed after the motion commands so they play what we just moved over.
 Const
@@ -329,6 +342,7 @@ Let gfSilenceClearOnNext = FALSE
 Let gfPreviewing = FALSE
 Let gfInLabel = FALSE
 Let gfToggleMotionPreview = FALSE
+	;Let App_firsttime = False ; debug
 If !App_FirstTime Then
 	Let App_FirstTime=1
 	SayFormattedMessage (OT_NO_DISABLE, msg_App_Start)
@@ -363,6 +377,26 @@ If !App_FirstTime Then
 		Let gsJawsGuideLink = StringTrimTrailingBlanks (IniReadString (gsIniSection, "JAWSGuideLink", CS_JawsGuide_LINK, gsIniFile))
 	EndIf ; if before JAWS 13
 
+	;ID values that change in different versions of Audacity.
+	;If different Audacity versions can run simultaneously, this needs to be outside of If app_firsttime.
+	If CheckAudacityVersion ("2,2,0") Then
+		Let giIDSelectionTypeCombo = ID_SELECTION_TYPE_COMBO
+		Let giIDSelectionStart = ID_SELECTION_START_22
+		Let giIDSelectionEnd = ID_SELECTION_END_22
+		Let giIDSelectionLength = ID_SELECTION_LENGTH
+		Let giIDSelectionCenter = ID_SELECTION_CENTER
+		Let giIDAudioPosition = ID_AUDIO_POSITION
+	EndIf ; v2.2.0
+	
+	If CheckAudacityVersion ("2,3,0") Then
+		;Let giIDSelectionTypeCombo = ID_SELECTION_TYPE_COMBO
+		Let giIDSelectionStart = ID_SELECTION_START_23
+		Let giIDSelectionEnd = ID_SELECTION_END_23
+		Let giIDSelectionLength = ID_SELECTION_LENGTH_23
+		Let giIDSelectionCenter = ID_SELECTION_CENTER_23
+		Let giIDAudioPosition = ID_AUDIO_POSITION_23
+	EndIf ; v2.3.0
+	
 	;Set keys that move the focus up and down in the track panel.
 	Let gsGoTrackUpKey = "UpArrow"
 	Let gsGoTrackDownKey = "DownArrow"
@@ -857,34 +891,36 @@ Var
 	Int iSelectionType,
 	Int iId
 If CheckAudacityVersion("2,2,0") Then
-	Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+	;SayString("giIDSelectionTypeCombo " + IntToString(giIDSelectionTypeCombo)) ; debug
+	Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
 	;1=start end, 2= start length, 3= length end, 4=length center
 	If iPosition == ID_SELECTION_START Then
 		If iSelectionType == 1 Then ; start, end
-			Let iId = ID_SELECTION_START_22
+			Let iId = giIDSelectionStart
 		ElIf iSelectionType == 2 Then ; start, length
-			Let iId = ID_SELECTION_START_22
+			Let iId = giIDSelectionStart
 		ElIf iSelectionType == 3 Then ; length, end
-			Let iId = ID_SELECTION_LENGTH
+			Let iId = giIDSelectionLength
 		Else ; length, center
-			Let iId = ID_SELECTION_LENGTH
+			Let iId = giIDSelectionLength
 		EndIf ; else length center
 	Else
 		;iPosition = ID_SELECTION_END
 		If iSelectionType == 1 Then ; start, end
-			Let iId = ID_SELECTION_END_22
+			Let iId = giIDSelectionEnd
 		ElIf iSelectionType == 2 Then ; start, length
-			Let iId = ID_SELECTION_LENGTH
+			Let iId = giIDSelectionLength
 		ElIf iSelectionType == 3 Then ; length, end
-			Let iId = ID_SELECTION_END_22
+			Let iId = giIDSelectionEnd
 		Else ; length, center
-			Let iId = ID_SELECTION_CENTER
+			Let iId = giIDSelectionCenter
 		EndIf ; else length center
 	EndIf ; else ID_SELECTION_END
 Else
 	;2.1.3 or earlier.
 	Let iId = iPosition
 EndIf
+;SayString("GetPositionFieldID: type " + IntToString(iSelectionType) +", iId " + IntToString(iId)) ; debug
 Return iId
 EndFunction ; GetPositionFieldID
 
@@ -943,24 +979,27 @@ Else
 	;Do it
 	If CheckAudacityVersion("2,2,0") Then
 		;Audacity 2.2.0 and later
-		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
 		;1=start end, 2= start length, 3= length end, 4=length center
+		Let iId = GetPositionFieldID(ID_SELECTION_START)
 		If iSelectionType == 1 Then ; start, end
-			Let iId = ID_SELECTION_START_22
+			;Let iId = ID_SELECTION_START_22
 			Let sName = msgStart
 		ElIf iSelectionType == 2 Then ; start, length
-			Let iId = ID_SELECTION_START_22
+			;Let iId = ID_SELECTION_START_22
 			Let sName = msgStart
 		ElIf iSelectionType == 3 Then ; length, end
-			Let iId = ID_SELECTION_LENGTH
+			;Let iId = ID_SELECTION_LENGTH
 			Let sName = msgLength
 		Else ; length, center
-			Let iId = ID_SELECTION_LENGTH
+			;Let iId = ID_SELECTION_LENGTH
 			Let sName = msgLength
 		EndIf ; else length center
 	Else
+		;Before 2.2.0
 		Let iId = ID_SELECTION_START
 	EndIf ; else before 2.2.0
+	;SayString("iID=" + IntToString(iId)) ; debug
 	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
 	If (IsSameScript()) Then
 		SetFocus(hWnd)
@@ -971,7 +1010,10 @@ Else
 		Say (msgNoSelection, OT_ERROR)
 	Else
 		Let sMsg = FormatString(msgPositionField, sName, sValue)
+		;SayString("sName = " + sName + ", sValue = " + sValue) ; debug
+		;SayString("SayingMessage") ; debug
 		SayMessage (OT_NO_DISABLE, sMsg, sValue)
+		;SayString("after SayingMessage") ; debug
 	EndIf
 EndIf ; Else do it
 EndScript ; SaySelectionStart
@@ -1001,19 +1043,20 @@ ElIf DialogActive () || MenusActive () Then
 Else ; do it
 	If CheckAudacityVersion("2,2,0") Then
 		;Audacity 2.2.0 and later
-		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO))
+		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
+		Let iId = GetPositionFieldID(ID_SELECTION_END)
 		;1=start end, 2= start length, 3= length end, 4=length center
 		If iSelectionType == 1 Then ; start, end
-			Let iId = ID_SELECTION_END_22
+			;Let iId = ID_SELECTION_END_22
 			Let sName = msgEnd
 		ElIf iSelectionType == 2 Then ; start, length
-			Let iId = ID_SELECTION_LENGTH
+			;Let iId = ID_SELECTION_LENGTH
 			Let sName = msgLength
 		ElIf iSelectionType == 3 Then ; length, end
-			Let iId = ID_SELECTION_END_22
+			;Let iId = ID_SELECTION_END_22
 			Let sName = msgEnd
 		Else ; length, center
-			Let iId = ID_SELECTION_CENTER
+			;Let iId = ID_SELECTION_CENTER
 			Let		sName = msgCenter
 		EndIf ; else length center
 	Else
@@ -1245,7 +1288,7 @@ If (Not FocusInMainWindow () || IsSameScript () || Not IsPCCursor () || UserBuff
 EndIf
 If CheckAudacityVersion("2,2,0") Then
 	;Audacity 2.2.0 and later
-	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_AUDIO_POSITION)
+	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), giIDAudioPosition)
 Else
 	; Audacity 2.1.3 or earlier
 	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
@@ -1265,7 +1308,7 @@ Script SaySelectionType ()
 Var
 	String sText
 
-Let sText = GetWindowText (FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO), 0)
+Let sText = GetWindowText (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo), 0)
 SayMessage (OT_NO_DISABLE, sText, sText)
 EndScript ; SaySelectionType
 
@@ -1281,7 +1324,7 @@ Var
 	Handle hWnd,
 	Handle hFocus
 
-Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_TYPE_COMBO)
+Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo)
 Let iStart = GetCurrentItem (hWnd)
 If iStart == iType Then
 	PerformScript SaySelectionType ()
@@ -3015,16 +3058,30 @@ EndScript ; SelectNextLine
 
 Script SwitchChainsList ()
 ;Switch between the Chains and Chain Commands lists in the Edit Chains dialog.
+;In Audacity v2.3.0 this became the Manage Macros dialog.
 ;Feature suggested by Dang Manh Cuong
 ;Code given by Gary Campbell
 Var
 	Handle wnd,
 	Handle hReal,
 	Int iCurId,
-	String sMessage
+	String sMessage,
+	String sDlgTitle,
+	String sMsgChainsList,
+	String sMsgCmdsList
 
+
+If CheckAudacityVersion("2,3,0") Then
+	Let sDlgTitle = WN_MANAGE_MACROS
+	Let sMsgChainsList = msgMacros
+	Let sMsgCmdsList = msgMacroCommands
+Else
+	Let sDlgTitle = WN_EDIT_CHAINS
+	Let sMsgChainsList = msgChains
+	Let sMsgCmdsList = msgChainCommands
+EndIf ; else pre 2.3.0
 Let hReal = GetRealWindow (GetFocus ())
-If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
+If DialogActive () &&GetWindowName (hReal)==sDlgTitle Then
 	Let iCurId = GetControlID (GetFocus ())
 	If iCurId == ID_Chains_List Then
 		If CheckAudacityVersion ("2,0,4") Then ;The control IDs of Chain Commands list changed in Audacity 2.0.4. 
@@ -3034,10 +3091,10 @@ If DialogActive () &&GetWindowName (hReal)==WN_EDIT_CHAINS Then
 			;pre 2.0.4
 			Let		wnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_Chain_Cmds_List)
 		EndIf ;Check Audacity version
-		Let sMessage=msgChainCommands ;list of commands in the right list
+		Let sMessage=sMsgCmdsList ;list of commands in the right list
 	Else
 		Let wnd=FindDescendantWindow (hReal, ID_Chains_List)
-		Let sMessage=msgChains ;list of chains in the left list
+		Let sMessage=sMsgChainsList ;list of chains in the left list
 	EndIf ; Else neither list.
 	;SayString("Focus to " + IntToString(wnd)) ; debug
 	SetFocus (wnd)

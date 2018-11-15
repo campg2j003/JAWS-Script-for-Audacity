@@ -74,6 +74,7 @@ goto next
 "%programfiles%\nsis\makensis" "%BUILDDIR%\installer.nsi"
 goto next
 :tojaws
+@echo Compiling in %JAWSDIR%
 for %%i in (%SCRIPTSRC%) do copy /y %%i "%JAWSDIR%"
 if exist "%SCOMPILE%" goto scompileexists
 echo Could not find script compiler %scompile%

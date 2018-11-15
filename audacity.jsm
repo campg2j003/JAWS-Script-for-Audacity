@@ -1,4 +1,4 @@
-﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2017-09-30.
+﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2018-10-24.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -31,7 +31,8 @@ Const
 	WN_RECORDING_METER_TOOLBAR = "Recording Meter", ;window name of Recording Meter toolbar
 	WN_PLAYBACK_METER_TOOLBAR = "Playback Meter", ;window name of Playback Meter toolbar
 	WN_COMBINED_METER_TOOLBAR = "Combined Meter", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
-	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog
+	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog before 2.3.0
+	WN_MANAGE_MACROS = "Manage Macros", ; name of the Manage Macros dialog (v2.3.0 equivalent of Edit Chains)
 	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
 	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
@@ -636,12 +637,19 @@ Read the files directly from the original (faster)
 Don't warn again and always use my choice above
 @@
 
-;Messages for the two lists in the Edit Chains dialog.
+;Messages for the two lists in the Edit Chains dialog before 2.3.0.
 @msgChains
 Chains
 @@
 @msgChainCommands
 Chain commands
+@@
+;Messages for the two lists in the Edit Chains dialog for 2.3.0.
+@msgMacros
+Macros
+@@
+@msgMacroCommands
+Macro commands
 @@
 ;for changing Jaws guide's link
 @msgNoChange_l
