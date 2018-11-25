@@ -1,4 +1,13 @@
-(This file last updated 5/29/2018)
+(This file last updated 11/25/2018)
+
+# New in 2.2.2-beta-2018-10-25
+- Converted for Audacity 2.3.0.
+
+Audacity script key and hot key help have not been updated.
+
+Silence Preview may not work, or the silence flag may not be cleared-- switch away and back to Audacity to fix this.
+
+
 
 # New in 2.2.1
 ## Installer
