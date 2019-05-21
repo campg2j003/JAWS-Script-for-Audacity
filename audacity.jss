@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2018-10-25"
-;Last updated 2018-10-25T17:35Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-04-28"
+;Last updated 2019-04-28T20:10Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -2909,7 +2909,10 @@ Var
 	Int iTrackCount,
 	Int iState,
 	Int iMSAAMode
-
+	;After moving to a lable with ALT+RIght/LeftArrow you must change to a different track (and back) for the track to test as selected.  We disable this test until this is fixed in Audacity or a work-around is found.
+	If True Then
+		Return TRUE
+	EndIf
 If NoProject () Then
 	Return FALSE
 Else
