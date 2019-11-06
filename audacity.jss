@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-04-28"
-;Last updated 2019-04-28T20:10Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-11-06"
+;Last updated 2019-11-06T07:23Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -781,6 +781,24 @@ Handle Function GetToolbar ()
 Return GetParent(GetFocus())
 EndFunction ; GetToolbar
 
+Handle Function FindToolbar(String sToolbar)
+;Find toolbar sToolbar.
+Var
+	Handle hTemp,
+	Handle hTemp2
+Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
+;In Audacity 2.3.3 this is TopPanel, and toolbars are children of this window.
+Let hTemp2 = FindWindow (hTemp, "", sToolbar)
+If !hTemp2 Then
+	;Pre Audacity v2.3.3
+	Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
+	Let hTemp = FindWindow (hTemp, "", sToolbar)
+Else
+	Let hTemp = hTemp2
+EndIf ;if pre 2.3.3
+Return hTemp
+EndFunction ; FindToolbar
+	
 Int Function FocusInMainWindow ()
 ;Returns True if the focused control is in the main window, False otherwise.  Returns False in dialog, menus or context menu.
 Var
@@ -2201,8 +2219,8 @@ Var
 	Int iTemp
 
 Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
-Let hTemp = GetNextWindow (hTemp) ; parent of toolbars
-Let hTemp = FindWindow (hTemp, "", WN_TRANSPORT_TOOLBAR)
+	;In Audacity 2.3.3 this is TopPanel, and toolbars are children of this window.
+Let hTemp = FindToolbar (WN_TRANSPORT_TOOLBAR)
 If !hTemp Then
 	Return ST_NOTOOLBAR
 EndIf ; if no transport toolbar
@@ -3137,10 +3155,7 @@ If DialogActive () || !FocusInMainWindow () || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	Return
 EndIf
-Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
-Let hParent = GetNextWindow (hTemp) ; parent of toolbars
-; hParent is the grandparent on Audacity v2.1.3, but that's okay.
-Let hTemp = FindWindow (hParent, "", WN_RECORDING_METER_TOOLBAR)
+Let hTemp = FindToolbar (WN_RECORDING_METER_TOOLBAR)
 If hTemp Then
 	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
 EndIf 
@@ -3188,9 +3203,7 @@ If DialogActive () || !FocusInMainWindow ()  || gfInLabel Then
 	SayCurrentScriptKeyLabel ()
 	Return
 EndIf
-Let hTemp = GetFirstChild (GetAppMainWindow (GetFocus()))
-Let hParent = GetNextWindow (hTemp) ; parent of toolbars
-Let hTemp = FindWindow (hParent, "", WN_PLAYBACK_METER_TOOLBAR)
+Let hTemp = FindToolbar (WN_PLAYBACK_METER_TOOLBAR)
 If hTemp Then
 	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
 EndIf

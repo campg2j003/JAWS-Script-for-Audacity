@@ -653,11 +653,16 @@ Respects AnnounceMessage.
 :Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
 
 :Script ToggleMotionPreview
-:synopsis Temporarily turns SayPosition off and PreviewMotion on.
+:Synopsis Temporarily turns SayPosition off and PreviewMotion on.
 :Description When turned on temporarily turns SayPosition off and PreviewMotion on.  When turned off restores them to their Quick Settings.  This is turned off when focus returns to the program.
 
 :Function SayWindowTypeAndText
 :Description Respects gfSilence and gfSilenceClearOnNext.
 :Returns void no return description
 :Param handle/hWnd
+
+:Function FindToolbar
+:Synopsis Return the window handle of the named toolbar.
+:Returns handle Handle of the toolbar window or 0 if not found.
+:Param string/sToolbar Name of the toolbar window.
 
