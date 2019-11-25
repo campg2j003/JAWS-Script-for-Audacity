@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-11-06"
-;Last updated 2019-11-06T07:23Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-11-10"
+;Last updated 2019-11-10T17:03Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1735,6 +1735,8 @@ ElIf !IsTrackSelected () Then
 	Return
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgStart, msgSelectedTracks))
+	Pause ()
+	delay(10)
 	Pause ()
 	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 EndIf
