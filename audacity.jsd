@@ -611,7 +611,8 @@ Respects AnnounceMessage.
 :Synopsis Speaks Tempo layer key help.
 
 :Function GetSelectedTracks
-:Returns string :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+:Returns string
+:Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
 
 :Script DownCell
 :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
