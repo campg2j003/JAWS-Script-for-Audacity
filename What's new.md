@@ -1,4 +1,7 @@
-(This file last updated 5/21/2019)
+(This file last updated 11/24/2019)
+
+# New in 2.2.2-beta-2019-11-10
+- Update for Audacity 2.3.3.  Added function FindToolbar to find a toolbar.  Updated GetAudacityState, SayPlaybackMeter, and SayRecordingMeter.
 
 # New in 2.2.2-beta-2019-04-28
 - Disabled check for selected track in IsTrackSelected.  This avoids a problem when using Alt+Left/RightArrow to move between labels (and many other keys) which requires you to change tracks before the tracks report as selected.
