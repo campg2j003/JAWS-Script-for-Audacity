@@ -1,5 +1,7 @@
-(This file last updated 11/24/2019)
+(This file last updated 12/5/2019)
 
+# New in 2.2.2-beta-2019-12-02.
+- Added code to handle speaking position after cursor motion commands. What still do not work are SelectionStart and SelectionEnd.
 # New in 2.2.2-beta-2019-11-10
 - Update for Audacity 2.3.3.  Added function FindToolbar to find a toolbar.  Updated GetAudacityState, SayPlaybackMeter, and SayRecordingMeter.
 

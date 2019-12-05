@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-11-10"
-;Last updated 2019-11-10T17:03Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-12-02"
+;Last updated 2019-12-02T06:00Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -119,6 +119,9 @@ Globals
 	Handle ghNull, ; to clear a handle
 	;When focus is on a slider with an associated edit, this holds the handle of the associated edit so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 when focus moves away from the slider.
 	Handle ghSliderEdit,
+	;When a position field is scheduled to be spoken after cursor motion completes, this holds the handle of the associated position field so that it will be spoken by SayNonHighlightedText.  Be sure to set this to 0 after the field is spoken.
+	Handle ghSayPositionField,
+	Int gfPositionFieldUpdated,
 	Int gfPreviewing, ;true if effect previewing
 	Int gfSilence, ; If true, suppresses speech .
 	Int gfSilenceClearOnNext, ;clear gfSilence after next HandleCustomWindows or SayFocusedObject
@@ -413,11 +416,31 @@ Void Function SayNonHighlightedText (Handle hwnd, String buffer)
 If ghSliderEdit && hwnd == ghSliderEdit Then
 	Say (buffer, OT_NONHIGHLIGHTED_SCREEN_TEXT)
 EndIf
+If ghSayPositionField && hwnd == ghSayPositionField Then
+	Let gfPositionFieldUpdated = True
+EndIf
+/*
+If ghSayPositionField && hwnd == ghSayPositionField Then
+	Say (FormatPositionField(buffer), OT_NONHIGHLIGHTED_SCREEN_TEXT)
+	Let ghSayPositionField = ghNull
+EndIf
+*/
 SayNonHighlightedText (hwnd, buffer)
 ;SayString("Exit SayNonHighlighted") ; debug
 EndFunction ; SayNonHighlightedText
 
-Int Function NewTextEventShouldBeSilent(Handle hFocus, Handle hwnd, String buffer, Int nAttributes,
+Void Function ScreenStabilizedEvent(Handle hWnd)
+;SayString("ScreenStab " + IntToString(hWnd)) ;debug
+If ghSayPositionField  && gfPositionFieldUpdated Then
+	;SayString("Stab position") ; debug
+	Say (GetPositionField(ghSayPositionField), OT_NONHIGHLIGHTED_SCREEN_TEXT)
+	Let ghSayPositionField = ghNull
+	Let gfPositionFieldUpdated = False
+EndIf
+ScreenStabilizedEvent(hWnd)
+EndFunction ;ScreenStabilizedEvent
+
+	Int Function NewTextEventShouldBeSilent(Handle hFocus, Handle hwnd, String buffer, Int nAttributes,
 	Int nTextColor, Int nBackgroundColor, Int nEcho, String sFrameName)
 Var
 	Int iRtn
@@ -819,42 +842,50 @@ String Function GetPositionField (Handle hWnd)
 ;We don't receive a control ID because of Audio Position field.
 Var
 	String s,
+	Int iMSAAMode,
+	Object obj,
+	Int iTemp
+
+Let s = GetWindowText(hWnd, 0)
+If s == "" Then
+	;Try to get the text with MSAA.
+	;/*
+	Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
+	SetJCFOption (OPT_MSAA_MODE, 2)
+	Let obj = GetObjectFromEvent(hWnd, -4, 0, iTemp)
+	If obj Then
+		Let s = obj.accName(0)
+	EndIf
+	SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
+	;*/ ; objectFromEvent
+	/*
+	;This seems to work no better than GetObjectFromEvent, but it does work the same.  It is similar to the code in UtilitySayMSAAObjectInfo for object name, however, Script Utility F9 speaks the letters and . that this does not.
+	Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
+	SetJCFOption (OPT_MSAA_MODE, 2)
+	SaveCursor ()
+	InvisibleCursor ()
+	MoveToWindow (hWnd)
+	Pause ()
+	Let s = GetObjectName (True)
+	RestoreCursor ()
+	SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
+	*/ ;invisible cursor and GetObjectName.
+EndIf ; if s==""
+
+Return FormatPositionField (s)
+EndFunction ; GetPositionField
+
+String  Function FormatPositionField(String s)
+;Format string s for speaking.
+;s: position field as retrieved from window.
+Var
 	String s1,
 	String s2,
 	String s3,
 	String s4,
 	Int i,
 	Int j,
-	Int iRtn,
-	Int iMSAAMode,
-	Object obj,
-	Int iTemp
-
-Let s = GetWindowText(hWnd, 0)
-	If s == "" Then
-		;Try to get the text with MSAA.
-		;/*
-		Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
-		SetJCFOption (OPT_MSAA_MODE, 2)
-		Let obj = GetObjectFromEvent(hWnd, -4, 0, iTemp)
-		If obj Then
-			Let s = obj.accName(0)
-		EndIf
-		SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
-		;*/ ; objectFromEvent
-		/*
-		;This seems to work no better than GetObjectFromEvent, but it does work the same.  It is similar to the code in UtilitySayMSAAObjectInfo for object name, however, Script Utility F9 speaks the letters and . that this does not.
-		Let iMSAAMode = GetJCFOption (OPT_MSAA_MODE)
-		SetJCFOption (OPT_MSAA_MODE, 2)
-		SaveCursor ()
-		InvisibleCursor ()
-		MoveToWindow (hWnd)
-		Pause ()
-		Let s = GetObjectName (True)
-		RestoreCursor ()
-		SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
-		*/ ;invisible cursor and GetObjectName.
-	EndIf ; if s==""
+	Int iRtn
 
 ;Remove "uninteresting" stuff from the position, like leading zeros and ".000"
 ;A position can be in several formats, such as "0 0  h 0 0  m 0 0 .0 0 0  s " or "0 0 0 ,0 0 0  seconds ".
@@ -902,7 +933,7 @@ EndIf ; if decimal
 ;Don't say leading parts if they are 0.
 
 Return s2
-EndFunction ; GetPositionField
+EndFunction ;FormatPositionField
 
 Int Function GetPositionFieldID(Int iPosition)
 Var
@@ -972,6 +1003,13 @@ EndIf ;say selection position
 ;EndIf ; AnnounceOn
 Return TRUE
 EndFunction ; SayPositionField
+
+Void Function SchedulePositionField(Int iPosition)
+;Schedule a position field to be spoken after cursor motion completes and the field is updated.
+;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
+Let ghSayPositionField = GetPositionFieldHandle(iPosition)
+;SayString("Scheduling " + IntToString(ghSayPositionField)) ; debug
+EndFunction ;SchedulePositionField
 
 Script SaySelectionStart ()
 ;Say the value of the Selection Start field.
@@ -1591,7 +1629,8 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_END)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_END_FORWARD)
@@ -1618,7 +1657,8 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_END)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_END_BACKWARD)
@@ -1645,7 +1685,8 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_START)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
@@ -1678,7 +1719,8 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_START)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_BACKWARD)
@@ -1718,7 +1760,8 @@ If IsPCCursor () &&FocusInTrackPanel () && !UserBufferIsActive () && !gfInLabel 
 	JawsEnd () ; do End without speaking key label
 	SayFormattedMessage (OT_POSITION, FormatString (msgMoveTo, msgEnd, msgAllAudio))
 	If gfSayPosition > CI_SAY_POSITION_NONE Then
-		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_END)
 	EndIf
 Else
 	PerformScript JawsEnd ()
@@ -1736,9 +1779,10 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgStart, msgSelectedTracks))
 	Pause ()
-	delay(10)
-	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	;delay(10)
+	;Pause ()
+	;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	SchedulePositionField(ID_SELECTION_START)
 EndIf
 EndScript ; MoveToStartOfSelectedTracks
 
@@ -1752,7 +1796,8 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgMoveTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	SchedulePositionField(ID_SELECTION_START)
 EndIf
 EndScript ; MoveToEndOfSelectedTracks
 
@@ -1767,7 +1812,8 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgStart, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+	SchedulePositionField(ID_SELECTION_START)
 EndIf
 EndScript ; SelectToBeginning
 
@@ -1782,7 +1828,8 @@ ElIf !IsTrackSelected () Then
 Else
 	AnnounceKeyMessage (FormatString (msgSelectTo, msgEnd, msgSelectedTracks))
 	Pause ()
-	SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+	SchedulePositionField(ID_SELECTION_END)
 EndIf
 EndScript ; SelectToEnd
 
@@ -1816,7 +1863,8 @@ If IsPCCursor ()&&FocusInTrackPanel ()&&!UserBufferIsActive () && !gfInLabel && 
 	EndIf ;AnnounceMessage
 	If gfSayPosition > CI_SAY_POSITION_NONE Then
 		Pause ()
-		SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_END)
 	EndIf ;if gfSayPosition
 Else
 	PerformScript SelectToEndOfLine ()
@@ -1890,7 +1938,8 @@ If IsStopped () Then
 	TypeCurrentScriptKey ()
 	Pause ()
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_START)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_BACKWARD)
@@ -1924,7 +1973,8 @@ If IsStopped () Then
 	TypeCurrentScriptKey ()
 	Pause ()
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_START)
 	EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
@@ -2900,21 +2950,25 @@ Script SayJump ()
 ;Var
 ;Handle hWnd
 
-TypeCurrentScriptKey ()
 If !UserBufferIsActive ()&&FocusInTrackPanel () && NoProject () Then
+	TypeCurrentScriptKey ()
 	SayNoProject ()
 	Return
 ElIf !UserBufferIsActive ()&&FocusInTrackPanel () && !gfInLabel && (gfSayPosition || gfPreviewMotion) && IsStopped () Then
-	Pause ()
+	;Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
+	;TypeCurrentScriptKey () ;if we use SayPositionField
 	If gfSayPosition Then
-		SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-	EndIf
+		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
+		SchedulePositionField(ID_SELECTION_START)
+	EndIf ;if gfSayPosition
+	TypeCurrentScriptKey () ; should come after SchedulePositionField
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_AFTER)
-	EndIf
+	EndIf ;if gfPreviewMotion
 Else
+	TypeCurrentScriptKey ()
 	SayCurrentScriptKeyLabel ()
 EndIf
 EndScript ; SayJump
@@ -3286,8 +3340,11 @@ Var String s,
 	Handle hTemp
 
 ;/*
-SayString("gfSayPosition = " + IntToString(gfSayPosition)) ; debug
+SayString("ghSayPositionField = " + IntToString(ghSayPositionField) + "," + IntToString(gfPositionFieldUpdated)) ; debug
 ;*/
+/*
+SayString("gfSayPosition = " + IntToString(gfSayPosition)) ; debug
+*/
 /*
 SayString("FocusInSelectionBar = " + IntToString(FocusInSelectionBar ())) ; debug
 */

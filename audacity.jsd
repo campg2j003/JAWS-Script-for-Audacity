@@ -611,8 +611,8 @@ Respects AnnounceMessage.
 :Synopsis Speaks Tempo layer key help.
 
 :Function GetSelectedTracks
-:Returns string
 :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
+:Returns string no return description
 
 :Script DownCell
 :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
@@ -666,4 +666,12 @@ Respects AnnounceMessage.
 :Synopsis Return the window handle of the named toolbar.
 :Returns handle Handle of the toolbar window or 0 if not found.
 :Param string/sToolbar Name of the toolbar window.
+
+:Function FormatPositionField
+:Returns string no return description
+:Param string/s
+
+:Function SchedulePositionField
+:Returns void no return description
+:Param int/iPosition
 
