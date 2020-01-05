@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2019-12-02"
-;Last updated 2019-12-02T06:00Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-01-05"
+;Last updated 2020-01-05T16:30Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -13,7 +13,7 @@ Messages
 @msgCopyright
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacityteam.org).
 
-    Copyright (C) 2012-2018  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2020  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -236,6 +236,9 @@ ElIf NoProject () Then
 	SayNoProject ()
 	Return
 ElIf FocusInMainWindow () Then
+	If GetQuickSetting ("AnnounceMessage") Then
+		SchedulePositionField(iPosition)
+	EndIf ; AnnounceOn
 	TypeCurrentScriptKey ()
 	Pause () ;Wait for possible appearance of Boundary Position dialog.
 	If !DialogActive () Then
@@ -244,12 +247,13 @@ ElIf FocusInMainWindow () Then
 		If GetQuickSetting ("AnnounceMessage") Then
 			;Do not use SayPositionField because the message is spoken before the value but only if the value is available.
 			Let wnd=GetPositionFieldHandle (iPosition)
-			Let sValue=GetPositionField (wnd) ;get value of desired control
+			Let sValue=GetPositionField (wnd) ;get value of desired control, used only to make sure the selection bar is visible.
 			If !sValue Then ;the selection toolbar is turned off
 				Say (msgNoSelection, OT_ERROR)
+				Let ghSayPositionField = ghNull
 			Else
-				SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
-				SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
+				;SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
+				;SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
 			EndIf ;say selection position
 		EndIf ; AnnounceOn
 	EndIf ; if !DialogActive
@@ -411,7 +415,7 @@ EndIf ; if first time
 EndFunction ; AutoStartEvent
 
 Void Function SayNonHighlightedText (Handle hwnd, String buffer)
-;SayString("Enter SayNonHighlighted") ; debug
+;SayString("Enter SayNonHighlighted " + IntToString(hwnd) + " " + buffer) ; debug
 ;If we are monitoring an edit associated with a slider, speak it.
 If ghSliderEdit && hwnd == ghSliderEdit Then
 	Say (buffer, OT_NONHIGHLIGHTED_SCREEN_TEXT)
