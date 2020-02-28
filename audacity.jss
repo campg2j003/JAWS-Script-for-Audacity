@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-01-05"
-;Last updated 2020-01-05T16:30Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-02-28"
+;Last updated 2020-02-28T22:29Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -245,14 +245,16 @@ ElIf FocusInMainWindow () Then
 		Pause ()
 		;If the Announce Messages option is on, speak the selection posision.
 		If GetQuickSetting ("AnnounceMessage") Then
+			;We can't do this above because we don't want to do it if a dialog appears after the keypress.
 			;Do not use SayPositionField because the message is spoken before the value but only if the value is available.
 			Let wnd=GetPositionFieldHandle (iPosition)
 			Let sValue=GetPositionField (wnd) ;get value of desired control, used only to make sure the selection bar is visible.
 			If !sValue Then ;the selection toolbar is turned off
 				Say (msgNoSelection, OT_ERROR)
-				Let ghSayPositionField = ghNull
+				Let ghSayPositionField = ghNull;undo SchedulePositionField
 			Else
-				;SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
+				SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sMessage, sMessage)
+				;From before speaking with SayNonhighlighted/ScreenStabilizedEvent.
 				;SayFormattedMessage (OT_USER_REQUESTED_INFORMATION, sValue, sValue)
 			EndIf ;say selection position
 		EndIf ; AnnounceOn

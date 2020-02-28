@@ -1,7 +1,7 @@
-(This file last updated 12/5/2019)
+(This file last updated 2/28/2020)
 
-# New in 2.2.2-beta-2019-12-02.
-- Added code to handle speaking position after cursor motion commands. What still do not work are SelectionStart and SelectionEnd.
+# New in 2.2.2-beta-2020-02-28.
+- Added code to handle speaking position after cursor motion commands. When this implementation speaks it speaks updated information, but it doesn't always speak.  An alternative implementation always speaks, but sometimes the screen has not yet been updated.
 # New in 2.2.2-beta-2019-11-10
 - Update for Audacity 2.3.3.  Added function FindToolbar to find a toolbar.  Updated GetAudacityState, SayPlaybackMeter, and SayRecordingMeter.
 
