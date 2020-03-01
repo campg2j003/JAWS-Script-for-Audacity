@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-02-29"
-;Last updated 2020-02-29T23:08Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-03-01"
+;Last updated 2020-03-01T01:13Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -638,7 +638,7 @@ If DialogActive ()&&sName==WN_QUICK_SETTINGS Then
 	Return
 EndIf ;quick settings dialog
 
-If DialogActive () && sName == WN_EQUALIZATION && GetWindowSubtypeCode (hFocus) == WT_UPDOWNSLIDER Then
+If DialogActive () && (sName == WN_EQUALIZATION || sName == WN_GRAPHIC_EQ) && GetWindowSubtypeCode (hFocus) == WT_UPDOWNSLIDER Then
 	Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
 	SetJCFOption (OPT_MSAA_MODE, 2)
 	SayControlEx(hFocus, 
@@ -3046,21 +3046,71 @@ EndIf
 EndScript ; SayLine
 
 Script SayPriorLine ()
+Var
+	String sName,
+	Handle hFocus,
+	Int iMSAA_JCFOpt
+
 Let gfInLabel = FALSE
 If IsPCCursor () && NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
+
+If IsPCCursor () && DialogActive () Then
+	Let hFocus = GetFocus ()
+	Let sName=GetWindowName (GetRealWindow (GetCurrentWindow ()))
+	If (sName == WN_EQUALIZATION || sName == WN_GRAPHIC_EQ) && GetWindowSubtypeCode (hFocus) == WT_UPDOWNSLIDER Then
+		PriorLine ()
+		Pause ()
+		Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
+		SayControlEx(hFocus, 
+		"", cScSpace,   ; control name, type
+		"",   ; control state
+		"", "",   ; Container name, type
+		GetObjectValue (), "",   ; value, position
+		"")   ; dialog text
+		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
+		Return TRUE
+	EndIf ;Equalizer dlg
+EndIf ; dialog active
+
 PerformScript SayPriorLine ()
 EndScript ; SayPriorLine
 
 
 Script SayNextLine ()
+Var
+	String sName,
+	Handle hFocus,
+	Int iMSAA_JCFOpt
+
 Let gfInLabel = FALSE
 If IsPCCursor () && NoProject () Then
 	SayNoProject ()
 	Return
 EndIf ; if no project
+
+If IsPCCursor () && DialogActive () Then
+	Let hFocus = GetFocus ()
+	Let sName=GetWindowName (GetRealWindow (GetCurrentWindow ()))
+	If (sName == WN_EQUALIZATION || sName == WN_GRAPHIC_EQ) && GetWindowSubtypeCode (hFocus) == WT_UPDOWNSLIDER Then
+		NextLine ()
+		Pause ()
+		Let iMSAA_JCFOpt = GetJCFOption (OPT_MSAA_MODE)
+		SetJCFOption (OPT_MSAA_MODE, 2)
+		SayControlEx(hFocus, 
+		"", cScSpace,   ; control name, type
+		"",   ; control state
+		"", "",   ; Container name, type
+		GetObjectValue (), "",   ; value, position
+		"")   ; dialog text
+		SetJCFOption (OPT_MSAA_MODE, iMSAA_JCFOpt)
+		Return TRUE
+	EndIf ;Equalizer dlg
+EndIf ; dialog active
+
 PerformScript SayNextLine ()
 EndScript ; SayNextLine
 

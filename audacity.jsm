@@ -1,9 +1,9 @@
-﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2018-10-24.
+﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-02-29.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
 
-    Copyright (C) 2012-2018  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2020  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ Const
 	WN_EDIT_CHAINS = "Edit Chains", ; name of the Edit Chains dialog before 2.3.0
 	WN_MANAGE_MACROS = "Manage Macros", ; name of the Manage Macros dialog (v2.3.0 equivalent of Edit Chains)
 	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+	WN_GRAPHIC_EQ "Graphic EQ", ;name of the equalization dialog in v2.3.3
 	WN_QUICK_SETTINGS = "QuickSettings - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparing preview", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Previewing", ;appears in progress dialog while previewing effects
