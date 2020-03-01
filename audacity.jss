@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-02-28"
-;Last updated 2020-02-28T22:29Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-02-29"
+;Last updated 2020-02-29T23:08Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -224,7 +224,6 @@ Void Function SaySelectionPosition (Int iPosition, String sMessage)
 ;iPosition - control ID of the selection position control.
 ;sMessage - Spoken message
 ;Designed for use by SelectionStart and SelectionEnd scripts.  Checks to see if Set Selection Boundary dialog appears.
-;This function now uses the method of saying selection start and end position, from Gary Campbell.
 Var
 	Handle wnd, ;the window containing the selection bar
 	String sValue ;the selection field value 
@@ -263,7 +262,9 @@ EndIf ; If FocusInMainWindow
 EndFunction ; SaySelectionPosition
 
 Void Function MarkerMovement (String sScript, String sAlert)
-;Used for marker scripts, such as move start of selection to the left by a small amount
+;Used by scripts that move the ends of the selection, such as move start of selection to the left by a small amount.
+;sScript - name of script to perform.  This is used only when not in main window.
+;sAlert - message to be spoken.
 ;First, check to make sure we have a project open.
 If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () && !gfInLabel Then
 	If NoProject () Then
@@ -275,6 +276,7 @@ If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () && !gfInLabel Th
 		SayFormattedMessage (OT_CURSOR, sAlert) ;The alert specified by calling script
 	EndIf ; if AnnounceOn
 Else
+	;Why not just type current script key?
 	;Not main window, perform the specified script, passed as a parameter. This method suggested by Doug Lee
 	FormatStringWithEmbeddedFunctions("<$" +sScript +">") ;instead of PerformScript method. 
 EndIf ; else not main window
@@ -1537,14 +1539,6 @@ SayMessage(OT_JAWS_MESSAGE, msgLoadingJawsGuide_L, msgLoadingJawsGuide_S)
 Run(gsJawsGuideLink)
 EndFunction ; ShowJawsGuide
 
-/*
-Int Function IsWinKeyHelp()
-;This causes Hotkey and window key help to display links to default JAWS and Windows hotkeys.  To use it we could make it return a global that we set in AudacityHotKeyHelp.
-Return True
-EndFunction
-*/
-
-
 Script AudacityKeysHelp ()
 If !IsSameScript() && FocusInMainWindow() Then
 	If UserBufferIsActive () Then
@@ -1989,11 +1983,6 @@ If IsStopped () Then
 Else
 	;Not stopped.
 	TypeCurrentScriptKey ()
-/*
-Else
-	;Stopped, AnnounceMessages off.
-	PerformScript SayNextCharacter ()
-*/
 EndIf ; else not stopped
 EndScript ; SayNextCharacter
 

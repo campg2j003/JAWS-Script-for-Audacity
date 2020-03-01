@@ -3,7 +3,7 @@
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
 
-    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2012-2018  Gary Campbell and Dang Manh Cuong.  All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -1,6 +1,4 @@
-﻿:script for
-
-:function AnnounceOn
+﻿:function AnnounceOn
 :Synopsis Indicate whether messages related to certain Audacity operations should be spoken
 :Returns int True if messages should be spoken
 :Param string/sKey No Description
@@ -20,6 +18,8 @@
 :Category Positioning
 
 :function MarkerMovement
+:Synopsis Used by scripts for keys that move the ends of the selection.
+:Description sScript is used only when not in the main window.  In the main window the current script key is executed.
 :Param string/sScript The script to be performed.
 :Param string/sAlert The alert message to be spoken
 
@@ -59,8 +59,14 @@
 :Description When focus is on a toolbar control returns the handle of the toolbar containing the control
 :Returns handle toolbar containing the current control
 
+:Function FindToolbar
+:Synopsis Return the window handle of the named toolbar.
+:Returns handle Handle of the toolbar window or 0 if not found.
+:Param string/sToolbar Name of the toolbar window.
+
 :function FocusInMainWindow
-:Returns int No Return Description
+:Description Indicates if the focus is in the main window.
+:Returns int True if focus is in the main window
 
 :function GetPositionField
 :Description Get the value of one of the selection fields
@@ -87,8 +93,6 @@
 
 :function ShowJawsGuide
 :Description Runs the default web browser to display the Audacity Guide for JAWS web page.
-
-:function IsWinKeyHelp
 
 :script AudacityKeysHelp
 :Synopsis Displays Audacity shortcut keys in the virtual viewer.
@@ -174,8 +178,12 @@ Respects AnnounceMessage.
 :Synopsis Similar to JAWSDelete.
 
 :script SayPriorCharacter
+:Synopsis Sends LefttArrow to the application.
+:Description In the track panel speaks cursor position and/or motion preview per user options.
 
 :script SayNextCharacter
+:Synopsis Sends RightArrow to the application.
+:Description In the track panel speaks cursor position and/or motion preview per user options.
 
 :script Copy
 :Synopsis Copies selected audio to clipboard
@@ -256,11 +264,11 @@ Respects AnnounceMessage.
 
 :script MoveTrackUp
 :Synopsis Moves the current track up one track.
-:Description Moves the focused track up and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track up.  If focus is not in the track panel sends the keystroke to the application.  Note that if this script is bound to the key assIgned to CloseListBox, this script will not be executed.
+:Description Moves the focused track up and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track up.  If focus is not in the track panel sends the keystroke to the application.  Note that if this script is bound to the key assigned to CloseListBox, this script will not be executed.
 
 :script MoveTrackDown
 :Synopsis Moves the current track down one track.
-:Description Moves the focused track down and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track down.  If focus is not in the track panel sends the keystroke to the application.  Note that if this script is bound to the key assIgned to OpenListBox, this script will not be executed.
+:Description Moves the focused track down and speaks the name of the track moved over.  Assumes that this key is assigned to Audacity command Move focused track down.  If focus is not in the track panel sends the keystroke to the application.  Note that if this script is bound to the key assigned to OpenListBox, this script will not be executed.
 
 :function GetObjState
 :Synopsis Returns the object state of the object in the window
@@ -309,8 +317,11 @@ Respects AnnounceMessage.
 :Synopsis Reset all audacity JAWS script config options to their default values.
 
 :script SayAppVersion
+:Synopsis Says the version of Audacity and the JAWS script.  If pressed twice quickly, displays this information in the virtual vviewer.
 
 :script SelectAll
+:Synopsis In the track panel selects all audio.
+:Description Performs the standard function, but announces that all audio is selected if in the track panel.
 
 :function ProcessVST
 :Description Activates Preset, Load Preset, and Save Preset controls in VST plugin dialogs.
@@ -341,22 +352,27 @@ Respects AnnounceMessage.
 :Returns int True if focus is in the warning dialog
 
 :script SayLine
+:Synopsis Execute default SayLine operation.  In the track panel also says the position of the current track in the track panel and total number of tracks.
 
 :script SwitchChainsList
 :Synopsis Switch between the Chains and Chain lists in the Edit Chains dialog.
+:Description In Audacity v2.3.0 this became the Manage Macros dialog.
 
 :script PasteFromClipboard
+:Synopsis Paste from the clipboard
 
 :script ShowCopyright
+:Synopsis Display the copyright message in the virtual viewer.
 
 :function CheckAudacityVersion
 :Description Varify that current audacity version is equal to or higher than a given version.
-:Returns int True if the version of Audacity is <= the specified version.
+:Returns int True if the version of Audacity is >= the specified version.
 :Param string/sCheckver the version to compare against  in the form "major,minor,build,fix".  Trailing segments may be omitted, in which case they are not checked.  Ex: "2,0,3" to verify that the program version is 2.0.3 or higher.
 
 :script test
 
 :function loadNonJCFOptions
+:Description This function is used by the QuickSettings facility, support for Jaws 13 and later.
 
 :script AddAudacityJawsGuide
 :Synopsis Allow adding, or changing the Audacity Guide link
@@ -553,10 +569,26 @@ Respects AnnounceMessage.
 :Synopsis Say the level displayed in the playback meter
 :Description Says the level displayed in the playback meter.  If pressed twice quickly, moves focus to it.
 
-:Function GetPositionFieldHandle
-:Description Determines the proper control based on the version of Audacity and the setting of the Selection Type combo box (in 2.2.0).
-:Returns handle Handle of the position control.
+:Function FormatPositionField
+:Synopsis Format a position string for speaking.
+:Returns string position value formatted for speaking
+:Param string/s value to be formatted
+
+:Function GetPositionFieldID
+:Synopsis Determines the control ID of a position field control.
+:Description Determines the proper control based on the version of Audacity and the setting of the Selection Type combo box (in 2.2.0 and later).
+:Returns int control ID of the position control.
 :Param int/iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
+
+:Function GetPositionFieldHandle
+:Description Determines the proper control based on the version of Audacity and the setting of the Selection Type combo box (in 2.2.0 and later).
+:Returns handle Handle of the position control.
+:Param int/iPosition (see GetPositionFieldID)
+
+:Function SchedulePositionField
+:Synopsis Schedule a position field to be spoken after cursor motion completes and the field is updated.
+:Returns void no return description
+:Param int/iPosition (see GetPositionFieldID
 
 :function KeymapChangedEvent
 :Returns void no return description
@@ -579,7 +611,7 @@ Respects AnnounceMessage.
 :Script SendKey
 :Synopsis Allows you to define a key sequence that sends another key sequence to the system.
 :Description Send the key sequence in sKey.  This is used to allow a key to send a specified key sequence to the program.  No label is spoken.  To use it, in the JKM file make an entry like keys=SendKey("newsequence").
-:Param int/sKey Key sequence to send.
+:Param string/sKey Key sequence to send.
 :Category Script
 
 :Script SaySelectedText
@@ -610,10 +642,6 @@ Respects AnnounceMessage.
 :Script TempoLayerHelp
 :Synopsis Speaks Tempo layer key help.
 
-:Function GetSelectedTracks
-:Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
-:Returns string no return description
-
 :Script DownCell
 :Synopsis In the track panel moves to the next selected track.  Otherwise moves down one cell and reads it.
 
@@ -643,10 +671,6 @@ Respects AnnounceMessage.
 :Script SelectNextWord
 :Synopsis In the track panel and selection bar previews after the end position.  Otherwise performs its normal function.
 
-:Function GetPositionFieldID
-:Returns int no return description
-:Param int/iPosition
-
 :Script SelectPriorLine
 :Synopsis In the selection start/end fields plays a preview containing the audio moved over.  Elsewhere performs the default action.
 
@@ -661,17 +685,4 @@ Respects AnnounceMessage.
 :Description Respects gfSilence and gfSilenceClearOnNext.
 :Returns void no return description
 :Param handle/hWnd
-
-:Function FindToolbar
-:Synopsis Return the window handle of the named toolbar.
-:Returns handle Handle of the toolbar window or 0 if not found.
-:Param string/sToolbar Name of the toolbar window.
-
-:Function FormatPositionField
-:Returns string no return description
-:Param string/s
-
-:Function SchedulePositionField
-:Returns void no return description
-:Param int/iPosition
 

@@ -1,6 +1,6 @@
-﻿2018-06-04  JAWS script for Audacity V2.0 (for script version 2.2.0 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2020-02-28  JAWS script for Audacity V2.0 (for script version 2.2.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
-This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.2.0.
+This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.3.3.
 
 # Features:
 - Keystrokes to speak selection start, selection end or length, and Audio Position from anywhere in the main window.
@@ -126,7 +126,7 @@ Note: There is another implementation of this feature that more closely follows 
 
 1.  This version of the script adds the ability to silence previewing in effects like Amplify.  Sometimes this doesn't get turned off.  If this happens, switching focus away from Audacity and back will turn it off.  
 
-2.  The position fields sometimes are not shortened.  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, 15, 16, 17, and 18.  I have observed that this problem sometimes goes away on its own.
+2.  The position fields sometimes are not shortened.  (This may also affect the speaking of cursor positions for operations that move the cursor.)  This happens because the JAWS `GetWindowText` function returns just the numbers with no h, m, :, etc.  We do not know what causes this.  I have been able to correct this by shutting down and restarting Audacity.  This was observed with JAWS 10, and 15through 2020.  I have observed that this problem sometimes goes away on its own.
 
 3.  If the "ENTER Pauses during play/record" feature is on (which is the default), `ENTER` will not select or unselect the current track while playing or recording.  Use `Control+ENTER` instead of `ENTER` in this case.
 
@@ -161,7 +161,7 @@ Note that `readme.html` and `readme_vi.html` are generated from `readme.md` and 
 - JAWSUtil.vbs: Copyright 2009-2017 by Doug Lee (from BX Toolkit revision 1876).  (See jfw_nsh\JAWSUtil.vbs for details.)
 
 # Conclusion
-Recent script development was done with Audacity 2.1.3 and 2.2.0 alpha and beta versions.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 17, 18, and 2018 beta (build 1708.29) on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
+Recent script development was done with Audacity 2.3.0 and 2.3.3RC03.  It will probably work with any JAWS after 5.0, although the options for Audacity in Adjust JAWS Verbosity may not look very good, and this hasn't been tested.  (I remember that one of the JAWS functions we use was marked in the FSDN as requiring JAWS 10.)  Recent development has been done with JAWS 2019 and 2020 on a 64-bit laptop running Windows 10.  Although support remains for previous versions of JAWS, the current code has not been tested with them.  There is no specific Braille support at this time.
 
 I would be interested in feedback on the script and suggestions for improvement, but can't promise any updates.
 
