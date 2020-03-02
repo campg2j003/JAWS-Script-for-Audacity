@@ -1,13 +1,10 @@
-(This file last updated 2/29/2020)
+(This file last updated 3/2/2020)
 
-# New in 2.2.2-beta-2020-03-01.
-- Added code to handle speaking position after cursor motion commands. When this implementation speaks it speaks updated information, but it doesn't always speak.  An alternative implementation always speaks, but sometimes the screen has not yet been updated.
+# New in 2.2.2-beta-2020-03-02.
+- Added code to handle speaking position after cursor motion commands. In v2.3.3 the position controls are updated in the background after the cursor motion operations complete.  When this script implementation speaks it speaks updated information, but it doesn't always speak.  This implementation was used instead of an alternative implementation which always speaks, but sometimes before the screen has been updated.
 - The equalizer dialog is now recognized in Audacity 2.3.3.
 - In the equalizer dialog SayNextLine and SayPriorLine now speak the DB value on DB sliders.  SayNextCharacter, SayPriorCharacter, and SayCharacter still speak percentage.
-# New in 2.2.2-beta-2019-11-10
 - Update for Audacity 2.3.3.  Added function FindToolbar to find a toolbar.  Updated GetAudacityState, SayPlaybackMeter, and SayRecordingMeter.
-
-# New in 2.2.2-beta-2019-04-28
 - Disabled check for selected track in IsTrackSelected.  This avoids a problem when using Alt+Left/RightArrow to move between labels (and many other keys) which requires you to change tracks before the tracks report as selected.
 
 # New in 2.2.2-beta-2018-10-25
