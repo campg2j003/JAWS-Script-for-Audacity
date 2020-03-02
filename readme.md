@@ -1,4 +1,4 @@
-﻿2020-02-28  JAWS script for Audacity V2.0 (for script version 2.2.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
+﻿2020-02-29  JAWS script for Audacity V2.0 (for script version 2.2.2 by Gary Campbell <campg2003@gmail.com> and Dang Manh Cuong <dangmanhcuong@gmail.com>
 
 This JAWS script package provides support for Audacity 2.0.0 and later, including Audacity 2.3.3.
 
@@ -180,14 +180,14 @@ In the main window to say the numbers of the selected tracks, press Shift+Insert
 
 In the track panel and selection bar , to preview audio after (inside) the selection start, press JAWSKey+LeftArrow
 In the track panel and selection bar , to preview audio before (inside) the selection end, press JAWSKey+RightArrow
-In the track panel and selection bar , to preview audio before (outside) the selection start, press Control+Shift+ExtendedLeftArrow
+In the track panel and selection bar , to preview audio before (outside) the selection start, press control+Shift+ExtendedLeftArrow
 In the track panel and selection bar , to preview audio after (outside) the selection end, press JAWSKey+Shift+RightArrow
 
 To switch between playing audio and speaking position time for cursor motion commands, press JAWSKey+p.  
 This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly
 toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the
 settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
-    
+
 To increase gain of focus track, press Alt+Shift+UpArrow.
 To reduce gain of focus track, press Alt+Shift+DownArrow.
 To adjust pan left, press Alt+Shift+LeftArrow.
@@ -204,24 +204,24 @@ To go to a track by number, press JAWSKey+a, g.
 To move the current track to a track position by number, press JAWSKey+a, m.
 To mark the current track, press JAWSKey+a, k.
 To go to the marked track, press JAWSKey+a, Shift+g.
-To go to the marked track and mark the starting track, press JAWSKey+a, x.
-To move the current track to the position of the marked track and set the mark to the current track, press Insert+a, Shift+m.
+To go to the marked track and mark the starting track, press Insert+a, x.
+To move the current track to the position of the marked track and set the mark to the current track, press JAWSKey+a, Shift+m.
 
-To find the tempo, press Insert+a, t, SPACE.  Playback starts.  Then press Insert+a, t, ENTER for each beat.  (You only need to press the last key of the
+To find the tempo, press Insert+a, t, Space.  Playback starts.  Then press Insert+a, t, enter for each beat.  (You only need to press the last key of the
 sequence for any Tempo layer key once you have entered the Tempo layer.)  
-When you are finished press Insert+a, t, SPACE again.  Playback stops and the tempo in beats per minute is spoken.  
+When you are finished press Insert+a, t, Space again.  Playback stops and the tempo in beats per minute is spoken.  
 After that you can press JAWSKey+a, t, a to speak the tempo again or JAWSKey+a, t, c to copy it to the clipboard.  The value will be retained until Insert+a,
-t, SPACE is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
+t, Space is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
 The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
 
 To toggle speech on or off, press Shift+Insert+S.
-To toggle alert messages on or off, press Control+`).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
+To toggle alert messages on or off, press control+`).  This duplicates the Announce Audacity messages option in Adjust JAWS options.
 See What's new.md for more info.
 
-In a toolbar to move to the next toolbar press Control+Tab
-In a toolbar to move to the previous toolbar press Control+Shift+Tab
+In a toolbar to move to the next toolbar press control+Tab
+In a toolbar to move to the previous toolbar press control+Shift+Tab
 
-To speak the program's state (play/pause/record/stop) press JAWSKey+delete
+To speak the program's state (play/pause/record/stop) press JAWSKey+Delete
 
 To switch between the two lists in the Edit Chains dialog, press F6.
 
@@ -229,20 +229,20 @@ To get help with Audacity hot keys, press Insert+w.
 To get the default Windows hot key help, press Insert+w twice quickly.
 
 To change settings for the Audacity script, press   JAWSKey+V.
-To reset all script options to default values, press Control+Shift+`
+To reset all script options to default values, press control+Shift+`
 
-If the "ENTER pauses during play/record" option is on, pressing Enter while playing or recording sends the Pause key.  Use Control+ENTER to execute ENTER
+If the "ENTER pauses during play/record" option is on, pressing enter while playing or recording sends the Pause key.  Use control+enter to execute ENTER
 in this situation.
 
 If Silence Effect Preview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will
 result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
- 
+
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press Alt+P.
 To load an existing preset, press  .
 To save the current settings as a preset, press  Alt+S.
 
-To Change the URL for the Audacity Jaws Guide, press Control+Shift+J
+To Change the URL for the Audacity Jaws Guide, press control+Shift+J 
 ```
 
 Enjoy!

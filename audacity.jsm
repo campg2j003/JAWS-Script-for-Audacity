@@ -117,9 +117,9 @@ const
 	ksTempoLayer = "t"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.3.2-Guide.html", ;default URL to Audacity guide for JAWS
 	;This should reference the guide from which the Audacity Keys help message was taken.
-	CS_JawsGuide_Title = "Audacity 2.2.0 Guide", 
+	CS_JawsGuide_Title = "Audacity 2.3.2 and 2.3.3 Guide", 
 	CS_JawsGuide_Author = "David Bailes",
 	CS_JawsGuide_LINK_DISP = "link to JAWS guide" ;Name displayed in links list
 
@@ -274,168 +274,137 @@ JAWS Guide
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Default keystrokes for Audacity v2.2.0 (from %1, by %2).  Access the guide at
+Default keystrokes for Audacity v2.3.3 (from %1, by %2).  Access the guide at
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
-
-
 General
-
-
-Command Keystroke
-
-Open audio file Ctrl + O 
-Import audio file Ctrl + Shift + I 
-New project Ctrl + N 
-Save project Ctrl + S 
-Export Audio Ctrl + Shift + E 
-Preferences dialog Ctrl + P 
-Cycle forward through Toolbars, Track table, and Selection bar Ctrl + F6 
-Cycle backward through Toolbars, Track table, and Selection bar Ctrl + Shift + F6 
-Cycle forward through the Audacity main window and any open modeless dialogs Alt + F6 
-Cycle backward through the Audacity main window and any open modeless dialogs Alt + Shift + F6 
-Zoom normal Ctrl + 2 
-Zoom in Ctrl + 1 
-Zoom out Ctrl + 3 
+Command	Keystroke
+Open audio file	Ctrl + O
+Import audio file	Ctrl + Shift + I
+New project	Ctrl + N
+Save project	Ctrl + S
+Export Audio	Ctrl + Shift + E
+Preferences dialog	Ctrl + P
+Cycle forward through Toolbars, Track view table, and Selection bar	Ctrl + F6
+Cycle backward through Toolbars, Track view table, and Selection bar	Ctrl + Shift + F6
+Cycle forward through the Audacity main window and any open modeless dialogs	Alt + F6
+Cycle backward through the Audacity main window and any open modeless dialogs	Alt + Shift + F6
+Zoom normal	Ctrl + 2
+Zoom in	Ctrl + 1
+Zoom out	Ctrl + 3
 
 Playback
+Command	Keystroke
+Start/Stop	Spacebar
+Start/Stop and move cursor	X
+Pause/resume	P
+Seek backward short period during playback	Left Arrow
+Seek forward short period during playback	Right Arrow
+Seek backward long period during playback	Shift + Left Arrow
+Seek forward long period during playback	Shift + Right Arrow
+Play looped	Shift + Spacebar
+Select Playback Device dialog	Shift + O
+Play cut/delete preview	C
+Play short period before selection start	Shift + F5
+Play short period after selection start	Shift + F6
+Play short period before selection end	Shift + F7
+Play short period after selection end	Shift + F8
+Play short period before and after selection start	Ctrl + Shift + F5
+Play short period before and after selection end	Ctrl + Shift + F7
 
-
-Command Keystroke
-
-Start/Stop Spacebar 
-Start/Stop and move cursor X 
-Pause/resume P 
-Seek backward short period during playback Left Arrow 
-Seek forward short period during playback Right Arrow 
-Seek backward long period during playback Shift + Left Arrow 
-Seek forward long period during playback Shift + Right Arrow 
-Play looped Shift + Spacebar 
-Select Playback Device dialog Shift + O 
-Play cut/delete preview C 
-Play short period before selection start Shift + F5 
-Play short period after selection start Shift + F6 
-Play short period before selection end Shift + F7 
-Play short period after selection end Shift + F8 
-Play short period before and after selection start Ctrl + Shift + F5 
-Play short period before and after selection end Ctrl + Shift + F7 
-
-Track table
-
-
-Command Keystroke
-
-Move to previous track Up Arrow 
-Move to next track Down Arrow 
-Move to first track Ctrl + Home 
-Move to last track Ctrl + End 
-Toggle selection of focused track Enter 
-Select all the tracks (and a time range which includes all the audio) Ctrl + A 
-Deselect all the tracks (and any time-range) Ctrl + Shift + A 
-Select all the tracks Ctrl + Shift + K 
-Open menu of focused track Shift + M or Application key 
-Close (Delete) focused track Shift + C 
+Track view table
+Command	Keystroke
+Move to previous track	Up Arrow
+Move to next track	Down Arrow
+Move to first track	Ctrl + Home
+Move to last track	Ctrl + End
+Toggle selection of focused track	Enter
+Select all the tracks (and a time range which includes all the audio)	Ctrl + A
+Deselect all the tracks (and any time-range)	Ctrl + Shift + A
+Select all the tracks	Ctrl + Shift + K
+Open menu of focused track	Shift + M or Application key
+Close (Delete) focused track	Shift + C
 
 Audio track
-
-
-Command Keystroke
-
-Change gain of focused track Shift + G 
-Change pan of focused track Shift + P 
-Mute/Unmute focused track Shift + U 
-Mute all tracks Ctrl + U 
-Unmute all tracks Ctrl + Shift + U 
-Solo/Unsolo focused track Shift + S 
+Command	Keystroke
+Change gain of focused track	Shift + G
+Change pan of focused track	Shift + P
+Mute/Unmute focused track	Shift + U
+Mute all tracks	Ctrl + U
+Unmute all tracks	Ctrl + Shift + U
+Solo/Unsolo focused track	Shift + S
 
 Moving the cursor
-
-
-Command Keystroke
-
-Move to start of tracks (time zero) Home 
-Move to end of all audio End 
-Move to start of audio in selected tracks J 
-Move to end of audio in selected tracks K 
-New cursor position at playback position [ 
-Stop playback and move cursor X 
-Move backward short period Comma 
-Move forward short period Period 
-Move backward long period Shift + Comma 
-Move forward long period Shift + Period 
-Cursor left by a small amount Left Arrow 
-Cursor right by a small amount Right Arrow 
+Command	Keystroke
+Move to start of tracks (time zero)	Home
+Move to end of all audio	End
+Move to start of audio in selected tracks	J
+Move to end of audio in selected tracks	K
+New cursor position at playback position	Left Bracket
+Stop playback and move cursor	X
+Move backward short period	Comma
+Move forward short period	Period
+Move backward long period	Shift + Comma
+Move forward long period	Shift + Period
+Cursor left by a small amount	Left Arrow
+Cursor right by a small amount	Right Arrow
 
 Selecting a time range
-
-
-Command Keystroke
-
-Select time range which includes all the audio, and select all tracks Ctrl + A 
-Selection start at start of tracks (time zero) Shift + Home 
-Selection end at end of all the audio Shift + End 
-Selection end at playback position ] 
-Selection start at start of audio in selected tracks Shift + J 
-Selection end at end of audio in selected tracks Shift + K 
-To move the end of the selection to the right by a small amount Shift + Right Arrow 
-To move the end of the selection to the left by a small amount Ctrl + Shift + Left Arrow 
-To move the start of the selection to the right by a small amount Ctrl + Shift + Right Arrow 
-To move the start of the selection to the left by a small amount Shift + Left Arrow 
+Command	Keystroke
+Select time range which includes all the audio, and select all tracks	Ctrl + A
+Selection start at start of tracks (time zero)	Shift + Home
+Selection end at end of all the audio	Shift + End
+Selection end at playback position	Right Bracket
+Selection start at start of audio in selected tracks	Shift + J
+Selection end at end of audio in selected tracks	Shift + K
+To move the end of the selection to the right by a small amount	Shift + Right Arrow
+To move the end of the selection to the left by a small amount	Ctrl + Shift + Left Arrow
+To move the start of the selection to the right by a small amount	Ctrl + Shift + Right Arrow
+To move the start of the selection to the left by a small amount	Shift + Left Arrow
 
 Editing
-
-
-Command Keystroke
-
-Undo Ctrl + Z 
-Redo Ctrl + Y 
-Delete selected audio Delete 
-Cut selected audio Ctrl + X 
-Copy selected audio Ctrl + C 
-Paste Ctrl + V 
-Replace selected audio with silence Ctrl + L 
-Duplicate the selected audio Ctrl + D 
-Close (Delete) focused track Shift + C 
-Find zero crossings Z 
+Command	Keystroke
+Undo	Ctrl + Z
+Redo	Ctrl + Y
+Delete selected audio	Delete
+Cut selected audio	Ctrl + X
+Copy selected audio	Ctrl + C
+Paste	Ctrl + V
+Replace selected audio with silence	Ctrl + L
+Duplicate the selected audio	Ctrl + D
+Close (Delete) focused track	Shift + C
+Find zero crossings	Z
 
 Labels
-
-
-Command Keystroke
-
-Add label at selection Ctrl + B 
-Add label at playback position Ctrl + M 
-Move to next label Alt + Right Arrow 
-Move to previous label Alt + Left Arrow 
+Command	Keystroke
+Add label at selection	Ctrl + B
+Add label at playback position	Ctrl + M
+Move to next label	Alt + Right Arrow
+Move to previous label	Alt + Left Arrow
 
 Clips
-
-
-Command Keystroke
-
-Select previous clip Alt + P 
-Select next clip Alt + N 
-Split Ctrl + I 
-Split delete Ctrl + Alt + K 
-Split cut Ctrl + Alt + X 
-Split New Ctrl + Alt + I 
-Detach at silences Ctrl + Alt + J 
-Join Ctrl + J 
+Command	Keystroke
+Select previous clip	Alt + Comma
+Select next clip	Alt + Period
+Split	Ctrl + I
+Split delete	Ctrl + Alt + K
+Split cut	Ctrl + Alt + X
+Split New	Ctrl + Alt + I
+Detach at silences	Ctrl + Alt + J
+Join	Ctrl + J
 
 Recording
-
-
-Command Keystroke
-
-Append Record R, using default settings 
-Record in new Track Shift + R, using default settings 
-Pause/resume P 
-Stop Spacebar 
-Select Audio Host dialog Shift + H 
-Select Recording Device dialog Shift + I 
-Select Recording Channels dialog Shift + N
-@@
+Command	Keystroke
+Record	R
+Record in new Track	Shift + R
+Punch and roll record	Shift + D
+Pause/Resume	P
+Stop	Spacebar
+Select Audio Host dialog	Shift + H
+Select Recording Device dialog	Shift + I
+Select Recording Channels dialog	Shift + N
+	@@
 
 @msg_App_Start
 Wellcome to Audacity. Press %Keyfor(AudacityScriptkeyHelp) to display the list of JAWS hot keys for Audacity.
