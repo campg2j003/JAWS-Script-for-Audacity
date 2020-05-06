@@ -48,9 +48,14 @@ Const
 
 ;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
 Const
+	;Prior to 2.3.x.
 	CS_SELECT_ON = " Select On",
 	CS_MUTE_ON = " Mute On",
-	CS_SOLO_ON = " Solo On"
+	CS_SOLO_ON = " Solo On",
+	;V2.3.3
+	CS_SELECTED = " Selected",
+	CS_MUTED = " Muted",
+	CS_SOLOED = " Soloed"
 
 ;For announcing selected tracks.
 Const

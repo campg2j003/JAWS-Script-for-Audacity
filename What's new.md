@@ -1,4 +1,7 @@
-(This file last updated 3/2/2020)
+(This file last updated 5/6/2020)
+
+# New in 2.2.2-beta-2020-05-06.
+- Added new constants to handle changes in the indication of track states (muted, selected, and soloed) used for speaking the list of track names (SaySelectedText in main window pressed twice quickly).
 
 # New in 2.2.2-beta-2020-03-02.
 - Added code to handle speaking position after cursor motion commands. In v2.3.3 the position controls are updated in the background after the cursor motion operations complete.  When this script implementation speaks it speaks updated information, but it doesn't always speak.  This implementation was used instead of an alternative implementation which always speaks, but sometimes before the screen has been updated.

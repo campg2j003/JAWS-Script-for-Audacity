@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-03-02"
-;Last updated 2020-03-02T03:04Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-06"
+;Last updated 2020-05-03T18:20Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1170,6 +1170,9 @@ Let s2 = s
 Let s2 = StringReplaceSubstrings(s2, CS_SELECT_ON, "")
 Let s2 = StringReplaceSubstrings(s2, CS_MUTE_ON, "")
 Let s2 = StringReplaceSubstrings(s2, CS_SOLO_ON, "")
+Let s2 = StringReplaceSubstrings(s2, CS_SELECTED, "")
+Let s2 = StringReplaceSubstrings(s2, CS_MUTED, "")
+Let s2 = StringReplaceSubstrings(s2, CS_SOLOED, "")
 Return s2
 EndFunction ; CleanTrackName
 
