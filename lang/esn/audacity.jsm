@@ -1,10 +1,10 @@
-﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2018-05-20.
-;Translation based on English version dated 2017-09-30.
+﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-05-07.
+;Translation based on English version dated 2020-05-06.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
-    Copyright (C) 2012-2017  Gary Campbell and Dang Manh Cuong.  All rights reserved.
-    Copyright (C) 2014-2017 Fernando Gregoire, for the Spanish translation. All rights reserved.
+    Copyright (C) 2012-2020  Gary Campbell and Dang Manh Cuong.  All rights reserved.
+    Copyright (C) 2014-2020 Fernando Gregoire, for the Spanish translation. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,9 +32,11 @@ Const
 	WN_RECORDING_METER_TOOLBAR = "Medidor de grabación", ;window name of Recording Meter toolbar
 	WN_PLAYBACK_METER_TOOLBAR = "Medidor de reproducción", ;window name of Playback Meter toolbar
 	WN_COMBINED_METER_TOOLBAR = "Medidor combinado", ;window name of Combined Meter toolbar (Audacity 2.1.3 and earlier)
-	WN_EDIT_CHAINS = "Editar secuencias de comandos", ; name of the Edit Chains dialog
-	WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
-	WN_QUICK_SETTINGS = "Configuración rápida - audacity", ;name of the QuickSettings dialog
+	WN_EDIT_CHAINS = "Editar secuencias de comandos", ; name of the Edit Chains dialog before 2.3.0
+WN_MANAGE_MACROS = "Administrar macros", ; name of the Manage Macros dialog (v2.3.0 equivalent of Edit Chains)	
+WN_EQUALIZATION = "Equalization", ;name of the Equalization dialog
+WN_GRAPHIC_EQ "Ecualizador gráfico", ;name of the equalization dialog in v2.3.3	
+WN_QUICK_SETTINGS = "Configuración rápida - audacity", ;name of the QuickSettings dialog
 	WN_PREPARING_PREVIEW = "Preparando vista previa", ;appears in effect dialogs briefly when starting previewing
 	WN_PREVIEWING = "Mostrando vista previa", ;appears in progress dialog while previewing effects
 	WN_STOP_BTN = "Detener" ;name of Stop button to stop previewing
@@ -47,9 +49,14 @@ Const
 
 ;These are used to match "select on", etc. to remove it from track names.  It should be whatever is appended to the track name in the track panel.  Note that they begin with a space and are case sensitive.
 Const
-	CS_SELECT_ON = " Selección activada",
+;Prior to 2.3.x.	
+CS_SELECT_ON = " Selección activada",
 	CS_MUTE_ON = " Silencio activado",
-	CS_SOLO_ON = " Solo activado"
+	CS_SOLO_ON = " Solo activado",
+;V2.3.3
+	CS_SELECTED = " Seleccionado",
+	CS_MUTED = " Silenciado",
+	CS_SOLOED = " Solo establecido"
 
 ;For announcing selected tracks.
 Const
@@ -61,7 +68,7 @@ Const
 	UO_ANNOUNCE_MESSAGES = "UOAnnounceMessages:Anunciar los mensajes de Audacity",  ;also used in message spoken by AnnounceOnOff.
 	UO_ANNOUNCE_TOOLBARS = "UOAnnounceToolbars:Anunciar las barras de herramientas",
 	UO_ENTER_PAUSE = "UOEnterPause:ENTER pausa al reproducir/grabar",
-	UO_SILENCE_PREVIEW = "UOSilencePreview:Silenciar en vista previa",
+	UO_SILENCE_PREVIEW = "UOSilencePreview:Silenciar en vista previa de efectos",
 	UO_SILENCE_RECORD = "UOSilenceRecord:Silenciar al grabar",
 	UO_SAY_POSITION = "UOSayPosition:Anunciar posición",
 	UO_MOTION_PREVIEW = "UOMotionPreview:Vista previa de movimiento"
@@ -81,7 +88,7 @@ SI se activa, lee el nombre de las barras de herramientas cuando el foco se desp
 Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+ENTER envía ENTER. De lo contrario, envía ENTER a Audacity.
 @@
 @msgUO_SilencePreviewHlp
-Si se activa, desactiva la voz mientras se previsualiza un efecto.
+Si se activa, desactiva la voz durante la vista previa de un efecto.
 @@
 @msgUO_SilenceRecordHlp
 Si se activa, silencia la voz que tenga lugar cuando se haya empezado a grabar.
@@ -116,9 +123,9 @@ const
 	ksTempoLayer = "t"
 
 Const
-	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.2.0-Guide.html", ;default URL to Audacity guide for JAWS
+	CS_JawsGuide_LINK = "http://vip.chowo.co.uk/wp-content/uploads/jaws/Audacity-2.3.2-Guide.html", ;default URL to Audacity guide for JAWS
 	;This should reference the guide from which the Audacity Keys help message was taken.
-	CS_JawsGuide_Title = "Guía de Audacity 2.2.0 (en inglés)", 
+	CS_JawsGuide_Title = "Guía de Audacity 2.3.2 y 2.3.3 (en inglés)", 
 	CS_JawsGuide_Author = "David Bailes",
 	CS_JawsGuide_LINK_DISP = "enlace a la guía para JAWS" ;Name displayed in links list
 
@@ -136,7 +143,7 @@ Combinaciones de teclas de JAWS con scripts versión %1, para Audacity 2.0.0 o p
 @msgScriptKeyHelp
 
 Para verbalizar la posición inicial de la selección, pulse %keyfor (SaySelectionStart).
-Para verbalizar la posición final de la selección o la longitud, pulse %keyfor(SaySelectionEnd).
+Para verbalizar la posición final de la selección, pulse %keyfor(SaySelectionEnd).
 Para mover el foco a estos controles, pulse la tecla dos veces rápidamente.
 Para verbalizar el valor de posición del audio, pulse %keyfor(SayActiveCursor).
 Para verbalizar el cursor activo mientras esté activo el del PC, pulse %keyfor(SayActiveCursor) dos veces rápidamente.
@@ -150,10 +157,10 @@ En el panel de pista y la barra de selección, para previsualizar el audio anter
 En el panel de pista y la barra de selección, para previsualizar el audio posterior no perteneciente al final de la selección, pulse, press %KeyFor(SelectNextWord)
 
 Para conmutar entre reproducir audio y verbalizar posición ante los comandos de movimiento del cursor, pulse %KeyFor(ToggleMotionPreview).
-Esto equivale a activar Vista Previa de Movimiento y desactivar Anunciar Posición, o desactivar Vista Previa de Movimiento y activar Anunciar Posición. De este modo puede alternar rápidamente entre oír la posición del cursor u oír el audio. Este cambio es temporal. No cambia el valor guardado de estas configuraciones y éstas volverán a sus valores en Configuración Rápida después de abrir Configuración Rápida o llevar el foco fuera de Audacity.
+Esto equivale a activar Vista Previa de Movimiento y desactivar Anunciar Posición, o desactivar Vista Previa de Movimiento y activar Anunciar Posición. De este modo puede alternar rápidamente entre oír la posición del cursor u oír el audio. Este cambio es temporal. No cambia el valor guardado de estas configuraciones, y éstas volverán a sus valores en Configuración Rápida después de abrir Configuración Rápida o llevar el foco fuera de Audacity.
 
-Para aumentar la ganancia de la pista activa, pulse %keyfor (MouseUp).
-Para reducir la ganancia de la pista activa, pulse %keyfor (MouseDown).
+Para aumentar la ganancia de la pista enfocada, pulse %keyfor (MouseUp).
+Para reducir la ganancia de la pista enfocada, pulse %keyfor (MouseDown).
 Para ajustar el posicionamiento estéreo hacia la izquierda, pulse %keyfor (MouseLeft).
 Para ajustar el posicionamiento estéreo hacia la derecha, pulse %keyfor (MouseRight).
 Mientras el foco está en la ventana principal, las cuatro últimas teclas reemplazan los scripts de JAWS predeterminados para mover el ratón. Si desea activar la funcionalidad original mientras esté en la ventana principal, active el cursor de JAWS.
@@ -177,28 +184,29 @@ El tempo se calcula dividiendo el tiempo de la última pulsación menos el tiemp
 
 Para activar o desactivar la voz, pulse %keyfor(MuteSynthesizer).
 Para activar o desactivar los mensajes de aviso, pulse %keyfor (AnnounceOnOff)).  Esto duplica la opción Anunciar los mensajes de Audacity que se encuentra en Ajuste de opciones de JAWS.
-Para más info, consulte el archivo what's new.md.
+Para más información, consulte el archivo what's new.md.
 
 En una barra de herramientas, pulse %KeyFor (NextDocumentWindow) para moverse a la siguiente
 En una barra de herramientas, pulse %KeyFor (PreviousDocumentWindow) para moverse a la anterior
 
 Para leer el estado del programa (reproduciendo/pausado/grabando/detenido), pulse %KeyFor(SayAudacityState)
-Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse %keyfor (ResetConfig)
+
 Para conmutar entre las dos listas del diálogo Editar secuencias de comandos, pulse %keyfor (SwitchChainsList).
 
 Para obtener ayuda sobre las teclas rápidas de Audacity, pulse %keyfor(AudacityKeysHelp).
 Para obtener la ayuda predeterminada sobre teclas rápidas de Windows, pulse %keyfor(AudacityKeysHelp) dos veces rápidamente.
 
+Para cambiar la configuración de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
+Para restablecer todas las opciones de los scripts a sus valores predeterminados, pulse %keyfor (ResetConfig)
+
 Si está activada la opción "ENTER pausa al reproducir/grabar", al pulsar %KeyFor(ENTER) en tanto se reproduce o graba, se envía la tecla Pausa. Para ejecutar ENTER en esta situación, utilice %KeyFor(CtrlEnter).
+
+Si Silenciar en Vista Previa de Efectos está activado y aprieta el botón Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocará pérdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo después.
 
 En algunos plugins VST comunes, como L1V:
 Para llevar el foco al control de predefinidos, pulse %keyfor (VSTPreset).
 Para cargar una predefinición existente, pulse %keyfor (VSTLoadPreset).
 Para guardar la configuración actual como predefinición, pulse %keyfor (VSTSavePreset).
-
-Si Silenciar en Vista Previa está activado y aprieta el botón Vista Previa de un efecto, a veces el silencio resultante de la vista previa no se desactiva. Esto provocará pérdida de la respuesta de voz como consecuencia de cambios del foco. Puede corregirlo cambiando a un sitio diferente de Audacity y volviendo después.
-
-Para cambiar la configuración de los scripts para Audacity, pulse %KeyFor (AdjustJawsOptions) %Keyfor (AdjustJawsVerbosity) %Keyfor (QuickSettings).
 
 Para cambiar la URL de la Guía de JAWS para Audacity, pulse %keyfor (AddAudacityJawsGuide)
 @@
@@ -272,15 +280,11 @@ Guía para JAWS
 ;%2 Audacity guide author
 ;There is a newline before and after the guide link.
 @msgAudacityHotKeyHelp1
-Combinaciones de teclas predeterminadas para Audacity v2.2.0 (de la %1, por %2). Acceda a la guía (en inglés) en
+Combinaciones de teclas predeterminadas para Audacity v2.3.3 (de la %1, por %2). Acceda a la guía (en inglés) en
 @@
 ;Text of hotkey help following the link to the guide.  The first character of the message starts a new line.  I can't get a blank line at the start of the message.
 @msgAudacityHotkeyHelp2
-
-
 Generales
-
-
 Comando Combinación de teclas
 Abrir archivo de audio Ctrl + O 
 Importar archivo de audio Ctrl + Shift + I 
@@ -297,10 +301,7 @@ Acercar Ctrl + 1
 Alejar Ctrl + 3 
 
 Reproducción
-
-
 Comando Combinación de teclas 
-
 Iniciar/Detener Barra Espaciadora 
 Iniciar/Detener y mover cursor X 
 Pausa/reanudar P 
@@ -308,7 +309,7 @@ Rebobinar período corto durante reproducción Flecha Izquierda
 Adelantar período corto durante reproducción Flecha Derecha 
 Rebobinar período largo durante reproducción Shift + Flecha Izquierda 
 Adelantar período largo durante reproducción Shift + Flecha Derecha 
-Reproducción en bucle Shift + Barra Espaciadora 
+Reproducir cíclicamente Shift + Barra Espaciadora 
 Diálogo Dispositivo de salida Shift + O 
 Reproducir vista previa de corte/eliminación C 
 Reproducir período corto antes del comienzo de la selección Shift + F5 
@@ -318,44 +319,35 @@ Reproducir período corto después del final de la selección Shift + F8
 Reproducir período corto antes y después del comienzo de la selección Ctrl + Shift + F5 
 Reproducir período corto antes y después del final de la selección Ctrl + Shift + F7 
 
-Tabla de pistas
-
-
+Tabla vista de pistas
 Comando Combinación de teclas 
-
 Moverse a pista anterior Flecha Arriba 
 Moverse a pista siguiente Flecha Abajo 
 Moverse a primera pista Ctrl + Inicio 
 Moverse a última pista Ctrl + Fin 
-Alternar selección de pista activa Enter 
+Alternar selección de pista enfocada Enter 
 Seleccionar todas las pistas (y un rango de tiempo que incluye todo el audio) Ctrl + A 
 Deseleccionar todas las pistas (y todos los rangos de tiempo) Ctrl + Shift + A 
 Seleccionar todas las pistas Ctrl + Shift + K 
-Abrir el menú de la pista activa Shift + M o Tecla Aplicaciones
-Cerrar (Eliminar) la pista activa Shift + C 
+Abrir el menú de la pista enfocada Shift + M o Tecla Aplicaciones
+Cerrar (Eliminar) la pista enfocada Shift + C 
 
 Pista de audio
-
-
 Comando Combinación de teclas 
-
-Cambiar ganancia de pista activa Shift + G 
-Cambiar posicionamiento estéreo de pista activa Shift + P 
-Silenciar/Desactivar silencio en la pista activa Shift + U 
+Cambiar ganancia de pista enfocada Shift + G 
+Cambiar posicionamiento estéreo de pista enfocada Shift + P 
+Silenciar/Desactivar silencio en la pista enfocada Shift + U 
 Silenciar todas las pistas Ctrl + U 
 Desactivar silencio en todas las pistas Ctrl + Shift + U 
-Solo/Desactivar solo en la pista activa Shift + S 
+Establecer/Quitar solo en la pista enfocada Shift + S 
 
 Movimiento del cursor
-
-
 Comando Combinación de teclas 
-
 Moverse al comienzo de las pistas (tiempo cero) Inicio 
 Moverse al final de todo el audio Fin 
 Moverse al comienzo del audio en las pistas seleccionadas J 
 Moverse al final del audio en las pistas seleccionadas K 
-Nueva posición del cursor en posición de reproducción ` 
+Nueva posición del cursor en posición de reproducción Acento Grave 
 Detener reproducción y mover cursor X 
 Rebobinar período corto Coma 
 Adelantar período corto Punto 
@@ -365,10 +357,7 @@ Cursor un poquito a la izquierda Flecha Izquierda
 Cursor un poquito a la derecha Flecha Derecha 
 
 Selección de un rango de tiempo
-
-
 Comando Combinación de teclas 
-
 Seleccionar un rango de tiempo que incluye todo el audio y seleccionar todas las pistas Ctrl + A 
 Comienzo de selección al principio de las pistas (tiempo 0) Shift + Inicio 
 Final de selección al final de todo el audio Shift + Fin 
@@ -381,10 +370,7 @@ Para mover el comienzo de la selección un poquito a la derecha Ctrl + Shift + F
 Para mover el comienzo de la selección un poquito a la izquierda Shift + Flecha Izquierda 
 
 Edición
-
-
 Comando Combinación de teclas 
-
 Deshacer Ctrl + Z 
 Rehacer Ctrl + Y 
 Borrar audio seleccionado Suprimir 
@@ -393,26 +379,20 @@ Copiar audio seleccionado Ctrl + C
 Pegar Ctrl + V 
 Reemplazar audio seleccionado por silencio Ctrl + L 
 Duplicar el audio seleccionado Ctrl + D 
-Cerrar (Eliminar) la pista activa Shift + C 
+Cerrar (Eliminar) la pista enfocada Shift + C 
 Encontrar cruces en cero Z
 
 Etiquetas
-
-
 Comando Combinación de teclas
-
 Añadir etiqueta en la selección Ctrl + B 
 Añadir etiqueta en la posición de reproducción Ctrl + M 
 Moverse a la etiqueta siguiente Alt + Flecha Derecha 
 Moverse a la etiqueta anterior Alt + Flecha Izquierda 
 
 Clips
-
-
-Command Keystroke
-
-Seleccionar clip anterior Alt + P 
-Seleccionar clip siguiente Alt + N 
+Comando Combinación de teclas
+Seleccionar clip anterior Alt + Coma 
+Seleccionar clip siguiente Alt + Punto 
 Dividir Ctrl + I 
 Dividir y borrar Ctrl + Alt + K 
 Dividir y cortar Ctrl + Alt + X 
@@ -421,13 +401,10 @@ Desunir en los silencios Ctrl + Alt + J
 Unir Ctrl + J 
 
 Grabación
-
-
 Comando Combinación de teclas 
-
 Grabar R 
-Añadir grabación Shift + R, utilizando la configuración predeterminada 
-Grabar en pista nueva Shift + R, utilizando la configuración predeterminada 
+Grabar en nueva pista Shift + R
+Grabación Punch and Roll	Shift + D 
 Pausa/reanudar P 
 Detener Barra Espaciadora 
 Diálogo Servidor de audio Shift + H 
@@ -561,7 +538,7 @@ Seleccionadas todas las pistas
 @@
 
 @msgCloseFocusedTrack
-cerrar pista activa
+cerrar pista enfocada
 @@
 
 @msgNotStopped_l
@@ -637,12 +614,19 @@ Leer %%los archivos directamente desde el original (más rápido)
 No volver a preguntar y utilizar siempre la opción seleccionada
 @@
 
-;Messages for the two lists in the Edit Chains dialog.
+;Messages for the two lists in the Edit Chains dialog before 2.3.0.
 @msgChains
 Secuencias de comandos
 @@
 @msgChainCommands
 Secuencia de comandos
+@@
+;Messages for the two lists in the Edit Chains dialog for 2.3.0.
+@msgMacros
+Macros
+@@
+@msgMacroCommands
+Comandos del macro
 @@
 ;for changing Jaws guide's link
 @msgNoChange_l
@@ -819,7 +803,7 @@ Cambiar la selección de espectro
 @@
 
 @msgSelSyncLockTracks
-seleccionar en todas las pistas enlazadas
+seleccionar en todas las pistas con sincronización bloqueada
 @@
 
 @msgZoomSel
@@ -887,11 +871,11 @@ Cambiar posicionamiento
 @@
 
 @msgTrackMoveTop
-Desplazar pista activa a la parte superior
+Desplazar pista enfocada a la parte superior
 @@
 
 @msgTrackMoveBottom
-Desplazar pista activa a la parte inferior
+Desplazar pista enfocada a la parte inferior
 @@
 
 @msgInputDevice

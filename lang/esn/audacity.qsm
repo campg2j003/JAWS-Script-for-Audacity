@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!-- 2016-09-25 The text from the 9/2014 Spanis JSM have been copied to replace the english messages.  The first message and the last several are new since the Spanish version.  Translate the contents of the text= attribute and the HelpMsg element.  DO NOT translate the ID attribute! -->
 <LocalizableDefinitions File="Audacity.qs">
 	<DisplayNameDefinitions>
 		<DisplayName ID="Audacity Options" Text="Configuración para Audacity">
@@ -23,7 +22,7 @@ Si se activa, ENTER ejecuta Pausa en tanto se reproduce o se graba, y Control+EN
 		</DisplayName>
 		<DisplayName ID="Audacity Options.Silence Preview" Text="Silenciar en vista previa de efectos">
 			<HelpMsg>
-Si se activa, desactiva la voz mientras se previsualiza un efecto.
+Si se activa, desactiva la voz durante la vista previa de un efecto.
 			</HelpMsg>
 		</DisplayName>
 		<DisplayName ID="Audacity Options.Silence Record" Text="Silenciar al grabar">

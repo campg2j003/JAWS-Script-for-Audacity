@@ -30,7 +30,7 @@ NumPadEnter=Enter
 Control+ENTER=CtrlEnter
 ;  Asignar CtrlEnter a NumPadEnter hace que %KeyFor devuelva Control+NumPadEnter en vez de Control+ENTER.
 ;  Control+NumPadEnter=CtrlEnter
-Shift+Control+`=ResetConfig
+Control+Shift+graveaccent=ResetConfig
 Alt+P=VSTPreset
 Alt+C=VSTLoadPreset
 Alt+G=VSTSavePreset
@@ -60,8 +60,8 @@ JAWSKey+a&x*=ExchangeWithMark
 Insert+a&x*=ExchangeWithMark
 JAWSKey+a&Shift+m*=MoveCurrentTrackToMark
 Insert+a&Shift+m*=MoveCurrentTrackToMark
-JAWSKey+a&Shift+Dash*=AudacityLayerHelp
-Insert+a&Shift+Dash*=AudacityLayerHelp
+JAWSKey+a&Shift+-*=AudacityLayerHelp
+Insert+a&Shift+-*=AudacityLayerHelp
 Control+Shift+UpArrow=MoveTrackUp
 Control+Shift+DownArrow=MoveTrackDown
 Control+B=AddLabelAtSelection
@@ -106,8 +106,8 @@ Insert+a&c&Insert+NumPad5*=SayWord
 ;Para el cuadro combinado de tipo de selección en Audacity 2.2.0
 JAWSKey+a&p&p=SaySelectionType
 Insert+a&p&p=SaySelectionType
-JAWSKey+a&p&Shift+Dash*=PositionLayerHelp
-Insert+a&p&Shift+Dash*=PositionLayerHelp
+JAWSKey+a&p&Shift+-*=PositionLayerHelp
+Insert+a&p&Shift+-*=PositionLayerHelp
 ;Si cambia las teclas siguientes también tendrá que actualizar msgScriptKeyHelp, pues estas teclas se encuentran "codificadas rígidamente".
 JAWSKey+a&p&1=SetSelectionType(1)
 Insert+a&p&1=SetSelectionType(1)
@@ -123,8 +123,8 @@ JAWSKey+a&p&f=SetSelectionType(3)
 Insert+a&p&f=SetSelectionType(3)
 JAWSKey+a&p&4=SetSelectionType(4)
 Insert+a&p&4=SetSelectionType(4)
-JAWSKey+a&p&c=SetSelectionType(4)
-Insert+a&p&c=SetSelectionType(4)
+JAWSKey+a&p&e=SetSelectionType(4)
+Insert+a&p&e=SetSelectionType(4)
 
 ;  Teclas para anunciar teclas de Audacity (generadas con make-key-script)
 Control+2=ZoomNormal
