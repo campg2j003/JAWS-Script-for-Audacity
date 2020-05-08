@@ -1,5 +1,8 @@
 (This file last updated 5/6/2020)
 
+# New in 2.2.2-beta-2020-05-08.
+- Added track name clean-up for Sync Locked.
+
 # New in 2.2.2-beta-2020-05-06.
 - Added new constants to handle changes in the indication of track states (muted, selected, and soloed) used for speaking the list of track names (SaySelectedText in main window pressed twice quickly).
 
