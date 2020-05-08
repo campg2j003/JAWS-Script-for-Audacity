@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-07"
-;Last updated 2020-05-07T21:56Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-08"
+;Last updated 2020-05-08T02:07Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -70,6 +70,8 @@ Const
 	ID_SELECTION_LENGTH_23 = 2706,
 	ID_SELECTION_CENTER_23 = 2707,
 	ID_AUDIO_POSITION_23 = 2709,
+	;For Audacity 2.4.0 and later
+	ID_AUDIO_POSITION_24 =   -31955,
 
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	;For VST plugins
@@ -408,6 +410,10 @@ If !App_FirstTime Then
 		Let giIDAudioPosition = ID_AUDIO_POSITION_23
 	EndIf ; v2.3.0
 	
+	If CheckAudacityVersion ("2,4,0") Then
+		Let giIDAudioPosition = ID_AUDIO_POSITION_24
+	EndIf ; v2.4.0
+
 	;Set keys that move the focus up and down in the track panel.
 	Let gsGoTrackUpKey = "UpArrow"
 	Let gsGoTrackDownKey = "DownArrow"
@@ -1355,6 +1361,7 @@ If (Not FocusInMainWindow () || IsSameScript () || Not IsPCCursor () || UserBuff
 EndIf
 If CheckAudacityVersion("2,2,0") Then
 	;Audacity 2.2.0 and later
+	;SayString("ID=" + IntToString(giIDAudioPosition)) ; debug
 	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), giIDAudioPosition)
 Else
 	; Audacity 2.1.3 or earlier
@@ -1362,6 +1369,8 @@ Else
 	Let hWnd = GetNextWindow(GetNextWindow(hWnd))
 EndIf ; else 2.1.3 or earlier
 ;hWnd is Audio Position field.
+	;SayString("hWnd=" + IntToString(hWnd)) ; debug
+	;SayString("GetWindowText={" + GetWindowText(hWnd, 0) + "}") ; debug
 Let sValue = GetPositionField(hWnd)
 If !sValue Then
 	Say (msgNoSelection, OT_ERROR)

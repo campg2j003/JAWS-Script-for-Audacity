@@ -1,6 +1,7 @@
-(This file last updated 5/6/2020)
+(This file last updated 5/7/2020)
 
-# New in 2.2.2-beta-2020-05-06.
+# New in 2.2.2-beta-2020-05-07.
+- Updated Spanish translation.
 - Added new constants to handle changes in the indication of track states (muted, selected, and soloed) used for speaking the list of track names (SaySelectedText in main window pressed twice quickly).
 
 # New in 2.2.2-beta-2020-03-02.
