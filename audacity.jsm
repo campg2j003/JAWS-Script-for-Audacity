@@ -1,4 +1,4 @@
-﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-05-06.
+﻿; English messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-05-08.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later 
 (http://audacityteam.org).
@@ -55,7 +55,9 @@ Const
 	;V2.3.3
 	CS_SELECTED = " Selected",
 	CS_MUTED = " Muted",
-	CS_SOLOED = " Soloed"
+	CS_SOLOED = " Soloed",
+	;To test, create a track, turn Sync Lock on (Tracks menu), select some audio, press JAWSKey+Shift+DownArrow twice quickly.
+	CS_SYNCLOCKED = " Sync Locked"
 
 ;For announcing selected tracks.
 Const
