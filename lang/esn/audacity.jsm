@@ -1,5 +1,5 @@
-﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-05-07.
-;Translation based on English version dated 2020-05-06.
+﻿; Spanish messages for Audacity 2.2.0 script by Gary Campbell last updated 2020-05-09.
+;Translation based on English version dated 2020-05-08.
 /*
 JAWS script for Audacity multitrack sound editor V2.0 or later (http://audacity.sourceforge.net).
 
@@ -56,7 +56,9 @@ CS_SELECT_ON = " Selección activada",
 ;V2.3.3
 	CS_SELECTED = " Seleccionado",
 	CS_MUTED = " Silenciado",
-	CS_SOLOED = " Solo establecido"
+	CS_SOLOED = " Solo establecido",
+;To test, create a track, turn Sync Lock on (Tracks menu), select some audio, press JAWSKey+Shift+DownArrow twice quickly.
+CS_SYNCLOCKED = " Sincronización bloqueada"
 
 ;For announcing selected tracks.
 Const
