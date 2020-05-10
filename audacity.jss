@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-08B"
-;Last updated 2020-05-08T18:08Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-10"
+;Last updated 2020-05-10T18:36Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -447,6 +447,10 @@ Void Function ScreenStabilizedEvent(Handle hWnd)
 ;SayString("ScreenStab " + IntToString(hWnd)) ;debug
 If ghSayPositionField  && gfPositionFieldUpdated Then
 	;SayString("Stab position") ; debug
+	Pause ()
+	;RefreshWindow (ghSayPositionField)
+	Refresh ()
+	MSAARefresh ()
 	Say (GetPositionField(ghSayPositionField), OT_NONHIGHLIGHTED_SCREEN_TEXT)
 	Let ghSayPositionField = ghNull
 	Let gfPositionFieldUpdated = False
