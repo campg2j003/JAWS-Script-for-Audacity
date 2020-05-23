@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-10"
-;Last updated 2020-05-10T18:36Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-23B"
+;Last updated 2020-05-23T02:38Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -864,7 +864,9 @@ Var
 	Object obj,
 	Int iTemp
 
-Let s = GetWindowText(hWnd, 0)
+;Use MSAA exclusively.
+;Let s = GetWindowText(hWnd, 0)
+Let s = ""
 If s == "" Then
 	;Try to get the text with MSAA.
 	;/*
@@ -888,10 +890,32 @@ If s == "" Then
 	RestoreCursor ()
 	SetJCFOption (OPT_MSAA_MODE, iMSAAMode)
 	*/ ;invisible cursor and GetObjectName.
+	;Assumes there is a digit before the decimal point or group separator.
+	Let iTemp = FindFirstDigit (s)
+	If iTemp > 1 Then
+		;There is a digit which is not the first character.
+		Let s = StringChopLeft(s, iTemp - 1)
+	EndIf
 EndIf ; if s==""
 
 Return FormatPositionField (s)
 EndFunction ; GetPositionField
+
+Int Function FindFirstDigit (String s)
+;Return the position of the first digit in s, 0 if none.
+Var
+	Int l,
+	Int i
+Let l = StringLength (s)
+Let i = 1
+While i <= l && !IsDigits (SubString(s, i, 1))
+	Let i = I + 1
+EndWhile
+If i > l Then
+	Let i = 0
+EndIf
+Return i
+EndFunction ;FindFirstDigit
 
 String  Function FormatPositionField(String s)
 ;Format string s for speaking.

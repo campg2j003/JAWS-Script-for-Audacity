@@ -686,3 +686,8 @@ Respects AnnounceMessage.
 :Returns void no return description
 :Param handle/hWnd
 
+:Function FindFirstDigit
+:Synopsis Find the first digit in s.
+:Returns int string position of first digit, 0 if none
+:Param string/s string to check
+

@@ -1,4 +1,7 @@
-(This file last updated 5/10/2020)
+(This file last updated 5/22/2020)
+
+# New in 2.2.2-beta-2020-05-23.
+- Position field text is now obtained with MSAA.  This seems to fix trailing h.ms being spoken for them in Audacity 2.4.0.
 
 # New in 2.2.2-beta-2020-05-10.
 - Added support for Audacity 2.4.0.
