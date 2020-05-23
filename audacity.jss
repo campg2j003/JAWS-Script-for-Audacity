@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-23B"
-;Last updated 2020-05-23T02:38Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-23C"
+;Last updated 2020-05-23T07:13Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -973,6 +973,11 @@ If i > 0 Then
 EndIf ; if decimal
 ; What we want is in s2.
 ;Don't say leading parts if they are 0.
+
+;If we have only 1 character, assume it is s (seconds).
+If StringLength (s2) == 1 Then
+	Let s2 = "0" + s2
+EndIf
 
 Return s2
 EndFunction ;FormatPositionField
@@ -2443,7 +2448,9 @@ Int Function IsDigits(String s)
 Var
 	String s2
 
-Let s2 = stringStripAllBlanks(StringReplaceChars(s, "+-0123456789", " "))
+Let S2 = StringReplaceChars (s, " ", "$")
+Let s2 = stringStripAllBlanks(StringReplaceChars(s2, "+-0123456789", " "))
+
 ;SayString("IsDigits(" + s + "), s2 = " + s2 + ", returning " + IntToString(StringLength(s2))) ; debug
 Return StringLength(s2) == 0
 EndFunction ; IsDigits
