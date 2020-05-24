@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-23C"
-;Last updated 2020-05-23T07:13Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-24"
+;Last updated 2020-05-24T00:38Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -904,16 +904,10 @@ EndFunction ; GetPositionField
 Int Function FindFirstDigit (String s)
 ;Return the position of the first digit in s, 0 if none.
 Var
-	Int l,
-	Int i
-Let l = StringLength (s)
-Let i = 1
-While i <= l && !IsDigits (SubString(s, i, 1))
-	Let i = I + 1
-EndWhile
-If i > l Then
-	Let i = 0
-EndIf
+	Int i,
+	String s2
+Let s2 = StringReplaceChars(s, "123456789", "0")
+Let i = StringContains (s2, "0")
 Return i
 EndFunction ;FindFirstDigit
 
