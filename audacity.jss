@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-29"
-;Last updated 2020-05-29T20:52Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-29b"
+;Last updated 2020-05-29T21:58Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1049,6 +1049,7 @@ Void Function SchedulePositionField(Int iPosition)
 ;Schedule a position field to be spoken after cursor motion completes and the field is updated.
 ;iPosition For Audacity 2.1.3 and earlier, the ctrl ID of the position field.  For Audacity 2.2.0 and later ID_SELECTION_START and ID_SELECTION_END are used as "command values" and transformed into the appropriate control IDs based on the selection type.
 Let ghSayPositionField = GetPositionFieldHandle(iPosition)
+Let gfPositionFieldUpdated = False
 ;SayString("Scheduling " + IntToString(ghSayPositionField)) ; debug
 EndFunction ;SchedulePositionField
 
@@ -1661,6 +1662,9 @@ If !IsStopped () Then
 	Return
 EndIf ; playing/recording
 
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () && gfSayPosition Then
+	SchedulePositionField(ID_SELECTION_END)
+EndIf
 Let sMessage=FormatString (msgMoveSelection, msgEnd, msgRight)
 Let sScriptName="SelectNextCharacter" ;The default script to perform if not in main window
 MarkerMovement (sScriptName, sMessage)
@@ -1668,10 +1672,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If gfSayPosition Then
+	;If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
-		SchedulePositionField(ID_SELECTION_END)
-	EndIf
+	;EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_END_FORWARD)
 	EndIf
@@ -1689,17 +1692,21 @@ If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	Return
 EndIf
 
+; FIXME?? FocusInTrackPanel?
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && gfSayPosition Then
+	SchedulePositionField(ID_SELECTION_END)
+EndIf
 Let sMessage=FormatString (msgMoveSelection, msgEnd, msgLeft)
 Let sScriptName="SelectPriorWord"
 MarkerMovement (sScriptName, sMessage)
+; FIXME?? FocusInTrackPanel?
 If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_END)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If gfSayPosition Then
+	;If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_END, TRUE) ;silence error message
-		SchedulePositionField(ID_SELECTION_END)
-	EndIf
+	;EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_END_BACKWARD)
 	EndIf
@@ -1717,17 +1724,21 @@ If !IsPCCursor () || UserBufferIsActive () || !IsStopped () || gfInLabel Then
 	Return
 EndIf
 
+; FIXME?? FocusInTrackPanel?
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && gfSayPosition Then
+	SchedulePositionField(ID_SELECTION_START)
+EndIf
 Let sMessage=FormatString (msgMoveSelection, msgStart, msgRight)
 Let sScriptName="SelectNextWord"
 MarkerMovement (sScriptName, sMessage)
+; FIXME?? FocusInTrackPanel?
 If GetQuickSetting ("AnnounceMessage") && !NoProject () Then
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If gfSayPosition Then
+	;If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-		SchedulePositionField(ID_SELECTION_START)
-	EndIf
+	;EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
@@ -1751,6 +1762,9 @@ If !IsStopped () Then
 	Return
 EndIf ; playing/recording
 
+If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () && gfSayPosition Then
+	SchedulePositionField(ID_SELECTION_START)
+EndIf
 Let sMessage=FormatString (msgMoveSelection, msgStart, msgLeft)
 Let sScriptName="SelectPriorCharacter"
 MarkerMovement (sScriptName, sMessage)
@@ -1758,10 +1772,9 @@ If GetQuickSetting ("AnnounceMessage") && !NoProject () && FocusInTrackPanel () 
 	Pause ()
 	;Let hWnd=FindDescendantWindow (GetRealWindow (GetFocus ()), ID_SELECTION_START)
 	;Say(GetPositionField (hWnd), OT_USER_REQUESTED_INFORMATION)
-	If gfSayPosition Then
+	;If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
-		SchedulePositionField(ID_SELECTION_START)
-	EndIf
+	;EndIf
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_BACKWARD)
 	EndIf
