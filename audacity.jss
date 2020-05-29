@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-24"
-;Last updated 2020-05-24T00:38Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-05-29"
+;Last updated 2020-05-29T20:52Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1975,12 +1975,12 @@ EndIf ; if no project
 ;If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 If IsStopped () Then
 	;In track panel, stopped, not entering a label.
-	TypeCurrentScriptKey ()
-	Pause ()
 	If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 		SchedulePositionField(ID_SELECTION_START)
 	EndIf
+	TypeCurrentScriptKey ()
+	Pause ()
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_BACKWARD)
 	EndIf
@@ -2010,12 +2010,12 @@ EndIf ; if no project
 ;If GetQuickSetting ("AnnounceMessage") && IsStopped () Then
 If IsStopped () Then
 	;In track panel, stopped, not entering a label.
-	TypeCurrentScriptKey ()
-	Pause ()
 	If gfSayPosition Then
 		;SayPositionField (ID_SELECTION_START, TRUE) ;silence error message
 		SchedulePositionField(ID_SELECTION_START)
 	EndIf
+	TypeCurrentScriptKey ()
+	Pause ()
 	If gfPreviewMotion Then
 		TypeKey (KS_PREVIEW_START_FORWARD)
 	EndIf
