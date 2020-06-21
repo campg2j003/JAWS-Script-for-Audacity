@@ -1,4 +1,7 @@
-(This file last updated 6/19/2020)
+(This file last updated 6/21/2020)
+
+# New in 2.2.2-beta-2020-06-21b.
+- Added support for Audio Position field in Audacity 2.4.2.  Audio Position should now work in multiple project windows.
 
 # New in 2.2.2-beta-2020-06-19.
 - Key layer help is now placed in the virtual buffer.

@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-06-19"
-;Last updated 2020-06-19T21:47Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-06-21b"
+;Last updated 2020-06-21T19:43Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -72,6 +72,8 @@ Const
 	ID_AUDIO_POSITION_23 = 2709,
 	;For Audacity 2.4.0 and later
 	ID_AUDIO_POSITION_24 =   -31955,
+	;For Audacity 2.4.2 and later
+	ID_AUDIO_POSITION_242 =   2801,
 
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	;For VST plugins
@@ -413,6 +415,10 @@ If !App_FirstTime Then
 	If CheckAudacityVersion ("2,4,0") Then
 		Let giIDAudioPosition = ID_AUDIO_POSITION_24
 	EndIf ; v2.4.0
+
+	If CheckAudacityVersion ("2,4,2") Then
+		Let giIDAudioPosition = ID_AUDIO_POSITION_242
+	EndIf ; v2.4.2
 
 	;Set keys that move the focus up and down in the track panel.
 	Let gsGoTrackUpKey = "UpArrow"
