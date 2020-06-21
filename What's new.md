@@ -1,5 +1,9 @@
-(This file last updated 5/22/2020)
+(This file last updated 6/19/2020)
 
+# New in 2.2.2-beta-2020-06-19.
+- Key layer help is now placed in the virtual buffer.
+
+# New in 2.2.2-beta-2020-05-23.
 # New in 2.2.2-beta-2020-05-23.
 - Position field text is now obtained with MSAA.  This seems to fix trailing h.ms being spoken for them in Audacity 2.4.0.
 
