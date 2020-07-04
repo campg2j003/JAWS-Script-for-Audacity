@@ -184,16 +184,13 @@ Bạn cũng có thể bấm số 1 - 4.
 Ở bản phân bố track và thanh lập vùng chọn, để nghe thử âm thanh tiếp sau (bên ngoài) điểm bắt đầu vùng chọn, bấm JAWSKey+Shift+Mũi tên phải
 
 Để chuyển giữa việc phát âm thanh và  đọc thời gian vị trí các lệnh di chuyển con trỏ, bấm JAWSKey+p.  
-Điều này giống với việc thiết lập Motion Preview on và Announce Position off, hoặc thiết lập  Motion Previewing off và Announce Position on.  Vậy nên bản có thể nhanh chóng
-bật tắt giữa chế độ nghe vị trí con trỏ hay nghe âm thanh.  Đây là một thay đổi tạm thời.  Nó không thay đổi giá trí đã lưu của các thiết lập này và
-các thiết lập sẽ quay trở lại với giá trị của Quick Settings sau khi mở nó hoặc chuyển con trỏ khỏi  Audacity.
+Điều này giống với việc thiết lập Motion Preview on và Announce Position off, hoặc thiết lập  Motion Previewing off và Announce Position on.  Vậy nên bản có thể nhanh chóng bật tắt giữa chế độ nghe vị trí con trỏ hay nghe âm thanh.  Đây là một thay đổi tạm thời.  Nó không thay đổi giá trí đã lưu của các thiết lập này và các thiết lập sẽ quay trở lại với giá trị của Quick Settings sau khi mở nó hoặc chuyển con trỏ khỏi  Audacity.
 
 để tăng gain của track tại vị trí con trỏ, bấm Alt+Shift+mũi tên lên.
 Để giảm gain của track tại vị trí con trỏ, bấm Alt+Shift+mũi tên xuống.
 để điều chỉnh âm thanh qua loa trái, bấm Alt+Shift+mũi tên trái.
 để điều chỉnh âm thanh qua loa phải, bấm Alt+Shift+mũi tên phải.
-4 phím nóng ở trên đã thay thế 4 phím di chuyển chuột của Jaws khi con trỏ
-ở cửa sổ chính của ứng dụng. Vì vậy, để sử dụng tính năng này, trước tiên, phải bật con trỏ Jaws.
+4 phím nóng ở trên đã thay thế 4 phím di chuyển chuột của Jaws khi con trỏ ở cửa sổ chính của ứng dụng. Vì vậy, để sử dụng tính năng này, trước tiên, phải bật con trỏ Jaws.
 
 Để đọc giá trị âm lượng khi thu âm (recording meter), bấm g.
 Bấm nhanh hai lần để đưa con trỏ đến đồng hồ đo âm.
@@ -207,11 +204,9 @@ Bấm nhanh hai lần để đưa con trỏ đến đồng hồ đo âm.
 Để đi đến track được đánh dấu và đánh dấu điểm bắt đầu của track, bấm JAWSKey+a, x.
 Để di chuyển con trỏ hiện tại đến vị trí của track đã được đánh dấu và để đánh dấu một điểm tại vị trí con trỏ, bấm Insert+a, Shift+m.
 
-Để tìm tốc độ, bấm Insert+a, t, Khoảng trắng.  Bắt đầu phát âm thanh.  Bấm Insert+a, t, enter cho mỗi phách.  (Bạn chỉ cần bấm phím cuối cùng trong 
-trình tự của mọi phím trong nhóm tốc độ khi bạn đã vào nhóm phím này).  
+Để tìm tốc độ, bấm Insert+a, t, Khoảng trắng.  Bắt đầu phát âm thanh.  Bấm Insert+a, t, enter cho mỗi phách.  (Bạn chỉ cần bấm phím cuối cùng trong trình tự của mọi phím trong nhóm tốc độ khi bạn đã vào nhóm phím này).  
 Khi hoàn tất, bấm lại Insert+a, t, Khoảng trắng.  Âm thanh ngừng phát và tốc độ bằng phách trên phút sẽ được đọc lên.  
-Sau đó, bạn có thể bấm JAWSKey+a, t, a để nghe lại tốc độ hay JAWSKey+a, t, c để chép nó vào bộ nhớ tạm.  Giá trị sẽ  được giữ lại đến khi bấm lại
-Insert+a, t, Khoảng trắng.  hãy bấm ESC khi bạn xong việc với nhóm lệnh về tốc độ để tránh rắc rối.  
+Sau đó, bạn có thể bấm JAWSKey+a, t, a để nghe lại tốc độ hay JAWSKey+a, t, c để chép nó vào bộ nhớ tạm.  Giá trị sẽ  được giữ lại đến khi bấm lại Insert+a, t, Khoảng trắng.  hãy bấm ESC khi bạn xong việc với nhóm lệnh về tốc độ để tránh rắc rối.  
 Tốc độ được tính bằng cách chia thời gian của phách cuối cùng trừ thời gian của phách đầu tiên cho số phách trừ 1.
 
 để bật / tắt chế độ đọc (speech) của Jaws, bấm Shift+Insert+S
@@ -231,11 +226,9 @@ xem tập tin Whats new.txt để biết thêm thông tin
 Để thay đổi thiết lập cho script Audacity, bấm JAWSKey+V.
 để trả các thiết lập của script về mặc định, bấm control+Shift+`
 
-nếu bật tùy chọn "ENTER pauses during play/record", bấm Enter sẽ kích hoạt lệnh tạm dừng (Pause) khi phát âm thanh hoặc thu âm. bấm Ctrl+Enter để kích hoạt lệnh Enter
-trong trường hợp này.
+nếu bật tùy chọn "ENTER pauses during play/record", bấm Enter sẽ kích hoạt lệnh tạm dừng (Pause) khi phát âm thanh hoặc thu âm. bấm Ctrl+Enter để kích hoạt lệnh Enter trong trường hợp này.
 
-Nếu SilencePreview được bật và bạn bấm nút Preview trong một hiệu ứng, thỉnh thoảng, tính năng Silence không thể tắt được.
-Kết quả là các thông điệp xuất hiện khi thay đổi cửa sổ sẽ bị bỏ qua. Bạn có thể khắc phục bằng cách chuyển sang một cửa sổ khác rồi chuyển về Audacity.
+Nếu SilencePreview được bật và bạn bấm nút Preview trong một hiệu ứng, thỉnh thoảng, tính năng Silence không thể tắt được. Kết quả là các thông điệp xuất hiện khi thay đổi cửa sổ sẽ bị bỏ qua. Bạn có thể khắc phục bằng cách chuyển sang một cửa sổ khác rồi chuyển về Audacity.
 
 Trong vài VST plugins thông thường, như là L1V:
 Đưa con trỏ về ô Preset, bấm Alt+P.

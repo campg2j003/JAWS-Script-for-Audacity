@@ -184,16 +184,20 @@ In the track panel and selection bar , to preview audio before (outside) the sel
 In the track panel and selection bar , to preview audio after (outside) the selection end, press JAWSKey+Shift+RightArrow
 
 To switch between playing audio and speaking position time for cursor motion commands, press JAWSKey+p.  
+<<<<<<< Updated upstream
 This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly
 toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the
 settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
     
+=======
+This is the same as setting Motion Preview on and Announce Position off, or setting  Motion Previewing off and Announce Position on.  Thus you can quickly toggle between hearing the cursor position or hearing audio.  This is a temporary change.  It does not change the saved value of these settings, and the settings will revert to the Quick Settings values after opening Quick Settings or switching focus away from Audacity.
+
+>>>>>>> Stashed changes
 To increase gain of focus track, press Alt+Shift+UpArrow.
 To reduce gain of focus track, press Alt+Shift+DownArrow.
 To adjust pan left, press Alt+Shift+LeftArrow.
 To adjust pan right, press Alt+Shift+RightArrow.
-The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while
-in the main window, turn on the JAWS cursor.
+The last 4 keys replace the default JAWS mouse movement scripts while focus is in the main window.  If you want to activate the original functionality while in the main window, turn on the JAWS cursor.
 
 To say the value of the recording meter, press g.
  Press twice quickly to move focus to the meter.
@@ -207,11 +211,17 @@ To go to the marked track, press JAWSKey+a, Shift+g.
 To go to the marked track and mark the starting track, press JAWSKey+a, x.
 To move the current track to the position of the marked track and set the mark to the current track, press Insert+a, Shift+m.
 
+<<<<<<< Updated upstream
 To find the tempo, press Insert+a, t, SPACE.  Playback starts.  Then press Insert+a, t, ENTER for each beat.  (You only need to press the last key of the
 sequence for any Tempo layer key once you have entered the Tempo layer.)  
 When you are finished press Insert+a, t, SPACE again.  Playback stops and the tempo in beats per minute is spoken.  
 After that you can press JAWSKey+a, t, a to speak the tempo again or JAWSKey+a, t, c to copy it to the clipboard.  The value will be retained until Insert+a,
 t, SPACE is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
+=======
+To find the tempo, press Insert+a, t, Space.  Playback starts.  Then press Insert+a, t, enter for each beat.  (You only need to press the last key of the sequence for any Tempo layer key once you have entered the Tempo layer.)  
+When you are finished press Insert+a, t, Space again.  Playback stops and the tempo in beats per minute is spoken.  
+After that you can press JAWSKey+a, t, a to speak the tempo again or JAWSKey+a, t, c to copy it to the clipboard.  The value will be retained until Insert+a, t, Space is pressed again.  It is wise to press ESC when you are done with the Tempo layer to avoid confusion.  
+>>>>>>> Stashed changes
 The tempo is calculated by dividing the time of the last beat minus the time of the first beat by the number of beats minus 1.
 
 To toggle speech on or off, press Shift+Insert+S.
@@ -231,12 +241,19 @@ To get the default Windows hot key help, press Insert+w twice quickly.
 To change settings for the Audacity script, press   JAWSKey+V.
 To reset all script options to default values, press Control+Shift+`
 
+<<<<<<< Updated upstream
 If the "ENTER pauses during play/record" option is on, pressing Enter while playing or recording sends the Pause key.  Use Control+ENTER to execute ENTER
 in this situation.
 
 If Silence Effect Preview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will
 result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
  
+=======
+If the "ENTER pauses during play/record" option is on, pressing enter while playing or recording sends the Pause key.  Use control+enter to execute ENTER in this situation.
+
+If Silence Effect Preview is on and you hit the Preview button in an effect, sometimes the silencing of the previewing does not get turned off.  This will result in missing speech that occurs as a result of focus changes.  You can fix this by switching away from Audacity and back.
+
+>>>>>>> Stashed changes
 In some common VST plugins, such as L1V:
 To set focus to the preset control, press Alt+P.
 To load an existing preset, press  .
