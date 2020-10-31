@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-07-04"
-;Last updated 2020-07-04T20:54Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-10-31"
+;Last updated 2020-10-31T22:06Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -1565,15 +1565,15 @@ KeymapChangedEvent(iKeyCode, sKeyName, iKeyStatus)
 endFunction ; KeymapChangedEvent
 
 Script AudacityLayerHelp ()
-Say(msgAudacityLayerHelp, OT_USER_REQUESTED_INFORMATION)
+SayMessage(OT_USER_BUFFER, msgAudacityLayerHelp)
 EndScript ; AudacityLayerHelp
 
 Script PositionLayerHelp ()
-Say(msgPositionLayerHelp, OT_USER_REQUESTED_INFORMATION)
+SayMessage(OT_USER_BUFFER, msgPositionLayerHelp)
 EndScript ; PositionLayerHelp
 
 Script ShortLayerHelp ()
-Say(msgShortLayerHelp, OT_USER_REQUESTED_INFORMATION)
+SayMessage(OT_USER_BUFFER, msgShortLayerHelp)
 EndScript ; ShortLayerHelp
 
 Script SendKey(String sKey)
@@ -4591,6 +4591,6 @@ Say(FormatString(msgTempoCopied, gsTempoBPM), OT_STATUS)
 EndScript ; TempoCopy
 
 Script TempoLayerHelp ()
-Say(msgTempoLayerHelp, OT_USER_REQUESTED_INFORMATION)
+SayMessage(OT_USER_REQUESTED_INFORMATION, msgTempoLayerHelp)
 EndScript ; TempoLayerHelp
 
