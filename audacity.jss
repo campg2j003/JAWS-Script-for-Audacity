@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2020-10-31"
-;Last updated 2020-10-31T22:06Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2023-01-12"
+;Last updated 2023-01-12T00:16Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -278,10 +278,10 @@ If !UserBufferIsActive ()&&FocusInTrackPanel () && IsStopped () && !gfInLabel Th
 	TypeCurrentScriptKey ()
 	If GetQuickSetting ("AnnounceMessage") Then
 		SayFormattedMessage (OT_CURSOR, sAlert) ;The alert specified by calling script
-	EndIf ; if AnnounceOn
+	EndIf ;Quick setting
 Else
-	;Why not just type current script key?
-	;Not main window, perform the specified script, passed as a parameter. This method suggested by Doug Lee
+	;not main window
+	; This method suggested by Doug Lee
 	FormatStringWithEmbeddedFunctions("<$" +sScript +">") ;instead of PerformScript method. 
 EndIf ; else not main window
 EndFunction ; MarkerMovement
@@ -3319,7 +3319,10 @@ EndIf
 Let hTemp = FindToolbar (WN_RECORDING_METER_TOOLBAR)
 If hTemp Then
 	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
-EndIf 
+	If CheckAudacityVersion("3,2,2") Then
+		Let hTemp = GetNextWindow (hTemp)
+	EndIf ;Audacity 3.2.2 or later
+EndIf ;found toolbar
 If !hTemp || !IsWindowVisible (hTemp) Then
 	/*
 	;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
@@ -3367,7 +3370,10 @@ EndIf
 Let hTemp = FindToolbar (WN_PLAYBACK_METER_TOOLBAR)
 If hTemp Then
 	Let hTemp = GetNextWindow (GetFirstChild (hTemp))
-EndIf
+	If CheckAudacityVersion("3,2,2") Then
+		Let hTemp = GetNextWindow (hTemp)
+	EndIf ;Audacity 3.2.2 or later
+EndIf ;toolbar found
 If !hTemp || !IsWindowVisible (hTemp) Then
 	/*
 	;This was to find the combined meter when not docked.  It doesn't work, since the frame order can change.
