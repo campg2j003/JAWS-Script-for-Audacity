@@ -4,8 +4,8 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2023-01-12"
-;Last updated 2023-01-12T00:16Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2023-07-20"
+;Last updated 2023-07-20T22:55Z
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -75,6 +75,13 @@ Const
 	;For Audacity 2.4.2 and later
 	ID_AUDIO_POSITION_242 =   2801,
 
+		ID_SELECTION_BAR330 = -31942,
+	ID_SELECTION_START330 = 0,
+	ID_SELECTION_END330 = 1,   ; selection end or selection length
+	ID_SELECTION_TYPE_COMBO330 = -31386, ; a button that brings up a context menu
+	ID_SELECTION_LENGTH330 = 2720,
+	ID_SELECTION_CENTER330 = 0,
+
 	ID_STOP_BUTTON = 5100, ; stop button when previewing an effect, also of all OK buttons
 	;For VST plugins
 	ID_Load_Preset=11001,
@@ -138,6 +145,7 @@ Globals
 	String gsMoveTrackDownKey, ; key that moves a track down in the track panel (to higher-numbered tracks)
 	Int giTrackMark, ;Holds the number of the marked track, 0 if none
 	;Control ID values that change in different versions of Audacity.
+	Int giIDSelectionBar,
 	Int giIDSelectionTypeCombo,
 	Int giIDSelectionStart,
 	Int giIDSelectionEnd,
@@ -420,6 +428,16 @@ If !App_FirstTime Then
 		Let giIDAudioPosition = ID_AUDIO_POSITION_242
 	EndIf ; v2.4.2
 
+	If CheckAudacityVersion ("3,3,0") Then
+		Let giIDSelectionBar = ID_SELECTION_BAR330
+		Let giIDSelectionStart = ID_SELECTION_START330
+		Let giIDSelectionEnd = ID_SELECTION_END330   ; selection end or selection length
+		Let giIDSelectionTypeCombo = ID_SELECTION_TYPE_COMBO330 ; a button that brings up a context menu
+		Let giIDSelectionLength = ID_SELECTION_LENGTH330 ;??
+		Let giIDSelectionCenter = ID_SELECTION_CENTER330
+	EndIf ; v3.3.0
+
+	
 	;Set keys that move the focus up and down in the track panel.
 	Let gsGoTrackUpKey = "UpArrow"
 	Let gsGoTrackDownKey = "DownArrow"
@@ -988,7 +1006,13 @@ Var
 	Int iId
 If CheckAudacityVersion("2,2,0") Then
 	;SayString("giIDSelectionTypeCombo " + IntToString(giIDSelectionTypeCombo)) ; debug
+	;***?? in 3.3.0 this is a button that invokes a context menu!
 	Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
+	If CheckAudacityVersion("3,3,0") Then
+		;Selection type is now a context menu.  Start-End is all we can do for now.
+		;Also check scripts SaySelectionStart and SaySelectionEnd.
+		Let iSelectionType = 1
+	EndIf ; 3.3.0 or later
 	;1=start end, 2= start length, 3= length end, 4=length center
 	If iPosition == ID_SELECTION_START Then
 		If iSelectionType == 1 Then ; start, end
@@ -1021,7 +1045,16 @@ Return iId
 EndFunction ; GetPositionFieldID
 
 Handle Function GetPositionFieldHandle(Int iPosition)
-Return FindDescendantWindow (GetRealWindow (GetFocus ()), GetPositionFieldID (iPosition))
+;Find the appropriate control and return its handle.
+; iPosition: either ID_SELECTION_START or ID_SELECTION_END.  See GetPositionFieldID.
+Var Handle hWnd
+Let hWnd = GetRealWindow (GetFocus ())
+If CheckAudacityVersion ("3,3,0") Then
+	Let hWnd = FindDescendantWindow(hWnd, giIdSelectionBar)
+EndIf ; 3.3.0
+Let hWnd =  FindDescendantWindow (hWnd, GetPositionFieldID (iPosition))
+;SayString("GetPositionFieldHandle: Returning handle " + IntToString(hWnd) + " for iPosition=" + IntToString(iPosition)) ; debug
+Return hWnd
 EndFunction ; GetPositionFieldHandle
 
 Int Function SayPositionField (Int iPosition, Int fSilent)
@@ -1084,6 +1117,11 @@ Else
 	If CheckAudacityVersion("2,2,0") Then
 		;Audacity 2.2.0 and later
 		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
+		If CheckAudacityVersion("3,3,0") Then
+			;Selection type is now a context menu.  Start-End is all we can do for now.
+			;Also check scripts SaySelectionStart and SaySelectionEnd.
+			Let iSelectionType = 1
+		EndIf ; 3.3.0 or later
 		;1=start end, 2= start length, 3= length end, 4=length center
 		Let iId = GetPositionFieldID(ID_SELECTION_START)
 		If iSelectionType == 1 Then ; start, end
@@ -1104,7 +1142,14 @@ Else
 		Let iId = ID_SELECTION_START
 	EndIf ; else before 2.2.0
 	;SayString("iID=" + IntToString(iId)) ; debug
-	Let hWnd = FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
+	Let hWnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), giIdSelectionBar)
+	;SayString("SaySelectionEnd: Got selection bar handle " + IntToString(hWnd) + " for ID" + IntToString(giIdSelectionBar)) ; debug
+	If !hWnd Then ; debug
+		SayString("Could not find selection bar") ; debug
+	EndIf ; debug
+	Let hWnd = FindDescendantWindow(hWnd, iId)
+
+	;SayString("SaySelectionEnd: Returning handle " + IntToString(hWnd) + " for iId=" + IntToString(iId)) ; debug
 	If (IsSameScript()) Then
 		SetFocus(hWnd)
 		Return
@@ -1136,7 +1181,8 @@ Var
 	Int iId,
 	Int bIsSelected
 
-If NoProject () Then
+;SayString("Enter SaySelectionEnd") ; debug
+	If NoProject () Then
 	SayNoProject ()
 	Return
 ElIf DialogActive () || MenusActive () Then
@@ -1145,9 +1191,15 @@ ElIf DialogActive () || MenusActive () Then
 	TypeCurrentScriptKey ()
 	Return
 Else ; do it
+;SayString("do it") ; debug
 	If CheckAudacityVersion("2,2,0") Then
 		;Audacity 2.2.0 and later
 		Let iSelectionType = GetCurrentItem (FindDescendantWindow (GetRealWindow (GetFocus ()), giIDSelectionTypeCombo))
+		If CheckAudacityVersion("3,3,0") Then
+			;Selection type is now a context menu.  Start-End is all we can do for now.
+			;Also check scripts SaySelectionStart and SaySelectionEnd.
+			Let iSelectionType = 1
+		EndIf ; 3.3.0 or later
 		Let iId = GetPositionFieldID(ID_SELECTION_END)
 		;1=start end, 2= start length, 3= length end, 4=length center
 		If iSelectionType == 1 Then ; start, end
@@ -1167,11 +1219,18 @@ Else ; do it
 		;Audacity 2.1.3 and earlier
 		Let iId = ID_SELECTION_END
 	EndIf ; Else 2.1.3 and earlier
-	Let hEnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), iId)
+	Let hEnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), giIdSelectionBar)
+	;SayString("SaySelectionEnd: Got selection bar handle " + IntToString(hEnd) + " for ID" + IntToString(giIdSelectionBar)) ; debug
+	If !hEnd Then ; debug
+		SayString("Could not find selection bar") ; debug
+	EndIf ; debug
+	Let hEnd = FindDescendantWindow(hEnd, iId)
+
+	;SayString("SaySelectionEnd: Returning handle " + IntToString(hEnd) + " for iId=" + IntToString(iId)) ; debug
 	If (IsSameScript()) Then
 		SetFocus(hEnd)
 		Return
-	EndIf ; if IsSameScriqt
+	EndIf ; if IsSameScript
 
 
 	Let sValue = GetPositionField(hEnd)
