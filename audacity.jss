@@ -4,8 +4,9 @@
 ;Vietnamese README file translation by Nguyen Hoang Giang.
 
 ; This constant contains the script version.  The spacing of the following line must be preserved exactly so that the installer can read the version from it.  There is exactly 1 space between const and the name, and 1 space on either side of the equals sign.
-Const CS_SCRIPT_VERSION = "2.2.2-beta-2023-07-20"
-;Last updated 2023-07-20T22:55Z
+Const CS_SCRIPT_VERSION = "2.2.2-beta-2024-03-15"
+;Last updated 2024-03-15T22:02Z
+	;Debug version to debug finding selection bar.
 
 ; This puts the copyright in the jsb file.
 Messages
@@ -76,6 +77,7 @@ Const
 	ID_AUDIO_POSITION_242 =   2801,
 
 		ID_SELECTION_BAR330 = -31942,
+		;ID_SELECTION_BAR330 = 9, ; V3.2.3
 	ID_SELECTION_START330 = 0,
 	ID_SELECTION_END330 = 1,   ; selection end or selection length
 	ID_SELECTION_TYPE_COMBO330 = -31386, ; a button that brings up a context menu
@@ -1141,15 +1143,17 @@ Else
 		;Before 2.2.0
 		Let iId = ID_SELECTION_START
 	EndIf ; else before 2.2.0
-	;SayString("iID=" + IntToString(iId)) ; debug
+	;SayString("SaySelectionStart: iID=" + IntToString(iId)) ; debug
 	Let hWnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), giIdSelectionBar)
-	;SayString("SaySelectionEnd: Got selection bar handle " + IntToString(hWnd) + " for ID" + IntToString(giIdSelectionBar)) ; debug
+	;SayString("SaySelectionStart: Got selection bar handle " + IntToString(hWnd) + " for ID " + IntToString(giIdSelectionBar)) ; debug
 	If !hWnd Then ; debug
-		SayString("Could not find selection bar") ; debug
+		;SayString("Could not find selection bar") ; debug
 	EndIf ; debug
 	Let hWnd = FindDescendantWindow(hWnd, iId)
 
-	;SayString("SaySelectionEnd: Returning handle " + IntToString(hWnd) + " for iId=" + IntToString(iId)) ; debug
+	;start here: 3/10/24 Have activated saystring in GetPositionFieldHandle.  Changed script name in following debugs.  Need to add script name to previous saystring.  Then find out why we can't find selection bar.
+	;3/15/24 We were running wrong version of Audacity.  Why didn't it work in 3.2.3?
+	;SayString("SaySelectionStart: Got selection bar handle " + IntToString(hWnd) + " for iId=" + IntToString(iId)) ; debug
 	If (IsSameScript()) Then
 		SetFocus(hWnd)
 		Return
@@ -1222,7 +1226,7 @@ Else ; do it
 	Let hEnd =	 FindDescendantWindow (GetRealWindow (GetFocus ()), giIdSelectionBar)
 	;SayString("SaySelectionEnd: Got selection bar handle " + IntToString(hEnd) + " for ID" + IntToString(giIdSelectionBar)) ; debug
 	If !hEnd Then ; debug
-		SayString("Could not find selection bar") ; debug
+		;SayString("Could not find selection bar") ; debug
 	EndIf ; debug
 	Let hEnd = FindDescendantWindow(hEnd, iId)
 
